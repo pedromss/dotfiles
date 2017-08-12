@@ -1,0 +1,8 @@
+alias c="clear"
+alias l="ls -la"
+alias ld="ls -ld"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias brc="vim ~/.bashrc"
+
