@@ -1,0 +1,68 @@
+URxvt.font: xft:monospace:size=11
+URxvt.scrollBar: false
+
+!Snazzy - https://github.com/LeonGr/urxvt-snazzy
+!*background:   [97]#282a36
+!*foreground:   #eff0eb
+!*cursorColor:  #9aedfe
+
+!*color0:      #33303b
+!*color8:      #4f4b58
+!*color1:      #ff5c57
+!*color9:      #ff5c57
+!*color2:      #5af78e
+!*color10:     #5af78e
+!*color3:      #f3f99d
+!*color11:     #f3f99d
+!*color4:      #57c7ff
+!*color12:     #57c7ff
+!*color5:      #ff6ac1
+!*color13:     #ff6ac1
+!*color6:      #9aedfe
+!*color14:     #9aedfe
+!*color7:      #eff0eb
+!*color15:     #eff0eb
+
+! Sea shells
+! Generated with :
+! XRDB2Xreources.py
+*.foreground:  #deb88d
+*.background:  #09141b
+*.cursorColor: #fca02f
+!
+! Black
+*.color0:      #17384c
+*.color8:      #434b53
+!
+! Red
+*.color1:      #d15123
+*.color9:      #d48678
+!
+! Green
+*.color2:      #027c9b
+*.color10:     #628d98
+!
+! Yellow
+*.color3:      #fca02f
+*.color11:     #fdd39f
+!
+! Blue
+*.color4:      #1e4950
+*.color12:     #1bbcdd
+!
+! Magenta
+*.color5:      #68d4f1
+*.color13:     #bbe3ee
+!
+! Cyan
+*.color6:      #50a3b5
+*.color14:     #87acb4
+!
+! White
+*.color7:      #deb88d
+*.color15:     #fee4ce
+!
+! Bold, Italic, Underline
+*.colorBD:     #ffe4cc
+!*.colorIT:
+!*.colorUL:

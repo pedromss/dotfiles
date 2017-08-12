@@ -1,0 +1,16 @@
+**/.metals/
+**/tags
+**/*.orig
+**/*.swp
+**/vim-markdown-preview.html
+**/*.jar
+**/.netrwhist
+**/.DS_Store
+**/.env
+**/bin
+.classpath
+.project
+.settings
+.clj-kondo
+**/.lsp
+**/.idea

@@ -1,0 +1,4 @@
+source $DFILES_NVIM_RC
+set surround
+set easymotion
+set commentary
