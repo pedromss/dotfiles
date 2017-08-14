@@ -206,6 +206,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " Vimwiki
 let g:vimwiki_auto_checkbox=1
+let g:vimwiki_list_ignore_newline=0
 
 :map <Leader>tt <Plug>VimwikiToggleListItem
 
