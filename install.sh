@@ -1,23 +1,39 @@
-USER=$1
+#! /usr/bin/env bash
 
+# =========================
+# functions
+# =========================
+make_link() {
+  ln -sfv $1 $2
+}
+
+# =========================
+# variables
+# =========================
+user=$1
+dotfiles_folder='.dotfiles'
+
+# =========================
+# script
+# =========================
 # Make sure a user is specified
-if [ ! $USER ]
+if [ ! $user ]
 then
   echo 'Please specify a user'
   exit 1
 fi
 
 # Make sure the .dotfiles directory exists
-if [ ! -d "/Users/$USER/.dotfiles" ]
+if [ ! -d "/Users/$user/.dotfiles" ]
 then
-  echo "No .dotfiles directory under /Users/$USER"
+  echo "No .dotfiles directory under /Users/$user"
   exit 2
 fi
 
-ln -sfv "/Users/$USER/.dotfiles/runcom/.bash_profile" ~
-ln -sfv "/Users/$USER/.dotfiles/runcom/.aliases" ~
-ln -sfv "/Users/$USER/.dotfiles/runcom/.env" ~
-ln -sfv "/Users/$USER/.dotfiles/vim/.vimrc" ~
-ln -sfv "/Users/$USER/.dotfiles/zsh/.zshrc" ~
-ln -sfv "/Users/$USER/.dotfiles/tern/.tern-project" ~
+make_link "/Users/$user/.dotfiles/runcom/.bash_profile" ~
+make_link "/Users/$user/.dotfiles/runcom/.aliases" ~
+make_link "/Users/$user/.dotfiles/runcom/.env" ~
+make_link "/Users/$user/.dotfiles/vim/.vimrc" ~
+make_link "/Users/$user/.dotfiles/zsh/.zshrc" ~
+make_link "/Users/$user/.dotfiles/tern/.tern-project" ~
 
