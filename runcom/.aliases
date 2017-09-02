@@ -5,4 +5,5 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias brc="vim ~/.bashrc"
+alias pjson='python -m json.tool'
 
