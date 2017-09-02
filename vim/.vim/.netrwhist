@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/usr/local/repos/coursera/parallel-programming'
+let g:netrw_dirhist_2='/Users/pedromss/Downloads/reductions'
+let g:netrw_dirhist_3='/Users/pedromss/.sbt/0.13'

@@ -1,3 +1,9 @@
+#! /usr/bin/env bash
+
 mk() {
-  mkdir -p $1 && cd $1
+  mkdir -p $1 && cd $_
+}
+
+command_exists() {
+  type $1 1>/dev/null 2>/dev/null
 }
