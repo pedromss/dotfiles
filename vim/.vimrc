@@ -4,6 +4,9 @@ set switchbuf=usetab
 set backspace=2 " make backspace work like most other apps
 set encoding=utf-8
 set scrolloff=3
+set hlsearch " highlight search words
+set incsearch " search as you type
+set cindent " indents more if inside brackets
 let mapleader = ','
 
 set guioptions-=m

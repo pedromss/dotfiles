@@ -33,7 +33,9 @@ fi
 make_link "/Users/$user/.dotfiles/runcom/.bash_profile" ~
 make_link "/Users/$user/.dotfiles/runcom/.aliases" ~
 make_link "/Users/$user/.dotfiles/runcom/.env" ~
+make_link "/Users/$user/.dotfiles/vim/.vim" ~
 make_link "/Users/$user/.dotfiles/vim/.vimrc" ~
+make_link "/Users/$user/.dotfiles/vim/.ideavim" ~
 make_link "/Users/$user/.dotfiles/zsh/.zshrc" ~
 make_link "/Users/$user/.dotfiles/tern/.tern-project" ~
 
