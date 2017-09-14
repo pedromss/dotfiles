@@ -7,6 +7,7 @@ set scrolloff=3
 set hlsearch " highlight search words
 set incsearch " search as you type
 set cindent " indents more if inside brackets
+set relativenumber
 let mapleader = ','
 
 set guioptions-=m
@@ -31,6 +32,7 @@ if has("gui_win32")
 else
   call plug#begin('~/.vim/plugged')
 endif
+Plug 'christoomey/vim-titlecase'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/syntastic'
