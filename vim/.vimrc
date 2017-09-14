@@ -16,6 +16,9 @@ set guioptions-=L
 
 inoremap <C-Space> <C-x><C-o>
 
+" Searching
+nnoremap <Esc> :noh<CR>
+
 " For local replace
 nnoremap gr gd[{V%:s/<C-R>///gc<left><left><left>
 
