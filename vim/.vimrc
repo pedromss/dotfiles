@@ -1,4 +1,5 @@
 :cd ~/
+
 set number
 set switchbuf=usetab
 set backspace=2 " make backspace work like most other apps
@@ -19,6 +20,7 @@ inoremap <C-Space> <C-x><C-o>
 
 " Searching
 nnoremap <Esc> :noh<CR>
+nnoremap <
 
 " For local replace
 nnoremap gr gd[{V%:s/<C-R>///gc<left><left><left>
@@ -83,9 +85,10 @@ nnoremap <leader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<C
 " Utility
 nnoremap <D-d> yyp
 
+" 
 " Line movement
-nnoremap <A-k> :m-2<CR> 
-nnoremap <A-j> :m+1<CR> 
+nnoremap ˚ :m-2<CR> 
+nnoremap ∆ :m+1<CR> 
 
 " ScrollCollor
 map <silent><S-F4> :NEXTCOLOR<cr> 
