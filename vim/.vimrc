@@ -9,6 +9,8 @@ set hlsearch " highlight search words
 set incsearch " search as you type
 set cindent " indents more if inside brackets
 set relativenumber
+:set foldmethod=indent
+:set foldcolumn=2
 let mapleader = ','
 
 set guioptions-=m
@@ -87,8 +89,8 @@ nnoremap <D-d> yyp
 
 " 
 " Line movement
-nnoremap ˚ :m-2<CR> 
-nnoremap ∆ :m+1<CR> 
+nnoremap <m-k> :m-2<CR> 
+nnoremap <m-j> :m+1<CR> 
 
 " ScrollCollor
 map <silent><S-F4> :NEXTCOLOR<cr> 
@@ -164,6 +166,10 @@ au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
 let g:jsdoc_allow_input_prompt = 1
 let g:jsdoc_input_description = 1
 
+au FileType *.java set tabstop=4
+au FileType *.java set softtabstop=4
+au FileType *.java set shiftwidth=4
+
 au FileType javascript nnoremap <Leader>td :TernDef<CR>
 au FileType javascript nnoremap <Leader>tp :TernDefPreview<CR>
 au FileType javascript nnoremap <Leader>ts :TernDefSplit<CR>
@@ -224,3 +230,11 @@ let g:vimwiki_list_ignore_newline=0
 
 " File finding
 "let g:fuf_file_exclud = '\.o$|\.exe$|\.bak$|\.swp$|\.class$'
+"
+
+" titlecase
+  let g:titlecase_map_keys=0
+  nmap <leader>gt <Plug>Titlecase
+  vmap <leader>gt <Plug>Titlecase
+  nmap <leader>gT <Plug>TitlecaseLine
+
