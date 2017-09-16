@@ -1,41 +1,18 @@
 #! /usr/bin/env bash
 
-# =========================
-# functions
-# =========================
-make_link() {
-  ln -sfv $1 $2
-}
+set -e
 
-# =========================
-# variables
-# =========================
-user=$1
-dotfiles_folder='.dotfiles'
+source ./common.sh $1
 
-# =========================
-# script
-# =========================
-# Make sure a user is specified
-if [ ! $user ]
-then
-  echo 'Please specify a user'
-  exit 1
-fi
+echo 'Performing symlinks...'
 
-# Make sure the .dotfiles directory exists
-if [ ! -d "/Users/$user/.dotfiles" ]
-then
-  echo "No .dotfiles directory under /Users/$user"
-  exit 2
-fi
+for dir in "${files_to_link[@]}";
+do
+  src="$dotfiles_fullpath/$dir"
+  make_link $src $user_home
+done
 
-make_link "/Users/$user/.dotfiles/runcom/.bash_profile" ~
-make_link "/Users/$user/.dotfiles/runcom/.aliases" ~
-make_link "/Users/$user/.dotfiles/runcom/.env" ~
-make_link "/Users/$user/.dotfiles/vim/.vim" ~
-make_link "/Users/$user/.dotfiles/vim/.vimrc" ~
-make_link "/Users/$user/.dotfiles/vim/.ideavim" ~
-make_link "/Users/$user/.dotfiles/zsh/.zshrc" ~
-make_link "/Users/$user/.dotfiles/tern/.tern-project" ~
+make_link "$dotfiles_fullpath/.config/nvim" $XDG_CONFIG_HOME/nvim
+make_link "$dotfiles_fullpath/.local/share/nvim" $XDG_DATA_HOME/nvim
 
+echo 'All done!'
