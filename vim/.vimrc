@@ -6,6 +6,11 @@
   filetype plugin indent on
   command! MakeTags !ctags -R . --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
 "====== PLUGINS
+  if has("gui_win32") 
+    call plug#begin('~/vimfiles/plugged')
+  else
+    call plug#begin('~/.dotfiles/vim/.vim/plugged')
+  endif
   Plug 'christoomey/vim-titlecase'
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'tpope/vim-fugitive'
@@ -82,7 +87,6 @@
     :map <Leader>tt <Plug>VimwikiToggleListItem
   " Searching
     nnoremap <Esc> :noh<CR>
-    nnoremap <
   " For local replace
     nnoremap gr gd[{V%:s/<C-R>///gc<left><left><left>
   " For global replace
@@ -176,12 +180,6 @@
     let g:vimwiki_auto_checkbox=1
     let g:vimwiki_list_ignore_newline=0
 "====== CONDITIONALS
-  "VIM PLUG
-    if has("gui_win32") 
-      call plug#begin('~/vimfiles/plugged')
-    else
-      call plug#begin('~/.vim/plugged')
-    endif
   "FONTS AND TEXT
     if has('gui_running')
       if has('gui_win32')
