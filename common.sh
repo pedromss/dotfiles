@@ -13,7 +13,7 @@ user=$1
 dotfiles_folder='.dotfiles'
 dotfiles_fullpath=''
 user_home="/Users/$user"
-files_to_link=(runcom/.bash_profile runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc .tern-project)
+files_to_link=(runcom/.bash_profile runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc .tern-project .ctags)
 # =========================
 # script
 # =========================

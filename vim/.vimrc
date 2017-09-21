@@ -1,4 +1,4 @@
-:cd ~/
+:cd ~/repos
 "====== CUSTOMIZATION
   let mapleader = ','
   :colorscheme vimbrains
@@ -11,6 +11,16 @@
   else
     call plug#begin('~/.dotfiles/vim/.vim/plugged')
   endif
+  " FZF / Ctrlp for file navigation
+  if executable('fzf')
+    Plug '/usr/local/opt/fzf'
+    Plug 'junegunn/fzf.vim'
+  else
+    Plug 'ctrlpvim/ctrlp.vim'
+  endif
+  Plug 'leafgarland/typescript-vim'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf.vim'
   Plug 'christoomey/vim-titlecase'
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
   Plug 'tpope/vim-fugitive'
@@ -83,6 +93,20 @@
     " program to always generate a file-name.
     set grepprg=grep\ -nH\ $*
 "====== MAPPINGS
+  " FZF-VIM
+    " Mapping selecting mappings
+    nmap <leader><tab> <plug>(fzf-maps-n)
+    xmap <leader><tab> <plug>(fzf-maps-x)
+    omap <leader><tab> <plug>(fzf-maps-o)
+
+    " Insert mode completion
+    imap <c-x><c-k> <plug>(fzf-complete-word)
+    imap <c-x><c-f> <plug>(fzf-complete-path)
+    imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+    imap <c-x><c-l> <plug>(fzf-complete-line)
+
+    " Advanced customization using autoload functions
+    inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
   " VIMWIKI
     :map <Leader>tt <Plug>VimwikiToggleListItem
   " Searching
@@ -93,11 +117,11 @@
     nnoremap gR gD:%s/<C-R>///gc<left><left><left>
   inoremap <C-Space> <C-x><C-o>
   " RELOAD
-    noremap <F2> :tabedit $MYVIMRC<CR>
-    noremap <F9> :source $MYVIMRC<CR>
-    noremap <m-F3> :NERDTreeToggle ~/repos<CR>
+    nnoremap gev :e $MYVIMRC<CR>
+    nnoremap gsv :so $MYVIMRC<CR>
     nnoremap <leader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
   nnoremap <D-d> yyp
+  noremap gtnt :NERDTreeToggle ~/repos<CR>
   " Line movement
     nnoremap <m-k> :m-2<CR> 
     nnoremap <m-j> :m+1<CR> 
@@ -108,9 +132,8 @@
     nnoremap <silent> <M-F12> :BufExplorer<CR>
     nnoremap <silent> <F12> :bn<CR>
     nnoremap <silent> <S-F12> :bp<CR>
-    nnoremap <F5> :buffers<CR>:buffer<Space>
-    nnoremap <F4> :buffers<CR>:tabedit #
-    nnoremap <F5> :buffers<CR>:buffer<Space>
+    nnoremap <leader>bte :buffers<CR>:tabedit #
+    nnoremap <leader>be :buffers<CR>:buffer<Space>
     nnoremap <S-C> :bd<CR>
   " EASY MOTION
     map  <Leader>f <Plug>(easymotion-bd-f)
@@ -129,17 +152,17 @@
     au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
     au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
     au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
-  au FileType javascript nnoremap <Leader>td :TernDef<CR>
-  au FileType javascript nnoremap <Leader>tp :TernDefPreview<CR>
-  au FileType javascript nnoremap <Leader>ts :TernDefSplit<CR>
-  au FileType javascript nnoremap <Leader>tT :TernDefTab<CR>
-  au FileType javascript nnoremap <Leader>tD :TernDoc<CR>
-  au FileType javascript nnoremap <Leader>tbD :TernDocBrowse<CR>
-  au FileType javascript nnoremap <Leader>tR :TernRefs<CR>
-  au FileType javascript nnoremap <Leader>tr :TernRename<CR>
-  au FileType javascript nnoremap <Leader>tt :TernType<CR>
+  au FileType javascript,typescript nnoremap <Leader>td :TernDef<CR>
+  au FileType javascript,typescript nnoremap <Leader>tp :TernDefPreview<CR>
+  au FileType javascript,typescript nnoremap <Leader>ts :TernDefSplit<CR>
+  au FileType javascript,typescript nnoremap <Leader>tT :TernDefTab<CR>
+  au FileType javascript,typescript nnoremap <Leader>tD :TernDoc<CR>
+  au FileType javascript,typescript nnoremap <Leader>tbD :TernDocBrowse<CR>
+  au FileType javascript,typescript nnoremap <Leader>tR :TernRefs<CR>
+  au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
+  au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
   " js-beautify
-    map <c-f> :call JsBeautify()<cr>
+    au FileType javascript,typescript,json nnoremap <c-j><c-f> :call JsBeautify()<cr>
     "autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
     "" for json
     "autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
