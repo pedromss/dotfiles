@@ -107,6 +107,10 @@
 
     " Advanced customization using autoload functions
     inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+  " TITLECASE
+    nmap <leader>gt <Plug>Titlecase
+    vmap <leader>gt <Plug>Titlecase
+    nmap <leader>gT <Plug>TitlecaseLine
   " VIMWIKI
     :map <Leader>tt <Plug>VimwikiToggleListItem
   " Searching
@@ -121,7 +125,7 @@
     nnoremap gsv :so $MYVIMRC<CR>
     nnoremap <leader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
   nnoremap <D-d> yyp
-  noremap gtnt :NERDTreeToggle ~/repos<CR>
+  noremap <leader>tnt :NERDTreeToggle ~/repos<CR>
   " Line movement
     nnoremap <m-k> :m-2<CR> 
     nnoremap <m-j> :m+1<CR> 
@@ -173,6 +177,11 @@
     "" for css or scss
     "autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 "====== VARIABLES
+  " TITLECASE
+    let g:titlecase_map_keys = 0
+    nmap <leader>gt <Plug>Titlecase
+    vmap <leader>gt <Plug>Titlecase
+    nmap <leader>gT <Plug>TitlecaseLine
   " JSDOC
     let g:jsdoc_allow_input_prompt = 1
     let g:jsdoc_input_description = 1
