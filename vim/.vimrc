@@ -112,7 +112,9 @@
     vmap <leader>gt <Plug>Titlecase
     nmap <leader>gT <Plug>TitlecaseLine
   " VIMWIKI
-    :map <Leader>tt <Plug>VimwikiToggleListItem
+    au FileType vimwiki map <leader>tt <Plug>VimwikiToggleListItem
+    au FileType vimwiki map <leader>wth :Vimwiki2HTML<CR>
+    au FileType vimwiki map <leader>wthb :Vimwiki2HTMLBrowse<CR>
   " Searching
     nnoremap <Esc> :noh<CR>
   " For local replace
