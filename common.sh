@@ -9,28 +9,27 @@ make_link() {
 # =========================
 # variables
 # =========================
-user=$1
 dotfiles_folder='.dotfiles'
 dotfiles_fullpath=''
-user_home="/Users/$user"
-files_to_link=(runcom/.bash_profile runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc .tern-project .ctags)
+user_home=$HOME
+files_to_link=(runcom/.bash_profile runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc .tern-project .ctags conscript/.conscript)
 # =========================
 # script
 # =========================
 # Make sure a user is specified
-if [ ! $user ]
+if [ ! -d $user_home ]
 then
-  echo 'Please specify a user'
+  echo 'Home directory not set.'
   exit 1
 fi
 
-echo "Installing for user $user..."
+echo "Installing in $HOME"
 
 # Make sure the .dotfiles directory exists
-dotfiles_fullpath="/Users/$user/$dotfiles_folder"
+dotfiles_fullpath="$user_home/$dotfiles_folder"
 if [ ! -d "$dotfiles_fullpath" ]
 then
-  echo "No .dotfiles directory under /Users/$user"
+  echo "No .dotfiles directory under $HOME"
   exit 2
 fi
 
