@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-source ./common.sh $1
+source ./common.sh
 
 echo 'Deleting symlinks...'
 

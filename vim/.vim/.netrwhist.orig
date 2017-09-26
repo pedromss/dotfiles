@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+<<<<<<< HEAD
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/usr/local/repos/coursera/parallel-programming'
+let g:netrw_dirhist_2='/Users/pedromss/Downloads/reductions'
+let g:netrw_dirhist_3='/Users/pedromss/.sbt/0.13'
+let g:netrw_dirhist_4='/Users/pedromss/.sbt/1.0/plugins'
+let g:netrw_dirhist_5='/Users/pedromss/.sbt/0.13/plugins'
+=======
+let g:netrw_dirhist_cnt =1
+let g:netrw_dirhist_1='/Users/psi24/repos/cal-skyplus-search/cal-skyplus-search-acceptance-tests/specs'
+>>>>>>> cf74fb997ab228ee3703bb69d61ddca6ea1bc475

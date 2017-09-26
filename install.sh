@@ -2,7 +2,7 @@
 
 set -e
 
-source ./common.sh $1
+source ./common.sh
 
 echo 'Performing symlinks...'
 
