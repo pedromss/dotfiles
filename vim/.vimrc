@@ -18,6 +18,7 @@
   else
     Plug 'ctrlpvim/ctrlp.vim'
   endif
+  Plug 'fatih/vim-go'
   Plug 'leafgarland/typescript-vim'
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
@@ -93,6 +94,14 @@
     " program to always generate a file-name.
     set grepprg=grep\ -nH\ $*
 "====== MAPPINGS
+  " GO
+    au FileType go noremap gob :GoBuild<CR>
+    au FileType go noremap got :GoTest<CR>
+    au FileType go noremap goft :GoTestFunc<CR>
+    au FileType go noremap goi :GoInstall<CR>
+    au FileType go noremap gor :GoRun<CR>
+    au FileType go noremap gode :GoDef<CR>
+    au FileType go noremap godo :GoDoc<CR>
   " FZF-VIM
     " Mapping selecting mappings
     nmap <leader><tab> <plug>(fzf-maps-n)
