@@ -45,6 +45,7 @@
   Plug 'https://github.com/vim-latex/vim-latex.git'
   Plug 'vimwiki/vimwiki'
   Plug 'JamshedVesuna/vim-markdown-preview'
+  Plug 'starcraftman/vim-eclim'
   if has('mac')
     "Plug 'junegunn/vim-xmark', { 'do': 'make' }
   endif
