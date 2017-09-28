@@ -107,6 +107,10 @@
     " program to always generate a file-name.
     set grepprg=grep\ -nH\ $*
 "====== MAPPINGS
+  " ECLIM
+    au FileType java,scala nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
+    au FileType java,scala nnoremap <silent> <buffer> <leader>d :JavaDocSearch -x declarations<cr>
+    au FileType java,scala nnoremap <silent> <buffer> <cr> :JavaSearchContext<cr>
   " GO
     au FileType go noremap gob :GoBuild<CR>
     au FileType go noremap got :GoTest<CR>
