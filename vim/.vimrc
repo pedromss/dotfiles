@@ -1,9 +1,10 @@
 "====== CUSTOMIZATION
   let mapleader = ','
   :colorscheme vimbrains
+  :colorscheme neodark
   syntax on
   filetype plugin indent on
-  command! MakeTags !ctags -R . --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
+  command! MakeTags !ctags -R . --exclude=**/plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
 "====== PLUGINS
   if has("gui_win32") 
     call plug#begin('~/vimfiles/plugged')
@@ -17,13 +18,14 @@
   else
     Plug 'ctrlpvim/ctrlp.vim'
   endif
+  Plug 'KeitaNakamura/neodark.vim'
   Plug 'fatih/vim-go'
   Plug 'leafgarland/typescript-vim'
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
   Plug 'christoomey/vim-titlecase'
   Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-  "Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-fugitive'
   "Plug 'scrooloose/syntastic'
   Plug 'tpope/vim-surround'
   Plug 'bling/vim-airline'
@@ -33,11 +35,11 @@
   Plug 'pangloss/vim-javascript'
   Plug 'easymotion/vim-easymotion'
   Plug 'tpope/vim-markdown'
-  "Plug 'ensime/ensime-vim'
+  Plug 'ensime/ensime-vim'
   Plug 'derekwyatt/vim-scala'
   Plug 'marijnh/tern_for_vim'
-  "Plug 'SirVer/ultisnips'
-  "Plug 'honza/vim-snippets'
+  Plug 'SirVer/ultisnips'
+  Plug 'honza/vim-snippets'
   Plug 'jiangmiao/auto-pairs'
   Plug 'https://github.com/heavenshell/vim-jsdoc.git'
   Plug 'maksimr/vim-jsbeautify'
@@ -75,9 +77,9 @@
     set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
     set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
     set expandtab " If softtabstop is less than tabstop and expandtab is not set, vim will use a combination of tabs and spaces to make up the desired spacing. If softtabstop equals tabstop and expandtab is not set, vim will always use tabs. When expandtab is set, vim will always use the appropriate number of spaces.
-    au FileType *.java set tabstop=4
-    au FileType *.java set softtabstop=4
-    au FileType *.java set shiftwidth=4
+    au FileType go,java,javascript,typescript set tabstop=4
+    au FileType go,java,javascript,typescript set softtabstop=4
+    au FileType go,java,javascript,typescript set shiftwidth=4
   " SYNTASTIC
     set statusline+=%#warningmsg#
     set statusline+=%{SyntasticStatuslineFlag()}
@@ -153,7 +155,7 @@
     nnoremap gsv :so $MYVIMRC<CR>
     nnoremap <leader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
   nnoremap <D-d> yyp
-  noremap <leader>tnt :NERDTreeToggle ~/repos<CR>
+  noremap <leader>tnt :NERDTreeToggle<CR>
   " Line movement
     nnoremap <m-k> :m-2<CR> 
     nnoremap <m-j> :m+1<CR> 
