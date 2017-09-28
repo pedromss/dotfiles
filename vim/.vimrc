@@ -1,6 +1,6 @@
 "====== CUSTOMIZATION
   let mapleader = ','
-  let localleader = "-"
+  let localleader = "\\"
   :colorscheme vimbrains
   :colorscheme neodark
   syntax on
@@ -117,11 +117,14 @@
     nnoremap <Esc> :noh<CR>
     nnoremap <m-k> :m-2<CR>
     nnoremap <m-j> :m+0<CR>
-    nnoremap <localleader>ev :e $MYVIMRC<CR>
-    nnoremap <localleader>sv :so $MYIMRC<CR>
-    nnoremap <leader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
+    nnoremap <leader>ev :vsplit $HOME/.vimrc<CR>
+    nnoremap <localleader>ev :split $HOME/.vimrc<CR>
+    nnoremap <leader>sv :so $MYVIMRC<CR>
+    nnoremap <localleader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
     nnoremap <s-d> yyp
     nnoremap <localleader>t :NERDTreeToggle<CR>
+    nnoremap <leader>f :find 
+    inoremap jk <esc>
   " SCALAFMT
     noremap <leader>af :Autoformat<CR>
     "au BufWrite * :Autoformat
@@ -172,15 +175,15 @@
     nnoremap <leader>be :buffers<CR>:buffer<Space>
     nnoremap <S-C> :bd<CR>
   " EASY MOTION
-    map  <Leader>f <Plug>(easymotion-bd-f)
-    nmap <Leader>f <Plug>(easymotion-overwin-f)
-    nmap s <Plug>(easymotion-overwin-f2)
-    " MOVE TO LINE
-      map <Leader>L <Plug>(easymotion-bd-jk)
-      nmap <Leader>L <Plug>(easymotion-overwin-line)
-    " MOVE TO WORD
-      map  <Leader>w <Plug>(easymotion-bd-w)
-      nmap <Leader>w <Plug>(easymotion-overwin-w)
+    "map  <Leader>f <Plug>(easymotion-bd-f)
+    "nmap <Leader>f <Plug>(easymotion-overwin-f)
+    "nmap s <Plug>(easymotion-overwin-f2)
+    "" MOVE TO LINE
+      "map <Leader>L <Plug>(easymotion-bd-jk)
+      "nmap <Leader>L <Plug>(easymotion-overwin-line)
+    "" MOVE TO WORD
+      "map  <Leader>w <Plug>(easymotion-bd-w)
+      "nmap <Leader>w <Plug>(easymotion-overwin-w)
   " ENSIME
     autocmd BufWritePost *.scala silent :EnTypeCheck
     nnoremap <localleader>t :EnTypeCheck<CR>
@@ -326,4 +329,7 @@
       set guifont=Monaco\ for\ Powerline:h11
     endif
   endif
-
+"====== ABBREVIATIONS
+  :iabbrev adn and
+  :iabbrev treu true
+  :iabbrev flase false
