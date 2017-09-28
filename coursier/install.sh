@@ -23,7 +23,7 @@ do
     echo "Installing coursier in $sbtversion"
     mkdir -p "$plugin_dir"
     touch "$current_plugin_file"
-    add_plugin_txt >> "$current_plugin_file"
+    echo "$add_plugin_txt" >> "$current_plugin_file"
   fi
 done
 
