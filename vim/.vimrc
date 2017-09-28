@@ -1,5 +1,6 @@
 "====== CUSTOMIZATION
   let mapleader = ','
+  let localleader = "-"
   :colorscheme vimbrains
   :colorscheme neodark
   syntax on
@@ -115,10 +116,12 @@
     nnoremap <space> viw
     nnoremap <Esc> :noh<CR>
     nnoremap <m-k> :m-2<CR>
-    nnoremap <m-j> :m+1<CR>
-    nnoremap gR gD:%s/<C-R>///gc<left><left><left>
-    inoremap <C-Space> <C-x><C-o>
-    nnoremap gr gd[{V%:s/<C-R>///gc<left><left><left>
+    nnoremap <m-j> :m+0<CR>
+    nnoremap <localleader>ev :e $MYVIMRC<CR>
+    nnoremap <localleader>sv :so $MYIMRC<CR>
+    nnoremap <leader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
+    nnoremap <s-d> yyp
+    nnoremap <localleader>t :NERDTreeToggle<CR>
   " SCALAFMT
     noremap <leader>af :Autoformat<CR>
     "au BufWrite * :Autoformat
@@ -158,12 +161,6 @@
     au FileType vimwiki map <leader>tt <Plug>VimwikiToggleListItem
     au FileType vimwiki map <leader>wth :Vimwiki2HTML<CR>
     au FileType vimwiki map <leader>wthb :Vimwiki2HTMLBrowse<CR>
-  " RELOAD
-    nnoremap gev :e $MYVIMRC<CR>
-    nnoremap gsv :so $MYIMRC<CR>
-    nnoremap <leader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
-    nnoremap <D-d> yyp
-    noremap <leader>tnt :NERDTreeToggle<CR>
   " SCROLLCOLLOR
     map <silent><S-F4> :NEXTCOLOR<cr>
     map <silent><S-F5> :PREVCOLOR<cr>
@@ -201,7 +198,7 @@
     au FileType javascript,typescript nnoremap <Leader>tR :TernRefs<CR>
     au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
     au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
-  " js-beautify
+  " JS-BEAUTIFY
     au FileType javascript,typescript,json nnoremap <c-j><c-f> :call JsBeautify()<cr>
     "autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
     "" for json
