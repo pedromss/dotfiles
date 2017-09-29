@@ -5,7 +5,7 @@
   :colorscheme neodark
   syntax on
   filetype plugin indent on
-  command! MakeTags !ctags -R . --exclude=**/plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
+  command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
   set textwidth=80
 "====== PLUGINS
   if has("gui_win32")
@@ -123,7 +123,8 @@
     nnoremap <localleader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
     nnoremap <s-d> yyp
     nnoremap <localleader>t :NERDTreeToggle<CR>
-    nnoremap <leader>f :find 
+    nnoremap <leader>f :Files<CR>
+    nnoremap <leader>G :GFiles<Cr>
     inoremap jk <esc>
   " SCALAFMT
     noremap <leader>af :Autoformat<CR>
@@ -186,7 +187,7 @@
       "nmap <Leader>w <Plug>(easymotion-overwin-w)
   " ENSIME
     autocmd BufWritePost *.scala silent :EnTypeCheck
-    nnoremap <localleader>t :EnTypeCheck<CR>
+    au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
     au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
     au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
     au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
@@ -333,3 +334,7 @@
   :iabbrev adn and
   :iabbrev treu true
   :iabbrev flase false
+  au FileType java :iabbrev ??? throw new UnsupportedOperationException();
+
+
+au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
