@@ -1,4 +1,5 @@
 **/*.swp
+**/eclim/*.xmi
 **/*.jar
 .local/
 **/.netrwhist
