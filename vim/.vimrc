@@ -80,9 +80,6 @@
   set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
   set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
   set expandtab " If softtabstop is less than tabstop and expandtab is not set, vim will use a combination of tabs and spaces to make up the desired spacing. If softtabstop equals tabstop and expandtab is not set, vim will always use tabs. When expandtab is set, vim will always use the appropriate number of spaces.
-  au FileType go,java,javascript,typescript set tabstop=4
-  au FileType go,java,javascript,typescript set softtabstop=4
-  au FileType go,java,javascript,typescript set shiftwidth=4
   " SYNTASTIC
   set statusline+=%#warningmsg#
   "set statusline+=%{SyntasticStatuslineFlag()}
@@ -100,7 +97,6 @@
   :set foldmethod=indent
   :set foldcolumn=1
   " ENSIME
-  autocmd BufWritePost *.scala silent :EnTypeCheck
   " LaTeX Suite
   " REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
   filetype plugin on
@@ -113,6 +109,7 @@
   set grepprg=grep\ -nH\ $*
 "====== MAPPINGS
   " GENERAL
+    vnoremap <leader>ac di<enter><esc>kaaugroup boo<enter>autocmd!<esc><<$a<enter>augroup END<esc>P
     nnoremap <space> viw
     nnoremap <Esc> :noh<CR>
     nnoremap <m-k> :m-2<CR>
@@ -132,10 +129,15 @@
     let g:formatdef_scalafmt = "'scalafmt --stdin'"
     let g:formatters_scala = ['scalafmt']
   " ECLIM
+    augroup eclim_mappings
+    autocmd!
     au FileType java,scala nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
     au FileType java,scala nnoremap <silent> <buffer> <leader>d :JavaDocSearch -x declarations<cr>
     au FileType java,scala nnoremap <silent> <buffer> <cr> :JavaSearchContext<cr>
+    augroup END
   " GO
+    augroup go_mappings
+    autocmd!
     au FileType go noremap gob :GoBuild<CR>
     au FileType go noremap got :GoTest<CR>
     au FileType go noremap goft :GoTestFunc<CR>
@@ -143,6 +145,7 @@
     au FileType go noremap gor :GoRun<CR>
     au FileType go noremap gode :GoDef<CR>
     au FileType go noremap godo :GoDoc<CR>
+    augroup END
   " FZF-VIM
     " Mapping selecting mappings
     nmap <leader><tab> <plug>(fzf-maps-n)
@@ -162,9 +165,12 @@
     vmap <leader>gt <Plug>Titlecase
     nmap <leader>gT <Plug>TitlecaseLine
   " VIMWIKI
+    augroup vimwiki_mappings
+    autocmd!
     au FileType vimwiki map <leader>tt <Plug>VimwikiToggleListItem
     au FileType vimwiki map <leader>wth :Vimwiki2HTML<CR>
     au FileType vimwiki map <leader>wthb :Vimwiki2HTMLBrowse<CR>
+    augroup END
   " SCROLLCOLLOR
     map <silent><S-F4> :NEXTCOLOR<cr>
     map <silent><S-F5> :PREVCOLOR<cr>
@@ -186,13 +192,18 @@
       "map  <Leader>w <Plug>(easymotion-bd-w)
       "nmap <Leader>w <Plug>(easymotion-overwin-w)
   " ENSIME
+    augroup ensime_mappings
+    autocmd!
     autocmd BufWritePost *.scala silent :EnTypeCheck
     au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
     au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
     au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
     au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
     au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
+    augroup END
   " TERN
+    augroup tern_mappings
+    autocmd!
     au FileType javascript,typescript nnoremap <Leader>td :TernDef<CR>
     au FileType javascript,typescript nnoremap <Leader>tp :TernDefPreview<CR>
     au FileType javascript,typescript nnoremap <Leader>ts :TernDefSplit<CR>
@@ -202,7 +213,10 @@
     au FileType javascript,typescript nnoremap <Leader>tR :TernRefs<CR>
     au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
     au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
+    augroup END
   " JS-BEAUTIFY
+    augroup js_beautify_au
+    autocmd!
     au FileType javascript,typescript,json nnoremap <c-j><c-f> :call JsBeautify()<cr>
     "autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
     "" for json
@@ -213,6 +227,7 @@
     "autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
     "" for css or scss
     "autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+    augroup END
 "====== VARIABLES
   " VIM-MARKDOWN
   let vim_markdown_preview_toggle=2
@@ -285,7 +300,11 @@
     let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
     " DEOPLETE-GO
     let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
+
+    augroup deoplete_aus
+    autocmd!
     au FileType let g:deoplete#enable_at_startup = 1
+    augroup END
   endif
   " TITLECASE
   let g:titlecase_map_keys = 0
@@ -334,7 +353,59 @@
   :iabbrev adn and
   :iabbrev treu true
   :iabbrev flase false
+  augroup java_abbr
+  autocmd!
   au FileType java :iabbrev ??? throw new UnsupportedOperationException();
+  augroup END
+"====== AUTO COMMANDS BY FILETYPE
 
+  " SCALA
+    augroup scala_auto_cmds
+    autocmd!
+    au BufWritePost *.scala silent :EnTypeCheck
+    augroup END
+    au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
+  " GO
+    augroup go_aus
+    autocmd!
+    au FileType go set softtabstop=4
+    au FileType go set shiftwidth=4
+    au FileType go set tabstop=4
+    augroup END
+  " JAVA
+    augroup java_aus
+    autocmd!
+    au FileType java set softtabstop=4
+    au FileType java shiftwidth=4
+    au FileType java tabstop=4
+    augroup END
+  " JAVASCRIPT
+    augroup js_aus
+    autocmd!
+    au FileType javascript set softtabstop=4
+    au FileType javascript set shiftwidth=4
+    au FileType javascript set tabstop=4
+    augroup END
+  " TYPESCRIPT
+    augroup ts_aus
+    autocmd!
+    au FileType typescript set softtabstop=4
+    au FileType typescript set shiftwidth=4
+    au FileType typescript set tabstop=4
+    augroup END
+  " BASH 
+    augroup bash_auto_cmds
+    autocmd!
+    au FileType sh :normal gg=G
+    augroup END
+  " HTML
+    augroup html_auto_cmds
+    autocmd!
+    au FileType html setlocal nowrap
+    augroup END
+  " JSON
+    augroup json_auto_cmds
+    autocmd!
+    au FileType json :normal <leader>af
+    augroup END
 
-au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
