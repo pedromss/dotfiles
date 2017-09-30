@@ -358,13 +358,16 @@
   au FileType java :iabbrev ??? throw new UnsupportedOperationException();
   augroup END
 "====== AUTO COMMANDS BY FILETYPE
-
+  " ALL
+    augroup all_auto_cmds
+    autocmd!
+    "au FileType !(vim,help) zR
+    augroup END
   " SCALA
     augroup scala_auto_cmds
     autocmd!
     au BufWritePost *.scala silent :EnTypeCheck
     augroup END
-    au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
   " GO
     augroup go_aus
     autocmd!
@@ -406,6 +409,21 @@
   " JSON
     augroup json_auto_cmds
     autocmd!
-    au FileType json :normal <leader>af
+    au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
+    "au FileType json :<c-u>execute ":normal <leader>af"<cr>
     augroup END
-
+"====== OPERATOR PENDING MOVEMENTS
+  " GENERIC
+    onoremap p i(
+    onoremap q i"
+    onoremap a i{
+    "onoremap s i[
+    onoremap in( :<c-u>normal! f(vi(<cr>
+    onoremap in" :<c-u>normal! f"vi"<cr>
+    onoremap in' :<c-u>normal! f'vi'<cr>
+    onoremap il( :<c-u>normal! F)vi(<cr>
+    onoremap il" :<c-u>normal! F"vi"<cr>
+    onoremap il' :<c-u>normal! F'vi'<cr>
+  " MARKDOWN
+    onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
+  
