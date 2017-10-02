@@ -1,3 +1,8 @@
+function! Safe(fname, l)
+  let new_list = deepcopy(a:l)
+  return function(a:fname, [new_list])
+endfunction
+
 function! Sorted(l)
   let new_list = deepcopy(a:l)
   call sort(new_list)
@@ -34,29 +39,11 @@ function! Mapped(fn, l)
   return new_list
 endfunction
 
-function! Safe(fname, l)
-  let new_list = deepcopy(a:l)
-  return function(a:fname, [a:l])
-  "let new_list = deepcopy(a:l)
-  "echom string(a:fn)
-  "call a:fn . '(a:l)'
-  ""call string(a:fn) . '(a:l)'
-  "return new_list
-endfunction
-
 function! Filtered(fn, l)
-  "let new_list = deepcopy(a:l)
-  "call filter(new_list, string(a:fn) . '(v:val)')
-  "return new_list
-  "let result = Safe(string(function('filter')) . '(a:fn)', a:l)
-  "echom 'Result is: ' . result
-  "return result
   return Safe('filter', a:l)(string(a:fn) . '(v:val)')
 endfunction
 
-function! FilterNot(fn, l)
-  let new_list = deepcopy(a:l)
-  call filter(new_list, '!' . string(a:fn) . '(v:val)')
-  return new_list
+function! Removed(fn, l)
+  return Safe('filter', a:l)('!' . string(a:fn) . '(v:val)')
 endfunction
 
