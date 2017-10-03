@@ -360,12 +360,21 @@ else
 endif
 endif
 "====== ABBREVIATIONS
+let g:user_emmet_expandabbr_key='<S-Tab>'
 :iabbrev adn and
 :iabbrev treu true
 :iabbrev flase false
 augroup java_abbr
 autocmd!
 au FileType java :iabbrev ??? throw new UnsupportedOperationException();
+au FileType java :iabbrev psfs public static final String ;<Esc>hi
+au FileType java :iabbrev pf public final;<Esc>ha
+au FileType java :iabbrev pfs public final String;<Esc>ha
+au FileType java :iabbrev pfb public final boolean;<Esc>ha
+au FileType java :iabbrev pfi public final int;<Esc>ha
+au FileType java :iabbrev pfl public final long;<Esc>ha
+au FileType java :iabbrev pfc public final class {<cr>}<Esc>kk$ha
+autocmd FileType java :iabbrev sout System.out.println();<esc>hi
 augroup END
 " Filetype mappings -------------------- {{{
 " Vim mappings -------------------- {{{
