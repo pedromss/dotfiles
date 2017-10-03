@@ -43,17 +43,19 @@ command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git
 " }}}
 " Plugins -------------------- {{{
 if has("gui_win32")
-call plug#begin('~/vimfiles/plugged')
+  call plug#begin('~/vimfiles/plugged')
 else
-call plug#begin('~/.dotfiles/vim/.vim/plugged')
+  call plug#begin('~/.dotfiles/vim/.vim/plugged')
 endif
 " FZF / Ctrlp for file navigation
 if executable('fzf')
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+  Plug '/usr/local/opt/fzf'
+  Plug 'junegunn/fzf.vim'
 else
-Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'airblade/vim-rooter'
 Plug 'Chiel92/vim-autoformat'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'fatih/vim-go'
@@ -86,11 +88,11 @@ Plug 'vimwiki/vimwiki'
 Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'starcraftman/vim-eclim'
 if has('nvim')
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'zchee/deoplete-clang'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'mhartington/nvim-typescript'
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'zchee/deoplete-clang'
+  Plug 'zchee/deoplete-go', { 'do': 'make'}
+  Plug 'mhartington/nvim-typescript'
+  Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 endif
 call plug#end()
 " }}}
@@ -140,21 +142,21 @@ let g:formatdef_scalafmt = "'scalafmt --stdin'"
 let g:formatters_scala = ['scalafmt']
 " ECLIM
 augroup eclim_mappings
-autocmd!
-au FileType java,scala nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
-au FileType java,scala nnoremap <silent> <buffer> <leader>d :JavaDocSearch -x declarations<cr>
-au FileType java,scala nnoremap <silent> <buffer> <cr> :JavaSearchContext<cr>
+  autocmd!
+  au FileType java,scala nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
+  au FileType java,scala nnoremap <silent> <buffer> <leader>d :JavaDocSearch -x declarations<cr>
+  au FileType java,scala nnoremap <silent> <buffer> <cr> :JavaSearchContext<cr>
 augroup END
 " GO
 augroup go_mappings
-autocmd!
-au FileType go noremap gob :GoBuild<CR>
-au FileType go noremap got :GoTest<CR>
-au FileType go noremap goft :GoTestFunc<CR>
-au FileType go noremap goi :GoInstall<CR>
-au FileType go noremap gor :GoRun<CR>
-au FileType go noremap gode :GoDef<CR>
-au FileType go noremap godo :GoDoc<CR>
+  autocmd!
+  au FileType go noremap gob :GoBuild<CR>
+  au FileType go noremap got :GoTest<CR>
+  au FileType go noremap goft :GoTestFunc<CR>
+  au FileType go noremap goi :GoInstall<CR>
+  au FileType go noremap gor :GoRun<CR>
+  au FileType go noremap gode :GoDef<CR>
+  au FileType go noremap godo :GoDoc<CR>
 augroup END
 " FZF-VIM
 " Mapping selecting mappings
@@ -176,10 +178,10 @@ vmap <leader>gt <Plug>Titlecase
 nmap <leader>gT <Plug>TitlecaseLine
 " VIMWIKI
 augroup vimwiki_mappings
-autocmd!
-au FileType vimwiki map <leader>tt <Plug>VimwikiToggleListItem
-au FileType vimwiki map <leader>wth :Vimwiki2HTML<CR>
-au FileType vimwiki map <leader>wthb :Vimwiki2HTMLBrowse<CR>
+  autocmd!
+  au FileType vimwiki map <leader>tt <Plug>VimwikiToggleListItem
+  au FileType vimwiki map <leader>wth :Vimwiki2HTML<CR>
+  au FileType vimwiki map <leader>wthb :Vimwiki2HTMLBrowse<CR>
 augroup END
 " SCROLLCOLLOR
 map <silent><S-F4> :NEXTCOLOR<cr>
@@ -196,47 +198,47 @@ nnoremap <S-C> :bd<CR>
 "nmap <Leader>f <Plug>(easymotion-overwin-f)
 "nmap s <Plug>(easymotion-overwin-f2)
 "" MOVE TO LINE
-  "map <Leader>L <Plug>(easymotion-bd-jk)
-  "nmap <Leader>L <Plug>(easymotion-overwin-line)
+"map <Leader>L <Plug>(easymotion-bd-jk)
+"nmap <Leader>L <Plug>(easymotion-overwin-line)
 "" MOVE TO WORD
-  "map  <Leader>w <Plug>(easymotion-bd-w)
-  "nmap <Leader>w <Plug>(easymotion-overwin-w)
+"map  <Leader>w <Plug>(easymotion-bd-w)
+"nmap <Leader>w <Plug>(easymotion-overwin-w)
 " ENSIME
 augroup ensime_mappings
-autocmd!
-autocmd BufWritePost *.scala silent :EnTypeCheck
-au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
-au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
-au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
-au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
-au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
+  autocmd!
+  autocmd BufWritePost *.scala silent :EnTypeCheck
+  au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
+  au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
+  au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
+  au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
+  au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
 augroup END
 " TERN
 augroup tern_mappings
-autocmd!
-au FileType javascript,typescript nnoremap <Leader>td :TernDef<CR>
-au FileType javascript,typescript nnoremap <Leader>tp :TernDefPreview<CR>
-au FileType javascript,typescript nnoremap <Leader>ts :TernDefSplit<CR>
-au FileType javascript,typescript nnoremap <Leader>tT :TernDefTab<CR>
-au FileType javascript,typescript nnoremap <Leader>tD :TernDoc<CR>
-au FileType javascript,typescript nnoremap <Leader>tbD :TernDocBrowse<CR>
-au FileType javascript,typescript nnoremap <Leader>tR :TernRefs<CR>
-au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
-au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
+  autocmd!
+  au FileType javascript,typescript nnoremap <Leader>td :TernDef<CR>
+  au FileType javascript,typescript nnoremap <Leader>tp :TernDefPreview<CR>
+  au FileType javascript,typescript nnoremap <Leader>ts :TernDefSplit<CR>
+  au FileType javascript,typescript nnoremap <Leader>tT :TernDefTab<CR>
+  au FileType javascript,typescript nnoremap <Leader>tD :TernDoc<CR>
+  au FileType javascript,typescript nnoremap <Leader>tbD :TernDocBrowse<CR>
+  au FileType javascript,typescript nnoremap <Leader>tR :TernRefs<CR>
+  au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
+  au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
 augroup END
 " JS-BEAUTIFY
 augroup js_beautify_au
-autocmd!
-au FileType javascript,typescript,json nnoremap <c-j><c-f> :call JsBeautify()<cr>
-"autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-"" for json
-"autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
-"" for jsx
-"autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
-"" for html
-"autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-"" for css or scss
-"autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+  autocmd!
+  au FileType javascript,typescript,json nnoremap <c-j><c-f> :call JsBeautify()<cr>
+  "autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+  "" for json
+  "autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+  "" for jsx
+  "autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+  "" for html
+  "autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+  "" for css or scss
+  "autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 augroup END
 "====== VARIABLES
 " VIM-MARKDOWN
@@ -245,76 +247,76 @@ let vim_markdown_preview_github=1
 let vim_markdown_preview_browser='Google Chrome'
 " DEOPLETE
 if has('nvim')
-let g:deoplete#enable_at_startup = 1
-" DEOPLETE TERN
-" Set bin if you have many instalations
-"let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
-let g:deoplete#sources#ternjs#timeout = 1
+  let g:deoplete#enable_at_startup = 1
+  " DEOPLETE TERN
+  " Set bin if you have many instalations
+  "let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
+  let g:deoplete#sources#ternjs#timeout = 1
 
-" Whether to include the types of the completions in the result data. Default: 0
-let g:deoplete#sources#ternjs#types = 1
+  " Whether to include the types of the completions in the result data. Default: 0
+  let g:deoplete#sources#ternjs#types = 1
 
-" Whether to include the distance (in scopes for variables, in prototypes for
-" properties) between the completions and the origin position in the result
-" data. Default: 0
-let g:deoplete#sources#ternjs#depths = 1
+  " Whether to include the distance (in scopes for variables, in prototypes for
+  " properties) between the completions and the origin position in the result
+  " data. Default: 0
+  let g:deoplete#sources#ternjs#depths = 1
 
-" Whether to include documentation strings (if found) in the result data.
-" Default: 0
-let g:deoplete#sources#ternjs#docs = 1
+  " Whether to include documentation strings (if found) in the result data.
+  " Default: 0
+  let g:deoplete#sources#ternjs#docs = 1
 
-" When on, only completions that match the current word at the given point will
-" be returned. Turn this off to get all results, so that you can filter on the
-" client side. Default: 1
-let g:deoplete#sources#ternjs#filter = 0
+  " When on, only completions that match the current word at the given point will
+  " be returned. Turn this off to get all results, so that you can filter on the
+  " client side. Default: 1
+  let g:deoplete#sources#ternjs#filter = 0
 
-" Whether to use a case-insensitive compare between the current word and
-" potential completions. Default 0
-let g:deoplete#sources#ternjs#case_insensitive = 1
+  " Whether to use a case-insensitive compare between the current word and
+  " potential completions. Default 0
+  let g:deoplete#sources#ternjs#case_insensitive = 1
 
-" When completing a property and no completions are found, Tern will use some
-" heuristics to try and return some properties anyway. Set this to 0 to
-" turn that off. Default: 1
-let g:deoplete#sources#ternjs#guess = 0
+  " When completing a property and no completions are found, Tern will use some
+  " heuristics to try and return some properties anyway. Set this to 0 to
+  " turn that off. Default: 1
+  let g:deoplete#sources#ternjs#guess = 0
 
-" Determines whether the result set will be sorted. Default: 1
-let g:deoplete#sources#ternjs#sort = 0
+  " Determines whether the result set will be sorted. Default: 1
+  let g:deoplete#sources#ternjs#sort = 0
 
-" When disabled, only the text before the given position is considered part of
-" the w_rd. When enabled (the default), the whole variable namn that the cursor
-" is on will be included. Default: 1
-let g:deoplete#sources#ternjs#expand_word_forward = 0
+  " When disabled, only the text before the given position is considered part of
+  " the w_rd. When enabled (the default), the whole variable namn that the cursor
+  " is on will be included. Default: 1
+  let g:deoplete#sources#ternjs#expand_word_forward = 0
 
-" Whether to ignore the properties of Object.prototype unless they have been
-" spelled out by at least to characters. Default: 1
-let g:deoplete#sources#ternjs#omit_object_prototype = 0
+  " Whether to ignore the properties of Object.prototype unless they have been
+  " spelled out by at least to characters. Default: 1
+  let g:deoplete#sources#ternjs#omit_object_prototype = 0
 
-" Whether to include JavaScript keywords when completing something that is not
-" a property. Default: 0
-let g:deoplete#sources#ternjs#include_keywords = 1
+  " Whether to include JavaScript keywords when completing something that is not
+  " a property. Default: 0
+  let g:deoplete#sources#ternjs#include_keywords = 1
 
-" If completions should be returned when inside a literal. Default: 1
-let g:deoplete#sources#ternjs#in_literal = 0
-"Add extra filetypes
-let g:deoplete#sources#ternjs#filetypes = [
-      \ 'jsx',
-      \ 'javascript.jsx',
-      \ 'vue',
-      \ '...'
-      \ ]
-" Use tern_for_vim.
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
-" DEOPLETE-CLANG
-let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
-let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
-" DEOPLETE-GO
-let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
+  " If completions should be returned when inside a literal. Default: 1
+  let g:deoplete#sources#ternjs#in_literal = 0
+  "Add extra filetypes
+  let g:deoplete#sources#ternjs#filetypes = [
+        \ 'jsx',
+        \ 'javascript.jsx',
+        \ 'vue',
+        \ '...'
+        \ ]
+  " Use tern_for_vim.
+  let g:tern#command = ["tern"]
+  let g:tern#arguments = ["--persistent"]
+  " DEOPLETE-CLANG
+  let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
+  let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
+  " DEOPLETE-GO
+  let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
 
-augroup deoplete_aus
-autocmd!
-au FileType let g:deoplete#enable_at_startup = 1
-augroup END
+  augroup deoplete_aus
+    autocmd!
+    au FileType let g:deoplete#enable_at_startup = 1
+  augroup END
 endif
 " TITLECASE
 let g:titlecase_map_keys = 0
@@ -353,11 +355,11 @@ let g:vimwiki_list_ignore_newline=0
 "====== CONDITIONALS
 "FONTS AND TEXT
 if has('gui_running')
-if has('gui_win32')
-  set guifont=Consolas:h11:cANSI
-else
-  set guifont=Monaco\ for\ Powerline:h11
-endif
+  if has('gui_win32')
+    set guifont=Consolas:h11:cANSI
+  else
+    set guifont=Monaco\ for\ Powerline:h11
+  endif
 endif
 "====== ABBREVIATIONS
 let g:user_emmet_expandabbr_key='<S-Tab>'
@@ -365,16 +367,17 @@ let g:user_emmet_expandabbr_key='<S-Tab>'
 :iabbrev treu true
 :iabbrev flase false
 augroup java_abbr
-autocmd!
-au FileType java :iabbrev ??? throw new UnsupportedOperationException();
-au FileType java :iabbrev psfs public static final String ;<Esc>hi
-au FileType java :iabbrev pf public final;<Esc>ha
-au FileType java :iabbrev pfs public final String;<Esc>ha
-au FileType java :iabbrev pfb public final boolean;<Esc>ha
-au FileType java :iabbrev pfi public final int;<Esc>ha
-au FileType java :iabbrev pfl public final long;<Esc>ha
-au FileType java :iabbrev pfc public final class {<cr>}<Esc>kk$ha
-autocmd FileType java :iabbrev sout System.out.println();<esc>hi
+  autocmd!
+  au FileType java :iabbrev ??? throw new UnsupportedOperationException();
+  au FileType java :iabbrev psfs public static final String ;<Esc>hi
+  au FileType java :iabbrev pf public final;<Esc>ha
+  au FileType java :iabbrev pfs public final String;<Esc>ha
+  au FileType java :iabbrev pfb public final boolean;<Esc>ha
+  au FileType java :iabbrev pfi public final int;<Esc>ha
+  au FileType java :iabbrev pfl public final long;<Esc>ha
+  autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  au FileType java :iabbrev pfc public final class {<cr>}<Esc>kk$ha
+  autocmd FileType java :iabbrev sout System.out.println();<esc>hi
 augroup END
 " Filetype mappings -------------------- {{{
 " Vim mappings -------------------- {{{
@@ -438,7 +441,7 @@ augroup END
 "}}}
 " Json file settings -------------------- {{{
 augroup filetype_json
-autocmd!
+  autocmd!
   au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
   au FileType json :call SetTabs(2)
   au FileType json :<c-u>execute ":normal! \<leader>af"<cr>
@@ -478,3 +481,8 @@ onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
 " Hightlight groups -------------------- {{{
 highlight TWS ctermbg=red guibg=red
 " }}}
+"
+"
+" TESTING
+nnoremap <localleader>b :TagbarToggle<CR>
+nnoremap <F5> <Plug>(JavaComplete-Imports-AddSmart)

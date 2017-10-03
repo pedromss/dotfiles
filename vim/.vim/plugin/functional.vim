@@ -1,24 +1,26 @@
 function! Safe(fname, l)
-  let new_list = deepcopy(a:l)
-  return function(a:fname, [new_list])
+  let t = type(a:l)
+  if v:t_list
+    let new_list = deepcopy(a:l)
+    return function(a:fname, [new_list])
+  elseif v:t_dict
+    " TODO
+  else
+    echom 'Unsupported type'
+    return l
+  endif
 endfunction
 
 function! Sorted(l)
-  let new_list = deepcopy(a:l)
-  call sort(new_list)
-  return new_list
+  return Safe('sort', a:l)()
 endfunction
 
 function! Reversed(l)
-  let new_list = deepcopy(a:l)
-  call reverse(new_list)
-  return new_list
+  return Safe('reverse', a:l)()
 endfunction
 
 function! Append(l, val)
-  let new_list = deepcopy(a:l)
-  call add(new_list, a:val)
-  return new_list
+  return Safe('add', a:l)(a:val)
 endfunction
 
 function! Assoc(l, i, val)
@@ -28,15 +30,11 @@ function! Assoc(l, i, val)
 endfunction
 
 function! Pop(l, i)
-  let new_list = deepcopy(a:l)
-  call remove(new_list, a:i)
-  return new_list
+  return Safe('remove', a:l)(a:i)
 endfunction
 
 function! Mapped(fn, l)
-  let new_list = deepcopy(a:l)
-  call map(new_list, string(a:fn) . '(v:val)')
-  return new_list
+  return Safe('map', a:l)(string(a:fn) . '(v:val)')
 endfunction
 
 function! Filtered(fn, l)
