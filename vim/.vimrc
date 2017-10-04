@@ -54,6 +54,7 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'hashivim/vim-terraform'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'airblade/vim-rooter'
 Plug 'Chiel92/vim-autoformat'
@@ -486,3 +487,8 @@ highlight TWS ctermbg=red guibg=red
 " TESTING
 nnoremap <localleader>b :TagbarToggle<CR>
 nnoremap <F5> <Plug>(JavaComplete-Imports-AddSmart)
+autocmd FileType java nnoremap <localleader>ji :JavaImport<cr>
+autocmd FileType java nnoremap <localleader>jc :JavaCorrect<cr>
+autocmd FileType java nnoremap <localleader>jr :JavaRename<cr>
+autocmd FileType java nnoremap <localleader>jd :JavaDocPreview<cr>
+autocmd FileType java nnoremap <localleader>jc :JavaConstructor<cr>
