@@ -6,6 +6,13 @@ function! SetTabs(amount)
 endfunction
 " }}}
 " Basic settings -------------------- {{{
+if has('gui_running')
+  if has('gui_win32')
+    set guifont=Consolas:h11:cANSI
+  else
+    set guifont=Monaco\ for\ Powerline:h11
+  endif
+endif
 let mapleader = ','
 let localleader = "\\"
 ":colorscheme vimbrains
@@ -94,6 +101,7 @@ if has('nvim')
   Plug 'zchee/deoplete-go', { 'do': 'make'}
   Plug 'mhartington/nvim-typescript'
   Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+  Plug 'neomake/neomake'
 endif
 call plug#end()
 " }}}
@@ -113,8 +121,8 @@ set shellslash
 " program to always generate a file-name.
 set grepprg=grep\ -nH\ $*
 " }}}
-"====== MAPPINGS
-" GENERAL
+" Mappings -------------------- {{{
+" General mappings -------------------- {{{
 "nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 nnoremap soc :echo "below"<cr>
 nnoremap / /\v
@@ -136,19 +144,26 @@ nnoremap <localleader>t :NERDTreeToggle<CR>
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>G :GFiles<Cr>
 inoremap jk <esc>
-" SCALAFMT
 noremap <leader>af :Autoformat<CR>
 "au BufWrite * :Autoformat
-let g:formatdef_scalafmt = "'scalafmt --stdin'"
-let g:formatters_scala = ['scalafmt']
-" ECLIM
+" }}}
+" Buffer mappings -------------------- {{{
+nnoremap <silent> <M-F12> :BufExplorer<CR>
+nnoremap <silent> <F11> :bn<CR>
+nnoremap <silent> <S-F12> :bp<CR>
+nnoremap <leader>bte :buffers<CR>:tabedit #
+nnoremap B :buffers<CR>:buffer<Space>
+nnoremap <S-C> :bd<CR>
+" }}}
+" Eclim mappings -------------------- {{{
 augroup eclim_mappings
   autocmd!
   au FileType java,scala nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
   au FileType java,scala nnoremap <silent> <buffer> <leader>d :JavaDocSearch -x declarations<cr>
   au FileType java,scala nnoremap <silent> <buffer> <cr> :JavaSearchContext<cr>
 augroup END
-" GO
+" }}}
+" Go mappings -------------------- {{{
 augroup go_mappings
   autocmd!
   au FileType go noremap gob :GoBuild<CR>
@@ -159,7 +174,8 @@ augroup go_mappings
   au FileType go noremap gode :GoDef<CR>
   au FileType go noremap godo :GoDoc<CR>
 augroup END
-" FZF-VIM
+" }}}
+" Fzf mappings -------------------- {{{
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
@@ -173,28 +189,25 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 
 " Advanced customization using autoload functions
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
-" TITLECASE
+" }}}
+" Titlecase mappings -------------------- {{{
 nmap <leader>gt <Plug>Titlecase
 vmap <leader>gt <Plug>Titlecase
 nmap <leader>gT <Plug>TitlecaseLine
-" VIMWIKI
+" }}}
+" Vimwiki mappings -------------------- {{{
 augroup vimwiki_mappings
   autocmd!
   au FileType vimwiki map <leader>tt <Plug>VimwikiToggleListItem
   au FileType vimwiki map <leader>wth :Vimwiki2HTML<CR>
   au FileType vimwiki map <leader>wthb :Vimwiki2HTMLBrowse<CR>
 augroup END
-" SCROLLCOLLOR
+" }}}
+" Scrollcolor mappings -------------------- {{{
 map <silent><S-F4> :NEXTCOLOR<cr>
 map <silent><S-F5> :PREVCOLOR<cr>
-" BUFFERS - EXPLORE/NEXT/PREVIOUS: ALT-F12, F12, SHIFT-F12.
-nnoremap <silent> <M-F12> :BufExplorer<CR>
-nnoremap <silent> <F11> :bn<CR>
-nnoremap <silent> <S-F12> :bp<CR>
-nnoremap <leader>bte :buffers<CR>:tabedit #
-nnoremap B :buffers<CR>:buffer<Space>
-nnoremap <S-C> :bd<CR>
-" EASY MOTION
+" }}}
+" Easymotion mappings -------------------- {{{
 "map  <Leader>f <Plug>(easymotion-bd-f)
 "nmap <Leader>f <Plug>(easymotion-overwin-f)
 "nmap s <Plug>(easymotion-overwin-f2)
@@ -204,7 +217,8 @@ nnoremap <S-C> :bd<CR>
 "" MOVE TO WORD
 "map  <Leader>w <Plug>(easymotion-bd-w)
 "nmap <Leader>w <Plug>(easymotion-overwin-w)
-" ENSIME
+" }}}
+" Ensime mappings -------------------- {{{
 augroup ensime_mappings
   autocmd!
   autocmd BufWritePost *.scala silent :EnTypeCheck
@@ -214,7 +228,8 @@ augroup ensime_mappings
   au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
   au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
 augroup END
-" TERN
+" }}}
+" Tern mappings -------------------- {{{
 augroup tern_mappings
   autocmd!
   au FileType javascript,typescript nnoremap <Leader>td :TernDef<CR>
@@ -227,8 +242,9 @@ augroup tern_mappings
   au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
   au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
 augroup END
-" JS-BEAUTIFY
-augroup js_beautify_au
+" }}}
+" JsBeautify mappings -------------------- {{{
+augroup mappings_jsbeautify
   autocmd!
   au FileType javascript,typescript,json nnoremap <c-j><c-f> :call JsBeautify()<cr>
   "autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
@@ -241,12 +257,85 @@ augroup js_beautify_au
   "" for css or scss
   "autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 augroup END
-"====== VARIABLES
-" VIM-MARKDOWN
+" }}}
+" Quick fix file mappings -------------------- {{{
+augroup filetype_mappings_quickfix
+  autocmd!
+  autocmd FileType qf noremap <localleader>n :cnext<cr>
+  autocmd FileType qf noremap <localleader>p :cprevious<cr>
+  autocmd FileType qf noremap <localleader>cc :ccl<cr>
+augroup END
+" }}}
+" Vim file mappings -------------------- {{{
+augroup filetype_mappings_vim
+  autocmd!
+  autocmd FileType vim nnoremap soc :w \| :so %<cr>
+augroup END
+" }}}
+" JavaComplete2 mappings -------------------- {{{
+nnoremap <localleader>b :TagbarToggle<CR>
+nmap <F5> <Plug>(JavaComplete-Imports-Add)
+imap <F5> <Plug>(JavaComplete-Imports-Add)
+nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+nmap <leader>jI <Plug>(JavaComplete-Imports-AddMissing)
+nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
+nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
+nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
+
+imap <C-j>I <Plug>(JavaComplete-Imports-AddMissing)
+imap <C-j>R <Plug>(JavaComplete-Imports-RemoveUnused)
+imap <C-j>i <Plug>(JavaComplete-Imports-AddSmart)
+imap <C-j>ii <Plug>(JavaComplete-Imports-Add)
+
+nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
+
+imap <C-j>jM <Plug>(JavaComplete-Generate-AbstractMethods)
+
+nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
+nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
+nmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
+nmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
+nmap <leader>jts <Plug>(JavaComplete-Generate-ToString)
+nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
+nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
+nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
+
+imap <C-j>s <Plug>(JavaComplete-Generate-AccessorSetter)
+imap <C-j>g <Plug>(JavaComplete-Generate-AccessorGetter)
+imap <C-j>a <Plug>(JavaComplete-Generate-AccessorSetterGetter)
+
+vmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
+vmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
+vmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
+
+nmap <silent> <buffer> <leader>jn <Plug>(JavaComplete-Generate-NewClass)
+nmap <silent> <buffer> <leader>jN <Plug>(JavaComplete-Generate-ClassInFile)
+" }}}
+" Java file mappings -------------------- {{{
+augroup filetype_mappings_java
+  autocmd!
+  "autocmd FileType java nnoremap <localleader>ji :JavaImport<cr>
+  autocmd FileType java nnoremap <localleader>jc :JavaCorrect<cr>
+  autocmd FileType java nnoremap <localleader>jr :JavaRename<cr>
+  autocmd FileType java nnoremap <localleader>jd :JavaDocPreview<cr>
+  "autocmd FileType java nnoremap <localleader>jc :JavaConstructor<cr>
+augroup END
+" }}}
+" }}}
+" Variables -------------------- {{{
+" Scalafmt variables -------------------- {{{
+let g:formatdef_scalafmt = "'scalafmt --stdin'"
+let g:formatters_scala = ['scalafmt']
+" }}}
+" Vim makrdown variables -------------------- {{{
 let vim_markdown_preview_toggle=2
 let vim_markdown_preview_github=1
 let vim_markdown_preview_browser='Google Chrome'
-" DEOPLETE
+" }}}
+" Deoplete variables -------------------- {{{
 if has('nvim')
   let g:deoplete#enable_at_startup = 1
   " DEOPLETE TERN
@@ -305,10 +394,6 @@ if has('nvim')
         \ 'vue',
         \ '...'
         \ ]
-  " Use tern_for_vim.
-  let g:tern#command = ["tern"]
-  let g:tern#arguments = ["--persistent"]
-  " DEOPLETE-CLANG
   let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
   let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
   " DEOPLETE-GO
@@ -319,77 +404,65 @@ if has('nvim')
     au FileType let g:deoplete#enable_at_startup = 1
   augroup END
 endif
-" TITLECASE
+" }}}
+" Tern variables -------------------- {{{
+  let g:tern#command = ["tern"]
+  let g:tern#arguments = ["--persistent"]
+" }}}
+" Titlecase variables -------------------- {{{
 let g:titlecase_map_keys = 0
-nmap <leader>gt <Plug>Titlecase
-vmap <leader>gt <Plug>Titlecase
-nmap <leader>gT <Plug>TitlecaseLine
-" JSDOC
+" }}}
+" JsDoc variables -------------------- {{{
 let g:jsdoc_allow_input_prompt = 1
 let g:jsdoc_input_description = 1
-" SYNTASTIC
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['closure compiler', 'eslint', 'flow']
-let g:syntastic_scala_checkers = ['scalac', 'scalastyle']
-" Vim AIRLINE
+" }}}
+" Airline variables -------------------- {{{
 let g:airline_powerline_fonts = 1
-" Vim-Javascript
+" }}}
+" Vim-javascript variables -------------------- {{{
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
 let g:javascript_plugin_flow = 1
-" VIM TEX
+" }}}
+" Vim-latex variables -------------------- {{{
 " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
-" UltiSnips
+" }}}
+" UltiSnips variables -------------------- {{{
 let g:UltiSnipsExpandTrigger="<c-y>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" Vimwiki
+" }}}
+" Vimwiki variables -------------------- {{{
 let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
 let g:vimwiki_auto_checkbox=1
 let g:vimwiki_list_ignore_newline=0
-"====== CONDITIONALS
-"FONTS AND TEXT
-if has('gui_running')
-  if has('gui_win32')
-    set guifont=Consolas:h11:cANSI
-  else
-    set guifont=Monaco\ for\ Powerline:h11
-  endif
-endif
-"====== ABBREVIATIONS
-let g:user_emmet_expandabbr_key='<S-Tab>'
-:iabbrev adn and
-:iabbrev treu true
-:iabbrev flase false
-augroup java_abbr
-  autocmd!
-  au FileType java :iabbrev ??? throw new UnsupportedOperationException();
-  au FileType java :iabbrev psfs public static final String ;<Esc>hi
-  au FileType java :iabbrev pf public final;<Esc>ha
-  au FileType java :iabbrev pfs public final String;<Esc>ha
-  au FileType java :iabbrev pfb public final boolean;<Esc>ha
-  au FileType java :iabbrev pfi public final int;<Esc>ha
-  au FileType java :iabbrev pfl public final long;<Esc>ha
-  autocmd FileType java setlocal omnifunc=javacomplete#Complete
-  au FileType java :iabbrev pfc public final class {<cr>}<Esc>kk$ha
-  autocmd FileType java :iabbrev sout System.out.println();<esc>hi
-augroup END
-" Filetype mappings -------------------- {{{
-" Vim mappings -------------------- {{{
-autocmd FileType vim nnoremap soc :w \| :so %<cr>
 " }}}
-" Quick fix file mappings -------------------- {{{
-augroup filetype_quickfix
+" }}}
+" Abbreviations -------------------- {{{
+" General abbr -------------------- {{{
+augroup general_abbreviations
   autocmd!
-  autocmd FileType qf noremap <localleader>n :cnext<cr>
-  autocmd FileType qf noremap <localleader>p :cprevious<cr>
-  autocmd FileType qf noremap <localleader>cc :ccl<cr>
+  :iabbrev adn and
+  :iabbrev treu true
+  :iabbrev flase false
+augroup END
+" }}}
+" Java abbr -------------------- {{{
+augroup abbreviations_java
+  autocmd!
+  autocmd FileType java :iabbrev ??? throw new UnsupportedOperationException();
+  autocmd FileType java :iabbrev psfs public static final String ;<Esc>hi
+  autocmd FileType java :iabbrev pf public final;<Esc>ha
+  autocmd FileType java :iabbrev pfs public final String;<Esc>ha
+  autocmd FileType java :iabbrev pfb public final boolean;<Esc>ha
+  autocmd FileType java :iabbrev pfi public final int;<Esc>ha
+  autocmd FileType java :iabbrev pfl public final long;<Esc>ha
+  autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  autocmd FileType java :iabbrev pfc public final class {<cr>}<Esc>kk$ha
+  autocmd FileType java :iabbrev sout System.out.println();<esc>hi
 augroup END
 " }}}
 " }}}
@@ -482,13 +555,21 @@ onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
 " Hightlight groups -------------------- {{{
 highlight TWS ctermbg=red guibg=red
 " }}}
-"
-"
-" TESTING
-nnoremap <localleader>b :TagbarToggle<CR>
-nnoremap <F5> <Plug>(JavaComplete-Imports-AddSmart)
-autocmd FileType java nnoremap <localleader>ji :JavaImport<cr>
-autocmd FileType java nnoremap <localleader>jc :JavaCorrect<cr>
-autocmd FileType java nnoremap <localleader>jr :JavaRename<cr>
-autocmd FileType java nnoremap <localleader>jd :JavaDocPreview<cr>
-autocmd FileType java nnoremap <localleader>jc :JavaConstructor<cr>
+" Filetype makers -------------------- {{{
+" Java makers -------------------- {{{
+augroup makers_java
+  autocmd!
+  autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+  autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+augroup END
+" }}}
+" Scala makers -------------------- {{{
+augroup makers_scala
+  autocmd!
+  autocmd Filetype scalah let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+  autocmd Filetype scalah let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+augroup END
+" }}}
+" }}}
+
+call neomake#configure#automake('w')
