@@ -49,11 +49,12 @@ set relativenumber
 command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
 " }}}
 " Plugins -------------------- {{{
-if has("gui_win32")
+if has('gui_win32')
   call plug#begin('~/vimfiles/plugged')
 else
   call plug#begin('~/.dotfiles/vim/.vim/plugged')
 endif
+Plug 'ludovicchabant/vim-gutentags'
 " FZF / Ctrlp for file navigation
 if executable('fzf')
   Plug '/usr/local/opt/fzf'
@@ -61,6 +62,7 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'gelisam/git-slides'
 Plug 'hashivim/vim-terraform'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'airblade/vim-rooter'
@@ -124,6 +126,9 @@ set grepprg=grep\ -nH\ $*
 " Mappings -------------------- {{{
 " General mappings -------------------- {{{
 "nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
+if has('nvim')
+  nnoremap <F2> :below 10split \| :terminal<CR>
+endif
 nnoremap soc :echo "below"<cr>
 nnoremap / /\v
 nnoremap ? ?\v
@@ -154,6 +159,7 @@ nnoremap <silent> <S-F12> :bp<CR>
 nnoremap <leader>bte :buffers<CR>:tabedit #
 nnoremap B :buffers<CR>:buffer<Space>
 nnoremap <S-C> :bd<CR>
+nnoremap <S-Q> :bd!<CR>
 " }}}
 " Eclim mappings -------------------- {{{
 augroup eclim_mappings
@@ -324,8 +330,17 @@ augroup filetype_mappings_java
   "autocmd FileType java nnoremap <localleader>jc :JavaConstructor<cr>
 augroup END
 " }}}
+" Terminal variables -------------------- {{{
+tnoremap <Esc> <C-\><C-n>
+tnoremap <leader>cq <Esc>:q!<CR>
+" }}}
 " }}}
 " Variables -------------------- {{{
+" Netrw variables -------------------- {{{
+let g:netrw_banner = 0
+let g:netrw_altv = 1 " open splits to the right
+let g:netrw_liststyle = 3 " tree view
+" }}}
 " Scalafmt variables -------------------- {{{
 let g:formatdef_scalafmt = "'scalafmt --stdin'"
 let g:formatters_scala = ['scalafmt']
@@ -406,8 +421,8 @@ if has('nvim')
 endif
 " }}}
 " Tern variables -------------------- {{{
-  let g:tern#command = ["tern"]
-  let g:tern#arguments = ["--persistent"]
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
 " }}}
 " Titlecase variables -------------------- {{{
 let g:titlecase_map_keys = 0
@@ -555,7 +570,7 @@ onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
 " Hightlight groups -------------------- {{{
 highlight TWS ctermbg=red guibg=red
 " }}}
-" Filetype makers -------------------- {{{
+" Neomake Filetype makers -------------------- {{{
 " Java makers -------------------- {{{
 augroup makers_java
   autocmd!
@@ -566,10 +581,15 @@ augroup END
 " Scala makers -------------------- {{{
 augroup makers_scala
   autocmd!
-  autocmd Filetype scalah let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-  autocmd Filetype scalah let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+  autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+  autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
 augroup END
 " }}}
+" Vimscript makers -------------------- {{{
+augroup makers_vimscript
+  autocmd!
+  autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
+  autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
+augroup END
 " }}}
-
 call neomake#configure#automake('w')
