@@ -331,8 +331,10 @@ augroup filetype_mappings_java
 augroup END
 " }}}
 " Terminal variables -------------------- {{{
-tnoremap <Esc> <C-\><C-n>
-tnoremap <leader>cq <Esc>:q!<CR>
+if has('nvim')
+  tnoremap <Esc> <C-\><C-n>
+  tnoremap <leader>cq <Esc>:q!<CR>
+endif
 " }}}
 " }}}
 " Variables -------------------- {{{
@@ -455,6 +457,9 @@ let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
 let g:vimwiki_auto_checkbox=1
 let g:vimwiki_list_ignore_newline=0
 " }}}
+" Git slides settings -------------------- {{{
+let g:gitslides_use_custom_mappings = 0
+" }}}
 " }}}
 " Abbreviations -------------------- {{{
 " General abbr -------------------- {{{
@@ -571,25 +576,30 @@ onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
 highlight TWS ctermbg=red guibg=red
 " }}}
 " Neomake Filetype makers -------------------- {{{
-" Java makers -------------------- {{{
-augroup makers_java
-  autocmd!
-  autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-  autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-augroup END
+if has('nvim')
+  " Java makers -------------------- {{{
+  augroup makers_java
+    autocmd!
+    autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+    autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+  augroup END
+  " }}}
+  " Scala makers -------------------- {{{
+  augroup makers_scala
+    autocmd!
+    autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+    autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+  augroup END
+  " }}}
+  " Vimscript makers -------------------- {{{
+  augroup makers_vimscript
+    autocmd!
+    autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
+    autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
+  augroup END
+  " }}}
+  call neomake#configure#automake('w')
+endif
 " }}}
-" Scala makers -------------------- {{{
-augroup makers_scala
-  autocmd!
-  autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-  autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-augroup END
-" }}}
-" Vimscript makers -------------------- {{{
-augroup makers_vimscript
-  autocmd!
-  autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
-  autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
-augroup END
-" }}}
-call neomake#configure#automake('w')
+
+echom 'Loaded vimrc'
