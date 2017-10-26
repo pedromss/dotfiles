@@ -602,4 +602,3 @@ if has('nvim')
 endif
 " }}}
 
-echom 'Loaded vimrc'
