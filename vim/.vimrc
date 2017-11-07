@@ -536,7 +536,7 @@ augroup END
 " Json file settings -------------------- {{{
 augroup filetype_json
   autocmd!
-  au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
+  au FileType json :setlocal nnoremap <leader>af :%!python -m json.tool<CR>
   au FileType json :call SetTabs(2)
   au FileType json :<c-u>execute ":normal! \<leader>af"<cr>
 augroup END
