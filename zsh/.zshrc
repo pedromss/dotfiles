@@ -104,3 +104,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/psi24/repos/bookmarking-enrichment-service/code/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/psi24/repos/bookmarking-enrichment-service/code/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/psi24/repos/bookmarking-enrichment-service/code/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/psi24/repos/bookmarking-enrichment-service/code/node_modules/tabtab/.completions/sls.zsh
