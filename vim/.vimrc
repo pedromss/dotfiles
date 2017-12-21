@@ -49,6 +49,7 @@ set relativenumber
 command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
 " }}}
 " Plugins -------------------- {{{
+let g:ale_emit_conflict_warnings = 0
 if has('gui_win32')
   call plug#begin('~/vimfiles/plugged')
 else
@@ -62,6 +63,8 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'w0rp/ale'
 Plug 'gelisam/git-slides'
 Plug 'hashivim/vim-terraform'
 Plug 'artur-shaik/vim-javacomplete2'
@@ -510,7 +513,9 @@ augroup END
 " Javascript file settings -------------------- {{{
 augroup js_aus
   autocmd!
-  au FileType javascript :call SetTabs(4)
+  au FileType javascript :call SetTabs(2)
+  au bufwritepost *.js silent !standard --fix %
+  set autoread
 augroup END
 " }}}
 " Typescript file settings -------------------- {{{
