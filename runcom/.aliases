@@ -7,4 +7,4 @@ alias ....="cd ../../.."
 alias brc="vim ~/.bashrc"
 alias pjson='python -m json.tool'
 alias activemq='docker run --name='activemq' -it --rm -e 'ACTIVEMQ_MIN_MEMORY=1024' -e 'ACTIVEMQ_MAX_MEMORY=2048' -p 61616:61616 -p 8161:8161 -p 5672:5672 -p 61613:61613 -p 1883:1883 -p 61614:61614    webcenter/activemq:latest'
-alias jenkins='docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts'
+alias jenkins='docker run -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home -v $(which docker):/usr/bin/docker jenkins/jenkins:lts'
