@@ -49,6 +49,7 @@ set relativenumber
 command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
 " }}}
 " Plugins -------------------- {{{
+let g:ale_emit_conflict_warnings = 0
 if has('gui_win32')
   call plug#begin('~/vimfiles/plugged')
 else
@@ -62,8 +63,9 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'rdolgushin/groovy.vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
-Plug 'gelisam/git-slides'
+Plug 'w0rp/ale'
 Plug 'hashivim/vim-terraform'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'airblade/vim-rooter'
@@ -511,7 +513,9 @@ augroup END
 " Javascript file settings -------------------- {{{
 augroup js_aus
   autocmd!
-  au FileType javascript :call SetTabs(4)
+  au FileType javascript :call SetTabs(2)
+  au bufwritepost *.js silent !standard --fix %
+  set autoread
 augroup END
 " }}}
 " Typescript file settings -------------------- {{{
@@ -537,7 +541,7 @@ augroup END
 " Json file settings -------------------- {{{
 augroup filetype_json
   autocmd!
-  au FileType json nnoremap <leader>af :%!python -m json.tool<CR>
+  au FileType json :setlocal nnoremap <leader>af :%!python -m json.tool<CR>
   au FileType json :call SetTabs(2)
   au FileType json :<c-u>execute ":normal! \<leader>af"<cr>
 augroup END
