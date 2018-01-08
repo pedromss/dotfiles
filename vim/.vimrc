@@ -63,9 +63,9 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'rdolgushin/groovy.vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'w0rp/ale'
-Plug 'gelisam/git-slides'
 Plug 'hashivim/vim-terraform'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'airblade/vim-rooter'
