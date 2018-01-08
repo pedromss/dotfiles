@@ -4,6 +4,14 @@ mk() {
   mkdir -p $1 && cd $_
 }
 
+gaacmp() {
+  git add -A && git commit -m "$1" && git push
+}
+
+gaucmp() {
+  git add -u && git commit -m "$1" && git push
+}
+
 command_exists() {
   type $1 1>/dev/null 2>/dev/null
 }

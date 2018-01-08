@@ -12,3 +12,8 @@ alias cdocker='docker-compose'
 
 # AWS
 alias awscf='aws cloudformation'
+
+# GIT
+alias glonp='git --no-pager log'
+alias glonpo='git --no-pager log --oneline -n'
+alias gdiffnp='git --no-pager diff'
