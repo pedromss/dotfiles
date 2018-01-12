@@ -1,0 +1,21 @@
+[user]
+	mail = pedro.silva@sky.uk
+	name = Pedro Silva
+	email = pedro.silva@sky.uk
+[core]
+	autocrlf = input
+  editor = /usr/bin/vim
+	excludesfile = /Users/$USER/.gitignore_global
+	excludeFiles = /Users/$USER/.gitignore_global
+[diff]
+  external = git_diff_wrapper
+[merge]
+  tool = thressome
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[mergetool "threesome"]
+  cmd = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'ThreesomeInit'"
+  trustExitCode = true
+[grep]
+	lineNumber = true

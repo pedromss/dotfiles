@@ -55,7 +55,6 @@ if has('gui_win32')
 else
   call plug#begin('~/.dotfiles/vim/.vim/plugged')
 endif
-Plug 'ludovicchabant/vim-gutentags'
 " FZF / Ctrlp for file navigation
 if executable('fzf')
   Plug '/usr/local/opt/fzf'
@@ -63,6 +62,7 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'sjl/splice.vim'
 Plug 'rdolgushin/groovy.vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'w0rp/ale'

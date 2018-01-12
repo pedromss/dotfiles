@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo $*
+vimdiff "$1" "$2"
