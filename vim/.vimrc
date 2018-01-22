@@ -130,7 +130,7 @@ set grepprg=grep\ -nH\ $*
 " General mappings -------------------- {{{
 "nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 if has('nvim')
-  nnoremap <F2> :below 10split \| :terminal<CR>
+  nnoremap <F2> :below 20split \| :terminal<CR>
 endif
 nnoremap soc :echo "below"<cr>
 nnoremap / /\v
