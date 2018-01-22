@@ -21,3 +21,13 @@ make_alias() {
   echo "alias $1='$2'" >> $alias_path 
   source $alias_path
 }
+
+# DOCKER
+function docker_rmi_dangling() {
+  if command_exists docker ;
+  then
+    docker rmi $(docker images -f dangling=true -q) "$@"
+  else
+    echo "Docker doesn't seem to be installed"
+  fi
+}
