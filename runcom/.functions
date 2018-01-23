@@ -18,7 +18,7 @@ command_exists() {
 
 make_alias() {
   alias_path=$HOME/.dotfiles/runcom/.aliases
-  echo "alias $1='$2'" >> $alias_path 
+  echo "alias $1='$2'" >> $alias_path
   source $alias_path
 }
 
@@ -29,5 +29,12 @@ function docker_rmi_dangling() {
     docker rmi $(docker images -f dangling=true -q) "$@"
   else
     echo "Docker doesn't seem to be installed"
+  fi
+}
+
+function docker_build_run() {
+  if command_exists docker ;
+  then
+    docker build -t $1 . && docker --rm run $1 "$@"
   fi
 }
