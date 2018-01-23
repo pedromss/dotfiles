@@ -1,6 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+dotfiles_folder=~/dotfiles/zsh/custom
 source ~/.bash_profile
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 #for DOTFILE in 'find ~/.dotfiles/runcom'
@@ -51,7 +52,7 @@ ZSH_THEME="xxf"
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=~/.dotfiles/zsh/custom
+ZSH_CUSTOM=$dotfiles_folder
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/

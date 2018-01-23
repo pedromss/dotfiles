@@ -1,6 +1,6 @@
 alias c="clear"
-alias l="ls -la"
-alias ld="ls -ld"
+alias l="ls -lah"
+alias ld="ls -ldh"
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
@@ -12,8 +12,3 @@ alias cdocker='docker-compose'
 
 # AWS
 alias awscf='aws cloudformation'
-
-# GIT
-alias glonp='git --no-pager log'
-alias glonpo='git --no-pager log --oneline -n'
-alias gdiffnp='git --no-pager diff'

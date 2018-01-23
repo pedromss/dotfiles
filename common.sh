@@ -9,7 +9,7 @@ make_link() {
 # =========================
 # variables
 # =========================
-dotfiles_folder='.dotfiles'
+dotfiles_folder='dotfiles'
 dotfiles_fullpath=''
 user_home=$HOME
 files_to_link=(runcom/.bash_profile .gitconfig runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc .tern-project .ctags conscript/.conscript)
@@ -25,11 +25,11 @@ fi
 
 echo "Installing in $HOME"
 
-# Make sure the .dotfiles directory exists
+# Make sure the dotfiles directory exists
 dotfiles_fullpath="$user_home/$dotfiles_folder"
 if [ ! -d "$dotfiles_fullpath" ]
 then
-  echo "No .dotfiles directory under $HOME"
+  echo "No dotfiles directory under $HOME"
   exit 2
 fi
 

@@ -1,4 +1,5 @@
 **/*.swp
+**/vim-markdown-preview.html
 **/tags
 **/eclim/*.xmi
 **/*.jar
