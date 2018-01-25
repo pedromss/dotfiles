@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+echo 'Dummy line to test vim-git-diff'
+
 set -e
 
 source ./common.sh

@@ -9,16 +9,24 @@
 	autocrlf = input
   editor = /usr/bin/vim
 	excludesfile = /Users/$USER/.gitignore_global
-	excludeFiles = /Users/$USER/.gitignore_global
 [diff]
   external = git_diff_wrapper
-[merge]
-  tool = thressome
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[mergetool "threesome"]
-  cmd = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'ThreesomeInit'"
-  trustExitCode = true
+;[merge]
+  ;tool = thressome
+;[mergetool "sourcetree"]
+	;cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	;trustExitCode = true
+;[mergetool "threesome"]
+  ;cmd = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'ThreesomeInit'"
+  ;trustExitCode = true
 [grep]
 	lineNumber = true
+[merge]
+	tool = splice
+  ;tool = vimdiff
+	;conflictStyle = diff3
+[mergetool]
+	prompt = false
+[mergetool "splice"]
+  cmd = "nvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
+  trustExitCode = true
