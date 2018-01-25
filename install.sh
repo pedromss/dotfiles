@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+echo 'ndsnbdkabnskdbaskjhdbakj'
+
 set -e
 
 source ./common.sh
