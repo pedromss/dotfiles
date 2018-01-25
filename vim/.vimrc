@@ -155,6 +155,11 @@ inoremap jk <esc>
 noremap <leader>af :Autoformat<CR>
 "au BufWrite * :Autoformat
 " }}}
+" Vim Diff Mappings -------------------- {{{
+nnoremap <localleader>gl :diffg LO
+nnoremap <localleader>gb :diffg BA
+nnoremap <localleader>gr :diffg RE
+" }}}
 " Buffer mappings -------------------- {{{
 nnoremap <silent> <M-F12> :BufExplorer<CR>
 nnoremap <silent> <F11> :bn<CR>
