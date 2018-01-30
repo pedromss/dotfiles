@@ -62,6 +62,7 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'keith/investigate.vim'
 Plug 'sjl/splice.vim'
 Plug 'rdolgushin/groovy.vim'
 Plug 'martinda/Jenkinsfile-vim-syntax'
