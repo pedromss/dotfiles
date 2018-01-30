@@ -1,14 +1,15 @@
 [user]
 	name = Pedro Silva
 [alias]
-  lg = log --oneline -n
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative
+  ch = checkout
 	unstage = reset HEAD --
 [core]
 	autocrlf = input
   editor = /usr/bin/vim
 	excludesfile = /Users/$USER/.gitignore_global
-[diff]
-  external = /usr/local/bin/git_diff_wrapper
+;[diff]
+  ;external = /usr/local/bin/git_diff_wrapper
 [grep]
 	lineNumber = true
 [merge]
