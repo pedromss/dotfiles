@@ -62,6 +62,7 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'mileszs/ack.vim'
 Plug 'keith/investigate.vim'
 Plug 'sjl/splice.vim'
 Plug 'rdolgushin/groovy.vim'
@@ -332,6 +333,9 @@ endif
 " }}}
 " }}}
 " Variables -------------------- {{{
+" Ag variables -------------------- {{{
+let g:ackprg = 'ag --nogroup --nocolor --column'
+" }}}
 " Netrw variables -------------------- {{{
 let g:netrw_banner = 0
 let g:netrw_altv = 1 " open splits to the right
