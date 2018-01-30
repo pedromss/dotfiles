@@ -94,7 +94,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'
 Plug 'https://github.com/heavenshell/vim-jsdoc.git'
-Plug 'maksimr/vim-jsbeautify'
+"Plug 'maksimr/vim-jsbeautify'
 Plug 'alvan/vim-closetag'
 Plug 'https://github.com/vim-latex/vim-latex.git'
 Plug 'vimwiki/vimwiki'
@@ -250,21 +250,6 @@ augroup tern_mappings
   au FileType javascript,typescript nnoremap <Leader>tR :TernRefs<CR>
   au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
   au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
-augroup END
-" }}}
-" JsBeautify mappings -------------------- {{{
-augroup mappings_jsbeautify
-  autocmd!
-  au FileType javascript,typescript,json nnoremap <c-j><c-f> :call JsBeautify()<cr>
-  "autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-  "" for json
-  "autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
-  "" for jsx
-  "autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
-  "" for html
-  "autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-  "" for css or scss
-  "autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 augroup END
 " }}}
 " Quick fix file mappings -------------------- {{{
@@ -541,9 +526,8 @@ augroup END
 " Json file settings -------------------- {{{
 augroup filetype_json
   autocmd!
-  au FileType json :setlocal nnoremap <leader>af :%!python -m json.tool<CR>
+  au FileType json nnoremap <buffer> <leader>af :%!python -m json.tool<CR>
   au FileType json :call SetTabs(2)
-  au FileType json :<c-u>execute ":normal! \<leader>af"<cr>
 augroup END
 " }}}
 " Vimscript file settings ------------------------------ {{{

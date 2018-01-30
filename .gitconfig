@@ -1,15 +1,13 @@
 [user]
-	mail = pedro.silva@sky.uk
 	name = Pedro Silva
 	email = pedro.silva@sky.uk
 [alias]
-  log = --no-pager log --oneline -n
+  lg = --no-pager log --oneline -n
 	unstage = reset HEAD --
 [core]
 	autocrlf = input
   editor = /usr/bin/vim
 	excludesfile = /Users/$USER/.gitignore_global
-	excludeFiles = /Users/$USER/.gitignore_global
 [diff]
   external = git_diff_wrapper
 [merge]
