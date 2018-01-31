@@ -1,4 +1,5 @@
 **/*.swp
+.config/nvim/nvim
 **/*.orig
 **/vim-markdown-preview.html
 **/tags
