@@ -16,6 +16,16 @@ command_exists() {
   type $1 1>/dev/null 2>/dev/null
 }
 
+cag() {
+  if command_exists ag
+  then
+    ag $1 --numbers --pager less --stats --nopager "${@:2}"
+  else
+    echo 'Ag not installed, visit: https://github.com/ggreer/the_silver_searcher'
+  fi
+}
+
+
 make_alias() {
   alias_path=$HOME/.dotfiles/runcom/.aliases
   echo "alias $1='$2'" >> $alias_path

@@ -12,7 +12,7 @@ make_link() {
 dotfiles_folder='dotfiles'
 dotfiles_fullpath=''
 user_home=$HOME
-files_to_link=(runcom/.bash_profile .gitconfig runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc .tern-project .ctags conscript/.conscript)
+files_to_link=(runcom/.bash_profile .ignore .gitconfig runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc .tern-project .ctags conscript/.conscript)
 # =========================
 # script
 # =========================
