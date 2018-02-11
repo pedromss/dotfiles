@@ -100,7 +100,8 @@ Plug 'https://github.com/heavenshell/vim-jsdoc.git'
 Plug 'alvan/vim-closetag'
 Plug 'https://github.com/vim-latex/vim-latex.git'
 Plug 'vimwiki/vimwiki'
-Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'shime/vim-livedown'
+"Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'starcraftman/vim-eclim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -156,6 +157,11 @@ nnoremap <leader>G :GFiles<Cr>
 inoremap jk <esc>
 noremap <leader>af :Autoformat<CR>
 "au BufWrite * :Autoformat
+" }}}
+" Livedown mappings -------------------- {{{
+nnoremap <localleader>ldp :LivedownPreview<CR>
+nnoremap <localleader>ldk :LivedownKill<CR>
+nnoremap <localleader>ldt :LivedownToggle<CR>
 " }}}
 " Vim Diff Mappings -------------------- {{{
 nnoremap <localleader>gl :diffg LO
@@ -333,6 +339,16 @@ endif
 " }}}
 " }}}
 " Variables -------------------- {{{
+" Livedown variables -------------------- {{{
+" should markdown preview get shown automatically upon opening markdown buffer
+let g:livedown_autorun = 1
+" should the browser window pop-up upon previewing
+let g:livedown_open = 1 
+" the port on which Livedown server will run
+let g:livedown_port = 1337
+" the browser to use
+let g:livedown_browser = "chrome"
+" }}}
 " Ag variables -------------------- {{{
 let g:ackprg = 'ag --nogroup --nocolor --column'
 " }}}
@@ -346,9 +362,9 @@ let g:formatdef_scalafmt = "'scalafmt --stdin'"
 let g:formatters_scala = ['scalafmt']
 " }}}
 " Vim makrdown variables -------------------- {{{
-let vim_markdown_preview_toggle=2
-let vim_markdown_preview_github=1
-let vim_markdown_preview_browser='Google Chrome'
+"let vim_markdown_preview_toggle=2
+"let vim_markdown_preview_github=0
+"let vim_markdown_preview_browser='Safari'
 " }}}
 " Deoplete variables -------------------- {{{
 if has('nvim')

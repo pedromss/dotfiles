@@ -15,7 +15,7 @@
 [core]
 	autocrlf = input
   editor = /usr/bin/vim
-	excludesfile = /Users/$USER/.gitignore_global
+	excludesfile = /Users/psi24/.gitignore_global
 ;[diff]
   ;external = /usr/local/bin/git_diff_wrapper
 [grep]

@@ -4,6 +4,14 @@ mk() {
   mkdir -p $1 && cd $_
 }
 
+open_conns() {
+  netstat -nat | awk '{print $6}' | sort | uniq -c | sort -n
+}
+
+pfds() {
+  ps -ef | grep $1 | awk -F " " '{print $2;exit}' | xargs -L 1 bash -c 'ls -l "/proc/$0/fd"' | wc -l
+}
+
 gaacmp() {
   git add -A && git commit -m "$1" && git push
 }
