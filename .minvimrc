@@ -1,0 +1,34 @@
+let mapleader = ','
+let localleader = "\\"
+syntax on
+filetype plugin indent on
+set textwidth=80
+set path+=**
+set wildignore=*.class,**/target/**,**/.idea/**,**/node_modules/**,**/bower_components/**
+set wildmenu
+set tabstop=2 " how many columns a tab counts for
+set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
+set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
+set expandtab " If softtabstop is less than tabstop and expandtab is not set, vim will use a combination of tabs and spaces to make up the desired spacing. If softtabstop equals tabstop and expandtab is not set, vim will always use tabs. When expandtab is set, vim will always use the appropriate number of spaces.
+" SYNTASTIC
+set number
+set switchbuf=usetab
+set backspace=2 " make backspace work like most other apps
+set encoding=utf-8
+set scrolloff=3
+set hlsearch " highlight search words
+set incsearch " search as you type
+set cindent " indents more if inside brackets
+set relativenumber
+
+nnoremap / /\v
+nnoremap ? ?\v
+"nnoremap <esc> :noh<CR>
+nnoremap <space> viw
+nnoremap cm :match<cr>
+nnoremap <localleader>ev :split $HOME/.vimrc<CR>
+nnoremap <s-d> yyp
+inoremap jk <esc>
+nnoremap <S-C> :bd<CR>
+nnoremap <S-Q> :bd!<CR>
+
