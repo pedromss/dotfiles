@@ -12,3 +12,8 @@ alias cdocker='docker-compose'
 
 # AWS
 alias awscf='aws cloudformation'
+
+# PMD
+pmd_version=6.0.1
+alias pmd="$HOME/pmd-bin-$pmd_version/bin/run.sh pmd"
+alias cpd="$HOME/pmd-bin-$pmd_version/bin/run.sh cpd"
