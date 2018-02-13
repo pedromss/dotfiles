@@ -339,6 +339,10 @@ endif
 " }}}
 " }}}
 " Variables -------------------- {{{
+" AutoFormat variables -------------------- {{{
+"let g:formatterpath = ['/usr/local/bin/jq']
+let g:autoformat_verbosemode=0
+" }}}
 " Livedown variables -------------------- {{{
 " should markdown preview get shown automatically upon opening markdown buffer
 let g:livedown_autorun = 1
@@ -552,8 +556,7 @@ augroup END
 " Json file settings -------------------- {{{
 augroup filetype_json
   autocmd!
-  au FileType json nnoremap <buffer> <leader>af :%!python -m json.tool<CR>
-  au FileType json :call SetTabs(2)
+  au FileType json nnoremap <buffer> <leader>af :%!jq '.'<CR>
 augroup END
 " }}}
 " Vimscript file settings ------------------------------ {{{
