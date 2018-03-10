@@ -79,24 +79,19 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-titlecase'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-"Plug 'tpope/vim-fugitive'
-"Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
-"Plug 'valloric/youcompleteme'
 Plug 'pangloss/vim-javascript'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-markdown'
 Plug 'ensime/ensime-vim'
 Plug 'derekwyatt/vim-scala'
-Plug 'marijnh/tern_for_vim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'
 Plug 'https://github.com/heavenshell/vim-jsdoc.git'
-"Plug 'maksimr/vim-jsbeautify'
 Plug 'alvan/vim-closetag'
 Plug 'https://github.com/vim-latex/vim-latex.git'
 Plug 'vimwiki/vimwiki'
@@ -104,6 +99,7 @@ Plug 'shime/vim-livedown'
 "Plug 'JamshedVesuna/vim-markdown-preview'
 Plug 'starcraftman/vim-eclim'
 if has('nvim')
+  Plug 'Shougo/neco-vim'
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-clang'
   Plug 'zchee/deoplete-go', { 'do': 'make'}
@@ -370,7 +366,7 @@ let g:formatters_scala = ['scalafmt']
 "let vim_markdown_preview_github=0
 "let vim_markdown_preview_browser='Safari'
 " }}}
-" Deoplete variables -------------------- {{{
+" Deoplete TernJS variables -------------------- {{{
 if has('nvim')
   let g:deoplete#enable_at_startup = 1
   " DEOPLETE TERN
