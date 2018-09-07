@@ -12,6 +12,7 @@
   brr = branch -r -vv
 	unstage = reset HEAD --
   chall = checkout -- .
+  bname = rev-parse --abbrev-ref HEAD
 [core]
 	autocrlf = input
   editor = /usr/bin/vim

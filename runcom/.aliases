@@ -17,3 +17,8 @@ alias awscf='aws cloudformation'
 pmd_version=6.0.1
 alias pmd="$HOME/pmd-bin-$pmd_version/bin/run.sh pmd"
 alias cpd="$HOME/pmd-bin-$pmd_version/bin/run.sh cpd"
+
+# Gradle
+alias gw="gw --console=plain"
+alias gradle="gradle --console=plain"
+
