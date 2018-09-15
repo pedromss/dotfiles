@@ -506,7 +506,7 @@ augroup END
 augroup scala_auto_cmds
   autocmd!
   au FileType scala :call SetTabs(2)
-  au FileType scala silent :EnTypeCheck
+  "au FileType scala silent :EnTypeCheck
 augroup END
 " }}}
 " Go file settings -------------------- {{{
