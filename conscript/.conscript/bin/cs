@@ -1,2 +1,0 @@
-#!/bin/sh
-java $JAVA_OPTS $CONSCRIPT_OPTS -Xmx1G -jar /Users/pedromss/.conscript/sbt-launch.jar @/Users/pedromss/.dotfiles/conscript/.conscript/foundweekends/conscript/cs/launchconfig "$@"

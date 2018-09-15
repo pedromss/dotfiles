@@ -6,4 +6,4 @@ fi
 
 echo 'Installing conscript...'
 
-java -jar conscript_*.jar
+wget https://raw.githubusercontent.com/foundweekends/conscript/master/setup.sh -O - | sh
