@@ -86,7 +86,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'pangloss/vim-javascript'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-markdown'
-Plug 'ensime/ensime-vim'
+"Plug 'ensime/ensime-vim'
 Plug 'derekwyatt/vim-scala'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -237,15 +237,15 @@ map <silent><S-F5> :PREVCOLOR<cr>
 "nmap <Leader>w <Plug>(easymotion-overwin-w)
 " }}}
 " Ensime mappings -------------------- {{{
-augroup ensime_mappings
-  autocmd!
-  autocmd BufWritePost *.scala silent :EnTypeCheck
-  au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
-  au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
-  au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
-  au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
-  au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
-augroup END
+"augroup ensime_mappings
+  "autocmd!
+  "autocmd BufWritePost *.scala silent :EnTypeCheck
+  "au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
+  "au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
+  "au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
+  "au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
+  "au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
+"augroup END
 " }}}
 " Tern mappings -------------------- {{{
 augroup tern_mappings
