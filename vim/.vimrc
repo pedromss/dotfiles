@@ -42,6 +42,8 @@ set hlsearch " highlight search words
 set incsearch " search as you type
 set cindent " indents more if inside brackets
 set relativenumber
+set list
+set listchars=tab:▸·,trail:· " Show tabs as !<dot> and spaces as <dot>
 "set foldmethod=indent
 "set foldcolumn=1
 " }}}
@@ -462,7 +464,7 @@ let g:javascript_plugin_flow = 1
 let g:tex_flavor='latex'
 " }}}
 " UltiSnips variables -------------------- {{{
-let g:UltiSnipsExpandTrigger="<c-y>"
+let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " }}}

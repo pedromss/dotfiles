@@ -1,5 +1,4 @@
 [user]
-	name = Pedro Silva
 [alias]
   st = status -s --show-stash --branch -uall
   stl = status --long --branch --show-stash -uall -vv
@@ -16,7 +15,7 @@
 [core]
 	autocrlf = input
   editor = /usr/bin/vim
-	excludesfile = /Users/psi24/.gitignore_global
+	excludesfile = ~/.gitignore_global
 ;[diff]
   ;external = /usr/local/bin/git_diff_wrapper
 [grep]
