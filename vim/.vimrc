@@ -43,7 +43,7 @@ set incsearch " search as you type
 set cindent " indents more if inside brackets
 set relativenumber
 set list
-set listchars=tab:▸·,trail:· " Show tabs as !<dot> and spaces as <dot>
+set listchars=tab:▸·,trail:·,eol:↵" Show tabs as !<dot> and spaces as <dot>
 "set foldmethod=indent
 "set foldcolumn=1
 " }}}
