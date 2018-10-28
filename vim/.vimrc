@@ -66,16 +66,15 @@ else
 endif
 Plug 'mileszs/ack.vim'
 Plug 'keith/investigate.vim'
-Plug 'sjl/splice.vim'
-Plug 'rdolgushin/groovy.vim'
-Plug 'martinda/Jenkinsfile-vim-syntax'
+Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
+Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'w0rp/ale'
 Plug 'hashivim/vim-terraform'
-Plug 'artur-shaik/vim-javacomplete2'
+Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 Plug 'airblade/vim-rooter'
 Plug 'Chiel92/vim-autoformat'
 Plug 'KeitaNakamura/neodark.vim'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'leafgarland/typescript-vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -85,27 +84,24 @@ Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
-Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-markdown'
-"Plug 'ensime/ensime-vim'
-Plug 'derekwyatt/vim-scala'
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'
-Plug 'https://github.com/heavenshell/vim-jsdoc.git'
+Plug 'https://github.com/heavenshell/vim-jsdoc.git', { 'for': 'javascript' }
 Plug 'alvan/vim-closetag'
 Plug 'https://github.com/vim-latex/vim-latex.git'
 Plug 'vimwiki/vimwiki'
-Plug 'shime/vim-livedown'
-"Plug 'JamshedVesuna/vim-markdown-preview'
-Plug 'starcraftman/vim-eclim'
+Plug 'shime/vim-livedown', { 'for': 'markdown' }
 if has('nvim')
-  Plug 'Shougo/neco-vim'
+  Plug 'Shougo/neco-vim', { 'for': 'go' }
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-clang'
-  Plug 'zchee/deoplete-go', { 'do': 'make'}
-  Plug 'mhartington/nvim-typescript'
+  Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make'}
+  Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
   Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
   Plug 'neomake/neomake'
 endif
@@ -174,14 +170,6 @@ nnoremap <leader>bte :buffers<CR>:tabedit #
 nnoremap B :buffers<CR>:buffer<Space>
 nnoremap <S-C> :bd<CR>
 nnoremap <S-Q> :bd!<CR>
-" }}}
-" Eclim mappings -------------------- {{{
-augroup eclim_mappings
-  autocmd!
-  au FileType java,scala nnoremap <silent> <buffer> <leader>i :JavaImport<cr>
-  au FileType java,scala nnoremap <silent> <buffer> <leader>d :JavaDocSearch -x declarations<cr>
-  au FileType java,scala nnoremap <silent> <buffer> <cr> :JavaSearchContext<cr>
-augroup END
 " }}}
 " Go mappings -------------------- {{{
 augroup go_mappings
@@ -617,4 +605,3 @@ if has('nvim')
   call neomake#configure#automake('w')
 endif
 " }}}
-
