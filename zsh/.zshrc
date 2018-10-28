@@ -103,10 +103,7 @@ alias lighttheme='switch_iterm_theme "Light" && test $TMUX && tmux set -g status
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 alias loadrvm='[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"'
-alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] \
-  && . "$NVM_DIR/nvm.sh" \
-  && [ -s "$NVM_DIR/bash_completion" ] \
-  && \. "$NVM_DIR/bash_completion"'
+alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'
 
 alias loadsdk='[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"'
 
@@ -119,5 +116,7 @@ alias loadsdk='[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdk
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
 
+# ZPLUG
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # For zsh profiling
 #zprof
