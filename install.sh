@@ -21,8 +21,9 @@ echo 'Copying bin folder...'
 
 cp "$dotfiles_fullpath"/bin/* /usr/local/bin/
 
-echo 'Installing Conscript http://www.foundweekends.org/conscript ...'
-./conscript/install.sh > $logs_dir/conscript-install.log
-echo 'Finished installing conscript'
+# CONSCRIPT
+#echo 'Installing Conscript http://www.foundweekends.org/conscript ...'
+#./conscript/install.sh > $logs_dir/conscript-install.log
+#echo 'Finished installing conscript'
 
 echo 'All done!'

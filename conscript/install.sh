@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+source $HOME/dotfiles/runcom/.functions
+
 if $(command_exists cs)
 then
   echo 'Conscript already installed. Skipping!'

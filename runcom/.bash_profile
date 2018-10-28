@@ -1,4 +1,4 @@
-for DOTFILE in `find ~/dotfiles/runcom`
+for DOTFILE in `find $HOME/dotfiles/runcom`
 do
   if ! [[ "$DOTFILE" =~ \.bash\_profile(\.swp)? ]]
   then
