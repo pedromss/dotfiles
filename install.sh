@@ -17,12 +17,12 @@ done
 make_link "$dotfiles_fullpath/.config/nvim" $XDG_CONFIG_HOME/nvim
 make_link "$dotfiles_fullpath/.local/share/nvim" $XDG_DATA_HOME/nvim
 
-echo 'Copying bin folder...'
+echo 'Generating Brewfile'
+curl -sL https://raw.githubusercontent.com/pedromss/brewfile-generator/master/gen-brewfile.sh | sh
 
-cp "$dotfiles_fullpath"/bin/* /usr/local/bin/
-
-echo 'Installing Conscript http://www.foundweekends.org/conscript ...'
-./conscript/install.sh > $logs_dir/conscript-install.log
-echo 'Finished installing conscript'
+# CONSCRIPT
+#echo 'Installing Conscript http://www.foundweekends.org/conscript ...'
+#./conscript/install.sh > $logs_dir/conscript-install.log
+#echo 'Finished installing conscript'
 
 echo 'All done!'
