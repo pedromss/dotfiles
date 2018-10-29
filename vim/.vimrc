@@ -65,6 +65,7 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 Plug 'mileszs/ack.vim'
+Plug 'sheerun/vim-polyglot'
 Plug 'keith/investigate.vim'
 Plug 'sjl/splice.vim'
 Plug 'rdolgushin/groovy.vim'
