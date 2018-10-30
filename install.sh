@@ -47,6 +47,8 @@ clone_if_not_exists 'git@github.com:supercrabtree/k.git' $zsh_plugins_folder/k
 #./conscript/install.sh > $logs_dir/conscript-install.log
 #echo 'Finished installing conscript'
 
-echo 'Be sure to checkout: https://github.com/ryanoasis/nerd-fonts'
+echo 'Be sure to checkout:'
+echo ' - https://github.com/ryanoasis/nerd-fonts'
+echo ' - https://github.com/so-fancy/diff-so-fancy'
 
 echo 'All done!'
