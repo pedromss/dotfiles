@@ -109,8 +109,6 @@ alias loadnvm='[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && [ -s "$NVM_DIR
 alias loadsdk='[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"'
 
 
-# ZPLUG
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # The following lines were added by compinstall
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' list-colors ''
@@ -118,7 +116,7 @@ zstyle ':completion:*' matcher-list '' '' '' 'r:|[._-]=** r:|=**'
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle :compinstall filename '/Users/pedromss/.zshrc'
-
+# End of lines added by compinstall
 autoload -Uz compinit
 compinit
 # The following 2 lines are needed for compatiblity with bash
@@ -131,6 +129,30 @@ complete -F _fzf_dir_completion -o default -o bashdefault tree
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
-# End of lines added by compinstall
+
+# Brew installed plugins
+#source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# ==================================================
+# The following are disabled due to latency added
+# ==================================================
+# === Latency === | Plugin/Command
+# 70 ms           | [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+# ==================================================
+
+# Manually installed plugins
+source $HOME/zsh-plugin-repos/almostontop/almostontop.plugin.zsh
+source $HOME/zsh-plugin-repos/appup/appup.plugin.zsh
+source $HOME/zsh-plugin-repos/auto-color-ls/auto-color-ls.plugin.zsh
+source $HOME/zsh-plugin-repos/zsh-autopair/autopair.plugin.zsh
+source $HOME/zsh-plugin-repos/enhancd/init.sh
+source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
+source $HOME/zsh-plugin-repos/k/k.plugin.zsh
+# ==================================================
+# The following are disabled due to latency added
+# ==================================================
+# === Latency === | Plugin/Command
+# ==================================================
+
 # For zsh profiling
 #zprof

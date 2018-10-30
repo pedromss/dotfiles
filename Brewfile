@@ -455,3 +455,1914 @@ brew cask teamviewer
 brew cask vlc
 brew cask webstorm
 brew cask whatsapp
+tap ==>
+tap Auto-updated
+tap Homebrew!
+tap Updated
+tap 2
+tap taps
+tap (homebrew/core
+tap and
+tap homebrew/cask).
+tap ==>
+tap Updated
+tap Formulae
+tap skafos
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap ==>
+tap Auto-updated
+tap Homebrew!
+tap Updated
+tap 2
+tap taps
+tap (homebrew/core
+tap and
+tap homebrew/cask).
+tap ==>
+tap Updated
+tap Formulae
+tap asciidoc
+tap bzt
+tap imageworsener
+tap platformio
+tap pwntools
+tap vips
+tap xmrig
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/core
+
+brew autoconf
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+brew zsh-syntax-highlighting
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp
+tap coursier/formulas
+tap homebrew/cask
+tap homebrew/cask-fonts
+tap homebrew/core
+
+brew autoconf
+brew autojump
+brew automake
+brew bash
+brew boost
+brew cairo
+brew cmake
+brew couchdb
+brew coursier
+brew cppp
+brew ctags
+brew diff-so-fancy
+brew erlang
+brew erlang@19
+brew ffmpeg
+brew fontconfig
+brew freetype
+brew gdbm
+brew gdub
+brew gettext
+brew ghc
+brew ghostscript
+brew giter8
+brew glib
+brew gobject-introspection
+brew grip
+brew heroku
+brew heroku-toolbelt
+brew hping
+brew htop
+brew icu4c
+brew imagemagick
+brew jemalloc
+brew jpeg
+brew jq
+brew lame
+brew libevent
+brew libffi
+brew libidn2
+brew libogg
+brew libpng
+brew libtermkey
+brew libtiff
+brew libtool
+brew libunistring
+brew libuv
+brew libvo-aacenc
+brew libvorbis
+brew libvpx
+brew libvterm
+brew libyaml
+brew little-cms2
+brew lua
+brew lua@5.1
+brew luajit
+brew luarocks
+brew maven
+brew msgpack
+brew nailgun
+brew neovim
+brew node
+brew nspr
+brew nss
+brew nvm
+brew oniguruma
+brew openjpeg
+brew openssl
+brew openssl@1.1
+brew opus
+brew pandoc
+brew pcre
+brew perl
+brew pixman
+brew pkg-config
+brew poppler
+brew python
+brew python@2
+brew qt
+brew readline
+brew ruby
+brew scala
+brew scalastyle
+brew sdl2
+brew snappy
+brew sphinx-doc
+brew spidermonkey
+brew sqlite
+brew terraform
+brew the_silver_searcher
+brew theora
+brew thrift
+brew tree
+brew ttygif
+brew ttyrec
+brew unibilium
+brew unixodbc
+brew unrar
+brew vim
+brew webp
+brew wget
+brew wxmac
+brew x264
+brew x265
+brew xvid
+brew xz
+brew youtube-dl
+brew zplug
+brew zsh-completions
+
+brew cask android-studio
+brew cask caffeine
+brew cask calibre
+brew cask deluge
+brew cask docker
+brew cask eclipse-java
+brew cask evernote
+brew cask firefox
+brew cask font-hack-nerd-font
+brew cask gitter
+brew cask intellij-idea
+brew cask iterm2
+brew cask kdiff3
+brew cask mactex
+brew cask macvim
+brew cask messenger
+brew cask qbittorrent
+brew cask skype
+brew cask spectacle
+brew cask teamviewer
+brew cask vlc
+brew cask webstorm
+brew cask whatsapp

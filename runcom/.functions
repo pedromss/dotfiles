@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+time_zsh() {
+  for i in $(seq 1 $1); do /usr/bin/time zsh -i -c exit; done
+}
+
 mk() {
   mkdir -p $1 && cd $_
 }
