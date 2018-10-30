@@ -118,7 +118,7 @@ zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p
 zstyle :compinstall filename '/Users/pedromss/.zshrc'
 # End of lines added by compinstall
 autoload -Uz compinit
-compinit
+compinit -i
 # The following 2 lines are needed for compatiblity with bash
 autoload bashcompinit
 bashcompinit
