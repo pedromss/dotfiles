@@ -115,7 +115,7 @@ zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' matcher-list '' '' '' 'r:|[._-]=** r:|=**'
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle :compinstall filename '/Users/pedromss/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 # End of lines added by compinstall
 autoload -Uz compinit
 compinit
