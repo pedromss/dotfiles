@@ -4,7 +4,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-dotfiles_folder=~/dotfiles/zsh/custom
+#dotfiles_folder=~/dotfiles/zsh/custom
 source ~/.bash_profile
 
 # Path to your oh-my-zsh installation.
@@ -51,7 +51,7 @@ ZSH_THEME=""
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=$dotfiles_folder
+ZSH_CUSTOM=$HOME/.zsh/custom
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -148,6 +148,8 @@ source $HOME/zsh-plugin-repos/enhancd/init.sh
 source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
 source $HOME/zsh-plugin-repos/k/k.plugin.zsh
+source $HOME/zsh-plugin-repos/tipz/tipz.zsh
+source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
 # ==================================================
 # The following are disabled due to latency added
 # ==================================================

@@ -41,6 +41,8 @@ clone_if_not_exists 'git@github.com:b4b4r07/enhancd.git' $zsh_plugins_folder/enh
 clone_if_not_exists 'https://github.com/zdharma/fast-syntax-highlighting' $zsh_plugins_folder/fast-syntax-highlighting
 clone_if_not_exists 'git@github.com:wfxr/forgit.git' $zsh_plugins_folder/forgit
 clone_if_not_exists 'git@github.com:supercrabtree/k.git' $zsh_plugins_folder/k
+clone_if_not_exists 'git@github.com:molovo/tipz.git' $zsh_plugins_folder/tipz
+clone_if_not_exists 'git@github.com:qoomon/zjump.git' $zsh_plugins_folder/zjump
 
 # CONSCRIPT
 #echo 'Installing Conscript http://www.foundweekends.org/conscript ...'
