@@ -1,6 +1,8 @@
 # For zsh profiling, uncomment this and the last line
 #zmodload zsh/zprof
 
+bindkey "^[[3~" delete-char
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
