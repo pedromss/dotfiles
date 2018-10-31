@@ -21,3 +21,7 @@ alias cpd="$HOME/pmd-bin-$pmd_version/bin/run.sh cpd"
 alias gw="gw --console=plain"
 alias gradle="gradle --console=plain"
 
+# Git
+alias gl="git pull"
+alias gp="git push"
+
