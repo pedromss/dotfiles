@@ -65,7 +65,7 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 Plug 'mileszs/ack.vim'
-Plug 'sheerun/vim-polyglot'
+Plug 'udalov/kotlin-vim'
 Plug 'keith/investigate.vim'
 Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
