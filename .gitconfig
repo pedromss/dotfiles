@@ -30,7 +30,6 @@
 [mergetool "splice"]
   cmd = "nvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
   trustExitCode = true
-[user]
 [color]
 	ui = true
 [color "diff-highlight"]
@@ -45,3 +44,8 @@
 	old = red bold
 	new = green bold
 	whitespace = red reverse
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
