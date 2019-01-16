@@ -8,6 +8,8 @@ bindkey "^[[3~" delete-char
 
 #dotfiles_folder=~/dotfiles/zsh/custom
 source ~/.bash_profile
+export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
+export ZSH_AUTOSUGGEST_USE_ASYNC=yes
 
 # Path to your oh-my-zsh installation.
 #export ZSH=$HOME/.oh-my-zsh
@@ -174,6 +176,8 @@ source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
 source $HOME/zsh-plugin-repos/k/k.plugin.zsh
 source $HOME/zsh-plugin-repos/tipz/tipz.zsh
 source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
+source $HOME/zsh-plugin-repos/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/globalias/globalias.plugin.zsh
 # ==================================================
 # The following are disabled due to latency added
 # ==================================================
