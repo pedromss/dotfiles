@@ -133,10 +133,6 @@ compinit
 autoload bashcompinit
 bashcompinit
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-complete -F _fzf_path_completion -o default -o bashdefault ag
-complete -F _fzf_dir_completion -o default -o bashdefault tree
-
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
 
@@ -156,6 +152,11 @@ setopt NO_BEEP
 setopt NOMATCH
 setopt AUTO_PUSHD
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+complete -F _fzf_path_completion -o default -o bashdefault ag
+complete -F _fzf_dir_completion -o default -o bashdefault tree
+
+
 # Brew installed plugins
 #source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # ==================================================
@@ -170,7 +171,7 @@ source $HOME/zsh-plugin-repos/almostontop/almostontop.plugin.zsh
 source $HOME/zsh-plugin-repos/appup/appup.plugin.zsh
 source $HOME/zsh-plugin-repos/auto-color-ls/auto-color-ls.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-autopair/autopair.plugin.zsh
-source $HOME/zsh-plugin-repos/enhancd/init.sh
+#source $HOME/zsh-plugin-repos/enhancd/init.sh
 source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
 source $HOME/zsh-plugin-repos/k/k.plugin.zsh
@@ -178,6 +179,7 @@ source $HOME/zsh-plugin-repos/tipz/tipz.zsh
 source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/globalias/globalias.plugin.zsh
+source $HOME/zsh-plugin-repos/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
 # ==================================================
 # The following are disabled due to latency added
 # ==================================================
