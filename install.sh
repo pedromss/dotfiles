@@ -45,12 +45,6 @@ clone_if_not_exists 'git@github.com:qoomon/zjump.git' $zsh_plugins_folder/zjump
 clone_if_not_exists 'git@github.com:zsh-users/zsh-autosuggestions.git' $zsh_plugins_folder/zsh-autosuggestions
 clone_if_not_exists 'git@github.com:robbyrussell/oh-my-zsh.git' $zsh_plugins_folder/oh-my-zsh
 clone_if_not_exists 'git@github.com:zsh-users/zsh-history-substring-search.git' $zsh_plugins_folder/zsh-history-substring-search
-
-source $HOME/zsh-plugin-repos/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/globalias/globalias.plugin.zsh
-source $HOME/zsh-plugin-repos/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
-
-
 # CONSCRIPT
 #echo 'Installing Conscript http://www.foundweekends.org/conscript ...'
 #./conscript/install.sh > $logs_dir/conscript-install.log

@@ -16,8 +16,12 @@ endif
 let mapleader = ','
 let localleader = "\\"
 ":colorscheme vimbrains
-:colorscheme neodark
+":colorscheme neodark
+":colorscheme allomancer
+:colorscheme escuro
+":colorscheme oldbook
 ":colorscheme seoul256
+":colorscheme srcery
 syntax on
 filetype plugin indent on
 set textwidth=80
@@ -83,6 +87,7 @@ Plug 'christoomey/vim-titlecase'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -439,7 +444,39 @@ let g:jsdoc_allow_input_prompt = 1
 let g:jsdoc_input_description = 1
 " }}}
 " Airline variables -------------------- {{{
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = '㏑'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+" powerline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
 let g:airline_powerline_fonts = 1
+let g:airline_theme='wombat'
 " }}}
 " Vim-javascript variables -------------------- {{{
 let g:javascript_plugin_jsdoc = 1
