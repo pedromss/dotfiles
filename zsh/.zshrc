@@ -110,6 +110,9 @@ setopt HIST_SAVE_NO_DUPS
 # 16.2.6 Input / Output
 setopt ALIASES
 setopt CORRECT
+setopt HASH_CMDS
+setopt HASH_DIRS
+setopt RM_STAR_WAIT
 # ==================================================
 # FZF completions
 # ==================================================
