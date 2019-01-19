@@ -130,7 +130,7 @@ complete -F _fzf_dir_completion -o default -o bashdefault tree
 # ==================================================
 
 # Manually installed plugins
-source $HOME/zsh-plugin-repos/almostontop/almostontop.plugin.zsh
+#source $HOME/zsh-plugin-repos/almostontop/almostontop.plugin.zsh
 source $HOME/zsh-plugin-repos/appup/appup.plugin.zsh
 source $HOME/zsh-plugin-repos/auto-color-ls/auto-color-ls.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-autopair/autopair.plugin.zsh
