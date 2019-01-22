@@ -15,7 +15,6 @@ HISTSIZE=15000
 SAVEHIST=10000
 HISTFILE=$HOME/.zhistory
 
-ZSH_THEME=""
 
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
@@ -27,6 +26,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=( "$HOME/.zfunctions" $fpath )
 autoload -U promptinit; promptinit
 prompt pure
+ZSH_THEME=""
 
 # User configuration
 #

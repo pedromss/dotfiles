@@ -102,6 +102,9 @@ Plug 'alvan/vim-closetag'
 Plug 'https://github.com/vim-latex/vim-latex.git'
 Plug 'vimwiki/vimwiki'
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
+Plug 'flazz/vim-colorschemes'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-colorscheme-switcher'
 if has('nvim')
   Plug 'Shougo/neco-vim', { 'for': 'go' }
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -328,6 +331,10 @@ if has('nvim')
   tnoremap <Esc> <C-\><C-n>
   tnoremap <leader>cq <Esc>:q!<CR>
 endif
+" }}}
+" VIm colorscheme switcher -------------------- {{{
+noremap <F8> :NextColorScheme<cr>
+noremap <F9> :PrevColorScheme<cr>
 " }}}
 " }}}
 " Variables -------------------- {{{
