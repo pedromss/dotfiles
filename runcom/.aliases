@@ -28,6 +28,7 @@ alias gradle="gradle --console=plain"
 # Git
 alias gl="git pull"
 alias gp="git push"
+alias gbn="git bname | pbcopy"
 
 # Exa https://github.com/ogham/exa
 alias lr="exa --group-directories-first --header --long --recurse --group --extended --modified --created --git --all --all"
