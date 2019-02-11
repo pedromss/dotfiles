@@ -133,6 +133,12 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
+" Navigation -------------------- {{{
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+" }}}
 " General mappings -------------------- {{{
 "nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 if has('nvim')
