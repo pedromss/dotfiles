@@ -31,9 +31,9 @@ alias gp="git push"
 alias gbn="git bname | pbcopy"
 
 # Exa https://github.com/ogham/exa
-alias lr="exa --group-directories-first --header --long --recurse --group --extended --modified --created --git --all --all"
-alias lrt="exa --group-directories-first --header --tree --long --recurse --group --extended --modified --created --git"
-alias l="exa --group-directories-first --header --long --group --extended --modified --created --git --all --all"
+alias lr="exa --group-directories-first --header --long --recurse --group --modified --created --git --all --all"
+alias lrt="exa --group-directories-first --header --tree --long --recurse --group --modified --created --git"
+alias l="exa --group-directories-first --header --long --group --modified --created --git --all --all"
 alias ls="exa --group-directories-first -1"
 
 # maconly!

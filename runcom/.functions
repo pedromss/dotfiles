@@ -1,5 +1,15 @@
 #! /usr/bin/env bash
 
+din() {
+  if [[ -z gron ]]
+  then
+    echo '"gron" must be installed'
+    exit -1
+  fi
+
+  docker inspect $1 | gron | ag $2 | gron --ungron
+}
+
 time_zsh() {
   for i in $(seq 1 $1); do /usr/bin/time zsh -i -c exit; done
 }
