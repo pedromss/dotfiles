@@ -1,13 +1,39 @@
 #! /usr/bin/env bash
 
-din() {
-  if [[ -z gron ]]
+function din() {
+  ensure_installed 'gron'
+  ensure_installed 'ag'
+  query=${2:-'.*'}
+  docker inspect $1 | gron | ag $query | gron --ungron
+}
+
+function dinn() {
+  ensure_installed 'gron'
+  ensure_installed 'ag'
+  query=${2:-'.*'}
+  docker network inspect $1 | gron | ag $query | gron --ungron
+}
+
+function dintls() {
+  ensure_installed 'gron'
+  ensure_installed 'ag'
+  query=${3:-'.*'}
+  docker --tlsverify -H $1 inspect $2 | gron | ag $query | gron --ungron
+}
+
+function dintlsn() {
+  ensure_installed 'gron'
+  ensure_installed 'ag'
+  query=${3:-'.*'}
+  docker --tlsverify -H $1 network inspect $2 | gron | ag $query | gron --ungron
+}
+
+function ensure_installed() {
+  if [[ -z "$1" ]]
   then
-    echo '"gron" must be installed'
+    echo "'$1' must be installed"
     exit -1
   fi
-
-  docker inspect $1 | gron | ag $2 | gron --ungron
 }
 
 time_zsh() {
