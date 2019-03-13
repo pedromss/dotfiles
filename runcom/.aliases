@@ -1,4 +1,5 @@
 alias c="clear"
+alias b='pushd'
 #alias l="colorls -lA --sd"
 #alias l="ls -la"
 #alias ld="ls -ldh"

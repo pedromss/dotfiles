@@ -68,6 +68,7 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'tpope/vim-fugitive'
 Plug 'mileszs/ack.vim'
 Plug 'udalov/kotlin-vim'
 Plug 'keith/investigate.vim'
@@ -105,6 +106,9 @@ Plug 'shime/vim-livedown', { 'for': 'markdown' }
 Plug 'flazz/vim-colorschemes'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
+Plug 'tfnico/vim-gradle'
+Plug 'moby/moby'
+Plug 'mhinz/vim-signify'
 if has('nvim')
   Plug 'Shougo/neco-vim', { 'for': 'go' }
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -133,6 +137,11 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
+" Fugitive VIM -------------------- {{{
+nnoremap <localleader>fgb :Gblame<CR>
+nnoremap <localleader>fgs :Gstatus<CR>
+nnoremap <localleader>fgc :Gcommit %<CR>
+" }}}
 " Navigation -------------------- {{{
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -344,6 +353,9 @@ noremap <F9> :PrevColorScheme<cr>
 " }}}
 " }}}
 " Variables -------------------- {{{
+" Signify -------------------- {{{
+let g:signify_vcs_list = [ 'git']
+" }}}
 " AutoFormat variables -------------------- {{{
 "let g:formatterpath = ['/usr/local/bin/jq']
 let g:autoformat_verbosemode=0
@@ -542,7 +554,6 @@ augroup END
 " }}}
 " }}}
 " Filetype settings -------------------- {{{
-:call SetTabs(2)
 " Scala file settings -------------------- {{{
 augroup scala_auto_cmds
   autocmd!
@@ -595,6 +606,12 @@ augroup END
 augroup filetype_json
   autocmd!
   au FileType json nnoremap <buffer> <leader>af :%!jq '.'<CR>
+augroup END
+" }}}
+" Groovy file settings -------------------- {{{
+augroup groovy_aus
+  autocmd!
+  au FileType groovy :call SetTabs(4)
 augroup END
 " }}}
 " Vimscript file settings ------------------------------ {{{
