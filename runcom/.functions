@@ -1,24 +1,36 @@
 #! /usr/bin/env bash
 
-function dlsn() {
+function dps() {
+  ensure_installed 'docker'
+  query=${1:-'.*'}
+  docker ps -a -f name=".*$query.*"
+}
+
+function dpstls() {
+  ensure_installed 'docker'
+  query=${2:-'.*'}
+  docker --tlsverify -H $1 ps -a -f name=".*$query.*"
+}
+
+function dnetls() {
   ensure_installed 'docker'
   query=${1:-'.*'}
   docker network ls -f name=".*$query.*"
 }
 
-function dlsntls() {
+function dnetlstls() {
   ensure_installed 'docker'
   query=${2:-'.*'}
   docker --tlsverify -H $1 network ls -f name=".*$query.*"
 }
 
-function drmn() {
+function dnetrm() {
   ensure_installed 'docker'
   query=${1:-'.*'}
   docker network rm $(docker network ls -f name=".*$query.*" -q)
 }
 
-function drmntls() {
+function dnetrmtls() {
   ensure_installed 'docker'
   query=${2:-'.*'}
   docker --tlsverify -H "$1" network rm $(docker network ls -f name=".*$query.*" -q)
@@ -32,7 +44,7 @@ function din() {
   docker inspect $1 | gron | ag $query | gron --ungron
 }
 
-function dinn() {
+function dneti() {
   ensure_installed 'gron'
   ensure_installed 'docker'
   ensure_installed 'ag'
@@ -48,7 +60,7 @@ function dintls() {
   docker --tlsverify -H $1 inspect $2 | gron | ag $query | gron --ungron
 }
 
-function dinntls() {
+function dnetitls() {
   ensure_installed 'gron'
   ensure_installed 'docker'
   ensure_installed 'ag'
