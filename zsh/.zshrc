@@ -6,6 +6,11 @@ bindkey "^[[3~" delete-char
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+for f in $HOME/*.env
+do
+  source $f
+done
+
 source ~/.bash_profile
 
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50

@@ -74,6 +74,17 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+
+Plug 'svermeulen/vim-cutlass'
+Plug 'svermeulen/vim-yoink'
+Plug 'svermeulen/vim-subversive'
+
 Plug 'mileszs/ack.vim'
 Plug 'udalov/kotlin-vim'
 Plug 'keith/investigate.vim'
@@ -91,14 +102,12 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'christoomey/vim-titlecase'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'tpope/vim-surround'
 Plug 'bling/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -111,6 +120,9 @@ Plug 'shime/vim-livedown', { 'for': 'markdown' }
 Plug 'flazz/vim-colorschemes'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
+Plug 'tfnico/vim-gradle'
+Plug 'moby/moby'
+Plug 'mhinz/vim-signify'
 if has('nvim')
   Plug 'Shougo/neco-vim', { 'for': 'go' }
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -123,7 +135,8 @@ if has('nvim')
 endif
 call plug#end()
 " }}}
-" Gui settings -------------------- {{{ set guioptions-=m
+" Gui settings -------------------- {{{ 
+set guioptions-=m
 set guioptions-=T
 set guioptions-=r
 set guioptions-=L
@@ -140,6 +153,39 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
+" Vim cutlass mappings -------------------- {{{
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+nnoremap X D
+" }}} 
+" Vim yoink mappings -------------------- {{{
+nmap <c-n> <plug>(YoinkPostPasteSwapForward)
+nmap <c-p> <plug>(YoinkPostPasteSwapBack)
+nmap p <plug>(YoinkPaste_p)
+nmap P <plug>(YoinkPaste_P)
+nmap [y <plug>(YoinkRotateBack)
+nmap ]y <plug>(YoinkRotateForward)
+" }}}
+" Vim Subversive -------------------- {{{
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+xmap <leader>s <plug>(SubversiveSubstituteRange)
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" }}}
+" Fugitive VIM mappings -------------------- {{{
+nnoremap <localleader>fgb :Gblame<CR>
+nnoremap <localleader>fgs :Gstatus<CR>
+nnoremap <localleader>fgc :Gcommit %<CR>
+" }}}
+" Navigation -------------------- {{{
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+" }}}
 " General mappings -------------------- {{{
 "nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 if has('nvim')
@@ -345,6 +391,12 @@ noremap <F9> :PrevColorScheme<cr>
 " }}}
 " }}}
 " Variables -------------------- {{{
+" VIM yoink variables -------------------- {{{
+let g:yoinkIncludeDeleteOperations = 1
+" }}}
+" Signify -------------------- {{{
+let g:signify_vcs_list = [ 'git']
+" }}}
 " AutoFormat variables -------------------- {{{
 "let g:formatterpath = ['/usr/local/bin/jq']
 let g:autoformat_verbosemode=0
@@ -543,7 +595,6 @@ augroup END
 " }}}
 " }}}
 " Filetype settings -------------------- {{{
-:call SetTabs(2)
 " Scala file settings -------------------- {{{
 augroup scala_auto_cmds
   autocmd!
@@ -582,6 +633,7 @@ augroup filetype_bash
   autocmd!
   au FileType sh :normal gg=G
   au FileType sh :call SetTabs(2)
+  au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
 augroup END
 " }}}
 " HTML file settings -------------------- {{{
@@ -595,6 +647,12 @@ augroup END
 augroup filetype_json
   autocmd!
   au FileType json nnoremap <buffer> <leader>af :%!jq '.'<CR>
+augroup END
+" }}}
+" Groovy file settings -------------------- {{{
+augroup groovy_aus
+  autocmd!
+  au FileType groovy :call SetTabs(4)
 augroup END
 " }}}
 " Vimscript file settings ------------------------------ {{{

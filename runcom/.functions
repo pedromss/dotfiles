@@ -1,5 +1,99 @@
 #! /usr/bin/env bash
 
+function dps() {
+  ensure_installed 'docker'
+  query=${1:-'.*'}
+  docker ps -a -f name=".*$query.*"
+}
+
+function dpstls() {
+  ensure_installed 'docker'
+  query=${2:-'.*'}
+  docker --tlsverify -H $1 ps -a -f name=".*$query.*"
+}
+
+function dnetls() {
+  ensure_installed 'docker'
+  query=${1:-'.*'}
+  docker network ls -f name=".*$query.*"
+}
+
+function dnetlstls() {
+  ensure_installed 'docker'
+  query=${2:-'.*'}
+  docker --tlsverify -H $1 network ls -f name=".*$query.*"
+}
+
+function dnetrm() {
+  ensure_installed 'docker'
+  query=${1:-'.*'}
+  docker network rm $(docker network ls -f name=".*$query.*" -q)
+}
+
+function dnetrmtls() {
+  ensure_installed 'docker'
+  query=${2:-'.*'}
+  docker --tlsverify -H "$1" network rm $(docker network ls -f name=".*$query.*" -q)
+}
+
+function din() {
+  ensure_installed 'gron'
+  ensure_installed 'docker'
+  ensure_installed 'ag'
+  query=${2:-'.*'}
+  docker inspect $1 | gron | ag $query | gron --ungron
+}
+
+function dneti() {
+  ensure_installed 'gron'
+  ensure_installed 'docker'
+  ensure_installed 'ag'
+  query=${2:-'.*'}
+  docker network inspect $1 | gron | ag $query | gron --ungron
+}
+
+function dnetiq() {
+  ensure_installed 'gron'
+  ensure_installed 'docker'
+  ensure_installed 'ag'
+  network_filter=${2:-'.*'}
+  query=${3:-'.*'}
+  { docker network inspect $(docker network ls -f name=".*$network_filter.*" -q) | gron | ag $query | gron --ungron }
+}
+
+function dintls() {
+  ensure_installed 'gron'
+  ensure_installed 'docker'
+  ensure_installed 'ag'
+  query=${3:-'.*'}
+  docker --tlsverify -H $1 inspect $2 | gron | ag $query | gron --ungron
+}
+
+function dnetiqtls() {
+  ensure_installed 'gron'
+  ensure_installed 'docker'
+  ensure_installed 'ag'
+  network_filter=${2:-'.*'}
+  query=${3:-'.*'}
+  docker --tlsverify -H $1 network inspect $(docker network ls -f name=".*$network_filter.*" -q) | gron | ag $query | gron --ungron
+}
+
+function dnetitls() {
+  ensure_installed 'gron'
+  ensure_installed 'docker'
+  ensure_installed 'ag'
+  query=${3:-'.*'}
+  docker --tlsverify -H $1 network inspect $2 | gron | ag $query | gron --ungron
+}
+
+function ensure_installed() {
+  if [[ -z "$1" ]]
+  then
+    echo "'$1' must be installed"
+    exit -1
+  fi
+}
+
 time_zsh() {
   for i in $(seq 1 $1); do /usr/bin/time zsh -i -c exit; done
 }
