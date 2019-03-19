@@ -48,8 +48,14 @@ set cindent " indents more if inside brackets
 set relativenumber
 set list
 set listchars=tab:▸·,trail:·,eol:↵" Show tabs as !<dot> and spaces as <dot>
-"set foldmethod=indent
-"set foldcolumn=1
+set cul " highlight current line
+augroup BgHighlight
+  autocmd!
+  autocmd WinEnter * set cul
+  autocmd WinLeave * set nocul
+augroup END
+set splitbelow
+set splitright
 " }}}
 " Commands -------------------- {{{
 command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
@@ -110,6 +116,7 @@ if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-clang'
   Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make'}
+  Plug 'mdempsky/gocode', { 'rtp': 'nvim' }
   Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
   Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
   Plug 'neomake/neomake'
@@ -237,13 +244,13 @@ map <silent><S-F5> :PREVCOLOR<cr>
 " }}}
 " Ensime mappings -------------------- {{{
 "augroup ensime_mappings
-  "autocmd!
-  "autocmd BufWritePost *.scala silent :EnTypeCheck
-  "au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
-  "au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
-  "au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
-  "au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
-  "au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
+"autocmd!
+"autocmd BufWritePost *.scala silent :EnTypeCheck
+"au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
+"au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
+"au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
+"au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
+"au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
 "augroup END
 " }}}
 " Tern mappings -------------------- {{{
@@ -287,14 +294,14 @@ nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
 nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
 nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
 
-imap <C-j>I <Plug>(JavaComplete-Imports-AddMissing)
-imap <C-j>R <Plug>(JavaComplete-Imports-RemoveUnused)
-imap <C-j>i <Plug>(JavaComplete-Imports-AddSmart)
-imap <C-j>ii <Plug>(JavaComplete-Imports-Add)
+"imap <C-j>I <Plug>(JavaComplete-Imports-AddMissing)
+"imap <C-j>R <Plug>(JavaComplete-Imports-RemoveUnused)
+"imap <C-j>i <Plug>(JavaComplete-Imports-AddSmart)
+"imap <C-j>ii <Plug>(JavaComplete-Imports-Add)
 
 nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
 
-imap <C-j>jM <Plug>(JavaComplete-Generate-AbstractMethods)
+"imap <C-j>jM <Plug>(JavaComplete-Generate-AbstractMethods)
 
 nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
 nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
@@ -305,9 +312,9 @@ nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
 nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
 nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
 
-imap <C-j>s <Plug>(JavaComplete-Generate-AccessorSetter)
-imap <C-j>g <Plug>(JavaComplete-Generate-AccessorGetter)
-imap <C-j>a <Plug>(JavaComplete-Generate-AccessorSetterGetter)
+"imap <C-j>s <Plug>(JavaComplete-Generate-AccessorSetter)
+"imap <C-j>g <Plug>(JavaComplete-Generate-AccessorGetter)
+"imap <C-j>a <Plug>(JavaComplete-Generate-AccessorSetterGetter)
 
 vmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
 vmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
@@ -346,7 +353,7 @@ let g:autoformat_verbosemode=0
 " should markdown preview get shown automatically upon opening markdown buffer
 let g:livedown_autorun = 1
 " should the browser window pop-up upon previewing
-let g:livedown_open = 1 
+let g:livedown_open = 1
 " the port on which Livedown server will run
 let g:livedown_port = 1337
 " the browser to use
@@ -452,7 +459,7 @@ let g:jsdoc_input_description = 1
 " }}}
 " Airline variables -------------------- {{{
 if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
+  let g:airline_symbols = {}
 endif
 " unicode symbols
 let g:airline_left_sep = '»'
@@ -649,4 +656,10 @@ if has('nvim')
   " }}}
   call neomake#configure#automake('w')
 endif
+" }}}
+" Split Navigation -------------------- {{{
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 " }}}
