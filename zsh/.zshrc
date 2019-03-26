@@ -6,9 +6,9 @@ bindkey "^[[3~" delete-char
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-for f in $HOME/*.env
+for f in $HOME/*(.env|.alia)
 do
-  source $f
+  source $f > /dev/null
 done
 
 source ~/.bash_profile

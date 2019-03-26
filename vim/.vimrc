@@ -75,9 +75,9 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 
-Plug 'svermeulen/vim-cutlass'
-Plug 'svermeulen/vim-yoink'
-Plug 'svermeulen/vim-subversive'
+"Plug 'svermeulen/vim-cutlass'
+"Plug 'svermeulen/vim-yoink'
+"Plug 'svermeulen/vim-subversive'
 
 Plug 'mileszs/ack.vim'
 Plug 'udalov/kotlin-vim'
@@ -147,18 +147,19 @@ set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
 " Vim cutlass mappings -------------------- {{{
-nnoremap x d
-xnoremap x d
-nnoremap xx dd
-nnoremap X D
+"nnoremap x d
+"xnoremap x d
+"nnoremap xx dd
+"nnoremap X D
+"nnoremap cl cl<Esc>
 " }}} 
 " Vim yoink mappings -------------------- {{{
-nmap <c-n> <plug>(YoinkPostPasteSwapForward)
-nmap <c-p> <plug>(YoinkPostPasteSwapBack)
-nmap p <plug>(YoinkPaste_p)
-nmap P <plug>(YoinkPaste_P)
-nmap [y <plug>(YoinkRotateBack)
-nmap ]y <plug>(YoinkRotateForward)
+"nmap <c-n> <plug>(YoinkPostPasteSwapForward)
+"nmap <c-p> <plug>(YoinkPostPasteSwapBack)
+"nmap p <plug>(YoinkPaste_p)
+"nmap P <plug>(YoinkPaste_P)
+"nmap [y <plug>(YoinkRotateBack)
+"nmap ]y <plug>(YoinkRotateForward)
 " }}}
 " Vim Subversive -------------------- {{{
 nmap s <plug>(SubversiveSubstitute)
@@ -627,6 +628,11 @@ augroup filetype_bash
   au FileType sh :normal gg=G
   au FileType sh :call SetTabs(2)
   au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
+augroup END
+" }}}
+" Markdown file settings -------------------- {{{
+augroup filetype_markdown
+  au FileType markdown :set fo-=t " remove line wrap if textwidth is exceeded
 augroup END
 " }}}
 " HTML file settings -------------------- {{{

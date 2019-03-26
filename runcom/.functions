@@ -1,15 +1,39 @@
 #! /usr/bin/env bash
 
+function drmf() {
+  ensure_installed 'docker'
+  query=${1:-'.*'}
+  docker rm -f $(docker ps -a -q -f name=".*$query.*")
+}
+
+function drmftls() {
+  ensure_installed 'docker'
+  query=${2:-'.*'}
+  docker --tlsverify -H $1 rm -f $(docker --tlsverify -H $1 ps -a -q -f name=".*$query.*")
+}
+
 function dps() {
   ensure_installed 'docker'
   query=${1:-'.*'}
   docker ps -a -f name=".*$query.*"
 }
 
+function dpsq() {
+  ensure_installed 'docker'
+  query=${1:-'.*'}
+  docker ps -a -q -f name=".*$query.*"
+}
+
 function dpstls() {
   ensure_installed 'docker'
   query=${2:-'.*'}
   docker --tlsverify -H $1 ps -a -f name=".*$query.*"
+}
+
+function dpsqtls() {
+  ensure_installed 'docker'
+  query=${2:-'.*'}
+  docker --tlsverify -H $1 ps -a -q -f name=".*$query.*"
 }
 
 function dnetls() {
