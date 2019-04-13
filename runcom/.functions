@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 function drmf() {
   ensure_installed 'docker'
@@ -82,7 +82,7 @@ function dnetiq() {
   ensure_installed 'ag'
   network_filter=${2:-'.*'}
   query=${3:-'.*'}
-  { docker network inspect $(docker network ls -f name=".*$network_filter.*" -q) | gron | ag $query | gron --ungron }
+  docker network inspect $(docker network ls -f name=".*$network_filter.*" -q) | gron | ag $query | gron --ungron
 }
 
 function dintls() {
@@ -163,7 +163,7 @@ make_alias() {
 }
 
 # DOCKER
-function docker_rmi_dangling() {
+docker_rmi_dangling() {
   if command_exists docker ;
   then
     docker rmi $(docker images -f dangling=true -q) "$@"
@@ -172,9 +172,10 @@ function docker_rmi_dangling() {
   fi
 }
 
-function docker_build_run() {
+docker_build_run() {
   if command_exists docker ;
   then
     docker build -t $1 . && docker --rm run $1 "$@"
   fi
 }
+

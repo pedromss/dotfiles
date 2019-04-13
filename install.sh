@@ -7,6 +7,11 @@ function clone_if_not_exists() {
   fi
 }
 
+function generate_brewfile() {
+  echo 'Generating Brewfile'
+  curl -sL https://raw.githubusercontent.com/pedromss/brewfile-generator/master/gen-brewfile.sh | sh
+}
+
 set -e
 logs_dir=logs
 
@@ -24,11 +29,16 @@ done
 make_link "$dotfiles_fullpath/.config/nvim" $XDG_CONFIG_HOME/nvim
 make_link "$dotfiles_fullpath/.local/share/nvim" $XDG_DATA_HOME/nvim
 
-if [[ "$1" =~ gen-brew ]]
-then
-  echo 'Generating Brewfile'
-  curl -sL https://raw.githubusercontent.com/pedromss/brewfile-generator/master/gen-brewfile.sh | sh
-fi
+key="$1"
+while [[ $# -gt 0 ]]
+do
+  case $key in
+    --gen-brew)
+      generate_brewfile
+      shift
+      ;;
+  esac
+done
 
 zsh_plugins_folder=$user_home/zsh-plugin-repos
 mkdir -p $zsh_plugins_folder
