@@ -213,6 +213,7 @@ nnoremap <leader>F :Files<CR>
 nnoremap <leader>G :GFiles<Cr>
 inoremap jk <esc>
 noremap <leader>af :Autoformat<CR>
+noremap <localleader>nf :set nofoldenable!<CR>
 "au BufWrite * :Autoformat
 " }}}
 " Livedown mappings -------------------- {{{
