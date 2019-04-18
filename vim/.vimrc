@@ -213,6 +213,9 @@ nnoremap <leader>F :Files<CR>
 nnoremap <leader>G :GFiles<Cr>
 inoremap jk <esc>
 noremap <leader>af :Autoformat<CR>
+noremap <localleader>nf :set nofoldenable!<CR>
+noremap <C-n> :cn<CR>
+noremap <C-m> :cp<CR>
 "au BufWrite * :Autoformat
 " }}}
 " Livedown mappings -------------------- {{{
@@ -238,9 +241,12 @@ nnoremap <S-Q> :bd!<CR>
 augroup go_mappings
   autocmd!
   au FileType go noremap gob :GoBuild<CR>
-  au FileType go noremap got :GoTest<CR>
+  au FileType go noremap gots :GoTest<CR>
+  au FileType go noremap gota :GoTest ./...<CR>
   au FileType go noremap goft :GoTestFunc<CR>
   au FileType go noremap goi :GoInstall<CR>
+  au FileType go noremap gomi :GoImport 
+  au FileType go noremap goma :GoImportAs 
   au FileType go noremap gor :GoRun<CR>
   au FileType go noremap gode :GoDef<CR>
   au FileType go noremap godo :GoDoc<CR>
