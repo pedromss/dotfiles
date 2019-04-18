@@ -12,6 +12,9 @@
 	unstage = reset HEAD --
   chall = checkout -- .
   bname = rev-parse --abbrev-ref HEAD
+  tagd = push --delete origin
+  tagp = push --tags
+  tagf = fetch --tags
 [core]
 	autocrlf = input
   editor = /usr/bin/vim
