@@ -153,6 +153,8 @@ source $HOME/zsh-plugin-repos/zsh-history-substring-search/zsh-history-substring
 # ==================================================
 # === Latency === | Plugin/Command
 # ==================================================
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # For zsh profiling
 #zprof
