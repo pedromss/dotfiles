@@ -4,6 +4,17 @@ function! SetTabs(amount)
   let &l:shiftwidth = a:amount
   let &l:softtabstop = a:amount
 endfunction
+
+function! AddShebang()
+  " TODO test for the presence of the shebang already
+  " TODO dont use marks when it is a new file
+  if &filetype !=? 'sh'
+    echo 'Filetype is ' . &filetype . ' not adding the shebang line'
+  else
+    let shebang = '#!/usr/bin/env bash'
+    :execute "normal! mtggI" . shebang "\<esc>o\<esc>`t"
+  endif
+endfunction
 " }}}
 " Basic settings -------------------- {{{
 if has('gui_running')
@@ -135,7 +146,7 @@ if has('nvim')
 endif
 call plug#end()
 " }}}
-" Gui settings -------------------- {{{ 
+" Gui settings -------------------- {{{
 set guioptions-=m
 set guioptions-=T
 set guioptions-=r
@@ -159,7 +170,7 @@ set grepprg=grep\ -nH\ $*
 "nnoremap xx dd
 "nnoremap X D
 "nnoremap cl cl<Esc>
-" }}} 
+" }}}
 " Vim yoink mappings -------------------- {{{
 "nmap <c-n> <plug>(YoinkPostPasteSwapForward)
 "nmap <c-p> <plug>(YoinkPostPasteSwapBack)
@@ -193,8 +204,8 @@ if has('nvim')
   nnoremap <F2> :below 20split \| :terminal<CR>
 endif
 nnoremap soc :echo "below"<cr>
-nnoremap / /\v
-nnoremap ? ?\v
+nnoremap / /\v\c
+nnoremap ? ?\v\c
 nnoremap <leader>w :match TWS /\v $/<cr>
 nnoremap L :b#<cr>
 vnoremap <leader>ac di<enter><esc>kaaugroup boo<enter>autocmd!<esc><<$a<enter>augroup END<esc>P
@@ -204,9 +215,8 @@ nnoremap cm :match<cr>
 nnoremap <m-k> :m-2<CR>
 nnoremap <m-j> :m+0<CR>
 nnoremap <leader>ev :vsplit $HOME/.vimrc<CR>
-nnoremap <localleader>ev :split $HOME/.vimrc<CR>
 nnoremap <leader>sv :so $MYVIMRC<CR>
-nnoremap <localleader>sv :source $MYVIMRC<CR>:runtime! plugin/settings/*<CR>:redraw<CR>:echo $MYVIMRC 'reloaded'<CR>
+nnoremap <localleader>sv :source $MYVIMRC<CR>
 nnoremap <s-d> yyp
 nnoremap <localleader>t :NERDTreeToggle<CR>
 nnoremap <leader>F :Files<CR>
@@ -216,6 +226,12 @@ noremap <leader>af :Autoformat<CR>
 noremap <localleader>nf :set nofoldenable!<CR>
 noremap <C-n> :cn<CR>
 noremap <C-m> :cp<CR>
+
+" edit a new buffer in the current pane event with changes
+nnoremap <leader>enn :ene<cr>
+nnoremap <leader>enf :ene!<cr>
+" edit a new buffer in the current pane if no changes
+
 "au BufWrite * :Autoformat
 " }}}
 " Livedown mappings -------------------- {{{
@@ -245,8 +261,8 @@ augroup go_mappings
   au FileType go noremap gota :GoTest ./...<CR>
   au FileType go noremap goft :GoTestFunc<CR>
   au FileType go noremap goi :GoInstall<CR>
-  au FileType go noremap gomi :GoImport 
-  au FileType go noremap goma :GoImportAs 
+  au FileType go noremap gomi :GoImport
+  au FileType go noremap goma :GoImportAs
   au FileType go noremap gor :GoRun<CR>
   au FileType go noremap gode :GoDef<CR>
   au FileType go noremap godo :GoDoc<CR>
@@ -572,9 +588,13 @@ let g:javascript_plugin_flow = 1
 let g:tex_flavor='latex'
 " }}}
 " UltiSnips variables -------------------- {{{
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsListSnippets = '<s-tab>'
+let g:UltiSnipsJumpForwardTrigger = "<c-b>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
+let g:UltiSnipsUsePythonVersion = 3
+let g:UltiSnipsEditSplit = "vertical"
+let g:UltiSnipsSnippetsDir = "$HOME/dotfiles/vim/ulti-snips/"
 " }}}
 " Vimwiki variables -------------------- {{{
 let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
@@ -651,6 +671,9 @@ augroup filetype_bash
   au FileType sh :normal gg=G
   au FileType sh :call SetTabs(2)
   au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
+  au bufwritepost *.sh :normal gg=G
+  " TODO make this shebang a variable somewher?
+  au BufNewFile *.sh :call AddShebang()
 augroup END
 " }}}
 " Markdown file settings -------------------- {{{
@@ -706,7 +729,6 @@ onoremap il' :<c-u>normal! F'vi'<cr>
 " }}}
 " Markdown -------------------- {{{
 onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
-" }}}
 " }}}
 " Hightlight groups -------------------- {{{
 highlight TWS ctermbg=red guibg=red
