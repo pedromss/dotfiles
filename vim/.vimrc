@@ -96,54 +96,60 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 "Plug 'svermeulen/vim-yoink'
 "Plug 'svermeulen/vim-subversive'
 
-Plug 'mileszs/ack.vim'
-Plug 'udalov/kotlin-vim'
-Plug 'keith/investigate.vim'
-Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
-Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
-Plug 'w0rp/ale'
-Plug 'hashivim/vim-terraform'
-Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
-Plug 'airblade/vim-rooter'
 Plug 'Chiel92/vim-autoformat'
-Plug 'KeitaNakamura/neodark.vim'
+"Plug 'KeitaNakamura/neodark.vim'
+"Plug 'airblade/vim-rooter'
+Plug 'alvan/vim-closetag', { 'for': 'html' }
+"Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
+Plug 'bling/vim-airline'
+Plug 'christoomey/vim-titlecase'
+"Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+Plug 'easymotion/vim-easymotion'
 Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'leafgarland/typescript-vim'
+Plug 'flazz/vim-colorschemes'
+"Plug 'hashivim/vim-terraform'
+"Plug 'honza/vim-snippets'
+"Plug 'heavenshell/vim-jsdoc.git', { 'for': 'javascript' }
+Plug 'vim-latex/vim-latex'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'christoomey/vim-titlecase'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'keith/investigate.vim'
+Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdcommenter'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'easymotion/vim-easymotion'
-Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'jiangmiao/auto-pairs'
-Plug 'https://github.com/heavenshell/vim-jsdoc.git', { 'for': 'javascript' }
-Plug 'alvan/vim-closetag'
-Plug 'https://github.com/vim-latex/vim-latex.git'
-Plug 'vimwiki/vimwiki'
-Plug 'shime/vim-livedown', { 'for': 'markdown' }
-Plug 'flazz/vim-colorschemes'
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-colorscheme-switcher'
-Plug 'tfnico/vim-gradle'
-Plug 'moby/moby'
+Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
+Plug 'mileszs/ack.vim'
+"Plug 'moby/moby'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'shime/vim-livedown', { 'for': 'markdown' }
+Plug 'tfnico/vim-gradle'
+Plug 'udalov/kotlin-vim'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'vimwiki/vimwiki'
+Plug 'xolox/vim-colorscheme-switcher'
+Plug 'xolox/vim-misc'
 if has('nvim')
   Plug 'Shougo/neco-vim', { 'for': 'go' }
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'zchee/deoplete-clang'
   Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make'}
   Plug 'mdempsky/gocode', { 'rtp': 'nvim' }
   Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
   Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+endif
+
+" TODO too powerful, need to read
+Plug 'w0rp/ale'
+Plug 'SirVer/ultisnips'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'neomake/neomake'
 endif
+
+" TODO are these really necessary?!
+Plug 'jiangmiao/auto-pairs'
 call plug#end()
 " }}}
 " Gui settings -------------------- {{{
@@ -206,7 +212,7 @@ endif
 nnoremap soc :echo "below"<cr>
 nnoremap / /\v\c
 nnoremap ? ?\v\c
-nnoremap <leader>w :match TWS /\v $/<cr>
+"nnoremap <leader>w :match TWS /\v $/<cr>
 nnoremap L :b#<cr>
 vnoremap <leader>ac di<enter><esc>kaaugroup boo<enter>autocmd!<esc><<$a<enter>augroup END<esc>P
 nnoremap <space> viw
@@ -284,6 +290,7 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 " }}}
 " Titlecase mappings -------------------- {{{
+" TODO review this plugins config
 nmap <leader>gt <Plug>Titlecase
 vmap <leader>gt <Plug>Titlecase
 nmap <leader>gT <Plug>TitlecaseLine
@@ -302,14 +309,16 @@ map <silent><S-F5> :PREVCOLOR<cr>
 " }}}
 " Easymotion mappings -------------------- {{{
 "map  <Leader>f <Plug>(easymotion-bd-f)
-"nmap <Leader>f <Plug>(easymotion-overwin-f)
-"nmap s <Plug>(easymotion-overwin-f2)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+nmap s <Plug>(easymotion-overwin-f2)
 "" MOVE TO LINE
 "map <Leader>L <Plug>(easymotion-bd-jk)
-"nmap <Leader>L <Plug>(easymotion-overwin-line)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
 "" MOVE TO WORD
 "map  <Leader>w <Plug>(easymotion-bd-w)
-"nmap <Leader>w <Plug>(easymotion-overwin-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
 " }}}
 " Ensime mappings -------------------- {{{
 "augroup ensime_mappings
@@ -350,48 +359,6 @@ augroup filetype_mappings_vim
   autocmd FileType vim nnoremap soc :w \| :so %<cr>
 augroup END
 " }}}
-" JavaComplete2 mappings -------------------- {{{
-nnoremap <localleader>b :TagbarToggle<CR>
-nmap <F5> <Plug>(JavaComplete-Imports-Add)
-imap <F5> <Plug>(JavaComplete-Imports-Add)
-nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
-imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
-nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
-imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
-nmap <leader>jI <Plug>(JavaComplete-Imports-AddMissing)
-nmap <leader>jR <Plug>(JavaComplete-Imports-RemoveUnused)
-nmap <leader>ji <Plug>(JavaComplete-Imports-AddSmart)
-nmap <leader>jii <Plug>(JavaComplete-Imports-Add)
-
-"imap <C-j>I <Plug>(JavaComplete-Imports-AddMissing)
-"imap <C-j>R <Plug>(JavaComplete-Imports-RemoveUnused)
-"imap <C-j>i <Plug>(JavaComplete-Imports-AddSmart)
-"imap <C-j>ii <Plug>(JavaComplete-Imports-Add)
-
-nmap <leader>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-
-"imap <C-j>jM <Plug>(JavaComplete-Generate-AbstractMethods)
-
-nmap <leader>jA <Plug>(JavaComplete-Generate-Accessors)
-nmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-nmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-nmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-nmap <leader>jts <Plug>(JavaComplete-Generate-ToString)
-nmap <leader>jeq <Plug>(JavaComplete-Generate-EqualsAndHashCode)
-nmap <leader>jc <Plug>(JavaComplete-Generate-Constructor)
-nmap <leader>jcc <Plug>(JavaComplete-Generate-DefaultConstructor)
-
-"imap <C-j>s <Plug>(JavaComplete-Generate-AccessorSetter)
-"imap <C-j>g <Plug>(JavaComplete-Generate-AccessorGetter)
-"imap <C-j>a <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-
-vmap <leader>js <Plug>(JavaComplete-Generate-AccessorSetter)
-vmap <leader>jg <Plug>(JavaComplete-Generate-AccessorGetter)
-vmap <leader>ja <Plug>(JavaComplete-Generate-AccessorSetterGetter)
-
-nmap <silent> <buffer> <leader>jn <Plug>(JavaComplete-Generate-NewClass)
-nmap <silent> <buffer> <leader>jN <Plug>(JavaComplete-Generate-ClassInFile)
-" }}}
 " Java file mappings -------------------- {{{
 augroup filetype_mappings_java
   autocmd!
@@ -411,6 +378,9 @@ endif
 " VIm colorscheme switcher -------------------- {{{
 noremap <F8> :NextColorScheme<cr>
 noremap <F9> :PrevColorScheme<cr>
+" }}}
+" Tagbar mappings -------------------- {{{
+nmap <leader>tb :TagbarToggle<CR>
 " }}}
 " }}}
 " Variables -------------------- {{{
@@ -444,7 +414,9 @@ let g:livedown_port = 1337
 let g:livedown_browser = "chrome"
 " }}}
 " Ag variables -------------------- {{{
-let g:ackprg = 'ag --nogroup --nocolor --column'
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 " }}}
 " Netrw variables -------------------- {{{
 let g:netrw_banner = 0
