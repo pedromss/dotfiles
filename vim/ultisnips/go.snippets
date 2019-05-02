@@ -1,0 +1,39 @@
+snippet ifes "If with err"
+if err := $1; err != nil {
+	$2
+}
+endsnippet
+
+snippet ifet "If with err"
+if _, err := $1; err != nil {
+	$2
+}
+endsnippet
+
+snippet if "Simple if"
+if $1 {
+	$2
+}
+endsnippet
+
+snippet func "Function" A
+func $1($2) $3 {
+	$4
+}
+endsnippet
+
+snippet method "Method" A
+func (x *$1) $2($3) $4 {
+	$5
+}
+endsnippet
+
+snippet ??? "Not implemented" Ab
+panic("Not implemented")
+endsnippet
+
+snippet f??? "Function not implemented" A
+func $1($2) $4 {
+	panic("Not implemented")
+}
+endsnippet

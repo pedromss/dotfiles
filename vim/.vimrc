@@ -205,7 +205,7 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " }}}
 " General mappings -------------------- {{{
-"nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
+nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 if has('nvim')
   nnoremap <F2> :below 20split \| :terminal<CR>
 endif
@@ -214,7 +214,6 @@ nnoremap / /\v\c
 nnoremap ? ?\v\c
 "nnoremap <leader>w :match TWS /\v $/<cr>
 nnoremap L :b#<cr>
-vnoremap <leader>ac di<enter><esc>kaaugroup boo<enter>autocmd!<esc><<$a<enter>augroup END<esc>P
 nnoremap <space> viw
 nnoremap <Esc> :noh<CR>
 nnoremap cm :match<cr>
@@ -235,8 +234,10 @@ noremap <C-m> :cp<CR>
 
 " edit a new buffer in the current pane event with changes
 nnoremap <leader>enn :ene<cr>
-nnoremap <leader>enf :ene!<cr>
 " edit a new buffer in the current pane if no changes
+nnoremap <leader>enf :ene!<cr>
+
+nnoremap <f10> :set readonly!<cr>
 
 "au BufWrite * :Autoformat
 " }}}
@@ -566,7 +567,8 @@ let g:UltiSnipsJumpForwardTrigger = "<c-b>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
 let g:UltiSnipsUsePythonVersion = 3
 let g:UltiSnipsEditSplit = "vertical"
-let g:UltiSnipsSnippetsDir = "$HOME/dotfiles/vim/ulti-snips/"
+let g:UltiSnipsSnippetsDir = $HOME."/dotfiles/vim/ultisnips"
+let g:UltiSnipsSnippetDirectories = [$HOME."/dotfiles/vim/ultisnips"]
 " }}}
 " Vimwiki variables -------------------- {{{
 let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
