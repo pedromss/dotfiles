@@ -5,16 +5,22 @@ function! SetTabs(amount)
   let &l:softtabstop = a:amount
 endfunction
 
-function! AddShebang()
-  " TODO test for the presence of the shebang already
-  " TODO dont use marks when it is a new file
-  if &filetype !=? 'sh'
-    echo 'Filetype is ' . &filetype . ' not adding the shebang line'
-  else
-    let shebang = '#!/usr/bin/env bash'
-    :execute "normal! mtggI" . shebang "\<esc>o\<esc>`t"
-  endif
+"function! AddShebang()
+  "" TODO test for the presence of the shebang already
+  "" TODO dont use marks when it is a new file
+  "if &filetype !=? 'sh'
+    "echo 'Filetype is ' . &filetype . ' not adding the shebang line'
+  "else
+    "let shebang = '#!/usr/bin/env bash'
+    ":execute "normal! mtggI" . shebang "\<esc>o\<esc>`t"
+  "endif
+"endfunction
+
+function! CloseGoErrors() 
+  let buffers = filter(range(1, bufnr('$')), 'bufexists(v:val)')
+  echo buffers
 endfunction
+
 " }}}
 " Basic settings -------------------- {{{
 if has('gui_running')
@@ -209,6 +215,11 @@ nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>"))
 if has('nvim')
   nnoremap <F2> :below 20split \| :terminal<CR>
 endif
+inoremap <f1> <Esc>:w<cr>
+nnoremap <f1> :w<cr>
+inoremap jn <Esc>o
+inoremap jI <Esc>^i
+inoremap jA <Esc>g_a
 nnoremap soc :echo "below"<cr>
 nnoremap / /\v\c
 nnoremap ? ?\v\c
@@ -617,6 +628,16 @@ augroup go_aus
   autocmd!
   au FileType go :call SetTabs(4)
   au FileType go :set foldmethod=syntax
+augroup END
+" }}}
+" Go templates -------------------- {{{
+augroup go_templates_settings
+  autocmd!
+  au FileType gohtmltmpl
+  au FileType gohtmltmpl set noexpandtab
+  au FileType gohtmltmpl set tabstop=4
+  au FileType gohtmltmpl set softtabstop=4
+  au FileType gohtmltmpl set shiftwidth=4
 augroup END
 " }}}
 " Java file settings -------------------- {{{

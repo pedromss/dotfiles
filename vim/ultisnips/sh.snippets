@@ -1,0 +1,11 @@
+snippet case "Switch case"
+while [[ $# -gt 0 ]]
+do
+	case "\$1" in
+		-$1|--$2)
+			$3
+			shift
+			;;
+	esac
+done
+endsnippet

@@ -1,3 +1,19 @@
+snippet ifeff "If err log fatal format" Ab
+if err != nil {
+	log.Fatalf("$1", $2)
+	return
+}
+$3
+endsnippet
+
+snippet ifefp "If err log fatal" Ab
+if err != nil {
+	log.Fatal("$1")
+	return
+}
+$2
+endsnippet
+
 snippet v "Short var declaration" b
 $1 := $2
 endsnippet
