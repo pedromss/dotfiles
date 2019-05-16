@@ -666,9 +666,6 @@ augroup filetype_bash
   au FileType sh :normal gg=G
   au FileType sh :call SetTabs(2)
   au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
-  au bufwritepost *.sh :normal gg=G
-  " TODO make this shebang a variable somewher?
-  au BufNewFile *.sh :call AddShebang()
 augroup END
 " }}}
 " Markdown file settings -------------------- {{{
