@@ -15,7 +15,7 @@ function generate_brewfile() {
 set -e
 logs_dir=logs
 
-source ./common.sh
+source ./common.sh $@
 mkdir -p $logs_dir
 
 echo 'Performing symlinks...'

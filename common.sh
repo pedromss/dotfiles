@@ -11,7 +11,7 @@ make_link() {
 # =========================
 dotfiles_folder='dotfiles'
 dotfiles_fullpath=''
-user_home=$HOME
+user_home=${1:-$HOME}
 files_to_link=(.chunkwmrc .skhdrc runcom/.bash_profile .ignore .gitconfig runcom/.aliases runcom/.env vim/.vim vim/.vimrc vim/.ideavim zsh/.zshrc zsh/.zfunctions .ctags)
 # =========================
 # script
