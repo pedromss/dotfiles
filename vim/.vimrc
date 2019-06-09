@@ -5,6 +5,12 @@ function! SetTabs(amount)
   let &l:softtabstop = a:amount
 endfunction
 
+function! LoadColorScheme(scheme)
+  if filereadable(expand("~/dotfiles/vim/.vim/colors/" . a:scheme . ".vim"))
+    execute ":colorscheme " . a:scheme
+  endif
+endfunction
+
 "function! AddShebang()
   "" TODO test for the presence of the shebang already
   "" TODO dont use marks when it is a new file
@@ -35,7 +41,7 @@ let localleader = "\\"
 ":colorscheme vimbrains
 ":colorscheme neodark
 ":colorscheme allomancer
-:colorscheme escuro
+call LoadColorScheme("escuro")
 ":colorscheme oldbook
 ":colorscheme seoul256
 ":colorscheme srcery

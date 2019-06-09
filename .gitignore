@@ -10,4 +10,4 @@
 **/plugged/
 **/.nvm
 **/logs
-
+.local/share/nvim/site/autoload/plug.vim

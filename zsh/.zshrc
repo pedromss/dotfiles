@@ -143,7 +143,6 @@ source $HOME/zsh-plugin-repos/enhancd/init.sh
 source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
 source $HOME/zsh-plugin-repos/k/k.plugin.zsh
-source $HOME/zsh-plugin-repos/tipz/tipz.zsh
 source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/globalias/globalias.plugin.zsh
