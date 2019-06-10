@@ -2,8 +2,8 @@
 
 dotfiles_folder='dotfiles'
 dotfiles_fullpath=''
-zsh_plugins_folder=$user_home/zsh-plugin-repos
 user_home=${1:-$HOME}
+zsh_plugins_folder=$user_home/zsh-plugin-repos
 
 # Make sure a user is specified
 if [ ! -d $user_home ]
