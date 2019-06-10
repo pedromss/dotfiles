@@ -18,7 +18,7 @@ function generate_brewfile() {
 }
 
 function install_fzf() {
-  if command_exists 'fzf'
+  if [ -d "$HOME/.fzf" ]
   then
     return
   fi
@@ -30,7 +30,7 @@ function install_fzf() {
   fi
 
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install
+  ~/.fzf/install --key-bindings --completion --update-rc
 }
 
 set -e
