@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-key="$1"
 while [[ $# -gt 0 ]]
 do
+  key="$1"
   case $key in
     --install-conscript)
       version="$2"
