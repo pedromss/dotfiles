@@ -6,7 +6,7 @@ bindkey "^[[3~" delete-char
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-for f in $HOME/*(.env|.alia)
+for f in `find "$HOME" \( -iname \*.env -o -iname \*.alia \) -type f -maxdepth 1`
 do
   source $f > /dev/null
 done

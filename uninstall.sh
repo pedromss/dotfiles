@@ -15,4 +15,5 @@ do
 done
 
 rm -rf "$zsh_plugins_folder"
-rm -rf ~/.fzf.*sh
+rm -rf ~/.fzf*
+rm -rf ~/.enhancd
