@@ -12,17 +12,17 @@ function! LoadColorScheme(scheme)
 endfunction
 
 "function! AddShebang()
-  "" TODO test for the presence of the shebang already
-  "" TODO dont use marks when it is a new file
-  "if &filetype !=? 'sh'
-    "echo 'Filetype is ' . &filetype . ' not adding the shebang line'
-  "else
-    "let shebang = '#!/usr/bin/env bash'
-    ":execute "normal! mtggI" . shebang "\<esc>o\<esc>`t"
-  "endif
+"" TODO test for the presence of the shebang already
+"" TODO dont use marks when it is a new file
+"if &filetype !=? 'sh'
+"echo 'Filetype is ' . &filetype . ' not adding the shebang line'
+"else
+"let shebang = '#!/usr/bin/env bash'
+":execute "normal! mtggI" . shebang "\<esc>o\<esc>`t"
+"endif
 "endfunction
 
-function! CloseGoErrors() 
+function! CloseGoErrors()
   let buffers = filter(range(1, bufnr('$')), 'bufexists(v:val)')
   echo buffers
 endfunction
@@ -39,6 +39,7 @@ endif
 let mapleader = ','
 let localleader = "\\"
 call LoadColorScheme("gruvbox")
+set bg=dark
 syntax on
 filetype plugin indent on
 set textwidth=80
@@ -81,7 +82,7 @@ command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git
 let g:ale_emit_conflict_warnings = 0
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 if has('gui_win32')
@@ -108,29 +109,20 @@ Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 "Plug 'svermeulen/vim-subversive'
 
 Plug 'Chiel92/vim-autoformat'
-"Plug 'KeitaNakamura/neodark.vim'
-"Plug 'airblade/vim-rooter'
 Plug 'alvan/vim-closetag', { 'for': 'html' }
-"Plug 'artur-shaik/vim-javacomplete2', { 'for': 'java' }
 Plug 'bling/vim-airline'
 Plug 'christoomey/vim-titlecase'
-"Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'easymotion/vim-easymotion'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'flazz/vim-colorschemes'
-"Plug 'hashivim/vim-terraform'
-"Plug 'honza/vim-snippets'
-"Plug 'heavenshell/vim-jsdoc.git', { 'for': 'javascript' }
 Plug 'vim-latex/vim-latex'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'keith/investigate.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'
-"Plug 'moby/moby'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
 Plug 'scrooloose/nerdcommenter'
@@ -153,7 +145,9 @@ endif
 
 " TODO too powerful, need to read
 Plug 'w0rp/ale'
-Plug 'SirVer/ultisnips'
+if has('python') || has('python3')
+  Plug 'SirVer/ultisnips'
+endif
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'neomake/neomake'
@@ -581,7 +575,11 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsListSnippets = '<s-tab>'
 let g:UltiSnipsJumpForwardTrigger = "<c-b>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
-let g:UltiSnipsUsePythonVersion = 3
+if has('python3')
+  let g:UltiSnipsUsePythonVersion = 3
+elseif has('python')
+  let g:UltiSnipsUsePythonVersion = 2
+endif
 let g:UltiSnipsEditSplit = "vertical"
 let g:UltiSnipsSnippetsDir = $HOME."/dotfiles/vim/ultisnips"
 let g:UltiSnipsSnippetDirectories = [$HOME."/dotfiles/vim/ultisnips"]
@@ -638,7 +636,6 @@ augroup END
 " Go templates -------------------- {{{
 augroup go_templates_settings
   autocmd!
-  au FileType gohtmltmpl
   au FileType gohtmltmpl set noexpandtab
   au FileType gohtmltmpl set tabstop=4
   au FileType gohtmltmpl set softtabstop=4
@@ -655,8 +652,7 @@ augroup END
 augroup js_aus
   autocmd!
   au FileType javascript :call SetTabs(2)
-  au bufwritepost *.js silent !standard --fix %
-  set autoread
+  au bufwritepost *.js silent !standard --fix % 
 augroup END
 " }}}
 " Typescript file settings -------------------- {{{
@@ -676,6 +672,7 @@ augroup END
 " }}}
 " Markdown file settings -------------------- {{{
 augroup filetype_markdown
+  autocmd!
   au FileType markdown :set fo-=t " remove line wrap if textwidth is exceeded
 augroup END
 " }}}
@@ -701,9 +698,9 @@ augroup END
 " Vimscript file settings ------------------------------ {{{
 augroup filetype_vim
   autocmd!
-  autocmd FileType vim :cal SetTabs(2)
-  autocmd FileType vim setlocal foldmethod=marker
-  autocmd FileType vim nnoremap <leader>mf o" Fold description <esc>20a-<esc>a {{{<cr><cr>}}}<esc>kcc
+  au FileType vim :cal SetTabs(2)
+  au FileType vim setlocal foldmethod=marker
+  au FileType vim nnoremap <leader>mf o" Fold description <esc>20a-<esc>a {{{<cr><cr>}}}<esc>kcc
 augroup END
 " }}}
 " }}}

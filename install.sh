@@ -17,8 +17,17 @@ function generate_brewfile() {
   curl -sL https://raw.githubusercontent.com/pedromss/brewfile-generator/master/gen-brewfile.sh | sh
 }
 
+function install_vim_plugins() {
+  if [[ "$1" == 'no' ]] || ! command_exists vim
+  then
+    return
+  fi
+
+  vim -c +PlugInstall +qall
+}
+
 function install_fzf() {
-  if [ -d "$HOME/.fzf" ]
+  if [ -d "$HOME/.fzf" ] || [[ "$1" == 'no' ]]
   then
     return
   fi
@@ -29,7 +38,10 @@ function install_fzf() {
     exit 1
   fi
 
+  fzf_version="$2"
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  echo "Installing fzf@$fzf_version"
+  cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout $fzf_version
   ~/.fzf/install --key-bindings --completion --update-rc --no-fish
 }
 
@@ -44,8 +56,8 @@ function setup_neovim_config() {
   mkdir -p "$XDG_CONFIG_HOME/nvim"
   mkdir -p "$XDG_DATA_HOME/nvim"
 
-  make_link "$dotfiles_fullpath/.config/nvim" $XDG_CONFIG_HOME/nvim
   make_link "$dotfiles_fullpath/.local/share/nvim" $XDG_DATA_HOME/nvim
+  make_link "$dotfiles_fullpath/.config/nvim/init.vim" "$HOME/.config/nvim/init.vim"
 }
 
 function install_zsh_plugins() {
@@ -78,6 +90,7 @@ in_install_zsh_plugins='yes'
 in_generate_brewfile='no'
 in_config_ctags='yes'
 in_install_fzf='yes'
+in_fzf_version='0.18.0'
 while [[ $# -gt 0 ]]
 do
   key="$1"
@@ -85,6 +98,10 @@ do
     --gen-brew)
       in_generate_brewfile='yes'
       shift
+      ;;
+    --fzf-version)
+      in_fzf_version=$2
+      shift 2
       ;;
     --no-fzf)
       in_install_fzf='no'
@@ -174,8 +191,9 @@ do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 # ==================================================
 # Tool dependant configs and opt out features
 # ==================================================
+install_vim_plugins "$in_install_vim"
 setup_neovim_config "$in_install_nvim"
-install_fzf "$in_install_fzf"
+install_fzf "$in_install_fzf" "$in_fzf_version"
 install_zsh_plugins "$in_install_zsh_plugins" "$zsh_plugins_folder"
 generate_brewfile "$in_generate_brewfile"
 # ==================================================

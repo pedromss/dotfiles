@@ -4,12 +4,9 @@
   editor = /usr/bin/vim
 	excludesfile = ~/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
-;[diff]
-  ;external = /usr/local/bin/git_diff_wrapper
 [grep]
 	lineNumber = true
 [merge]
-	;tool = splice
   tool = vimdiff
   conflictStyle = diff3
 [mergetool]

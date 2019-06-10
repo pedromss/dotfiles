@@ -2,6 +2,7 @@ let mapleader = ','
 let localleader = "\\"
 syntax on
 filetype plugin indent on
+:colorscheme gruvbox
 set textwidth=80
 set path+=**
 set wildignore=*.class,**/target/**,**/.idea/**,**/node_modules/**,**/bower_components/**

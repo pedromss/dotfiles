@@ -2,6 +2,17 @@
 
 source ./common.sh
 
+in_hard='no'
+while [[ $# -gt 0 ]]
+do
+  case "$1" in
+    --hard)
+      in_hard='yes'
+      shift
+      ;;
+  esac
+done
+
 echo 'Deleting symlinks...'
 
 all_links=($(find $user_home -maxdepth 4 -type l))
@@ -14,6 +25,9 @@ do
   fi
 done
 
-rm -rf "$zsh_plugins_folder"
-rm -rf ~/.fzf*
-rm -rf ~/.enhancd
+if [[ "$in_hard" == 'yes' ]]
+then
+  rm -rf "$zsh_plugins_folder"
+  rm -rf ~/.fzf*
+  rm -rf ~/.enhancd
+fi
