@@ -14,3 +14,4 @@ do
   fi
 done
 
+rm -rf "$zsh_plugins_folder"

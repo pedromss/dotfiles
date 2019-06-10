@@ -38,7 +38,6 @@ function install_zsh_plugins() {
     return
   fi
 
-  zsh_plugins_folder=$user_home/zsh-plugin-repos
   mkdir -p $zsh_plugins_folder
 
   clone_if_not_exists 'https://github.com/Valiev/almostontop.git' $zsh_plugins_folder/almostontop
