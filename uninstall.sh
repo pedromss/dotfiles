@@ -7,7 +7,7 @@ echo 'Deleting symlinks...'
 all_links=($(find $user_home -maxdepth 4 -type l))
 for link in "${all_links[@]}"
 do
-  if [[ $(readlink $link) == *"dotfiles"* ]]
+  if [[ $(readlink $link) == *"$dotfiles_folder"* ]]
   then
     echo "Deleting link: ${link[*]}"
     rm $link

@@ -6,39 +6,7 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias brc="vim ~/.bashrc"
 
-if ! [[ -z youtube-dl ]]
-then
-  alias ydl='youtube-dl -x --audio-format mp3 --audio-quality 0 --no-playlist -o "$HOME/Music/youtube-dl/%(title)s.%(ext)s"'
-  alias ydl-list='youtube-dl -x --audio-format mp3 --audio-quality 0 --yes-playlist -o "$HOME/Music/youtube-dl/%(title)s.%(ext)s"'
-fi
-
-if ! [[ -z bat ]]
-then
-  alias cat="bat"
-fi
-
-# AWS
-alias awscf='aws cloudformation'
-
-# Gradle
-alias gw="gw --console=plain"
-alias gradle="gradle --console=plain"
-
-# Git
-alias gl="git pull"
-alias gp="git push"
-alias gbn="git bname | pbcopy"
-
-# Exa https://github.com/ogham/exa
-if ! [[ -z exa ]]
-then
-  alias lr="exa --group-directories-first --header --long --recurse --group --modified --created --git --all --all"
-  alias lrt="exa --group-directories-first --header --tree --long --recurse --group --modified --created --git"
-  alias l="exa --group-directories-first --header --long --group --modified --created --git --all --all"
-  alias ls="exa --group-directories-first -1"
-else
-  alias l="ls -lah"
-fi
+alias l="ls -lah"
 
 # maconly!
 alias pbc='pbcopy'

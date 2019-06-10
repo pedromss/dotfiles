@@ -1,125 +1,44 @@
 #!/usr/bin/env bash
 
-function drmf() {
-  ensure_installed 'docker'
-  query=${1:-'.*'}
-  docker rm -f $(docker ps -a -q -f name=".*$query.*")
-}
-
-function drmftls() {
-  ensure_installed 'docker'
-  query=${2:-'.*'}
-  docker --tlsverify -H $1 rm -f $(docker --tlsverify -H $1 ps -a -q -f name=".*$query.*")
-}
-
-function dps() {
-  ensure_installed 'docker'
-  query=${1:-'.*'}
-  docker ps -a -f name=".*$query.*"
-}
-
-function dpsq() {
-  ensure_installed 'docker'
-  query=${1:-'.*'}
-  docker ps -a -q -f name=".*$query.*"
-}
-
-function dpstls() {
-  ensure_installed 'docker'
-  query=${2:-'.*'}
-  docker --tlsverify -H $1 ps -a -f name=".*$query.*"
-}
-
-function dpsqtls() {
-  ensure_installed 'docker'
-  query=${2:-'.*'}
-  docker --tlsverify -H $1 ps -a -q -f name=".*$query.*"
-}
-
-function dnetls() {
-  ensure_installed 'docker'
-  query=${1:-'.*'}
-  docker network ls -f name=".*$query.*"
-}
-
-function dnetlstls() {
-  ensure_installed 'docker'
-  query=${2:-'.*'}
-  docker --tlsverify -H $1 network ls -f name=".*$query.*"
-}
-
-function dnetrm() {
-  ensure_installed 'docker'
-  query=${1:-'.*'}
-  docker network rm $(docker network ls -f name=".*$query.*" -q)
-}
-
-function dnetrmtls() {
-  ensure_installed 'docker'
-  query=${2:-'.*'}
-  docker --tlsverify -H "$1" network rm $(docker network ls -f name=".*$query.*" -q)
-}
-
-function din() {
-  ensure_installed 'gron'
-  ensure_installed 'docker'
-  ensure_installed 'ag'
-  query=${2:-'.*'}
-  docker inspect $1 | gron | ag $query | gron --ungron
-}
-
-function dneti() {
-  ensure_installed 'gron'
-  ensure_installed 'docker'
-  ensure_installed 'ag'
-  query=${2:-'.*'}
-  docker network inspect $1 | gron | ag $query | gron --ungron
-}
-
-function dnetiq() {
-  ensure_installed 'gron'
-  ensure_installed 'docker'
-  ensure_installed 'ag'
-  network_filter=${2:-'.*'}
-  query=${3:-'.*'}
-  docker network inspect $(docker network ls -f name=".*$network_filter.*" -q) | gron | ag $query | gron --ungron
-}
-
-function dintls() {
-  ensure_installed 'gron'
-  ensure_installed 'docker'
-  ensure_installed 'ag'
-  query=${3:-'.*'}
-  docker --tlsverify -H $1 inspect $2 | gron | ag $query | gron --ungron
-}
-
-function dnetiqtls() {
-  ensure_installed 'gron'
-  ensure_installed 'docker'
-  ensure_installed 'ag'
-  network_filter=${2:-'.*'}
-  query=${3:-'.*'}
-  docker --tlsverify -H $1 network inspect $(docker network ls -f name=".*$network_filter.*" -q) | gron | ag $query | gron --ungron
-}
-
-function dnetitls() {
-  ensure_installed 'gron'
-  ensure_installed 'docker'
-  ensure_installed 'ag'
-  query=${3:-'.*'}
-  docker --tlsverify -H $1 network inspect $2 | gron | ag $query | gron --ungron
-}
-
-function ensure_installed() {
-  if [[ -z "$1" ]]
+print_cmd_exists() {
+  if command_exists "$1"
   then
-    echo "'$1' must be installed"
-    exit -1
+    echo 'yes'
+  else
+    echo 'no'
   fi
 }
 
-time_zsh() {
-  for i in $(seq 1 $1); do /usr/bin/time zsh -i -c exit; done
+source_recursive() {
+  dir="$1"
+  if ! [ -d "$dir" ]
+  then
+    return
+  fi
+
+  current=$(pwd)
+  for x in `find $dir -type d -depth 1`
+  do
+    if [[ "$x" != "$current" ]]
+    then
+      source_for_command "$x"
+    fi
+  done
+}
+
+source_for_command() {
+  cmd="${1##*/}"
+  if command_exists "$cmd"
+  then
+    for f in `find $1 -name ".*.source" -type f`
+    do
+      source "$f"
+    done
+  fi
+}
+
+make_link() {
+  ln -sfv $1 $2
 }
 
 mk() {
@@ -128,18 +47,6 @@ mk() {
 
 open_conns() {
   netstat -nat | awk '{print $6}' | sort | uniq -c | sort -n
-}
-
-pfds() {
-  ps -ef | grep $1 | awk -F " " '{print $2;exit}' | xargs -L 1 bash -c 'ls -l "/proc/$0/fd"' | wc -l
-}
-
-gaacmp() {
-  git add -A && git commit -m "$1" && git push
-}
-
-gaucmp() {
-  git add -u && git commit -m "$1" && git push
 }
 
 command_exists() {
@@ -152,30 +59,6 @@ cag() {
     ag $1 --numbers --pager less --stats --nopager "${@:2}"
   else
     echo 'Ag not installed, visit: https://github.com/ggreer/the_silver_searcher'
-  fi
-}
-
-
-make_alias() {
-  alias_path=$HOME/.dotfiles/runcom/.aliases
-  echo "alias $1='$2'" >> $alias_path
-  source $alias_path
-}
-
-# DOCKER
-docker_rmi_dangling() {
-  if command_exists docker ;
-  then
-    docker rmi $(docker images -f dangling=true -q) "$@"
-  else
-    echo "Docker doesn't seem to be installed"
-  fi
-}
-
-docker_build_run() {
-  if command_exists docker ;
-  then
-    docker build -t $1 . && docker --rm run $1 "$@"
   fi
 }
 

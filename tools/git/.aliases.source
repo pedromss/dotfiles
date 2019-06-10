@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+alias gl="git pull"
+alias gp="git push"
+alias gbn="git bname | pbcopy"
