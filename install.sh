@@ -38,7 +38,7 @@ function install_zsh_plugins() {
     return
   fi
 
-  mkdir -p $zsh_plugins_folder
+  mkdir -p $2
 
   clone_if_not_exists 'https://github.com/Valiev/almostontop.git' $zsh_plugins_folder/almostontop
   clone_if_not_exists 'https://github.com/Cloudstek/zsh-plugin-appup.git' $zsh_plugins_folder/appup
@@ -154,7 +154,7 @@ do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 # Tool dependant configs and opt out features
 # ==================================================
 setup_neovim_config "$in_install_nvim"
-install_zsh_plugins "$in_install_zsh_plugins"
+install_zsh_plugins "$in_install_zsh_plugins" "$zsh_plugins_folder"
 generate_brewfile "$in_generate_brewfile"
 # ==================================================
 # Shutdown
