@@ -17,6 +17,22 @@ function generate_brewfile() {
   curl -sL https://raw.githubusercontent.com/pedromss/brewfile-generator/master/gen-brewfile.sh | sh
 }
 
+function install_fzf() {
+  if command_exists 'fzf'
+  then
+    return
+  fi
+
+  if ! command_exists git
+  then
+    echo 'Git is required to install fzf'
+    exit 1
+  fi
+
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install
+}
+
 set -e
 logs_dir=logs
 
@@ -61,12 +77,17 @@ in_install_zsh='yes'
 in_install_zsh_plugins='yes'
 in_generate_brewfile='no'
 in_config_ctags='yes'
+in_install_fzf='yes'
 while [[ $# -gt 0 ]]
 do
   key="$1"
   case $key in
     --gen-brew)
       in_generate_brewfile='yes'
+      shift
+      ;;
+    --no-fzf)
+      in_install_fzf='no'
       shift
       ;;
     --no-zsh)
@@ -154,6 +175,7 @@ do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 # Tool dependant configs and opt out features
 # ==================================================
 setup_neovim_config "$in_install_nvim"
+install_fzf "$in_install_fzf"
 install_zsh_plugins "$in_install_zsh_plugins" "$zsh_plugins_folder"
 generate_brewfile "$in_generate_brewfile"
 # ==================================================
