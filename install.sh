@@ -100,6 +100,15 @@ done
 source ./common.sh $@
 mkdir -p $logs_dir
 
+echo 'Configs:'
+echo "Install git [$in_install_git]"
+echo "Install vim [$in_install_vim]"
+echo "Install neovim [$in_install_nvim]"
+echo "Install zsh [$in_install_zsh]"
+echo "Install zsh plugins [$in_install_zsh_plugins]"
+echo "Install generate brewfile [$in_generate_brewfile]"
+echo "Install ctags [$in_config_ctags]"
+
 function do_symlinks() {
   if [[ "$1" == 'no' ]]
   then
