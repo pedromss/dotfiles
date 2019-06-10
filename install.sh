@@ -62,9 +62,9 @@ in_install_zsh='yes'
 in_install_zsh_plugins='yes'
 in_generate_brewfile='no'
 in_config_ctags='yes'
-key="$1"
 while [[ $# -gt 0 ]]
 do
+  key="$1"
   case $key in
     --gen-brew)
       in_generate_brewfile='yes'
