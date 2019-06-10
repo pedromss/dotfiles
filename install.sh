@@ -46,7 +46,7 @@ function install_zsh_plugins() {
   clone_if_not_exists 'https://github.com/gretzky/auto-color-ls.git' $zsh_plugins_folder/auto-color-ls
   clone_if_not_exists 'https://github.com/hlissner/zsh-autopair.git' $zsh_plugins_folder/zsh-autopair
   clone_if_not_exists 'https://github.com/b4b4r07/enhancd.git' $zsh_plugins_folder/enhancd
-  clone_if_not_exists 'https://github.com/com/zdharma/fast-syntax-highlighting' $zsh_plugins_folder/fast-syntax-highlighting
+  clone_if_not_exists 'https://github.com/zdharma/fast-syntax-highlighting' $zsh_plugins_folder/fast-syntax-highlighting
   clone_if_not_exists 'https://github.com/wfxr/forgit.git' $zsh_plugins_folder/forgit
   clone_if_not_exists 'https://github.com/supercrabtree/k.git' $zsh_plugins_folder/k
   clone_if_not_exists 'https://github.com/qoomon/zjump.git' $zsh_plugins_folder/zjump
