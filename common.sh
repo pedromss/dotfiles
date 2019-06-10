@@ -21,10 +21,5 @@ then
 fi
 
 echo "Found the dotfiles directory in $dotfiles_fullpath..."
-# source all bash configs
-for f in $dotfiles_fullpath/runcom/.[^.]*;
-do
-  echo "Sourcing $f..."
-  source "$f"
-done
+source "$dotfiles_fullpath/runcom/.custom_profile"
 

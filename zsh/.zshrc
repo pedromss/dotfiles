@@ -6,12 +6,12 @@ bindkey "^[[3~" delete-char
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-for f in `find "$HOME" \( -iname \*.env -o -iname \*.alia \) -type f -maxdepth 1`
+for f in `find "$HOME" \( -iname \*.env -o -iname \*.alia \) -maxdepth 1 -type f`
 do
   source $f > /dev/null
 done
 
-source ~/.bash_profile
+source "$HOME/dotfiles/runcom/.custom_profile"
 
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
 ZSH_AUTOSUGGEST_USE_ASYNC=yes

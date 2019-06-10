@@ -164,6 +164,7 @@ function do_symlinks() {
 # Files to link
 # ==================================================
 misc_files_tolink[0]='.ignore'
+misc_files_tolink[1]='runcom/.custom-profile'
 
 git_files_tolink[0]='tools/git/.gitconfig'
 

@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-source $HOME/dotfiles/runcom/.functions
-source $HOME/dotfiles/runcom/.env
-source $HOME/dotfiles/runcom/.aliases
+source $HOME/dotfiles/runcom/.custom-profile
 
-[[ "$SHELL" =~ 'bash' ]] && [ -f ~/.bashrc ] && source ~/.bashrc
-[[ "$SHELL" =~ 'bash' ]] && [ -f ~/.bash_prompt ] && source ~/.bash_prompt
-
-source_recursive $HOME/dotfiles/tools
+[ -f ~/.bashrc ] && source ~/.bashrc
+[ -f ~/.bash_prompt ] && source ~/.bash_prompt
 
