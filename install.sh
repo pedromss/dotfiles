@@ -20,9 +20,6 @@ function generate_brewfile() {
 set -e
 logs_dir=logs
 
-source ./common.sh $@
-mkdir -p $logs_dir
-
 function setup_neovim_config() {
   if [[ "$1" == 'no' ]]
   then
@@ -99,6 +96,9 @@ do
       ;;
   esac
 done
+
+source ./common.sh $@
+mkdir -p $logs_dir
 
 function do_symlinks() {
   if [[ "$1" == 'no' ]]
