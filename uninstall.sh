@@ -35,4 +35,7 @@ then
   rm -rf "$zsh_plugins_folder"
   rm -rf ~/.fzf*
   rm -rf ~/.enhancd
+  rm -rf ~/.local/share/nvim
+  rm -rf ~/.config/nvim
+  rm -rf ~/.vim
 fi
