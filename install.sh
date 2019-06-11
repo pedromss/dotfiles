@@ -188,6 +188,9 @@ do_symlinks "$in_install_git" "${git_files_tolink[@]}"
 do_symlinks "$in_install_zsh" "${zsh_files_tolink[@]}"
 do_symlinks "$in_install_vim" "${vim_files_tolink[@]}"
 do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
+
+ln -sfv "$dotfiles_fullpath/install.sh" /usr/local/bin/dotfiles-install
+ln -sfv "$dotfiles_fullpath/uninstall.sh" /usr/local/bin/dotfiles-uninstall
 # ==================================================
 # Tool dependant configs and opt out features
 # ==================================================
