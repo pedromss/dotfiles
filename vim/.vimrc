@@ -80,10 +80,18 @@ command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git
 " }}}
 " Plugins -------------------- {{{
 let g:ale_emit_conflict_warnings = 0
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if has('nvim')
+  if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
+else
+  if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  endif
 endif
 if has('gui_win32')
   call plug#begin('~/vimfiles/plugged')
@@ -652,7 +660,7 @@ augroup END
 augroup js_aus
   autocmd!
   au FileType javascript :call SetTabs(2)
-  au bufwritepost *.js silent !standard --fix % 
+  au bufwritepost *.js silent !standard --fix %
 augroup END
 " }}}
 " Typescript file settings -------------------- {{{

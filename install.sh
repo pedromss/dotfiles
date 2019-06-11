@@ -3,7 +3,7 @@
 function clone_if_not_exists() {
   if ! [ -d $2 ]
   then
-    git clone $1 $2
+    git clone --depth 1 $1 $2
   fi
 }
 
@@ -164,7 +164,7 @@ function do_symlinks() {
 # Files to link
 # ==================================================
 misc_files_tolink[0]='.ignore'
-misc_files_tolink[1]='runcom/.custom-profile'
+misc_files_tolink[1]='runcom/.custom_profile'
 
 git_files_tolink[0]='tools/git/.gitconfig'
 

@@ -2,11 +2,11 @@
 
 dotfiles_folder='dotfiles'
 dotfiles_fullpath=''
-user_home=${1:-$HOME}
+user_home=${1:-"$HOME"}
 zsh_plugins_folder=$user_home/zsh-plugin-repos
 
 # Make sure a user is specified
-if [ ! -d $user_home ]
+if ! [ -d $user_home ]
 then
   echo 'Home directory not set.'
   exit 1
@@ -14,7 +14,7 @@ fi
 
 # Make sure the dotfiles directory exists
 dotfiles_fullpath="$user_home/$dotfiles_folder"
-if [ ! -d "$dotfiles_fullpath" ]
+if ! [ -d "$dotfiles_fullpath" ]
 then
   echo "No dotfiles directory under $HOME"
   exit 2
