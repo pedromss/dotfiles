@@ -23,7 +23,7 @@ function install_vim_plugins() {
     return
   fi
 
-  vim -c +PlugInstall +qall
+  # vim -c +PlugInstall +qall
 }
 
 function install_fzf() {
@@ -163,8 +163,7 @@ function do_symlinks() {
 # ==================================================
 # Files to link
 # ==================================================
-misc_files_tolink[0]='.ignore'
-misc_files_tolink[1]='runcom/.custom_profile'
+misc_files_tolink[0]='runcom/.custom_profile'
 
 git_files_tolink[0]='tools/git/.gitconfig'
 

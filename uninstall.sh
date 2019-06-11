@@ -18,6 +18,11 @@ done
 
 source ./common.sh "$home_dir"
 
+if [[ "$in_hard" == 'yes' ]]
+then
+  [ -f ~/.fzf/uninstall ] && ~/.fzf/uninstall --xdg
+fi
+
 echo 'Deleting symlinks...'
 
 all_links=($(find $user_home -maxdepth 1 -type l))
