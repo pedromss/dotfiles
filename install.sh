@@ -62,7 +62,7 @@ function setup_neovim_config() {
 
 function install_zsh_plugins() {
   if [[ "$1" == 'no' ]]
-  then 
+  then
     return
   fi
 
@@ -131,9 +131,14 @@ do
       in_install_ctags='no'
       shift
       ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
   esac
 done
 
+set -- "${POSITIONAL[@]}"
 source ./common.sh $@
 mkdir -p $logs_dir
 
@@ -189,8 +194,9 @@ do_symlinks "$in_install_zsh" "${zsh_files_tolink[@]}"
 do_symlinks "$in_install_vim" "${vim_files_tolink[@]}"
 do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 
-ln -sfv "$dotfiles_fullpath/install.sh" /usr/local/bin/dotfiles-install
-ln -sfv "$dotfiles_fullpath/uninstall.sh" /usr/local/bin/dotfiles-uninstall
+mkdir -p "$HOME/bin"
+ln -sfv "$dotfiles_fullpath/install.sh" "$HOME/bin/dotfiles-install"
+ln -sfv "$dotfiles_fullpath/uninstall.sh" "$HOME/bin/dotfiles-uninstall"
 # ==================================================
 # Tool dependant configs and opt out features
 # ==================================================

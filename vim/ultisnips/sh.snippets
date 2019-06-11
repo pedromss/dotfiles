@@ -6,6 +6,12 @@ do
 			$3
 			shift
 			;;
+		*)
+		POSITIONAL+=("\$1")
+		shift
+		;;
 	esac
 done
+
+set -- "${POSITIONAL[@]}"
 endsnippet

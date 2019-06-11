@@ -36,11 +36,11 @@ do
 done
 
 echo 'Deleting symlinks to executables...'
-for link in `find /usr/local/bin \( -iname dotfiles\* \) -maxdepth 1 -type l`
+for link in `find "$HOME/bin" \( -iname dotfiles\* \) -maxdepth 1 -type l`
 do
-    echo "Deleting link: ${link[*]}"
-    rm $link
-    done
+  echo "Deleting link: ${link[*]}"
+  rm $link
+done
 
 if [[ "$in_hard" == 'yes' ]]
 then
