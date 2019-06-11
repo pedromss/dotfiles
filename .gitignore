@@ -1,4 +1,6 @@
 **/*.swp
+**/plug.vim*
+**/pathogen.vim
 .config/nvim/nvim
 **/*.orig
 **/vim-markdown-preview.html
