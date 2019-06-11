@@ -43,4 +43,6 @@ then
   rm -rf ~/.local/share/nvim
   rm -rf ~/.config/nvim
   rm -rf ~/.vim
+  rm -rf ~/dotfiles/vim/.vim/plugged
+  rm -rf ~/dotfiles/vim/.vim/autoload/plug.vim*
 fi
