@@ -14,7 +14,7 @@ fi
 default_host_triple=''
 if [ -f /etc/os-release ]; then
   # possibly raspberry pi
-  if [ $(cat /etc/os-release) =~ 'Raspbian' ]
+  if [[ $(cat /etc/os-release) =~ 'Raspbian' ]]
   then
     # assume raspberry pi
     default_host_triple='armv7-unknown-linux-gnueabihf'
