@@ -3,6 +3,7 @@
 set -e
 logs_dir=logs
 
+in_username="$USER"
 in_install_git='yes'
 in_install_vim='yes'
 in_install_nvim='yes'
@@ -17,6 +18,10 @@ while [[ $# -gt 0 ]]
 do
   key="$1"
   case $key in
+    --user)
+      in_username=$2
+      shift 2
+      ;;
     --no-rust)
       in_install_rust='yes'
       shift
@@ -237,6 +242,8 @@ setup_neovim_config "$in_install_nvim"
 install_fzf "$in_install_fzf" "$in_fzf_version"
 install_zsh_plugins "$in_install_zsh_plugins" "$zsh_plugins_folder"
 generate_brewfile "$in_generate_brewfile"
+
+chown -R "${in_username}:${in_username}" "$HOME/$in_username"
 # ==================================================
 # Shutdown
 # ==================================================
