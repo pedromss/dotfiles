@@ -1,25 +1,21 @@
 #!/usr/bin/env bash
 
 dotfiles_folder='dotfiles'
-dotfiles_fullpath=''
 user_home=${1:-"$HOME"}
-zsh_plugins_folder=$user_home/zsh-plugin-repos
-
-# Make sure a user is specified
-if ! [ -d $user_home ]
-then
-  echo 'Home directory not set.'
-  exit 1
-fi
-
-# Make sure the dotfiles directory exists
 dotfiles_fullpath="$user_home/$dotfiles_folder"
-if ! [ -d "$dotfiles_fullpath" ]
-then
-  echo "No dotfiles directory under $HOME"
-  exit 2
-fi
+tools_folder="$dotfiles_fullpath/tools"
+zsh_plugins_folder=$user_home/zsh-plugin-repos
+user_bin="$user_home/bin"
+install_prefix="installdot-"
+uninstall_prefix="uninstalldot-"
 
-echo "Found the dotfiles directory in $dotfiles_fullpath..."
+
+[ -d $user_home ] || { echo >&2 "Home directory [${user_home}] is not set"; exit 1; }
+[ -d "$dotfiles_fullpath" ] || { echo "No dotfiles directory under $HOME"; exit 2; }
+
+set +e
+[ -d "$user_bin" ] || { echo "Creating ${user_bin}..."; mkdir -p "$user_bin"; }
+[ -d "$tools_folder" ] || { echo "Creating ${tools_folder}..."; mkdir -p "$tools_folder"; }
+set -e
+
 source "$dotfiles_fullpath/runcom/.custom_profile"
-

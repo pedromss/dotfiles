@@ -677,7 +677,7 @@ augroup filetype_bash
   autocmd!
   au FileType sh :normal gg=G
   au FileType sh :call SetTabs(2)
-  au FileType sh :colorscheme monochrome
+  "au FileType sh :colorscheme monochrome
   au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
 augroup END
 " }}}

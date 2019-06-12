@@ -16,17 +16,16 @@ do
   esac
 done
 
-source ./common.sh "$home_dir"
+source ./common.sh
 
 if [[ "$in_hard" == 'yes' ]]
 then
   [ -f ~/.fzf/uninstall ] && ~/.fzf/uninstall --xdg
 fi
 
-echo 'Deleting symlinks to configs...'
+echo "Deleting symlinks from ${user_home}..."
 
-all_links=($(find $user_home -maxdepth 1 -type l))
-for link in "${all_links[@]}"
+for link in `find "$user_home" -maxdepth 1 -type l`
 do
   if [[ $(readlink $link) == *"$dotfiles_folder"* ]]
   then
@@ -53,3 +52,17 @@ then
   rm -rf ~/dotfiles/vim/.vim/plugged
   rm -rf ~/dotfiles/vim/.vim/autoload/plug.vim*
 fi
+
+function uninstall_tools_from_custom_scripts() {
+  echo "Removing installers in ${user_bin}..."
+  for installer in `find "$user_bin" \( -name "${install_prefix}*" -o -name "${uninstall_prefix}*" \) -maxdepth 2 -type l`
+  do
+    echo "Removing link ${installer}..."
+    rm -f "$installer"
+  done
+
+  echo "All installers removed from ${user_bin}"
+}
+
+uninstall_tools_from_custom_scripts
+
