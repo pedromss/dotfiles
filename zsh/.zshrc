@@ -30,7 +30,15 @@ ZSH_CUSTOM=$HOME/.zsh/custom
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=( "$HOME/.zfunctions" $fpath )
 autoload -U promptinit; promptinit
+PURE_GIT_PULL=0
 prompt pure
+PROMPT='%F{white}%* '$PROMPT
+#prompt_newline='%666v'
+#PROMPT=" $PROMPT"
+precmd_pipestatus() {
+	RPROMPT="${(j.|.)pipestatus}"
+}
+add-zsh-hook precmd precmd_pipestatus
 ZSH_THEME=""
 
 # User configuration
