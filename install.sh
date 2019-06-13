@@ -74,15 +74,13 @@ source ./common.sh $@
 mkdir -p $logs_dir
 
 function clone_if_not_exists() {
-  if ! [ -d $2 ]
-  then
+  if ! [ -d $2 ]; then
     git clone --depth 1 $1 $2
   fi
 }
 
 function generate_brewfile() {
-  if [[ "$1" == 'no' ]]
-  then
+  if [[ "$1" == 'no' ]]; then
     return
   fi
 
