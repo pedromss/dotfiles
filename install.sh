@@ -228,7 +228,7 @@ do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 # ==================================================
 if [[ "$in_install_rust" == 'yes' ]]; then
   curr=$(pwd)
-  cd tools/rust
+  cd tools/rustup
   ./install.sh
   cd ../exa
   ./install.sh
