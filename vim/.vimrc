@@ -679,6 +679,7 @@ augroup filetype_bash
   au FileType sh :call SetTabs(2)
   "au FileType sh :colorscheme monochrome
   au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
+  au FileType sh :silent ![ -f tags ] || ctags -R --language-force=sh
 augroup END
 " }}}
 " Markdown file settings -------------------- {{{
