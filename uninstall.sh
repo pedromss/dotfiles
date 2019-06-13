@@ -35,7 +35,7 @@ do
 done
 
 echo 'Deleting symlinks to executables...'
-for link in `find "$HOME/bin" \( -iname dotfiles\* \) -maxdepth 1 -type l`
+for link in `find "$HOME/bin" -maxdepth 1 \( -iname dotfiles\* \) -type l`
 do
   echo "Deleting link: ${link[*]}"
   rm $link
@@ -59,7 +59,7 @@ uninstall_tools() {
     return
   fi
 
-  for uninstaller in `find "$user_bin" -name "${uninstall_prefix}*" -maxdepth 2 -type l`
+  for uninstaller in `find "$user_bin" -maxdepth 2 -name "${uninstall_prefix}*" -type l`
   do
     echo "Running ${uninstaller}..."
     . "$uninstaller"
@@ -70,7 +70,7 @@ uninstall_tools() {
 
 remove_installer_links() {
   echo "Removing installers in ${user_bin}..."
-  for installer in `find "$user_bin" \( -name "${install_prefix}*" -o -name "${uninstall_prefix}*" \) -maxdepth 2 -type l`
+  for installer in `find "$user_bin" -maxdepth 2 \( -name "${install_prefix}*" -o -name "${uninstall_prefix}*" \) -type l`
   do
     echo "Removing link ${installer}..."
     rm -f "$installer"
