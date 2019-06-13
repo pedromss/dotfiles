@@ -53,7 +53,21 @@ then
   rm -rf ~/dotfiles/vim/.vim/autoload/plug.vim*
 fi
 
-function uninstall_tools_from_custom_scripts() {
+uninstall_tools() {
+  if [[ "$in_hard" == 'no' ]]; then
+    echo 'Not uninstalling tools because --hard was not passed'
+  fi
+
+  for uninstaller in `find "$user_bin" -name "${uninstall_prefix}*" -maxdepth 2 -type l`
+  do
+    echo "Running ${uninstaller}..."
+    . "$uninstaller"
+  done
+
+  echo 'Tools uninstalled'
+}
+
+remove_installer_links() {
   echo "Removing installers in ${user_bin}..."
   for installer in `find "$user_bin" \( -name "${install_prefix}*" -o -name "${uninstall_prefix}*" \) -maxdepth 2 -type l`
   do
@@ -64,5 +78,6 @@ function uninstall_tools_from_custom_scripts() {
   echo "All installers removed from ${user_bin}"
 }
 
-uninstall_tools_from_custom_scripts
+uninstall_tools
+remove_installer_links
 
