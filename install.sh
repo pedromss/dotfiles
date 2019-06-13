@@ -111,17 +111,11 @@ function install_fzf() {
     exit 1
   fi
 
-  set +e
   fzf_version="$2"
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   echo "Installing fzf@$fzf_version"
   cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout $fzf_version
   ~/.fzf/install --key-bindings --completion --update-rc --no-fish
-  if ! [[ "$OSTYPE" =~ 'darwin' ]]; then
-    # not on a mac... shame...
-    [[ $(stat -c '%U' '~/.fzf') == 'root' ]] && sudo chown -R "${user}:${user}" '~/.fzf'
-  fi
-  set -e
 }
 
 function setup_neovim_config() {

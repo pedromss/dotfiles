@@ -44,6 +44,7 @@ rm -rf setup-rust
 
 cargo_env_file="$HOME/.cargo/env"
 echo "Sourcing the config at ${cargo_env_file}..."
+source './.env.source'
 source "$cargo_env_file"
 
 user_bin="$user_bin"

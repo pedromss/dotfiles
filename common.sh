@@ -16,7 +16,6 @@ uninstall_prefix="uninstalldot-"
 set +e
 [ -d "$user_bin" ] || { echo "Creating ${user_bin}..."; mkdir -p "$user_bin"; }
 [ -d "$tools_folder" ] || { echo "Creating ${tools_folder}..."; mkdir -p "$tools_folder"; }
-[[ $(stat -c '%U' "$user_bin") != "root" ]] && sudo chown -R "${user}:${user}" "$user_bin"
 set -e
 
 source "$dotfiles_fullpath/runcom/.custom_profile"
