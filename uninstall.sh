@@ -56,6 +56,7 @@ fi
 uninstall_tools() {
   if [[ "$in_hard" == 'no' ]]; then
     echo 'Not uninstalling tools because --hard was not passed'
+    return
   fi
 
   for uninstaller in `find "$user_bin" -name "${uninstall_prefix}*" -maxdepth 2 -type l`
