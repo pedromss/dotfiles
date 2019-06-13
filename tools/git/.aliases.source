@@ -2,7 +2,7 @@
 alias gl="git pull"
 alias gp="git push"
 alias gbn="git bname | pbcopy"
-alias gst="git status -s --show-stash --branch -uall"
+alias gst="git status -s --branch -uall"
 alias gstl="git status --long --branch -uall -vv"
 alias glg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset' --abbrev-commit --date=relative"
 alias gau="git add -u"
