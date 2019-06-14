@@ -143,9 +143,7 @@ zstyle ':completion:*' menu select=2
 # ==================================================
 
 # Manually installed plugins
-#source $HOME/zsh-plugin-repos/almostontop/almostontop.plugin.zsh
 source $HOME/zsh-plugin-repos/appup/appup.plugin.zsh
-#source $HOME/zsh-plugin-repos/auto-color-ls/auto-color-ls.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-autopair/autopair.plugin.zsh
 source $HOME/zsh-plugin-repos/enhancd/init.sh
 source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
