@@ -106,6 +106,8 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+
 Plug 'Raimondi/delimitMate'
 
 Plug 'tpope/vim-repeat'
@@ -406,6 +408,9 @@ nmap <leader>tb :TagbarToggle<CR>
 " }}}
 " }}}
 " Variables -------------------- {{{
+" Rust variable -------------------- {{{
+let g:rustfmt_autosave = 1
+" }}} 
 " vim-go variables -------------------- {{{
 let g:go_fold_enable = ['varconst','block','import','comment', ]
 let g:go_highlight_extra_types = 1
