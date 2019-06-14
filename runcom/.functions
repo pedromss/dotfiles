@@ -1,5 +1,24 @@
 #!/usr/bin/env bash
 
+# --listfn([toolName = runcom/.functions]) {
+listfn () {
+  function_path="$HOME/dotfiles/tools"
+  if ! [ -z "$1" ]
+  then
+    function_path="$function_path/$1"
+  else
+    function_path="$HOME/dotfiles/runcom"
+  fi
+
+  fname=$2
+  for f in `find "$function_path" -name '*functions*' -maxdepth 2 -type f`
+  do
+    ag --no-numbers --no-filename --no-color -o "^# --(function\ )?\K(.*${fname}.*)(?=\{)" "$f"
+  done
+  echo '---'
+}
+
+# --print_cmd_exists(commandName) {
 print_cmd_exists() {
   if command_exists "$1"
   then
@@ -28,9 +47,17 @@ source_recursive() {
 
 source_for_command() {
   cmd="${1##*/}"
+
+  # Env files will always be sourced in the hopes that they
+  # don't hurt anyone
+  for f in `find $1 -name ".env.source" -type f`
+  do
+    source "$f"
+  done
+
   if command_exists "$cmd"
   then
-    for f in `find $1 -name ".*.source" -type f`
+    for f in `find $1 \( -not -name '.env.source' -a -name '.*.source' \) -type f`
     do
       source "$f"
     done

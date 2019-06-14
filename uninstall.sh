@@ -16,17 +16,16 @@ do
   esac
 done
 
-source ./common.sh "$home_dir"
+source ./common.sh
 
 if [[ "$in_hard" == 'yes' ]]
 then
   [ -f ~/.fzf/uninstall ] && ~/.fzf/uninstall --xdg
 fi
 
-echo 'Deleting symlinks to configs...'
+echo "Deleting symlinks from ${user_home}..."
 
-all_links=($(find $user_home -maxdepth 1 -type l))
-for link in "${all_links[@]}"
+for link in `find "$user_home" -maxdepth 1 -type l`
 do
   if [[ $(readlink $link) == *"$dotfiles_folder"* ]]
   then
@@ -36,7 +35,7 @@ do
 done
 
 echo 'Deleting symlinks to executables...'
-for link in `find "$HOME/bin" \( -iname dotfiles\* \) -maxdepth 1 -type l`
+for link in `find "$HOME/bin" -maxdepth 1 \( -iname dotfiles\* \) -type l`
 do
   echo "Deleting link: ${link[*]}"
   rm $link
@@ -53,3 +52,33 @@ then
   rm -rf ~/dotfiles/vim/.vim/plugged
   rm -rf ~/dotfiles/vim/.vim/autoload/plug.vim*
 fi
+
+uninstall_tools() {
+  if [[ "$in_hard" == 'no' ]]; then
+    echo 'Not uninstalling tools because --hard was not passed'
+    return
+  fi
+
+  for uninstaller in `find "$user_bin" -maxdepth 2 -name "${uninstall_prefix}*" -type l`
+  do
+    echo "Running ${uninstaller}..."
+    . "$uninstaller"
+  done
+
+  echo 'Tools uninstalled'
+}
+
+remove_installer_links() {
+  echo "Removing installers in ${user_bin}..."
+  for installer in `find "$user_bin" -maxdepth 2 \( -name "${install_prefix}*" -o -name "${uninstall_prefix}*" \) -type l`
+  do
+    echo "Removing link ${installer}..."
+    rm -f "$installer"
+  done
+
+  echo "All installers removed from ${user_bin}"
+}
+
+uninstall_tools
+remove_installer_links
+
