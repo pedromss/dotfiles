@@ -63,4 +63,7 @@ mkdir -p "$go_path/src"
 mkdir -p "$go_path/pkg"
 [ $(command -v tree) ] && tree "$go_path"
 
+echo 'Deleting the tarball...'
+rm -rf "$tarball"
+
 echo "go ${go_version} is installed. Try go help"
