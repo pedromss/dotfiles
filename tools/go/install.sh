@@ -50,9 +50,7 @@ fi
 
 tarball=go${go_version}.linux-armv6l.tar.gz
 echo "Downloading go${go_version}.linux-armv6l.tar.gz..."
-wget -q "https://dl.google.com/go/${tarball}"
-
-tar -C "$go_root_parent" -xvf "$tarball"
+wget -qO- "https://dl.google.com/go/${tarball}" | tar xz -C "$go_root_parent"
 
 echo "Changing ownership of ${go_root} to ${username}"
 sudo chown -R "${username}:${username}" "$go_root"
@@ -61,9 +59,5 @@ echo "Creating directories in $go_path..."
 mkdir -p "$go_path/bin"
 mkdir -p "$go_path/src"
 mkdir -p "$go_path/pkg"
-[ $(command -v tree) ] && tree "$go_path"
-
-echo 'Deleting the tarball...'
-rm -rf "$tarball"
 
 echo "go ${go_version} is installed. Try go help"
