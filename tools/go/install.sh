@@ -55,9 +55,4 @@ wget -qO- "https://dl.google.com/go/${tarball}" | tar xz -C "$go_root_parent"
 echo "Changing ownership of ${go_root} to ${username}"
 sudo chown -R "${username}:${username}" "$go_root"
 
-echo "Creating directories in $go_path..."
-mkdir -p "$go_path/bin"
-mkdir -p "$go_path/src"
-mkdir -p "$go_path/pkg"
-
 echo "go ${go_version} is installed. Try go help"
