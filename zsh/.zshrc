@@ -2,6 +2,7 @@
 #zmodload zsh/zprof
 
 bindkey "^[[3~" delete-char
+bindkey '[C' beginning-of-line
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -41,27 +42,8 @@ precmd_pipestatus() {
 add-zsh-hook precmd precmd_pipestatus
 ZSH_THEME=""
 
-# User configuration
-#
-switch_iterm_theme () {
-  [[ -n $TMUX  ]] && printf "\033Ptmux;\033"
-  echo -e "\033]50;SetProfile=$1\a" && export ITERM_PROFILE="$1"
-  [[ -n $TMUX  ]] && printf "\033\\"
-}
-alias darktheme='switch_iterm_theme "Dark" && test $TMUX && tmux set -g status-bg black 2> /dev/null && tmux setw -g window-status-attr reverse'
-alias lighttheme='switch_iterm_theme "Light" && test $TMUX && tmux set -g status-bg white 2> /dev/null && tmux setw -g window-status-attr default'
-
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-  if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='vim'
-  else
-    export EDITOR='mvim'
-  fi
-
-  test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export LANG=en_US.UTF-8
 
 # ==================================================
 # Performance improvements. Lazy loading
@@ -127,41 +109,28 @@ setopt HASH_CMDS
 setopt HASH_DIRS
 setopt RM_STAR_WAIT
 # ==================================================
-# FZF completions
+# plugins
 # ==================================================
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-complete -F _fzf_path_completion -o default -o bashdefault ag
-complete -F _fzf_dir_completion -o default -o bashdefault tree
-
-# Brew installed plugins
-#source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# ==================================================
-# The following are disabled due to latency added
-# ==================================================
-# === Latency === | Plugin/Command
-# 70 ms           | [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-# ==================================================
-
-# Manually installed plugins
 source $HOME/zsh-plugin-repos/appup/appup.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-autopair/autopair.plugin.zsh
 source $HOME/zsh-plugin-repos/enhancd/init.sh
 source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
 source $HOME/zsh-plugin-repos/k/k.plugin.zsh
-source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
 source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/globalias/globalias.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/vi-mode/vi-mode.plugin.zsh
 if ! [ -f '/etc/os-release' ] || ! [[ $(cat /etc/os-release) =~ 'Raspbian' ]]; then
   source $HOME/zsh-plugin-repos/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 fi
 # ==================================================
-# The following are disabled due to latency added
+# FZF completions
 # ==================================================
-# === Latency === | Plugin/Command
-# ==================================================
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+complete -F _fzf_path_completion -o default -o bashdefault ag
+complete -F _fzf_dir_completion -o default -o bashdefault tree
+source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
 # For zsh profiling
 #zprof
