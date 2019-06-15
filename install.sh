@@ -8,7 +8,6 @@ in_install_git='yes'
 in_install_vim='yes'
 in_install_nvim='yes'
 in_install_zsh='yes'
-in_install_rust='yes'
 in_install_zsh_plugins='yes'
 in_generate_brewfile='no'
 in_config_ctags='yes'
@@ -27,7 +26,7 @@ do
       shift
       ;;
     --no-rust)
-      in_install_rust='yes'
+      in_install_rust=0
       shift
       ;;
     --gen-brew)
@@ -228,7 +227,7 @@ do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 # ==================================================
 # Tool dependant configs and opt out features
 # ==================================================
-if [[ "$in_install_rust" == 'yes' ]]; then
+if (( ${in_install_rust:-1} )); then
   curr=$(pwd)
   cd tools/rustup
   ./install.sh
