@@ -22,6 +22,10 @@ do
       in_username=$2
       shift 2
       ;;
+    --no-golang)
+      in_install_golang=0
+      shift
+      ;;
     --no-rust)
       in_install_rust='yes'
       shift
@@ -146,7 +150,7 @@ function install_zsh_plugins() {
   clone_if_not_exists 'https://github.com/robbyrussell/oh-my-zsh.git' $zsh_plugins_folder/oh-my-zsh
   clone_if_not_exists 'https://github.com/zsh-users/zsh-history-substring-search.git' $zsh_plugins_folder/zsh-history-substring-search
   if ! [ -f '/etc/os-release' ] || ! [[ $(cat /etc/os-release) =~ 'Raspbian' ]]; then
-  clone_if_not_exists 'https://github.com/zsh-users/zsh-autosuggestions.git' $zsh_plugins_folder/zsh-autosuggestions
+    clone_if_not_exists 'https://github.com/zsh-users/zsh-autosuggestions.git' $zsh_plugins_folder/zsh-autosuggestions
   fi
 }
 
@@ -231,6 +235,17 @@ if [[ "$in_install_rust" == 'yes' ]]; then
   cd ../exa
   ./install.sh
   cd ../bat
+  ./install.sh
+  cd "$curr"
+fi
+
+if (( ${in_install_golang:-1} )) ; then
+  curr=$(pwd)
+  cd tools/go
+  ./install.sh $@
+  cd ../gomplate
+  ./install.sh
+  cd ../vault
   ./install.sh
   cd "$curr"
 fi
