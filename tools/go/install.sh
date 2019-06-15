@@ -57,4 +57,10 @@ tar -C "$go_root_parent" -xvf "$tarball"
 echo "Changing ownership of ${go_root} to ${username}"
 sudo chown -R "${username}:${username}" "$go_root"
 
-echo "go ${go_version} is installed. Try go --help"
+echo "Creating directories in $go_path..."
+mkdir -p "$go_path/bin"
+mkdir -p "$go_path/src"
+mkdir -p "$go_path/pkg"
+[ $(command -v tree) ] && tree "$go_path"
+
+echo "go ${go_version} is installed. Try go help"
