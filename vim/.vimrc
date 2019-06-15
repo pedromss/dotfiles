@@ -106,6 +106,7 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
 Plug 'Raimondi/delimitMate'
