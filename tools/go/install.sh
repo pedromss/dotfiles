@@ -48,7 +48,13 @@ if (( ${prompt:-1} )) ; then
   read -n 1
 fi
 
-wget -q "https://dl.google.com/go/go${go_version}.linux-armv6l.tar.gz"
+tarball=go${go_version}.linux-armv6l.tar.gz
+echo "Downloading go${go_version}.linux-armv6l.tar.gz..."
+wget -q "https://dl.google.com/go/${tarball}"
 
-tar -C "$go_root_parent" -xvf "go${go_version}.linux-arm6l.tar.gz"
+tar -C "$go_root_parent" -xvf "$tarball"
+
+echo "Changing ownership of ${go_root} to ${username}"
 sudo chown -R "${username}:${username}" "$go_root"
+
+echo "go ${go_version} is installed. Try go --help"
