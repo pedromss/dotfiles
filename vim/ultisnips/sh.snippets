@@ -1,3 +1,13 @@
+snippet declarr "Declare array from param"
+declare -a $1=(\$@)
+$2
+endsnippet
+
+snippet declarrin "Declare input multiple arrays"
+declare -a $1=("${!$2}")
+$3
+endsnippet
+
 snippet case "Switch case"
 while [[ $# -gt 0 ]]
 do
@@ -15,3 +25,4 @@ done
 
 set -- "${POSITIONAL[@]}"
 endsnippet
+

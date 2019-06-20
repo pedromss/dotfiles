@@ -306,10 +306,10 @@ xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
 " Insert mode completion
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
+imap <c-q><c-f> <plug>(fzf-complete-path)
+"imap <c-q><c-k> <plug>(fzf-complete-word)
+imap <c-q><c-j> <plug>(fzf-complete-file-ag)
+"imap <c-q><c-l> <plug>(fzf-complete-line)
 
 " Advanced customization using autoload functions
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
@@ -591,7 +591,7 @@ let g:tex_flavor='latex'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsListSnippets = '<s-tab>'
 let g:UltiSnipsJumpForwardTrigger = "<c-b>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-g>"
 if has('python3')
   let g:UltiSnipsUsePythonVersion = 3
 elseif has('python')

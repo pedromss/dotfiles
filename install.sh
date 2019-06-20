@@ -153,34 +153,6 @@ function install_zsh_plugins() {
   fi
 }
 
-function install_tools_from_custom_scripts() {
-  echo "Linking installers for ${tools_folder}..."
-  for installer in `find "$tools_folder" -name '*install*' -maxdepth 2 -type f`
-  do
-    installer_name="${installer%/*}"
-    installer_name="${installer_name##*/}"
-    if [[ "$installer" =~ uninstall ]]
-    then
-      make_link "$installer" "$user_bin/${uninstall_prefix}${installer_name}"
-    else
-      make_link "$installer" "$user_bin/${install_prefix}${installer_name}"
-    fi
-  done
-
-  echo 'Linking done...'
-}
-
-
-install_tools_from_custom_scripts
-echo 'Configs:'
-echo "Install git [$in_install_git]"
-echo "Install vim [$in_install_vim]"
-echo "Install neovim [$in_install_nvim]"
-echo "Install zsh [$in_install_zsh]"
-echo "Install zsh plugins [$in_install_zsh_plugins]"
-echo "Install generate brewfile [$in_generate_brewfile]"
-echo "Install ctags [$in_config_ctags]"
-
 function do_symlinks() {
   if [[ "$1" == 'no' ]]
   then
@@ -227,26 +199,19 @@ do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 # ==================================================
 # Tool dependant configs and opt out features
 # ==================================================
-if (( ${in_install_rust:-1} )); then
-  curr=$(pwd)
-  cd tools/rustup
-  ./install.sh
-  cd ../exa
-  ./install.sh
-  cd ../bat
-  ./install.sh
-  cd "$curr"
+if (( ${in_install_rust:-1} )) ; then
+  install-toolset \
+    rustup \
+    exa \
+    bat \
+    mdcat
 fi
 
 if (( ${in_install_golang:-1} )) ; then
-  curr=$(pwd)
-  cd tools/go
-  ./install.sh $@
-  cd ../gomplate
-  ./install.sh
-  cd ../vault
-  ./install.sh
-  cd "$curr"
+  install-toolset \
+    go \
+    gomplate \
+    vault
 fi
 
 install_vim_plugins "$in_install_vim"

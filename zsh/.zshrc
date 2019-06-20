@@ -118,16 +118,13 @@ source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.
 source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
 source $HOME/zsh-plugin-repos/k/k.plugin.zsh
 source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/globalias/globalias.plugin.zsh
+source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/vi-mode/vi-mode.plugin.zsh
 source $HOME/zsh-plugin-repos/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/vi-mode/vi-mode.plugin.zsh
 if ! [ -f '/etc/os-release' ] || ! [[ $(cat /etc/os-release) =~ 'Raspbian' ]]; then
   source $HOME/zsh-plugin-repos/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 fi
-# ==================================================
-# FZF completions
-# ==================================================
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 complete -F _fzf_path_completion -o default -o bashdefault ag
 complete -F _fzf_dir_completion -o default -o bashdefault tree

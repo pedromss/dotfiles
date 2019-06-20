@@ -1,5 +1,51 @@
 #!/usr/bin/env bash
 
+function install-toolset() {
+  declare -a tools=($@)
+  shift "${#tools[@]}"
+  
+  curr=$(pwd)
+  for tool in "${tools[@]}"; do
+    if ! [ -d "tools/$tool" ]; then
+      echo "skipping: $tool - not found!"
+    else
+      cd "tools/$tool"
+      ./install.sh $@
+    fi
+    cd "$curr"
+  done
+  cd "$curr"
+}
+
+function is-macos () {
+  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
+}
+
+function skip-if-installed () {
+  command_exists "$1" && { echo "skipping: [$1] - already installed!"; exit 0; }
+}
+
+function require-tool () {
+  command_exists "$1" || { echo "$1 is required"; exit 0; }
+}
+
+function require-dir () {
+  [ -d "$1" ] || { echo "$1 should be a directory"; exit 0; }
+}
+
+function require-file () {
+  [ -f "$1" ] || { echo "$1 is required"; exit 0; }
+}
+
+function install-with-pkg-manager () {
+  if [ is-macos ]; then
+    brew install "$1"
+  else
+    # assume apt-get
+    sudo apt-get install "$1"
+  fi
+}
+
 # --listfn([toolName = runcom/.functions]) {
 listfn () {
   function_path="$HOME/dotfiles/tools"
