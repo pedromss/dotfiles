@@ -5,10 +5,13 @@ user_home=${1:-"$HOME"}
 user=${user_home##*/}
 dotfiles_fullpath="$user_home/$dotfiles_folder"
 tools_folder="$dotfiles_fullpath/tools"
+tools_install_folder="$user_home/tool-repos"
 zsh_plugins_folder=$user_home/zsh-plugin-repos
 user_bin="$user_home/bin"
 install_prefix="installdot-"
 uninstall_prefix="uninstalldot-"
+
+mkdir -p "$tools_install_folder"
 
 [ -d $user_home ] || { echo >&2 "Home directory [${user_home}] is not set"; exit 1; }
 [ -d "$dotfiles_fullpath" ] || { echo "No dotfiles directory under $HOME"; exit 2; }

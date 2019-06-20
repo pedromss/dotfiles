@@ -1,51 +1,5 @@
 #!/usr/bin/env bash
 
-function install-toolset() {
-  declare -a tools=($@)
-  shift "${#tools[@]}"
-  
-  curr=$(pwd)
-  for tool in "${tools[@]}"; do
-    if ! [ -d "tools/$tool" ]; then
-      echo "skipping: $tool - not found!"
-    else
-      cd "tools/$tool"
-      ./install.sh $@
-    fi
-    cd "$curr"
-  done
-  cd "$curr"
-}
-
-function is-macos () {
-  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
-}
-
-function skip-if-installed () {
-  command_exists "$1" && { echo "skipping: [$1] - already installed!"; exit 0; }
-}
-
-function require-tool () {
-  command_exists "$1" || { echo "$1 is required"; exit 0; }
-}
-
-function require-dir () {
-  [ -d "$1" ] || { echo "$1 should be a directory"; exit 0; }
-}
-
-function require-file () {
-  [ -f "$1" ] || { echo "$1 is required"; exit 0; }
-}
-
-function install-with-pkg-manager () {
-  if [ is-macos ]; then
-    brew install "$1"
-  else
-    # assume apt-get
-    sudo apt-get install "$1"
-  fi
-}
-
 # --listfn([toolName = runcom/.functions]) {
 listfn () {
   function_path="$HOME/dotfiles/tools"
@@ -133,5 +87,96 @@ cag() {
   else
     echo 'Ag not installed, visit: https://github.com/ggreer/the_silver_searcher'
   fi
+}
+
+function is-macos () {
+  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
+}
+
+function skip-if-installed () {
+  ! command_exists "$1" || { echo "skipping: [$1] - already installed!"; exit 0; }
+}
+
+function skip-if-not-installed () {
+  command_exists "$1" || exit 0
+}
+
+function require-tool () {
+  command_exists "$1" || { echo "$1 is required"; exit 1; }
+}
+
+function require-dir () {
+  [ -d "$1" ] || { echo "$1 should be a directory"; exit 1; }
+}
+
+function require-file () {
+  [ -f "$1" ] || { echo "$1 is required"; exit 1; }
+}
+
+function install-with-pkg-manager () {
+  if [ is-macos ]; then
+    brew install "$1"
+  else
+    # assume apt-get
+    sudo apt-get install "$1"
+  fi
+}
+
+function toolname-from-git-repo-http-url() {
+  toolname="${1##*/}"
+  toolname="${toolname%%.git}"
+}
+
+function toolname-from-pwd () {
+  toolname=$(pwd)
+  toolname=${toolname##*/}
+}
+
+function uninstall-tool-from-git-repo() {
+  require-tool 'git'
+  toolname-from-git-repo-http-url "$1"
+  curr=$(pwd)
+  folder="$tools_install_folder/$toolname"
+  cd "$folder"
+  eval $2
+  cd "$curr"
+  rm -rf "$folder"
+}
+
+# --function install-tool-from-git-repo (gitrepo, git tag, commands to install) {
+function install-tool-from-git-repo () {
+  require-tool 'git'
+  curr=$(pwd)
+  toolname="${1##*/}"
+  toolname="${toolname%%.git}"
+  folder="$tools_install_folder/entr"
+  git clone --depth 1 "$1" "$folder"
+  cd "$folder"
+  git fetch -q --tags
+  echo "Checking out $2..."
+  git checkout -q "$2"
+
+  echo "Installing..."
+  eval "$3"
+
+  echo "Installed $toolname!"
+  cd "$curr"
+}
+
+function install-toolset () {
+  declare -a tools=($@)
+  shift "${#tools[@]}"
+
+  curr=$(pwd)
+  for tool in "${tools[@]}"; do
+    if ! [ -d "tools/$tool" ]; then
+      echo "skipping: $tool - not found!"
+    else
+      cd "tools/$tool"
+      ./install.sh $@
+    fi
+    cd "$curr"
+  done
+  cd "$curr"
 }
 

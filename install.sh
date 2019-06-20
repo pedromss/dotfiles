@@ -197,7 +197,7 @@ do_symlinks "$in_install_vim" "${vim_files_tolink[@]}"
 do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 
 # ==================================================
-# Tool dependant configs and opt out features
+# Tools
 # ==================================================
 if (( ${in_install_rust:-1} )) ; then
   install-toolset \
