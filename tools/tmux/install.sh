@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -- "${POSITIONAL[@]}"
-
 if ! [ $(command -v tmux) ]; then
   if [[ "$OSTYPE" =~ 'darwin' ]]; then
     # assume mac

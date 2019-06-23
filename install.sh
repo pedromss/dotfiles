@@ -199,6 +199,10 @@ do_symlinks "$in_install_ctags" "${ctags_files_tolink[@]}"
 # ==================================================
 # Tools
 # ==================================================
+install-toolset \
+  tmux \
+  entr
+
 if (( ${in_install_rust:-1} )) ; then
   install-toolset \
     rustup \
