@@ -64,8 +64,20 @@ source_for_command() {
   fi
 }
 
-make_link() {
+make_link () {
   ln -sfv $1 $2
+}
+
+create-link-at-home () {
+  make-link "$dotfiles_fullpath/$1" "$user_home"
+}
+
+create-tool-link-at-home() {
+  create-link-at-home "tools/$1"
+}
+
+rm-link-at-home () {
+  rm -f "$user_home/$1"
 }
 
 mk() {
@@ -93,16 +105,28 @@ function is-macos () {
   [[ "$OSTYPE" =~ 'darwin' ]] || return 1
 }
 
+function skip-if-requested () {
+  (( ${2:-0} )) && { echo "skipping: [$2] - requested to skip" }
+}
+
 function skip-if-installed () {
   ! command_exists "$1" || { echo "skipping: [$1] - already installed!"; exit 0; }
 }
 
+function skip-if-dir-exists () {
+  ! [ -d "$2" ] || { echo "skipping: [$1] - already installed!"; exit 0; }
+}
+
 function skip-if-not-installed () {
-  command_exists "$1" || exit 0
+  command_exists "$1" || { echo "skipping: [$1] - not installed"; exit 0; }
 }
 
 function require-tool () {
   command_exists "$1" || { echo "$1 is required"; exit 1; }
+}
+
+function require-tool-to-install () {
+  command_exists "$1" || { echo "$1 is required to install $2"; exit 1; }
 }
 
 function require-dir () {
@@ -115,10 +139,21 @@ function require-file () {
 
 function install-with-pkg-manager () {
   if [ is-macos ]; then
+    require-tool 'brew'
     brew install "$1"
   else
     # assume apt-get
     sudo apt-get install "$1"
+  fi
+}
+
+function uninstall-with-pkg-manager () {
+  if [ is-macos ]; then
+    require-tool 'brew'
+    brew uninstall "$1"
+  else
+    # assume apt-get
+    sudo apt-get remove "$1"
   fi
 }
 
