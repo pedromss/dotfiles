@@ -11,16 +11,27 @@ function! LoadColorScheme(scheme)
   endif
 endfunction
 
-"function! AddShebang()
-"" TODO test for the presence of the shebang already
-"" TODO dont use marks when it is a new file
-"if &filetype !=? 'sh'
-"echo 'Filetype is ' . &filetype . ' not adding the shebang line'
-"else
-"let shebang = '#!/usr/bin/env bash'
-":execute "normal! mtggI" . shebang "\<esc>o\<esc>`t"
-"endif
-"endfunction
+function! IsShebang(line)
+  if match(a:line, '#!.*') == -1
+    return 0
+  endif
+  return 1
+endfunction
+
+function! AddShebang()
+  " TODO dont use marks when it is a new file
+  let lines = readfile(expand('%:p'))[0:50] " only care about the first 50 lines
+  let shebangLines = filter(lines, 'IsShebang(v:val)')
+  if len(shebangLines) > 0 
+    return
+  endif
+  if &filetype !=? 'sh'
+    echo 'Filetype is ' . &filetype . ' not adding the shebang line'
+  else
+    let shebang = get(g:, 'shebanger_shebang_line', '#!/usr/bin/env bash')
+    :execute 'normal! mtggI' . shebang "\<esc>o\<esc>`t"
+  endif
+endfunction
 
 function! CloseGoErrors()
   let buffers = filter(range(1, bufnr('$')), 'bufexists(v:val)')
@@ -408,9 +419,12 @@ nmap <leader>tb :TagbarToggle<CR>
 " }}}
 " }}}
 " Variables -------------------- {{{
+" Shebang plugin variables -------------------- {{{
+  "let g:shebanger_shebang_line = '#!/usr/bin/env zsh'
+" }}}
 " Rust variable -------------------- {{{
 let g:rustfmt_autosave = 1
-" }}} 
+" }}}
 " vim-go variables -------------------- {{{
 let g:go_fold_enable = ['varconst','block','import','comment', ]
 let g:go_highlight_extra_types = 1
