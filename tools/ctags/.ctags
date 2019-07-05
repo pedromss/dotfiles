@@ -11,3 +11,12 @@
 --regex-scala=/^[ \t]*((abstract|final|sealed|implicit|lazy|override|private[^ ]*|protected)[ \t]*)*val[ \t]+([a-zA-Z0-9_]+)/\3/V,values/
 --regex-scala=/^[ \t]*((abstract|final|sealed|implicit|lazy|override|private[^ ]*|protected)[ \t]*)*var[ \t]+([a-zA-Z0-9_]+)/\3/v,variables/
 --regex-scala=/^[ \t]*package[ \t]+([a-zA-Z0-9_.]+)/\1/p,packages/
+
+--langdef=groovy
+--langmap=groovy:.groovy
+--regex-groovy=/^[ t]*[(private|public|protected) ( t)]*[A-Za-z0-9_<>]+[ t]+([A-Za-z0-9_]+)[ t]*(.*)[ t]*{/1/f,function,functions/
+--regex-groovy=/^[ t]*def[ t]+([A-Za-z0-9_]+)[ t]*=[ t]*{/1/f,function,functions/
+--regex-groovy=/^[ t]*private def[ t]+([A-Za-z0-9_]+)[ t]*/1/v,private,private variables/
+--regex-groovy=/^[ t]*def[ t]+([A-Za-z0-9_]+)[ t]*/1/u,public,public variables/
+--regex-groovy=/^[ t]*[abstract ( t)]*[(private|public) ( t)]*class[ t]+([A-Za-z0-9_]+)[ t]*/1/c,class,classes/
+--regex-groovy=/^[ t]*[abstract ( t)]*[(private|public) ( t)]*enum[ t]+([A-Za-z0-9_]+)[ t]*/1/c,class,classes/

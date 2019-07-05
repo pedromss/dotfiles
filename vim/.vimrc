@@ -116,6 +116,9 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'yegappan/mru'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'godlygeek/tabular'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 
@@ -199,6 +202,13 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
+" MRU mappings -------------------- {{{
+nnoremap <leader>mr :MRU<cr>
+" }}}
+" Tabularize mappings -------------------- {{{
+vnoremap <localleader>qw :'<,'>Tabularize /=<cr>
+nnoremap <localleader>qw ggVG:'<,'>Tabularize /=<cr>
+" }}}
 " Vim cutlass mappings -------------------- {{{
 "nnoremap x d
 "xnoremap x d
@@ -419,6 +429,12 @@ nmap <leader>tb :TagbarToggle<CR>
 " }}}
 " }}}
 " Variables -------------------- {{{
+" mru variables -------------------- {{{
+let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'
+let MRU_Window_Height = 15
+let MRU_Use_Current_Window = 0
+let MRU_Auto_Close = 1
+" }}}
 " Shebang plugin variables -------------------- {{{
   "let g:shebanger_shebang_line = '#!/usr/bin/env zsh'
 " }}}
@@ -791,3 +807,4 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " }}}
+let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:function;v:variables'
