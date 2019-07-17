@@ -69,15 +69,15 @@ make_link () {
 }
 
 create-link-at-home () {
-  make-link "$dotfiles_fullpath/$1" "$user_home"
+make-link "$dotfiles_fullpath/$1" "$user_home"
 }
 
 create-tool-link-at-home() {
-  create-link-at-home "tools/$1"
+create-link-at-home "tools/$1"
 }
 
 rm-link-at-home () {
-  rm -f "$user_home/$1"
+rm -f "$user_home/$1"
 }
 
 mk() {
@@ -106,7 +106,7 @@ function is-macos () {
 }
 
 function skip-if-requested () {
-  (( ${2:-0} )) && { echo "skipping: [$2] - requested to skip" }
+  (( ${2:-0} )) && { echo "skipping: [$2] - requested to skip"; exit 0; }
 }
 
 function skip-if-installed () {
