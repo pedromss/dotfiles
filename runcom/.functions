@@ -68,12 +68,12 @@ make_link () {
   ln -sfv $1 $2
 }
 
-create-link-at-home () {
-make-link "$dotfiles_fullpath/$1" "$user_home"
+function create-link-at-home () {
+  make_link "$dotfiles_fullpath/$1" "$user_home"
 }
 
-create-tool-link-at-home() {
-create-link-at-home "tools/$1"
+function create-tool-link-at-home() {
+  create-link-at-home "tools/$1"
 }
 
 rm-link-at-home () {

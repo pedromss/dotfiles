@@ -148,13 +148,13 @@ if (( ${in_install_golang:-1} )) ; then
     go \
     gomplate \
     vault
-  fi
+fi
 
-  install_vim_plugins 
-  setup_neovim_config 
-  install_fzf "$in_fzf_version"
-  install_zsh_plugins "$zsh_plugins_folder"
-  generate_brewfile
+install_vim_plugins 
+setup_neovim_config 
+install_fzf "$in_fzf_version"
+install_zsh_plugins "$zsh_plugins_folder"
+generate_brewfile
 
 # ==================================================
 # Shutdown
