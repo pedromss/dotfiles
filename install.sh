@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
 set -e
+set -x
 . runcom/.functions
 logs_dir=logs
 
@@ -134,20 +135,20 @@ if (( ${in_install_rust:-1} )) ; then
     exa \
     bat \
     mdcat
-fi
+    fi
 
-if (( ${in_install_golang:-1} )) ; then
-  install-toolset \
-    go \
-    gomplate \
-    vault
-fi
+    if (( ${in_install_golang:-1} )) ; then
+      install-toolset \
+        go \
+        gomplate \
+        vault
+            fi
 
-install_vim_plugins 
-setup_neovim_config 
-install_fzf "$in_fzf_version"
-install_zsh_plugins "$zsh_plugins_folder"
-generate_brewfile
+            install_vim_plugins 
+            setup_neovim_config 
+            install_fzf "$in_fzf_version"
+            install_zsh_plugins "$zsh_plugins_folder"
+            generate_brewfile
 
 # ==================================================
 # Shutdown
