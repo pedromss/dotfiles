@@ -1,7 +1,23 @@
 #!/usr/bin/env bash
 
+user_home="$HOME"
+while [[ $# -gt 0 ]]
+do
+  case "$1" in
+    --user-home)
+      user_home="$2"
+      shift 2
+      ;;
+    *)
+    POSITIONAL+=("$1")
+    shift
+    ;;
+  esac
+done
+
+set -- "${POSITIONAL[@]}"
+
 dotfiles_folder='dotfiles'
-user_home=${1:-"$HOME"}
 user=${user_home##*/}
 dotfiles_fullpath="$user_home/$dotfiles_folder"
 tools_folder="$dotfiles_fullpath/tools"

@@ -5,14 +5,7 @@ set -e
 logs_dir=logs
 
 in_username="$USER"
-#in_install_git='yes'
-#in_install_vim='yes'
-#in_install_nvim='yes'
-#in_install_zsh='yes'
-#in_install_zsh_plugins='yes'
-#in_config_ctags='yes'
-#in_install_fzf='yes'
-#in_fzf_version='0.18.0'
+in_fzf_version='0.18.0'
 while [[ $# -gt 0 ]]
 do
   key="$1"

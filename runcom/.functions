@@ -64,7 +64,7 @@ source_for_command() {
   fi
 }
 
-make_link () {
+function make_link () {
   ln -sfv $1 $2
 }
 
