@@ -16,7 +16,7 @@ do
   esac
 done
 
-set -- "$@" "${POSITIONAL[@]}"
+set -- "${POSITIONAL[@]}"
 echo "POSITIONAL after common: $POSITIONAL"
 
 dotfiles_folder='dotfiles'

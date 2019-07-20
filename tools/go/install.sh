@@ -38,7 +38,7 @@ do
   esac
 done
 
-set -- "$@" "${POSITIONAL[@]}"
+set -- "${POSITIONAL[@]}"
 echo "POSITIONAL after go: $POSITIONAL"
 
 if (( ${prompt:-1} )) ; then
