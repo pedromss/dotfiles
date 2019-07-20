@@ -41,7 +41,11 @@ function make_link () {
 }
 
 function create-link-at-home () {
-  make_link "$dotfiles_fullpath/$1" "$user_home"
+  create-nest-at-home "$1" ''
+}
+
+function create-nest-at-home() {
+  make_link "$dotfiles_fullpath/$1" "${user_home}$2"
 }
 
 function create-tool-link-at-home() {
@@ -49,7 +53,7 @@ function create-tool-link-at-home() {
 }
 
 function rm-link-at-home () {
-rm -f "$user_home/$1"
+  rm -f "$user_home/$1"
 }
 
 function clone-from-github () {
@@ -169,12 +173,6 @@ function install-tool () {
   cd "$curr"
 }
 
-
-function install_vim_plugins() {
-  require-tool 'vim'
-  vim -c +PlugInstall +qall 
-}
-
 function install_fzf() {
   skip-if-requested 'fzf' $in_install_fzf
   skip-if-dir-exists 'fzf' "$HOME/.fzf"
@@ -185,16 +183,6 @@ function install_fzf() {
   echo "Installing fzf@$fzf_version"
   cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout $fzf_version
   ~/.fzf/install --key-bindings --completion --update-rc --no-fish
-}
-
-function setup_neovim_config() {
-  skip-if-requested 'nvim' $in_install_nvim
-  mkdir -p "$XDG_CONFIG_HOME/nvim"
-  mkdir -p "$XDG_DATA_HOME/nvim"
-
-  # TODO probably shouldn't link these to dotfiles as they are specific to each host
-  make_link "$dotfiles_fullpath/.local/share/nvim" $XDG_DATA_HOME/nvim
-  make_link "$dotfiles_fullpath/.config/nvim/init.vim" "$HOME/.config/nvim/init.vim"
 }
 
 function install_zsh_plugins() {

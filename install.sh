@@ -71,11 +71,6 @@ mkdir -p $logs_dir
 zsh_files_tolink[0]='zsh/.zshrc'
 zsh_files_tolink[1]='zsh/.zfunctions'
 
-vim_files_tolink[0]='vim/.vim'
-vim_files_tolink[1]='vim/ultisnips'
-vim_files_tolink[2]='vim/.vimrc'
-vim_files_tolink[3]='vim/.ideavim'
-
 ctags_files_tolink[0]='tools/ctags/.ctags'
 # ==================================================
 # Make links
@@ -108,8 +103,6 @@ install-tool 'vault' $@
 #vault
 #fi
 
-install_vim_plugins 
-setup_neovim_config 
 install_fzf "$in_fzf_version"
 install_zsh_plugins "$zsh_plugins_folder"
 generate_brewfile
