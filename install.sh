@@ -138,7 +138,7 @@ create-link-at-home 'runcom/.bash_profile'
 #mdcat
 #fi
 
-install-tool 'go' $@
+install-toolset 'go' 'gomplate' 'vault' $@
 
 #if (( ${in_install_golang:-1} )) ; then
   #install-toolset \

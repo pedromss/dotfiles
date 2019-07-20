@@ -19,8 +19,9 @@ do
       go_version="$2"
       shift 2
       ;;
-    -y)
+    -y|--no-prompt)
       prompt=0
+      POSITIONAL+=("$1")
       shift
       ;;
     --go-root)
@@ -46,18 +47,18 @@ done
 set -- "${POSITIONAL[@]}"
 echo "POSITIONAL after go: $POSITIONAL"
 
+echo "Will do:"
+echo "  - username: ${username}"
+echo "  - install go ${go_version} in ${go_root}"
+echo "  - go path set to ${go_path}"
 if (( ${prompt:-1} )) ; then
-  echo "Will do:"
-  echo "  - username: ${username}"
-  echo "  - install go ${go_version} in ${go_root}"
-  echo "  - go path set to ${go_path}"
   echo 'Press any key to continue...'
   read -n 1
 fi
 
 tarball=go${go_version}.linux-armv6l.tar.gz
 echo "Downloading go${go_version}.linux-armv6l.tar.gz..."
-wget -qO- "https://dl.google.com/go/${tarball}" | tar xz -C "$go_root_parent"
+sudo wget -qO- "https://dl.google.com/go/${tarball}" | tar xz -C "$go_root_parent"
 
 echo "Changing ownership of ${go_root} to ${username}"
 sudo chown -R "${username}:${username}" "$go_root"
