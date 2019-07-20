@@ -7,6 +7,7 @@ go_version='1.12.6'
 go_root_parent='/usr/local'
 go_root="$go_root_parent/go"
 go_path='~/go'
+[ -z "$POSITIONAL" ] || unset "$POSITIONAL"
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -21,6 +22,7 @@ do
     -y)
       prompt=0
       shift
+      POSITIONAL+=('-y')
       ;;
     --go-root)
       go_root="$2"
@@ -31,9 +33,9 @@ do
       shift 2
       ;;
     *)
-    POSITIONAL+=("$1")
-    shift
-    ;;
+      POSITIONAL+=("$1")
+      shift
+      ;;
   esac
 done
 
