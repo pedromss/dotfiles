@@ -138,20 +138,22 @@ create-link-at-home 'runcom/.bash_profile'
 #mdcat
 #fi
 
-install-toolset 'go' 'gomplate' 'vault' $@
+install-tool 'go' $@
+install-tool 'gomplate' $@
+install-tool 'vault' $@
 
 #if (( ${in_install_golang:-1} )) ; then
-  #install-toolset \
-    #go \
-    #gomplate \
-    #vault
-    #fi
+#install-toolset \
+#go \
+#gomplate \
+#vault
+#fi
 
-    install_vim_plugins 
-    setup_neovim_config 
-    install_fzf "$in_fzf_version"
-    install_zsh_plugins "$zsh_plugins_folder"
-    generate_brewfile
+install_vim_plugins 
+setup_neovim_config 
+install_fzf "$in_fzf_version"
+install_zsh_plugins "$zsh_plugins_folder"
+generate_brewfile
 
 # ==================================================
 # Shutdown

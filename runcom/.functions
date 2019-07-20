@@ -200,26 +200,6 @@ function install-tool-from-git-repo () {
   cd "$curr"
 }
 
-function install-toolset () {
-  declare -a tools=($@)
-  shift "${#tools[@]}"
-
-  curr=$(pwd)
-  for tool in "${tools[@]}"; do
-    if ! [ -d "tools/$tool" ]; then
-      echo "skipping: $tool - not found!"
-    else
-      cd "tools/$tool"
-  echo "Install toolset \$@: $@"
-  echo "Install toolset POSITIONAL: $POSITIONAL"
-
-      ./install.sh $@
-    fi
-    cd "$curr"
-  done
-  cd "$curr"
-}
-
 function install-tool () {
   curr=$(pwd)
   tool="$1"
