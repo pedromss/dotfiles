@@ -185,7 +185,9 @@ function install-tool-from-git-repo () {
   toolname="${1##*/}"
   toolname="${toolname%%.git}"
   folder="$tools_install_folder/entr"
-  git clone --depth 1 "$1" "$folder"
+  if ! [ -d "$folder" ]; then
+    git clone --depth 1 "$1" "$folder"
+  fi
   cd "$folder"
   git fetch -q --tags
   echo "Checking out $2..."
