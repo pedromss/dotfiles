@@ -58,7 +58,7 @@ fi
 
 tarball=go${go_version}.linux-armv6l.tar.gz
 echo "Downloading go${go_version}.linux-armv6l.tar.gz..."
-sudo wget -qO- "https://dl.google.com/go/${tarball}" | tar xz -C "$go_root_parent"
+sudo wget -qO- "https://dl.google.com/go/${tarball}" | sudo tar xz -C "$go_root_parent"
 
 echo "Changing ownership of ${go_root} to ${username}"
 sudo chown -R "${username}:${username}" "$go_root"

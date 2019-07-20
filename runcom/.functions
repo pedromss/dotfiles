@@ -210,6 +210,9 @@ function install-toolset () {
       echo "skipping: $tool - not found!"
     else
       cd "tools/$tool"
+  echo "Install toolset \$@: $@"
+  echo "Install toolset POSITIONAL: $POSITIONAL"
+
       ./install.sh $@
     fi
     cd "$curr"
