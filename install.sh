@@ -138,12 +138,14 @@ create-link-at-home 'runcom/.bash_profile'
 #mdcat
 #fi
 
-if (( ${in_install_golang:-1} )) ; then
-  install-toolset \
-    go \
-    gomplate \
-    vault
-    fi
+install-tool 'go' $@
+
+#if (( ${in_install_golang:-1} )) ; then
+  #install-toolset \
+    #go \
+    #gomplate \
+    #vault
+    #fi
 
     install_vim_plugins 
     setup_neovim_config 
