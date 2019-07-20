@@ -32,7 +32,12 @@ do
       shift 2
       ;;
     *)
-      POSITIONAL+=("$1")
+      for x in "${POSITIONAL[@]}" ; do
+        if [[ "$x" == "$1" ]]; then
+          add=0
+        fi
+      done
+      (( ${add:-1} )) && POSITIONAL+=("$1")
       shift
       ;;
   esac
