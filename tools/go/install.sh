@@ -2,12 +2,12 @@
 
 [ $(command -v go)  ] && { echo 'go is already installed, skipping!'; exit 0; }
 
+echo "POSITIONAL before go: $POSITIONAL"
 username='pedromss'
 go_version='1.12.6'
 go_root_parent='/usr/local'
 go_root="$go_root_parent/go"
 go_path='~/go'
-[ -z "$POSITIONAL" ] || unset "$POSITIONAL"
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -22,7 +22,6 @@ do
     -y)
       prompt=0
       shift
-      POSITIONAL+=('-y')
       ;;
     --go-root)
       go_root="$2"
@@ -39,7 +38,8 @@ do
   esac
 done
 
-set -- "${POSITIONAL[@]}"
+set -- "$@" "${POSITIONAL[@]}"
+echo "POSITIONAL after go: $POSITIONAL"
 
 if (( ${prompt:-1} )) ; then
   echo "Will do:"
