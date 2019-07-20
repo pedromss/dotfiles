@@ -1,6 +1,7 @@
-source $HOME/dotfiles/runcom/.functions
-source $HOME/dotfiles/runcom/.env
-source $HOME/dotfiles/runcom/.aliases
+. $HOME/dotfiles/runcom/.functions
+. $HOME/dotfiles/runcom/.env
+. $HOME/dotfiles/runcom/.aliases
+. $HOME/dotfiles/funcs.sh
 
 source_recursive $HOME/dotfiles/tools
 

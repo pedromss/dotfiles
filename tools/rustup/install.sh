@@ -6,7 +6,30 @@ fi
 
 set +e
 
-if [ $(command -v rustup) ]; then
+while [[ $# -gt 0 ]]
+do
+  key="$1"
+  case $key in
+    --no-rust)
+      in_install_rust=0
+      shift
+      ;;
+    --verbose)
+      verbose=1
+      shift
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
+done
+
+(( ${verbose:-0} )) && set -x
+
+set -- "$@" "${POSITIONAL[@]}"
+
+if [ "$(command -v rustup)" ]; then
   echo 'Rust is already installed, skipping!'
   exit 0
 fi
@@ -24,7 +47,7 @@ elif [[ "$OSTYPE" =~ 'darwin' ]]; then
   default_host_triple='x86_64-apple-darwin'
 fi
 
-! [ -z "$default_host_triple" ] || { echo 'Unable to install Rust automatically'; exit 0; }
+[ -n "$default_host_triple" ] || { echo 'Unable to install Rust automatically'; exit 0; }
 
 echo 'Downloading rust...'
 curl -sSL -o setup-rust https://sh.rustup.rs

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. runcom/.functions
+
 function source_recursive() {
   dir="$1"
   if ! [ -d "$dir" ]
@@ -173,33 +175,3 @@ function install-tool () {
   cd "$curr"
 }
 
-function install_fzf() {
-  skip-if-requested 'fzf' $in_install_fzf
-  skip-if-dir-exists 'fzf' "$HOME/.fzf"
-  require-tool-to-install 'git' 'fzf'
-
-  fzf_version="$2"
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  echo "Installing fzf@$fzf_version"
-  cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout $fzf_version
-  ~/.fzf/install --key-bindings --completion --update-rc --no-fish
-}
-
-function install_zsh_plugins() {
-  skip-if-requested 'zsh-plugins' $in_install_zsh_plugins
-
-  mkdir -p "$1"
-
-  clone-from-github 'Cloudstek/zsh-plugin-appup.git' $zsh_plugins_folder/appup
-  clone-from-github 'hlissner/zsh-autopair.git' $zsh_plugins_folder/zsh-autopair
-  clone-from-github 'b4b4r07/enhancd.git' $zsh_plugins_folder/enhancd
-  clone-from-github 'zdharma/fast-syntax-highlighting' $zsh_plugins_folder/fast-syntax-highlighting
-  clone-from-github 'wfxr/forgit.git' $zsh_plugins_folder/forgit
-  clone-from-github 'supercrabtree/k.git' $zsh_plugins_folder/k
-  clone-from-github 'qoomon/zjump.git' $zsh_plugins_folder/zjump
-  clone-from-github 'robbyrussell/oh-my-zsh.git' $zsh_plugins_folder/oh-my-zsh
-  clone-from-github 'zsh-users/zsh-history-substring-search.git' $zsh_plugins_folder/zsh-history-substring-search
-  if ! [ -f '/etc/os-release' ] || ! [[ $(cat /etc/os-release) =~ 'Raspbian' ]]; then
-    clone-from-github 'zsh-users/zsh-autosuggestions.git' $zsh_plugins_folder/zsh-autosuggestions
-  fi
-}

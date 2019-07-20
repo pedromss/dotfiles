@@ -33,6 +33,10 @@ do
       go_path="$2"
       shift 2
       ;;
+    --no-golang)
+      install_golang=0
+      shift
+      ;;
     *)
       for x in "${POSITIONAL[@]}" ; do
         if [[ "$x" == "$1" ]]; then
