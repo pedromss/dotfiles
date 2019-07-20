@@ -8,7 +8,7 @@ source common.sh
 
 skip-if-installed 'entr'
 
-if [ is-macos ]; then
+if is-macos ; then
   install-tool-from-git-repo \
     "$repo" \
     "$version" \

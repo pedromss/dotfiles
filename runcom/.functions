@@ -138,7 +138,7 @@ function require-file () {
 }
 
 function install-with-pkg-manager () {
-  if [ is-macos ]; then
+  if is-macos ; then
     require-tool 'brew'
     brew install "$1"
   else
@@ -148,7 +148,7 @@ function install-with-pkg-manager () {
 }
 
 function uninstall-with-pkg-manager () {
-  if [ is-macos ]; then
+  if is-macos ; then
     require-tool 'brew'
     brew uninstall "$1"
   else
