@@ -7,7 +7,6 @@ logs_dir=logs
 
 in_username="$USER"
 in_fzf_version='0.18.0'
-[ -z "$POSITIONAL" ] || unset "$POSITIONAL"
 while [[ $# -gt 0 ]]
 do
   key="$1"
@@ -51,8 +50,8 @@ do
   esac
 done
 
-set -- "${POSITIONAL[@]}"
-source ./common.sh $@
+set -- "$@" "${POSITIONAL[@]}"
+source ./common.sh
 mkdir -p $logs_dir
 
 function clone-from-github () {
@@ -138,9 +137,8 @@ create-link-at-home 'runcom/.bash_profile'
 #mdcat
 #fi
 
-    if (( ${in_install_golang:-1} )) ; then
-      echo "POSITIONAL: $POSITIONAL"
-    install-toolset \
+if (( ${in_install_golang:-1} )) ; then
+  install-toolset \
     go \
     gomplate \
     vault

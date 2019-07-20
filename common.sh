@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 user_home="$HOME"
-[ -z "$POSITIONAL" ] || unset "$POSITIONAL"
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -16,7 +15,7 @@ do
   esac
 done
 
-set -- "${POSITIONAL[@]}"
+set -- "$@" "${POSITIONAL[@]}"
 
 dotfiles_folder='dotfiles'
 user=${user_home##*/}
