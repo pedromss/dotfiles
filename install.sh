@@ -2,6 +2,8 @@
 
 set -e
 . runcom/.functions
+. funcs.sh
+
 logs_dir=logs
 
 in_username="$USER"
@@ -46,6 +48,10 @@ do
       verbose=1
       shift
       ;;
+    --main-device)
+      main_device=1
+      shift
+      ;;
     *)
       POSITIONAL+=("$1")
       shift
@@ -59,58 +65,6 @@ set -- "$@" "${POSITIONAL[@]}"
 echo "POSITIONAL after main: $POSITIONAL"
 source ./common.sh
 mkdir -p $logs_dir
-
-function clone-from-github () {
-  skip-if-dir-exists "$1" "$2"
-  git clone --depth 1 "https://github.com/$1" $2
-}
-
-function install_vim_plugins() {
-  require-tool 'vim'
-  vim -c +PlugInstall +qall 
-}
-
-function install_fzf() {
-  skip-if-requested 'fzf' $in_install_fzf
-  skip-if-dir-exists 'fzf' "$HOME/.fzf"
-  require-tool-to-install 'git' 'fzf'
-
-  fzf_version="$2"
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  echo "Installing fzf@$fzf_version"
-  cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout $fzf_version
-  ~/.fzf/install --key-bindings --completion --update-rc --no-fish
-}
-
-function setup_neovim_config() {
-  skip-if-requested 'nvim' $in_install_nvim
-  mkdir -p "$XDG_CONFIG_HOME/nvim"
-  mkdir -p "$XDG_DATA_HOME/nvim"
-
-  # TODO probably shouldn't link these to dotfiles as they are specific to each host
-  make_link "$dotfiles_fullpath/.local/share/nvim" $XDG_DATA_HOME/nvim
-  make_link "$dotfiles_fullpath/.config/nvim/init.vim" "$HOME/.config/nvim/init.vim"
-}
-
-function install_zsh_plugins() {
-  skip-if-requested 'zsh-plugins' $in_install_zsh_plugins
-
-  mkdir -p "$1"
-
-  clone-from-github 'Cloudstek/zsh-plugin-appup.git' $zsh_plugins_folder/appup
-  clone-from-github 'hlissner/zsh-autopair.git' $zsh_plugins_folder/zsh-autopair
-  clone-from-github 'b4b4r07/enhancd.git' $zsh_plugins_folder/enhancd
-  clone-from-github 'zdharma/fast-syntax-highlighting' $zsh_plugins_folder/fast-syntax-highlighting
-  clone-from-github 'wfxr/forgit.git' $zsh_plugins_folder/forgit
-  clone-from-github 'supercrabtree/k.git' $zsh_plugins_folder/k
-  clone-from-github 'qoomon/zjump.git' $zsh_plugins_folder/zjump
-  clone-from-github 'robbyrussell/oh-my-zsh.git' $zsh_plugins_folder/oh-my-zsh
-  clone-from-github 'zsh-users/zsh-history-substring-search.git' $zsh_plugins_folder/zsh-history-substring-search
-  if ! [ -f '/etc/os-release' ] || ! [[ $(cat /etc/os-release) =~ 'Raspbian' ]]; then
-    clone-from-github 'zsh-users/zsh-autosuggestions.git' $zsh_plugins_folder/zsh-autosuggestions
-  fi
-}
-
 # ==================================================
 # Files to link
 # ==================================================
