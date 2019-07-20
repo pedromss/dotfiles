@@ -17,10 +17,6 @@ do
       verbose=1
       shift
       ;;
-    --main-device)
-      main_device=1
-      shift
-      ;;
     *)
       POSITIONAL+=("$1")
       shift
@@ -39,5 +35,5 @@ require-tool-to-install 'git' 'fzf'
 fzf_version="$2"
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 echo "Installing fzf@$fzf_version"
-cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout $fzf_version
+cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout "$fzf_version"
 ~/.fzf/install --key-bindings --completion --update-rc --no-fish

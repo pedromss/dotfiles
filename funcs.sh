@@ -10,7 +10,8 @@ function source_recursive() {
   fi
 
   current=$(pwd)
-  for x in `find $dir -maxdepth 1 -mindepth 1 -type d`
+  # shellcheck disable=SC2044
+  for x in $(find "$dir" -maxdepth 1 -mindepth 1 -type d)
   do
     if [[ "$x" != "$current" ]]
     then
@@ -24,22 +25,26 @@ function source_for_command() {
 
   # Env files will always be sourced in the hopes that they
   # don't hurt anyone
-  for f in `find $1 -name ".env.source" -type f`
+  # shellcheck disable=SC2044
+  for f in $(find "$1" -name ".env.source" -type f)
   do
+    # shellcheck source=/dev/null
     source "$f"
   done
 
   if command_exists "$cmd"
   then
-    for f in `find $1 \( -not -name '.env.source' -a -name '.*.source' \) -type f`
+    # shellcheck disable=SC2044
+    for f in $(find "$1" \( -not -name '.env.source' -a -name '.*.source' \) -type f)
     do
+      # shellcheck source=/dev/null
       source "$f"
     done
   fi
 }
 
 function make_link () {
-  ln -sfv $1 $2
+  ln -sfv "$1" "$2"
 }
 
 function create-link-at-home () {
@@ -47,6 +52,7 @@ function create-link-at-home () {
 }
 
 function create-nest-at-home() {
+  # shellcheck disable=SC2154
   make_link "$dotfiles_fullpath/$1" "${user_home}$2"
 }
 
@@ -60,7 +66,7 @@ function rm-link-at-home () {
 
 function clone-from-github () {
   skip-if-dir-exists "$1" "$2"
-  git clone --depth 1 "https://github.com/$1" $2
+  git clone --depth 1 "https://github.com/$1" "$2"
 }
 
 function is-macos () {
@@ -133,10 +139,11 @@ function uninstall-tool-from-git-repo() {
   require-tool 'git'
   toolname-from-git-repo-http-url "$1"
   curr=$(pwd)
+  # shellcheck disable=SC2154
   folder="$tools_install_folder/$toolname"
-  cd "$folder"
-  eval $2
-  cd "$curr"
+  cd "$folder" || exit 1
+  eval "$2"
+  cd "$curr" || exit 1
   rm -rf "$folder"
 }
 
@@ -150,7 +157,7 @@ function install-tool-from-git-repo () {
   if ! [ -d "$folder" ]; then
     git clone --depth 1 "$1" "$folder"
   fi
-  cd "$folder"
+  cd "$folder" || exit 1
   git fetch -q --tags
   echo "Checking out $2..."
   git checkout -q "$2"
@@ -159,7 +166,7 @@ function install-tool-from-git-repo () {
   eval "$3"
 
   echo "Installed $toolname!"
-  cd "$curr"
+  cd "$curr" || exit 1
 }
 
 function install-tool () {
@@ -169,9 +176,9 @@ function install-tool () {
   if ! [ -d "tools/$tool" ]; then
     echo "skipping: $tool - not found!"
   else
-    cd "tools/$tool"
-    ./install.sh $@
+    cd "tools/$tool" || exit 1
+    ./install.sh "$@"
   fi
-  cd "$curr"
+  cd "$curr" || exit 
 }
 

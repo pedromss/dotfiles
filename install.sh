@@ -53,9 +53,6 @@ if (( ${in_install_golang:-1} )) ; then
   install-tool 'gomplate' "$@"
   install-tool 'vault' "$@"
 fi
-
-install_fzf "$fzf_version"
-
 # ==================================================
 # Shutdown
 # ==================================================

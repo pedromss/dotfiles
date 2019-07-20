@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
-source $HOME/dotfiles/runcom/.custom_profile
+# shellcheck source=/dev/null
+source "$HOME/dotfiles/runcom/.custom_profile"
 
 set -o vi
+# shellcheck source=/dev/null
 [ -f ~/.bashrc ] && source ~/.bashrc
+# shellcheck source=/dev/null
 [ -f ~/.bash_prompt ] && source ~/.bash_prompt
 

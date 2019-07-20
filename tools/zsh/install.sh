@@ -33,6 +33,8 @@ done
 
 (( ${verbose:-0} )) && set -x
 
+skip-if-requested "$install_zsh"
+
 set -- "$@" "${POSITIONAL[@]}"
 skip-if-installed 'zsh'
 install-with-pkg-manager 'zsh'

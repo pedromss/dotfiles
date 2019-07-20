@@ -3,7 +3,7 @@
 # --listfn([toolName = runcom/.functions]) {
 listfn () {
   function_path="$HOME/dotfiles/tools"
-  if ! [ -z "$1" ]
+  if [ -n "$1" ]
   then
     function_path="$function_path/$1"
   else
@@ -11,7 +11,8 @@ listfn () {
   fi
 
   fname=$2
-  for f in `find "$function_path" -name '*functions*' -maxdepth 2 -type f`
+  # shellcheck disable=SC2044
+  for f in $(find "$function_path" -name '*functions*' -maxdepth 2 -type f)
   do
     ag --no-numbers --no-filename --no-color -o "^# --(function\ )?\K(.*${fname}.*)(?=\{)" "$f"
   done
@@ -29,7 +30,7 @@ print_cmd_exists() {
 }
 
 mk() {
-  mkdir -p $1 && cd $_
+  mkdir -p "$1" && cd "$_" || exit 1
 }
 
 open_conns() {
@@ -37,13 +38,13 @@ open_conns() {
 }
 
 command_exists() {
-  type $1 1>/dev/null 2>/dev/null
+  type "$1" 1>/dev/null 2>/dev/null
 }
 
 cag() {
   if command_exists ag
   then
-    ag $1 --numbers --pager less --stats --nopager "${@:2}"
+    ag "$1" --numbers --pager less --stats --nopager "${@:2}"
   else
     echo 'Ag not installed, visit: https://github.com/ggreer/the_silver_searcher'
   fi

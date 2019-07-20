@@ -2,7 +2,7 @@
 
 (( ${verbose:-0} )) && set -x
 user_home="$HOME"
-echo "POSITIONAL before common: $POSITIONAL"
+
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -23,21 +23,18 @@ do
 done
 
 set -- "${POSITIONAL[@]}"
-echo "POSITIONAL after common: $POSITIONAL"
 
 dotfiles_folder='dotfiles'
-user=${user_home##*/}
-dotfiles_fullpath="$user_home/$dotfiles_folder"
+export user=${user_home##*/}
+export dotfiles_fullpath="$user_home/$dotfiles_folder"
 tools_folder="$dotfiles_fullpath/tools"
 tools_install_folder="$user_home/tool-repos"
-zsh_plugins_folder=$user_home/zsh-plugin-repos
+export zsh_plugins_folder=$user_home/zsh-plugin-repos
 user_bin="$user_home/bin"
-install_prefix="installdot-"
-uninstall_prefix="uninstalldot-"
 
 mkdir -p "$tools_install_folder"
 
-[ -d $user_home ] || { echo >&2 "Home directory [${user_home}] is not set"; exit 1; }
+[ -d "$user_home" ] || { echo >&2 "Home directory [${user_home}] is not set"; exit 1; }
 [ -d "$dotfiles_fullpath" ] || { echo "No dotfiles directory under $HOME"; exit 2; }
 
 set +e
@@ -45,4 +42,5 @@ set +e
 [ -d "$tools_folder" ] || { echo "Creating ${tools_folder}..."; mkdir -p "$tools_folder"; }
 set -e
 
+# shellcheck source=/dev/null
 source "$dotfiles_fullpath/runcom/.custom_profile"

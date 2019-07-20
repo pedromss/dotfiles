@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
 (( ${verbose:-0} )) && set -x
-[ $(command -v go)  ] && { echo 'go is already installed, skipping!'; exit 0; }
+[ "$(command -v go)"  ] && { echo 'go is already installed, skipping!'; exit 0; }
 
-echo "POSITIONAL before go: $POSITIONAL"
 username='pedromss'
 go_version='1.12.6'
 go_root_parent='/usr/local'
 go_root="$go_root_parent/go"
-go_path='~/go'
+go_path="$HOME/go"
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -50,7 +49,8 @@ do
 done
 
 set -- "${POSITIONAL[@]}"
-echo "POSITIONAL after go: $POSITIONAL"
+
+skip-if-requested "$install_golang"
 
 echo "Will do:"
 echo "  - username: ${username}"
@@ -58,7 +58,7 @@ echo "  - install go ${go_version} in ${go_root}"
 echo "  - go path set to ${go_path}"
 if (( ${prompt:-1} )) ; then
   echo 'Press any key to continue...'
-  read -n 1
+  read -r -n 1
 fi
 
 tarball=go${go_version}.linux-armv6l.tar.gz

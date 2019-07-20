@@ -5,4 +5,4 @@
 . ./common.sh
 
 skip-if-not-installed 'entr'
-uninstall-tool-from-git-repo "$repo" 'make uninstall'
+uninstall-tool-from-git-repo "$entr_repo" 'make uninstall'

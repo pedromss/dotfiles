@@ -1,7 +1,14 @@
-. $HOME/dotfiles/runcom/.functions
-. $HOME/dotfiles/runcom/.env
-. $HOME/dotfiles/runcom/.aliases
-. $HOME/dotfiles/funcs.sh
+#!/usr/bin/env bash
 
-source_recursive $HOME/dotfiles/tools
+# shellcheck source=/dev/null
+. "$HOME/dotfiles/runcom/.functions"
+# shellcheck source=/dev/null
+. "$HOME/dotfiles/runcom/.env"
+# shellcheck source=/dev/null
+. "$HOME/dotfiles/runcom/.aliases"
+# shellcheck source=/dev/null
+. "$HOME/dotfiles/funcs.sh"
+
+# shellcheck source=/dev/null
+source_recursive "$HOME/dotfiles/tools"
 

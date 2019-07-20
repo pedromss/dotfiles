@@ -10,9 +10,9 @@ skip-if-installed 'entr'
 
 if is-macos ; then
   install-tool-from-git-repo \
-    "$repo" \
-    "$version" \
+    "$entr_repo" \
+    "$entr_version" \
     './configure && make && make install'
-else
-  install-with-pkg-manager 'entr'
-fi
+    else
+      install-with-pkg-manager 'entr'
+    fi
