@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
 set -e
-set -x
 . runcom/.functions
 logs_dir=logs
 
@@ -43,12 +42,18 @@ do
       in_install_zsh_plugins=0
       shift
       ;;
+    --verbose)
+      verbose=1
+      shift
+      ;;
     *)
       POSITIONAL+=("$1")
       shift
       ;;
   esac
 done
+
+(( ${verbose:-0} )) && set -x
 
 set -- "$@" "${POSITIONAL[@]}"
 echo "POSITIONAL after main: $POSITIONAL"

@@ -2,4 +2,4 @@
 
 rm -rf "$GOPATH"
 rm -rf "$GOROOT"
-rm -rf /usr/local/go
+sudo rm -rf /usr/local/go

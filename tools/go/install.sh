@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+(( ${verbose:-0} )) && set -x
 [ $(command -v go)  ] && { echo 'go is already installed, skipping!'; exit 0; }
 
 echo "POSITIONAL before go: $POSITIONAL"

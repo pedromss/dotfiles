@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+(( ${verbose:-0} )) && set -x
 user_home="$HOME"
 echo "POSITIONAL before common: $POSITIONAL"
 while [[ $# -gt 0 ]]
