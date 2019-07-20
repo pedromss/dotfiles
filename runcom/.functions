@@ -217,3 +217,16 @@ function install-toolset () {
   cd "$curr"
 }
 
+function install-tool () {
+  curr=$(pwd)
+  tool="$1"
+  shift
+  if ! [ -d "tools/$tool" ]; then
+    echo "skipping: $tool - not found!"
+  else
+    cd "tools/$tool"
+    ./install.sh $@
+  fi
+  cd "$curr"
+}
+
