@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 user_home="$HOME"
+[ -z "$POSITIONAL" ] || unset "$POSITIONAL"
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -9,9 +10,9 @@ do
       shift 2
       ;;
     *)
-    POSITIONAL+=("$1")
-    shift
-    ;;
+      POSITIONAL+=("$1")
+      shift
+      ;;
   esac
 done
 

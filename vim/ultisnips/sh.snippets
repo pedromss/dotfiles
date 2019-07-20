@@ -9,6 +9,7 @@ $3
 endsnippet
 
 snippet case "Switch case"
+[ -z "$POSITIONAL" ] || unset "$POSITIONAL"
 while [[ $# -gt 0 ]]
 do
 	case "\$1" in

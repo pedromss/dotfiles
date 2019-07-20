@@ -7,7 +7,7 @@ logs_dir=logs
 
 in_username="$USER"
 in_fzf_version='0.18.0'
-unset "$POSITIONAL"
+[ -z "$POSITIONAL" ] || unset "$POSITIONAL"
 while [[ $# -gt 0 ]]
 do
   key="$1"
@@ -127,31 +127,30 @@ create-link-at-home 'runcom/.bash_profile'
 # Tools
 # ==================================================
 #install-toolset \
-  #tmux \
-  #entr
+#tmux \
+#entr
 
 #if (( ${in_install_rust:-1} )) ; then
-  #install-toolset \
-    #rustup \
-    #exa \
-    #bat \
-    #mdcat
-    #fi
+#install-toolset \
+#rustup \
+#exa \
+#bat \
+#mdcat
+#fi
 
-    #if (( ${in_install_golang:-1} )) ; then
-      #install-toolset \
-        #go \
-        #gomplate \
-        #vault
-            #fi
+    if (( ${in_install_golang:-1} )) ; then
+      echo "POSITIONAL: $POSITIONAL"
+    install-toolset \
+    go \
+    gomplate \
+    vault
+    fi
 
-install-tool 'go' $@
-
-install_vim_plugins 
-setup_neovim_config 
-install_fzf "$in_fzf_version"
-install_zsh_plugins "$zsh_plugins_folder"
-generate_brewfile
+    install_vim_plugins 
+    setup_neovim_config 
+    install_fzf "$in_fzf_version"
+    install_zsh_plugins "$zsh_plugins_folder"
+    generate_brewfile
 
 # ==================================================
 # Shutdown
