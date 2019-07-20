@@ -51,6 +51,7 @@ do
 done
 
 set -- "$@" "${POSITIONAL[@]}"
+echo "POSITIONAL after main: $POSITIONAL"
 source ./common.sh
 mkdir -p $logs_dir
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 user_home="$HOME"
+echo "POSITIONAL before common: $POSITIONAL"
 while [[ $# -gt 0 ]]
 do
   case "$1" in
@@ -16,6 +17,7 @@ do
 done
 
 set -- "$@" "${POSITIONAL[@]}"
+echo "POSITIONAL after common: $POSITIONAL"
 
 dotfiles_folder='dotfiles'
 user=${user_home##*/}
