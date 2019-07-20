@@ -6,7 +6,7 @@ function! SetTabs(amount)
 endfunction
 
 function! LoadColorScheme(scheme)
-  if filereadable(expand("~/dotfiles/vim/.vim/colors/" . a:scheme . ".vim"))
+  if filereadable(expand("~/.vim/colors/" . a:scheme . ".vim"))
     execute ":colorscheme " . a:scheme
   endif
 endfunction
@@ -48,7 +48,7 @@ if has('gui_running')
 endif
 let mapleader = ','
 let localleader = "\\"
-call LoadColorScheme("gruvbox")
+call LoadColorScheme('gruvbox')
 set bg=dark
 syntax on
 filetype plugin indent on
