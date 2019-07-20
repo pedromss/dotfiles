@@ -7,7 +7,12 @@ source ../../common.sh
 source common.sh
 
 skip-if-installed 'entr'
-install-tool-from-git-repo \
-  "$repo" \
-  "$version" \
-  './configure && make && make install'
+
+if [ is-macos ]; then
+  install-tool-from-git-repo \
+    "$repo" \
+    "$version" \
+    './configure && make && make install'
+else
+  install-with-pkg-manager 'entr'
+fi
