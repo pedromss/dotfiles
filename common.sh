@@ -24,23 +24,25 @@ done
 
 set -- "${POSITIONAL[@]}"
 
-dotfiles_folder='dotfiles'
-export user=${user_home##*/}
-export dotfiles_fullpath="$user_home/$dotfiles_folder"
-tools_folder="$dotfiles_fullpath/tools"
-tools_install_folder="$user_home/tool-repos"
-export zsh_plugins_folder=$user_home/zsh-plugin-repos
-user_bin="$user_home/bin"
+export DOTFILES_CONFIG_FILE=".config"
+export DOTFILES_CONFIG_NEW_FILE=".config.new"
+export DOTFILES_FOLDER='dotfiles'
+export DOTFILES_USER_HOME="$user_home"
+export DOTFILES_USER=${DOTFILES_USER_HOME##*/}
+export DOTFILES_FULL_PATH="$DOTFILES_USER_HOME/$DOTFILES_FOLDER"
 
-mkdir -p "$tools_install_folder"
+export DOTFILES_TOOLS_FOLDER="$DOTFILES_FULL_PATH/tools"
+export DOTFILES_TOOLS_INSTALLATION_FOLDER="$DOTFILES_FULL_PATH/tool-repos"
+export DOTFILES_ZSH_PLUGINS_FOLDER="$DOTFILES_USER_HOME/zsh-plugin-repos"
 
-[ -d "$user_home" ] || { echo >&2 "Home directory [${user_home}] is not set"; exit 1; }
-[ -d "$dotfiles_fullpath" ] || { echo "No dotfiles directory under $HOME"; exit 2; }
+mkdir -p "$DOTFILES_TOOLS_INSTALLATION_FOLDER"
+
+[ -d "$DOTFILES_USER_HOME" ] || { echo >&2 "Home directory [${DOTFILES_USER_HOME}] is not set"; exit 1; }
+[ -d "$DOTFILES_FULL_PATH" ] || { echo "No dotfiles directory under $HOME"; exit 2; }
 
 set +e
-[ -d "$user_bin" ] || { echo "Creating ${user_bin}..."; mkdir -p "$user_bin"; }
-[ -d "$tools_folder" ] || { echo "Creating ${tools_folder}..."; mkdir -p "$tools_folder"; }
+[ -d "$DOTFILES_TOOLS_FOLDER" ] || { echo "Creating ${DOTFILES_TOOLS_FOLDER}..."; mkdir -p "$DOTFILES_TOOLS_FOLDER"; }
 set -e
 
 # shellcheck source=/dev/null
-source "$dotfiles_fullpath/runcom/.custom_profile"
+source "$DOTFILES_FULL_PATH/runcom/.custom_profile"

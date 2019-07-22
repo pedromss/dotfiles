@@ -10,6 +10,14 @@ while [[ $# -gt 0 ]]
 do
   key="$1"
   case $key in
+    -u|--uninstall)
+      uninstall=1
+      shift
+      ;;
+    -t|--tool)
+      tool="$2"
+      shift 2
+      ;;
     --no-rust)
       in_install_rust=0
       shift
@@ -29,7 +37,27 @@ done
 
 set -- "$@" "${POSITIONAL[@]}"
 source ./common.sh
-mkdir -p $logs_dir
+# ==================================================
+# Check single tool?
+# ==================================================
+if [ -n "$tool" ]; then
+  action='install'
+  if ((${uninstall:-0})); then
+    action='uninstall'
+  fi
+
+  file_to_eval="tools/$tool/$action.sh"
+  set -x
+  eval "$file_to_eval $*"
+  set +x
+  echo "Finished installing $tool"
+
+  if ! (("${uninstall:-0}")); then
+    remove-duplicates-from-config-file
+    cleanup-dotfiles-config-files
+  fi
+  exit 0
+fi
 # ==================================================
 # Make links
 # ==================================================

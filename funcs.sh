@@ -2,6 +2,24 @@
 
 . runcom/.functions
 
+function save-config () {
+  export "$1"="$2"
+  echo "export $1=$2" >> "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+}
+
+function cleanup-dotfiles-config-files () {
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
+}
+
+function remove-duplicates-from-file () {
+  uniq "$1" >> "$1.tmp"
+  mv "$1.tmp" "$1"
+}
+
+function remove-duplicates-from-config-file () {
+  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+}
+
 function source_recursive() {
   dir="$1"
   if ! [ -d "$dir" ]
@@ -179,6 +197,6 @@ function install-tool () {
     cd "tools/$tool" || exit 1
     ./install.sh "$@"
   fi
-  cd "$curr" || exit 
+  cd "$curr" || exit
 }
 
