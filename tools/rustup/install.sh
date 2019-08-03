@@ -1,12 +1,36 @@
 #!/usr/bin/env bash
 
-if [ -f ../../common.sh ]; then
-  source ../../common.sh
-fi
+source ../../funcs.sh
+source ../../common.sh
 
 set +e
 
-if [ $(command -v rustup) ]; then
+while [[ $# -gt 0 ]]
+do
+  key="$1"
+  case $key in
+    --no-rust)
+      install_rust=0
+      shift
+      ;;
+    --verbose)
+      verbose=1
+      shift
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
+done
+
+(( ${verbose:-0} )) && set -x
+
+skip-if-requested "$install_rust"
+
+set -- "$@" "${POSITIONAL[@]}"
+
+if [ "$(command -v rustup)" ]; then
   echo 'Rust is already installed, skipping!'
   exit 0
 fi
@@ -24,7 +48,7 @@ elif [[ "$OSTYPE" =~ 'darwin' ]]; then
   default_host_triple='x86_64-apple-darwin'
 fi
 
-! [ -z "$default_host_triple" ] || { echo 'Unable to install Rust automatically'; exit 0; }
+[ -n "$default_host_triple" ] || { echo 'Unable to install Rust automatically'; exit 0; }
 
 echo 'Downloading rust...'
 curl -sSL -o setup-rust https://sh.rustup.rs
@@ -45,13 +69,12 @@ rm -rf setup-rust
 cargo_env_file="$HOME/.cargo/env"
 echo "Sourcing the config at ${cargo_env_file}..."
 source './.env.source'
+# shellcheck source=/dev/null
 source "$cargo_env_file"
 
 user_bin="$user_bin"
 echo "Making symlinks in ${user_bin} to installer and uninstaller..."
 tool_name=$(pwd)
 tool_name=${tool_name##*/}
-make_link ./install.sh "$user_bin/${install_prefix}${tool_name}"
-make_link ./uninstall.sh "$user_bin/${uninstall_prefix}${tool_name}"
 
 echo 'Rust installation process complete. Try rustup --help to ensure is installed!'

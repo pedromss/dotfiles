@@ -1,24 +1,48 @@
 #!/usr/bin/env bash
 
-dotfiles_folder='dotfiles'
-user_home=${1:-"$HOME"}
-user=${user_home##*/}
-dotfiles_fullpath="$user_home/$dotfiles_folder"
-tools_folder="$dotfiles_fullpath/tools"
-tools_install_folder="$user_home/tool-repos"
-zsh_plugins_folder=$user_home/zsh-plugin-repos
-user_bin="$user_home/bin"
-install_prefix="installdot-"
-uninstall_prefix="uninstalldot-"
+(( ${verbose:-0} )) && set -x
+user_home="$HOME"
 
-mkdir -p "$tools_install_folder"
+while [[ $# -gt 0 ]]
+do
+  case "$1" in
+    --user-home)
+      user_home="$2"
+      shift 2
+      ;;
+    *)
+      for x in "${POSITIONAL[@]}" ; do
+        if [[ "$x" == "$1" ]]; then
+          add=0
+        fi
+      done
+      (( ${add:-1} )) && POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
+done
 
-[ -d $user_home ] || { echo >&2 "Home directory [${user_home}] is not set"; exit 1; }
-[ -d "$dotfiles_fullpath" ] || { echo "No dotfiles directory under $HOME"; exit 2; }
+set -- "${POSITIONAL[@]}"
+
+export DOTFILES_CONFIG_FILE=".config"
+export DOTFILES_CONFIG_NEW_FILE=".config.new"
+export DOTFILES_FOLDER='dotfiles'
+export DOTFILES_USER_HOME="$user_home"
+export DOTFILES_USER=${DOTFILES_USER_HOME##*/}
+export DOTFILES_FULL_PATH="$DOTFILES_USER_HOME/$DOTFILES_FOLDER"
+
+export DOTFILES_TOOLS_FOLDER="$DOTFILES_FULL_PATH/tools"
+export DOTFILES_TOOLS_INSTALLATION_FOLDER="$DOTFILES_FULL_PATH/tool-repos"
+export DOTFILES_ZSH_PLUGINS_FOLDER="$DOTFILES_USER_HOME/zsh-plugin-repos"
+
+mkdir -p "$DOTFILES_TOOLS_INSTALLATION_FOLDER"
+
+[ -d "$DOTFILES_USER_HOME" ] || { echo >&2 "Home directory [${DOTFILES_USER_HOME}] is not set"; exit 1; }
+[ -d "$DOTFILES_FULL_PATH" ] || { echo "No dotfiles directory under $HOME"; exit 2; }
 
 set +e
-[ -d "$user_bin" ] || { echo "Creating ${user_bin}..."; mkdir -p "$user_bin"; }
-[ -d "$tools_folder" ] || { echo "Creating ${tools_folder}..."; mkdir -p "$tools_folder"; }
+[ -d "$DOTFILES_TOOLS_FOLDER" ] || { echo "Creating ${DOTFILES_TOOLS_FOLDER}..."; mkdir -p "$DOTFILES_TOOLS_FOLDER"; }
 set -e
 
-source "$dotfiles_fullpath/runcom/.custom_profile"
+# shellcheck source=/dev/null
+source "$DOTFILES_FULL_PATH/runcom/.custom_profile"

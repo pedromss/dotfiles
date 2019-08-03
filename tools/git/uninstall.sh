@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-. ../../runcom/.functions
-. ../../common.sh
+source ../../runcom/.functions
+source ../../common.sh
 
 skip-if-not-installed 'git'
 uninstall-with-pkg-manager 'git'
