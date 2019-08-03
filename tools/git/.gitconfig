@@ -3,7 +3,7 @@
 	email = pedromss91@gmail.com
 [core]
 	autocrlf = input
-  editor = /usr/bin/vim
+	editor = vim --noplugin
 	excludesfile = ~/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [grep]
