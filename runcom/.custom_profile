@@ -9,6 +9,7 @@
 # shellcheck source=/dev/null
 . "$HOME/dotfiles/funcs.sh"
 
-# shellcheck source=/dev/null
-source_recursive "$HOME/dotfiles/tools"
+. "$HOME/dotfiles/.dotfiles.aliases"
+. "$HOME/dotfiles/.dotfiles.env"
+. "$HOME/dotfiles/.dotfiles.config"
 

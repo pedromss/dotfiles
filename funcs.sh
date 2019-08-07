@@ -1,23 +1,61 @@
 #!/usr/bin/env bash
 
-. runcom/.functions
+. "$DOTFILES_FULL_PATH/runcom/.functions"
+
+function touch-dotfiles () {
+  touch "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+  touch "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
+  touch "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+  touch "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
+  touch "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
+  touch "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
+}
+
+function save-alias () {
+  alias "$1"="$2"
+  echo "alias $1='$2'" >> "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+}
+
+function save-env () {
+  export "$1"="$2"
+  echo "export $1=$2" >> "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
+}
 
 function save-config () {
   export "$1"="$2"
   echo "export $1=$2" >> "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
 }
 
-function cleanup-dotfiles-config-files () {
+function cleanup-dotfiles-config-file () {
   mv "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
 }
 
+function cleanup-dotfiles-env-file() {
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
+}
+
+function cleanup-dotfiles-alias-file () {
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
+}
+
 function remove-duplicates-from-file () {
+  if ! [ -f "$1" ]; then 
+    return
+  fi
   uniq "$1" >> "$1.tmp"
   mv "$1.tmp" "$1"
 }
 
 function remove-duplicates-from-config-file () {
   remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+}
+
+function remove-duplicates-from-env-file() {
+  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
+}
+
+function remove-duplicates-from-alias-file() {
+  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
 }
 
 function source_recursive() {
@@ -171,7 +209,7 @@ function install-tool-from-git-repo () {
   curr=$(pwd)
   toolname="${1##*/}"
   toolname="${toolname%%.git}"
-  folder="$tools_install_folder/entr"
+  folder="$DOTFILES_TOOLS_INSTALLATION_FOLDER/entr"
   if ! [ -d "$folder" ]; then
     git clone --depth 1 "$1" "$folder"
   fi
@@ -195,7 +233,12 @@ function install-tool () {
     echo "skipping: $tool - not found!"
   else
     cd "tools/$tool" || exit 1
-    ./install.sh "$@"
+
+    if ! [ -f 'install.sh' ]; then
+      echo "tool $tool: no install file present"
+    else
+      ./install.sh "$@"
+    fi
   fi
   cd "$curr" || exit
 }

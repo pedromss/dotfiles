@@ -2,7 +2,6 @@
 
 set -e
 . runcom/.functions
-. funcs.sh
 
 logs_dir=logs
 
@@ -36,7 +35,9 @@ done
 (( ${verbose:-0} )) && set -x
 
 set -- "$@" "${POSITIONAL[@]}"
-source ./common.sh
+. ./common.sh
+. funcs.sh
+touch-dotfiles
 # ==================================================
 # Check single tool?
 # ==================================================
@@ -47,14 +48,18 @@ if [ -n "$tool" ]; then
   fi
 
   file_to_eval="tools/$tool/$action.sh"
-  set -x
+  (( ${verbose:-0} )) && set -x
   eval "$file_to_eval $*"
   set +x
   echo "Finished installing $tool"
 
   if ! (("${uninstall:-0}")); then
     remove-duplicates-from-config-file
-    cleanup-dotfiles-config-files
+    remove-duplicates-from-alias-file
+    remove-duplicates-from-env-file
+    cleanup-dotfiles-config-file
+    cleanup-dotfiles-alias-file
+    cleanup-dotfiles-env-file
   fi
   exit 0
 fi
@@ -66,6 +71,7 @@ create-link-at-home 'runcom/.bash_profile'
 # ==================================================
 # Tools
 # ==================================================
+#install-tool 'java'
 install-tool 'tmux'
 install-tool 'entr'
 
@@ -81,6 +87,12 @@ if (( ${in_install_golang:-1} )) ; then
   install-tool 'gomplate' "$@"
   install-tool 'vault' "$@"
 fi
+remove-duplicates-from-config-file
+remove-duplicates-from-alias-file
+remove-duplicates-from-env-file
+cleanup-dotfiles-config-file
+cleanup-dotfiles-alias-file
+cleanup-dotfiles-env-file
 # ==================================================
 # Shutdown
 # ==================================================

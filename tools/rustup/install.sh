@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source ../../funcs.sh
-source ../../common.sh
+. ../../common.sh
+. ../../funcs.sh
 
 set +e
 

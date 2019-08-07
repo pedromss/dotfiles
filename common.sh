@@ -24,8 +24,12 @@ done
 
 set -- "${POSITIONAL[@]}"
 
-export DOTFILES_CONFIG_FILE=".config"
-export DOTFILES_CONFIG_NEW_FILE=".config.new"
+export DOTFILES_ALIAS_FILE=".dotfiles.alias"
+export DOTFILES_ALIAS_NEW_FILE=".dotfiles.alias.new"
+export DOTFILES_ENV_FILE=".dotfiles.env"
+export DOTFILES_ENV_NEW_FILE=".dotfiles.env.new"
+export DOTFILES_CONFIG_FILE=".dotfiles.config"
+export DOTFILES_CONFIG_NEW_FILE=".dotfiles.config.new"
 export DOTFILES_FOLDER='dotfiles'
 export DOTFILES_USER_HOME="$user_home"
 export DOTFILES_USER=${DOTFILES_USER_HOME##*/}
@@ -43,6 +47,3 @@ mkdir -p "$DOTFILES_TOOLS_INSTALLATION_FOLDER"
 set +e
 [ -d "$DOTFILES_TOOLS_FOLDER" ] || { echo "Creating ${DOTFILES_TOOLS_FOLDER}..."; mkdir -p "$DOTFILES_TOOLS_FOLDER"; }
 set -e
-
-# shellcheck source=/dev/null
-source "$DOTFILES_FULL_PATH/runcom/.custom_profile"
