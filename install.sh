@@ -93,6 +93,7 @@ remove-duplicates-from-env-file
 cleanup-dotfiles-config-file
 cleanup-dotfiles-alias-file
 cleanup-dotfiles-env-file
+rm -rf "$DOTFILES_TOOLS_INSTALLATION_FOLDER"
 # ==================================================
 # Shutdown
 # ==================================================
