@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-alias gw="gw --console=plain"
-alias gradle="gradle --console=plain"

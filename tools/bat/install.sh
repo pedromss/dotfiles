@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-[ "$(command -v bat)" ] && { echo 'bat already installed, skipping!'; exit 0; }
-[ -f "$HOME/.cargo/bin/cargo" ] || { echo 'cargo is required to install bat'; exit 1; }
+. "$DOTFILES_FULL_PATH/funcs.sh"
 
+save-alias 'cat' 'bat'
+
+save-env 'BAT_THEME' '1337'
+
+skip-if-installed 'bat'
+require-tool 'cargo'
 "$HOME/.cargo/bin/cargo" install bat

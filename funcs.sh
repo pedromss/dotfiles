@@ -2,28 +2,55 @@
 
 . "$DOTFILES_FULL_PATH/runcom/.functions"
 
+function cleanup () {
+  remove-duplicates-from-config-file
+  remove-duplicates-from-alias-file
+  remove-duplicates-from-env-file
+  remove-duplicates-from-sources-file
+  cleanup-dotfiles-config-file
+  cleanup-dotfiles-alias-file
+  cleanup-dotfiles-env-file
+  cleanup-dotfiles-sources-file
+  rm -rf "$DOTFILES_TOOLS_INSTALLATION_FOLDER"
+}
+
 function touch-dotfiles () {
-  touch "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
   touch "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
-  touch "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
   touch "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
-  touch "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
   touch "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
+  touch "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE"
+
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
+}
+
+function save-source () {
+  filename="$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
+  echo ". $1" >> "$filename"
 }
 
 function save-alias () {
+  filename="$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
   alias "$1"="$2"
-  echo "alias $1='$2'" >> "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+  echo "alias $1='$2'" >> "$filename"
 }
 
 function save-env () {
+  filename="$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
   export "$1"="$2"
-  echo "export $1=$2" >> "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
+  echo "export $1=$2" >> "$filename"
 }
 
 function save-config () {
+  filename="$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
   export "$1"="$2"
-  echo "export $1=$2" >> "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+  echo "export $1=$2" >> "$filename"
+}
+
+function cleanup-dotfiles-sources-file () {
+  mv "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE"
 }
 
 function cleanup-dotfiles-config-file () {
@@ -39,11 +66,15 @@ function cleanup-dotfiles-alias-file () {
 }
 
 function remove-duplicates-from-file () {
-  if ! [ -f "$1" ]; then 
+  if ! [ -f "$1" ]; then
     return
   fi
   uniq "$1" >> "$1.tmp"
   mv "$1.tmp" "$1"
+}
+
+function remove-duplicates-from-sources-file () {
+  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
 }
 
 function remove-duplicates-from-config-file () {
@@ -56,47 +87,6 @@ function remove-duplicates-from-env-file() {
 
 function remove-duplicates-from-alias-file() {
   remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
-}
-
-function source_recursive() {
-  dir="$1"
-  if ! [ -d "$dir" ]
-  then
-    return
-  fi
-
-  current=$(pwd)
-  # shellcheck disable=SC2044
-  for x in $(find "$dir" -maxdepth 1 -mindepth 1 -type d)
-  do
-    if [[ "$x" != "$current" ]]
-    then
-      source_for_command "$x"
-    fi
-  done
-}
-
-function source_for_command() {
-  cmd="${1##*/}"
-
-  # Env files will always be sourced in the hopes that they
-  # don't hurt anyone
-  # shellcheck disable=SC2044
-  for f in $(find "$1" -name ".env.source" -type f)
-  do
-    # shellcheck source=/dev/null
-    source "$f"
-  done
-
-  if command_exists "$cmd"
-  then
-    # shellcheck disable=SC2044
-    for f in $(find "$1" \( -not -name '.env.source' -a -name '.*.source' \) -type f)
-    do
-      # shellcheck source=/dev/null
-      source "$f"
-    done
-  fi
 }
 
 function make_link () {

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash 
 
-. ../../runcom/.functions
-. ../../funcs.sh
+. "$DOTFILES_FULL_PATH/funcs.sh"
 
 skip-if-installed 'ctags'
 install-with-pkg-manager 'ctags'

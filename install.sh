@@ -54,12 +54,7 @@ if [ -n "$tool" ]; then
   echo "Finished installing $tool"
 
   if ! (("${uninstall:-0}")); then
-    remove-duplicates-from-config-file
-    remove-duplicates-from-alias-file
-    remove-duplicates-from-env-file
-    cleanup-dotfiles-config-file
-    cleanup-dotfiles-alias-file
-    cleanup-dotfiles-env-file
+    cleanup
   fi
   exit 0
 fi
@@ -87,13 +82,7 @@ if (( ${in_install_golang:-1} )) ; then
   install-tool 'gomplate' "$@"
   install-tool 'vault' "$@"
 fi
-remove-duplicates-from-config-file
-remove-duplicates-from-alias-file
-remove-duplicates-from-env-file
-cleanup-dotfiles-config-file
-cleanup-dotfiles-alias-file
-cleanup-dotfiles-env-file
-rm -rf "$DOTFILES_TOOLS_INSTALLATION_FOLDER"
+cleanup
 # ==================================================
 # Shutdown
 # ==================================================

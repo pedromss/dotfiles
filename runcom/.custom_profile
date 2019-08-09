@@ -6,10 +6,8 @@
 . "$HOME/dotfiles/runcom/.env"
 # shellcheck source=/dev/null
 . "$HOME/dotfiles/runcom/.aliases"
-# shellcheck source=/dev/null
-. "$HOME/dotfiles/funcs.sh"
 
-. "$HOME/dotfiles/.dotfiles.aliases"
+. "$HOME/dotfiles/.dotfiles.alias"
 . "$HOME/dotfiles/.dotfiles.env"
 . "$HOME/dotfiles/.dotfiles.config"
 
