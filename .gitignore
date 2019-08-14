@@ -1,3 +1,4 @@
+.dotfiles.*
 **/*.swp
 **/plug.vim*
 **/pathogen.vim
