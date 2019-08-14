@@ -24,6 +24,8 @@ done
 
 set -- "${POSITIONAL[@]}"
 
+export DOTFILES_SOURCES_FILE=".dotfiles.sources"
+export DOTFILES_SOURCES_NEW_FILE=".dotfiles.sources.new"
 export DOTFILES_ALIAS_FILE=".dotfiles.alias"
 export DOTFILES_ALIAS_NEW_FILE=".dotfiles.alias.new"
 export DOTFILES_ENV_FILE=".dotfiles.env"

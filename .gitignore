@@ -1,5 +1,3 @@
-.config
-.config.new
 **/*.swp
 **/plug.vim*
 **/pathogen.vim

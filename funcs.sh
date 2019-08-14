@@ -99,7 +99,7 @@ function create-link-at-home () {
 
 function create-nest-at-home() {
   # shellcheck disable=SC2154
-  make_link "$dotfiles_fullpath/$1" "${user_home}$2"
+  make_link "$DOTFILES_FULL_PATH/$1" "${DOTFILES_USER_HOME}$2"
 }
 
 function create-tool-link-at-home() {
@@ -107,7 +107,7 @@ function create-tool-link-at-home() {
 }
 
 function rm-link-at-home () {
-  rm -f "$user_home/$1"
+  rm -f "$DOTFILES_USER/$1"
 }
 
 function clone-from-github () {
@@ -186,7 +186,7 @@ function uninstall-tool-from-git-repo() {
   toolname-from-git-repo-http-url "$1"
   curr=$(pwd)
   # shellcheck disable=SC2154
-  folder="$tools_install_folder/$toolname"
+  folder="$DOTFILES_TOOLS_INSTALLATION_FOLDER/$toolname"
   cd "$folder" || exit 1
   eval "$2"
   cd "$curr" || exit 1
@@ -224,10 +224,16 @@ function install-tool () {
   else
     cd "tools/$tool" || exit 1
 
+    log_file="dotfiles-$tool.log"
     if ! [ -f 'install.sh' ]; then
       echo "tool $tool: no install file present"
     else
+	set +e
       ./install.sh "$@"
+      set -e
+      if [[ $? != 0 ]]; then
+	      echo "FAILED installing $exa"
+      fi
     fi
   fi
   cd "$curr" || exit

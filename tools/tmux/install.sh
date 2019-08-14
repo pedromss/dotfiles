@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-(( ${verbose:-0} )) && set -x
 . ../../funcs.sh
 
 if ! [ "$(command -v tmux)" ]; then
