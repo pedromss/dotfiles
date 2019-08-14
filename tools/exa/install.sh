@@ -5,4 +5,4 @@
 skip-if-installed 'exa'
 require-tool 'cargo'
 
-cargo install exa
+cargo install --force exa

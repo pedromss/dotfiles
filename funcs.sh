@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-. "$DOTFILES_FULL_PATH/runcom/.functions"
+set +e
+. "$DOTFILES_FULL_PATH/runcom/.functions" 2>/dev/null
+set -e
 
 function cleanup () {
   remove-duplicates-from-config-file
@@ -24,6 +26,49 @@ function touch-dotfiles () {
   mv "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
   mv "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
   mv "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
+}
+
+function is-rpi () {
+  check-os 'rpi'
+}
+
+function is-linux () {
+  check-os 'ubuntu|rpi'
+}
+
+function is-ubuntu () {
+  check-os 'ubuntu'
+}
+
+function is-unix () {
+  check-os 'mac|ubuntu|rpi'
+}
+
+function check-os () {
+  find-os
+  [[ "$DOTFILES_RESOLVED_OS" =~ $1 ]]
+}
+
+function find-os () {
+  [ -z "$DOTFILES_RESOLVED_OS" ] || return
+  supported_oses='mac, rpi, ubuntu'
+  os=''
+  if is-macos ; then
+    os='mac'
+  elif [ -f '/etc/os-release' ]; then
+    os_release=$(cat /etc/os-release)
+    if [[ "$os_release" =~ 'Raspbian' ]]; then
+      os='rpi'
+    elif [[ "$os_release" =~ 'Ubuntu' ]]; then
+      os='ubuntu'
+    fi
+  else
+    echo "__FAIL: unable to detect os. Should be one of: mac, rpi, ubuntu"
+    read input_os
+    os="$input_os"
+  fi
+  echo "OS is: $os"
+  export DOTFILES_RESOLVED_OS="$os"
 }
 
 function save-source () {
@@ -228,11 +273,11 @@ function install-tool () {
     if ! [ -f 'install.sh' ]; then
       echo "tool $tool: no install file present"
     else
-	set +e
+      set +e
       ./install.sh "$@"
       set -e
       if [[ $? != 0 ]]; then
-	      echo "FAILED installing $exa"
+        echo "FAILED installing $exa"
       fi
     fi
   fi

@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-. ../../common.sh
-. ../../funcs.sh
-
-set +e
+. "$DOTFILES_FULL_PATH/funcs.sh"
 
 while [[ $# -gt 0 ]]
 do
@@ -13,10 +10,6 @@ do
       install_rust=0
       shift
       ;;
-    --verbose)
-      verbose=1
-      shift
-      ;;
     *)
       POSITIONAL+=("$1")
       shift
@@ -24,16 +17,10 @@ do
   esac
 done
 
-(( ${verbose:-0} )) && set -x
-
-skip-if-requested "$install_rust"
 
 set -- "$@" "${POSITIONAL[@]}"
-
-if [ "$(command -v rustup)" ]; then
-  echo 'Rust is already installed, skipping!'
-  exit 0
-fi
+skip-if-requested "$install_rust"
+skip-if-installed "rustup"
 
 default_host_triple=''
 if [ -f /etc/os-release ]; then
@@ -48,7 +35,7 @@ elif [[ "$OSTYPE" =~ 'darwin' ]]; then
   default_host_triple='x86_64-apple-darwin'
 fi
 
-[ -n "$default_host_triple" ] || { echo 'Unable to install Rust automatically'; exit 0; }
+[ -n "$default_host_triple" ] || { echo 'Unable to install Rust automatically'; exit 1; }
 
 echo 'Downloading rust...'
 curl -sSL -o setup-rust https://sh.rustup.rs

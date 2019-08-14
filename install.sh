@@ -13,7 +13,7 @@ do
       uninstall=1
       shift
       ;;
-    -t|--tool)
+    -t|--tool|--tools)
       tool="$2"
       shift 2
       ;;
@@ -35,7 +35,7 @@ done
 (( ${verbose:-0} )) && set -x
 
 set -- "$@" "${POSITIONAL[@]}"
-. ./common.sh
+. common.sh
 . funcs.sh
 touch-dotfiles
 # ==================================================
@@ -49,9 +49,15 @@ if [ -n "$tool" ]; then
 
   file_to_eval="tools/$tool/$action.sh"
   (( ${verbose:-0} )) && set -x
+  set +e
   eval "$file_to_eval $*"
-  set +x
+  set -e
+  echo "REsult is $?"
+  if [[ "$?" != 0 ]]; then
+	  echo "__FAIL: $tool. Check $tool.log file"
+  else
   echo "Finished installing $tool"
+  fi
 
   if ! (("${uninstall:-0}")); then
     cleanup
