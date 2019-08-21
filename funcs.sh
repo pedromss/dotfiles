@@ -2,6 +2,10 @@
 
 set +e
 . "$DOTFILES_FULL_PATH/runcom/.functions" 2>/dev/null
+. "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE" 2>/dev/null
+. "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" 2>/dev/null
+. "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" 2>/dev/null
+. "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
 
 function cleanup () {
@@ -194,6 +198,11 @@ function require-dir () {
 
 function require-file () {
   [ -f "$1" ] || { echo "$1 is required"; exit 1; }
+}
+
+function install-with-cargo () {
+  require-tool 'cargo'
+  cargo install --force "$1"
 }
 
 function install-with-pkg-manager () {

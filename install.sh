@@ -7,29 +7,29 @@ logs_dir=logs
 
 while [[ $# -gt 0 ]]
 do
-  key="$1"
+  key="$1" 
   case $key in
-    -u|--uninstall)
-      uninstall=1
-      shift
-      ;;
-    -t|--tool|--tools)
-      tool="$2"
-      shift 2
-      ;;
-    --no-rust)
-      in_install_rust=0
-      shift
-      ;;
-    --verbose)
-      verbose=1
-      shift
-      ;;
-    *)
-      POSITIONAL+=("$1")
-      shift
-      ;;
-  esac
+  -u|--uninstall)
+    uninstall=1
+    shift
+    ;;
+  -t|--tool|--tools)
+    tool="$2"
+    shift 2
+    ;;
+  --no-rust)
+    in_install_rust=0
+    shift
+    ;;
+  --verbose)
+    verbose=1
+    shift
+    ;;
+  *)
+    POSITIONAL+=("$1")
+    shift
+    ;;
+esac
 done
 
 (( ${verbose:-0} )) && set -x
@@ -54,9 +54,9 @@ if [ -n "$tool" ]; then
   set -e
   echo "REsult is $?"
   if [[ "$?" != 0 ]]; then
-	  echo "__FAIL: $tool. Check $tool.log file"
+    echo "__FAIL: $tool. Check $tool.log file"
   else
-  echo "Finished installing $tool"
+    echo "Finished installing $tool"
   fi
 
   if ! (("${uninstall:-0}")); then
@@ -73,6 +73,7 @@ create-link-at-home 'runcom/.bash_profile'
 # Tools
 # ==================================================
 #install-tool 'java'
+install-tool 'tpm'
 install-tool 'tmux'
 install-tool 'entr'
 

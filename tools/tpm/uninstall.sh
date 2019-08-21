@@ -2,5 +2,4 @@
 
 . "$DOTFILES_FULL_PATH/funcs.sh"
 
-skip-if-installed 'mdcat'
-install-with-cargo 'mdcat'
+rm -rf "$DOTFILES_TMUX_TPM_DIR"

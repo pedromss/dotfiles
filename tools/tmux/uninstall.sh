@@ -1,7 +1,5 @@
 #!/usr/bin/env bash 
 
-# shellcheck source=/dev/null
-source "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
+. "$DOTFILES_FULL_PATH/funcs.sh"
 
-echo "$DOTFILES_TMUX_TPM_DIR"
-echo "$DOTFILES_TMUX_PLUGINS_DIR"
+uninstall-with-pkg-manager 'tmux'
