@@ -53,11 +53,12 @@ echo 'Running the install tool...'
 echo 'Cleaning up...'
 rm -rf setup-rust
 
-cargo_env_file="$HOME/.cargo/env"
+cargo_env_file="$DOTFILES_USER_HOME/.cargo/env"
 echo "Sourcing the config at ${cargo_env_file}..."
 source './.env.source'
 # shellcheck source=/dev/null
 source "$cargo_env_file"
+make-user-owner-of "$DOTFILES_USER_HOME/.cargo"
 
 user_bin="$user_bin"
 echo "Making symlinks in ${user_bin} to installer and uninstaller..."
