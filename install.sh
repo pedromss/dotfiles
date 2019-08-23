@@ -52,11 +52,10 @@ if [ -n "$tool" ]; then
   set +e
   eval "$file_to_eval $*"
   set -e
-  echo "REsult is $?"
   if [[ "$?" != 0 ]]; then
-    echo "__FAIL: $tool. Check $tool.log file"
+    echo "__FAIL: $tool"
   else
-    echo "Finished installing $tool"
+    echo "Finished $action $tool"
   fi
 
   if ! (("${uninstall:-0}")); then

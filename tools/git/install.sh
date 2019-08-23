@@ -23,8 +23,8 @@ save-alias 'glc'='git rev-parse --short HEAD'
 save-alias 'glcc'='git rev-parse --short HEAD | pbcopy'
 save-alias 'gbn'='gbname | pbcopy'
 
-save-source '.functions.source'
+save-source 'git-functions.sh'
+create-tool-link-at-home 'tools/git/.gitconfig'
 
 skip-if-installed 'git'
 install-with-pkg-manager 'git'
-create-tool-link-at-home 'tools/git/.gitconfig'

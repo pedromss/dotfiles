@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-if ! [ "$(command -v shellcheck)" ]; then
-  install-with-pkg-manager 'shellcheck'
-else
-  echo 'skipping: shellcheck is already installed'
-fi
+. "$DOTFILES_FULL_PATH/funcs.sh"
+
+skip-if-installed 'shellcheck'
+install-with-pkg-manager 'shellcheck'

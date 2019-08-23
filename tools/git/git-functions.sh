@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-gaacmp() {
+function gaacmp () {
   git add -A && git commit -m "$1" && git push
 }
 
-gaucmp() {
+function gaucmp () {
   git add -u && git commit -m "$1" && git push
 }
 
