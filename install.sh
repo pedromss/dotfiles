@@ -9,27 +9,27 @@ while [[ $# -gt 0 ]]
 do
   key="$1" 
   case $key in
-  -u|--uninstall)
-    uninstall=1
-    shift
-    ;;
-  -t|--tool|--tools)
-    tool="$2"
-    shift 2
-    ;;
-  --no-rust)
-    in_install_rust=0
-    shift
-    ;;
-  --verbose)
-    verbose=1
-    shift
-    ;;
-  *)
-    POSITIONAL+=("$1")
-    shift
-    ;;
-esac
+    -u|--uninstall)
+      uninstall=1
+      shift
+      ;;
+    -t|--tool|--tools)
+      tool="$2"
+      shift 2
+      ;;
+    --no-rust)
+      in_install_rust=0
+      shift
+      ;;
+    --verbose)
+      verbose=1
+      shift
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
 done
 
 (( ${verbose:-0} )) && set -x
@@ -52,11 +52,10 @@ if [ -n "$tool" ]; then
   set +e
   eval "$file_to_eval $*"
   set -e
-  echo "REsult is $?"
   if [[ "$?" != 0 ]]; then
-    echo "__FAIL: $tool. Check $tool.log file"
+    echo "__FAIL: $tool"
   else
-    echo "Finished installing $tool"
+    echo "Finished $action $tool"
   fi
 
   if ! (("${uninstall:-0}")); then

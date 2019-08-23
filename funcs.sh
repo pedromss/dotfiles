@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 
 set +e
+# shellcheck disable=SC1090
 . "$DOTFILES_FULL_PATH/runcom/.functions" 2>/dev/null
+# shellcheck disable=SC1090
 . "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE" 2>/dev/null
+# shellcheck disable=SC1090
 . "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" 2>/dev/null
+# shellcheck disable=SC1090
 . "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" 2>/dev/null
+# shellcheck disable=SC1090
 . "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
-
-function make-user-owner-of () {
-  sudo chown -R "$DOTFILES_USER":"$DOTFILES_USER" "$1"
-}
 
 function cleanup () {
   remove-duplicates-from-config-file
@@ -25,20 +26,20 @@ function cleanup () {
 }
 
 function touch-dotfiles () {
-  echo '' >> "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
-  echo '' >> "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
-  echo '' >> "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
-  echo '' >> "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE"
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE"
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE"
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE"
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE"
 
-  cp "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
-  cp "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
-  cp "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
-  cp "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
+  cp "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+  cp "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
+  cp "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+  cp "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
 
-  rm -f "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
-  rm -f "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
-  rm -f "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
-  rm -f "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
+  rm -rf "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_NEW_FILE" 2>/dev/null
+  rm -rf "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_NEW_FILE" 2>/dev/null
+  rm -rf "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_NEW_FILE" 2>/dev/null
+  rm -rf "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_NEW_FILE" 2>/dev/null
 }
 
 function is-rpi () {
@@ -76,8 +77,8 @@ function find-os () {
       os='ubuntu'
     fi
   else
-    echo "__FAIL: unable to detect os. Should be one of: mac, rpi, ubuntu"
-    read input_os
+    echo "__FAIL: unable to detect os. Should be one of: $supported_oses"
+    read -r input_os
     os="$input_os"
   fi
   echo "OS is: $os"
@@ -91,6 +92,7 @@ function save-source () {
 
 function save-alias () {
   filename="$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+  # shellcheck disable=SC2139
   alias "$1"="$2"
   echo "alias $1='$2'" >> "$filename"
 }
@@ -107,20 +109,24 @@ function save-config () {
   echo "export $1=$2" >> "$filename"
 }
 
+function move-in-dotfiles () {
+  mv "${DOTFILES_FULL_PATH:?}/$1" "${DOTFILES_FULL_PATH:?}/$2" 2>/dev/null
+}
+
 function cleanup-dotfiles-sources-file () {
-  mv "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE"
+  move-in-dotfiles "$DOTFILES_SOURCES_NEW_FILE" "$DOTFILES_SOURCES_FILE"
 }
 
 function cleanup-dotfiles-config-file () {
-  mv "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
+  move-in-dotfiles "$DOTFILES_CONFIG_NEW_FILE" "$DOTFILES_CONFIG_FILE"
 }
 
 function cleanup-dotfiles-env-file() {
-  mv "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
+  move-in-dotfiles "$DOTFILES_ENV_NEW_FILE" "$DOTFILES_ENV_FILE"
 }
 
 function cleanup-dotfiles-alias-file () {
-  mv "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
+  move-in-dotfiles "$DOTFILES_ALIAS_NEW_FILE" "$DOTFILES_ALIAS_FILE"
 }
 
 function remove-duplicates-from-file () {
@@ -132,19 +138,19 @@ function remove-duplicates-from-file () {
 }
 
 function remove-duplicates-from-sources-file () {
-  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
+  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_NEW_FILE"
 }
 
 function remove-duplicates-from-config-file () {
-  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_NEW_FILE"
 }
 
 function remove-duplicates-from-env-file() {
-  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
+  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_NEW_FILE"
 }
 
 function remove-duplicates-from-alias-file() {
-  remove-duplicates-from-file "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_NEW_FILE"
 }
 
 function make_link () {
@@ -157,7 +163,7 @@ function create-link-at-home () {
 
 function create-nest-at-home() {
   # shellcheck disable=SC2154
-  make_link "$DOTFILES_FULL_PATH/$1" "${DOTFILES_USER_HOME}$2"
+  make_link "${DOTFILES_FULL_PATH:?}/$1" "${DOTFILES_USER_HOME}$2"
 }
 
 function create-tool-link-at-home() {
@@ -165,7 +171,7 @@ function create-tool-link-at-home() {
 }
 
 function rm-link-at-home () {
-  rm -f "$DOTFILES_USER/$1"
+  rm -f "${DOTFILES_USER:?}/$1"
 }
 
 function clone-from-github () {
@@ -287,15 +293,15 @@ function install-tool () {
   else
     cd "tools/$tool" || exit 1
 
-    log_file="dotfiles-$tool.log"
     if ! [ -f 'install.sh' ]; then
       echo "tool $tool: no install file present"
     else
       set +e
       ./install.sh "$@"
       set -e
-      if [[ $? != 0 ]]; then
-        echo "FAILED installing $exa"
+      # shellcheck disable=SC2181
+      if [[ "$?" != 0 ]]; then
+        echo "FAILED installing $tool"
       fi
     fi
   fi
