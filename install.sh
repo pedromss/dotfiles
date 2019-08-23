@@ -9,27 +9,27 @@ while [[ $# -gt 0 ]]
 do
   key="$1" 
   case $key in
-  -u|--uninstall)
-    uninstall=1
-    shift
-    ;;
-  -t|--tool|--tools)
-    tool="$2"
-    shift 2
-    ;;
-  --no-rust)
-    in_install_rust=0
-    shift
-    ;;
-  --verbose)
-    verbose=1
-    shift
-    ;;
-  *)
-    POSITIONAL+=("$1")
-    shift
-    ;;
-esac
+    -u|--uninstall)
+      uninstall=1
+      shift
+      ;;
+    -t|--tool|--tools)
+      tool="$2"
+      shift 2
+      ;;
+    --no-rust)
+      in_install_rust=0
+      shift
+      ;;
+    --verbose)
+      verbose=1
+      shift
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+      ;;
+  esac
 done
 
 (( ${verbose:-0} )) && set -x
@@ -96,5 +96,6 @@ cleanup
 echo 'Be sure to checkout:'
 echo ' - https://github.com/ryanoasis/nerd-fonts'
 echo ' - https://github.com/so-fancy/diff-so-fancy'
+echo ' - Do C-x + i to install tpm inside tmux!'
 
 echo 'All done!'
