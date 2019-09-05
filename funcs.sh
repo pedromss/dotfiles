@@ -13,6 +13,10 @@ set +e
 . "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
 
+function download-tarball-to () {
+  sudo wget -qO- "$1" | sudo tar xz -C "$2"
+}
+
 function cleanup () {
   remove-duplicates-from-config-file
   remove-duplicates-from-alias-file
@@ -228,7 +232,7 @@ function install-with-pkg-manager () {
     brew install "$1"
   else
     # assume apt-get
-    sudo apt-get install "$1"
+    sudo apt-get -y install "$1"
   fi
 }
 
@@ -238,7 +242,7 @@ function uninstall-with-pkg-manager () {
     brew uninstall "$1"
   else
     # assume apt-get
-    sudo apt-get remove "$1"
+    sudo apt-get -y remove "$1"
   fi
 }
 

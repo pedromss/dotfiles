@@ -12,3 +12,4 @@
 . "$HOME/dotfiles/.dotfiles.config"
 . "$HOME/dotfiles/.dotfiles.sources"
 
+export PATH="$HOME/dotfiles/bin/neovim/bin:$HOME/.cargo/bin:$PATH"

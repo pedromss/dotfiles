@@ -72,6 +72,10 @@ create-link-at-home 'runcom/.bash_profile'
 # Tools
 # ==================================================
 #install-tool 'java'
+install-tool 'python-pip'
+install-tool 'python3-pip'
+install-tool 'zsh' "$@"
+install-tool 'shellcheck'
 install-tool 'tpm'
 install-tool 'tmux'
 install-tool 'entr'
@@ -87,6 +91,10 @@ if (( ${in_install_golang:-1} )) ; then
   install-tool 'go' "$@"
   install-tool 'gomplate' "$@"
   install-tool 'vault' "$@"
+fi
+
+if (( ${in_install_nvim:-1} )) ; then
+  install-tool 'nvim' "$@"
 fi
 cleanup
 # ==================================================
