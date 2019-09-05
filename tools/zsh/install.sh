@@ -25,8 +25,8 @@ set -- "$@" "${POSITIONAL[@]}"
 
 skip-if-requested 'zsh' "$install_zsh"
 
-create-link-at-home 'tools/zsh/.zshrc'
-create-link-at-home 'tools/zsh/.zfunctions'
+create-tool-link-at-home 'zsh/.zshrc'
+create-tool-link-at-home 'zsh/.zfunctions'
 
 skip-if-requested 'zsh-plugins' "$install_zsh_plugins"
 
