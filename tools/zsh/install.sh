@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-. ../../runcom/.functions
-. ../../funcs.sh
+. "$DOTFILES_FULL_PATH/funcs.sh"
 
-zsh_plugins_folder="$HOME/zsh-plugin-repos"
 while [[ $# -gt 0 ]]
 do
   key="$1"
@@ -16,14 +14,6 @@ do
       install_zsh_plugins=0
       shift
       ;;
-    --zsh-plugins-folder)
-      zsh_plugins_folder="$2"
-      shift 2
-      ;;
-    --verbose)
-      verbose=1
-      shift
-      ;;
     *)
       POSITIONAL+=("$1")
       shift
@@ -31,30 +21,35 @@ do
   esac
 done
 
-(( ${verbose:-0} )) && set -x
-
-skip-if-requested "$install_zsh"
-
 set -- "$@" "${POSITIONAL[@]}"
-skip-if-installed 'zsh'
-install-with-pkg-manager 'zsh'
+
+echo "Boo $install_zsh"
+echo "Boo $install_zsh"
+echo "Boo $install_zsh"
+skip-if-requested 'zsh' "$install_zsh"
+echo 'Installing boo...'
+echo 'Installing boo...'
+echo 'Installing boo...'
 
 create-link-at-home '.zshrc'
 create-link-at-home '.zfunctions'
 
-skip-if-requested 'zsh-plugins' "$install_zsh_plugins"
+skip-if-installed 'zsh'
+install-with-pkg-manager 'zsh'
+
+skip-if-requested 'zsh-plugins' "$DOTFILES_ZSH_PLUGINS_FOLDER"
 
 mkdir -p "$1"
 
-clone-from-github 'Cloudstek/zsh-plugin-appup.git' "$zsh_plugins_folder/appup"
-clone-from-github 'hlissner/zsh-autopair.git' "$zsh_plugins_folder/zsh-autopair"
-clone-from-github 'b4b4r07/enhancd.git' "$zsh_plugins_folder/enhancd"
-clone-from-github 'zdharma/fast-syntax-highlighting' "$zsh_plugins_folder/fast-syntax-highlighting"
-clone-from-github 'wfxr/forgit.git' "$zsh_plugins_folder/forgit"
-clone-from-github 'supercrabtree/k.git' "$zsh_plugins_folder/k"
-clone-from-github 'qoomon/zjump.git' "$zsh_plugins_folder/zjump"
-clone-from-github 'robbyrussell/oh-my-zsh.git' "$zsh_plugins_folder/oh-my-zsh"
-clone-from-github 'zsh-users/zsh-history-substring-search.git' "$zsh_plugins_folder/zsh-history-substring-search"
-if ! [ -f '/etc/os-release' ] || ! [[ $(cat /etc/os-release) =~ 'Raspbian' ]]; then
-  clone-from-github 'zsh-users/zsh-autosuggestions.git' "$zsh_plugins_folder/zsh-autosuggestions"
+clone-from-github 'Cloudstek/zsh-plugin-appup.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/appup"
+clone-from-github 'hlissner/zsh-autopair.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-autopair"
+clone-from-github 'b4b4r07/enhancd.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/enhancd"
+clone-from-github 'zdharma/fast-syntax-highlighting' "$DOTFILES_ZSH_PLUGINS_FOLDER/fast-syntax-highlighting"
+clone-from-github 'wfxr/forgit.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/forgit"
+clone-from-github 'supercrabtree/k.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/k"
+clone-from-github 'qoomon/zjump.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zjump"
+clone-from-github 'robbyrussell/oh-my-zsh.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/oh-my-zsh"
+clone-from-github 'zsh-users/zsh-history-substring-search.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-history-substring-search"
+if ! is-rpi ; then
+  clone-from-github 'zsh-users/zsh-autosuggestions.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-autosuggestions"
 fi

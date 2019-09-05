@@ -1,0 +1,8 @@
+# These are commands that must only be executed once at boot.
+# Still wondering if this should be automated or not
+
+# Make zsh the default shell
+chsh -s $(type -p zsh)
+
+# Make zsh the default shell for root
+sudo chsh -s $(type -p zsh)

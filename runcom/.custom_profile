@@ -10,4 +10,5 @@
 . "$HOME/dotfiles/.dotfiles.alias"
 . "$HOME/dotfiles/.dotfiles.env"
 . "$HOME/dotfiles/.dotfiles.config"
+. "$HOME/dotfiles/.dotfiles.sources"
 

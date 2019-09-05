@@ -82,7 +82,7 @@ function find-os () {
 
 function save-source () {
   filename="$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
-  echo ". $1" >> "$filename"
+  echo ". $1 2>/dev/null" >> "$filename"
 }
 
 function save-alias () {
@@ -179,7 +179,7 @@ function is-macos () {
 }
 
 function skip-if-requested () {
-  (( ${2:-0} )) && { echo "skipping: [$2] - requested to skip"; exit 0; }
+  (( ${2:-1} )) || { echo "skipping: [$1] - requested to skip"; exit 0; }
 }
 
 function skip-if-installed () {
