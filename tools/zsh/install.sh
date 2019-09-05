@@ -23,23 +23,15 @@ done
 
 set -- "$@" "${POSITIONAL[@]}"
 
-echo "Boo $install_zsh"
-echo "Boo $install_zsh"
-echo "Boo $install_zsh"
 skip-if-requested 'zsh' "$install_zsh"
-echo 'Installing boo...'
-echo 'Installing boo...'
-echo 'Installing boo...'
 
-create-link-at-home '.zshrc'
-create-link-at-home '.zfunctions'
+create-link-at-home 'tools/zsh/.zshrc'
+create-link-at-home 'tools/zsh/.zfunctions'
 
-skip-if-installed 'zsh'
-install-with-pkg-manager 'zsh'
+skip-if-requested 'zsh-plugins' "$install_zsh_plugins"
 
-skip-if-requested 'zsh-plugins' "$DOTFILES_ZSH_PLUGINS_FOLDER"
 
-mkdir -p "$1"
+mkdir -p "$DOTFILES_ZSH_PLUGINS_FOLDER"
 
 clone-from-github 'Cloudstek/zsh-plugin-appup.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/appup"
 clone-from-github 'hlissner/zsh-autopair.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-autopair"
@@ -53,3 +45,7 @@ clone-from-github 'zsh-users/zsh-history-substring-search.git' "$DOTFILES_ZSH_PL
 if ! is-rpi ; then
   clone-from-github 'zsh-users/zsh-autosuggestions.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-autosuggestions"
 fi
+
+skip-if-installed 'zsh'
+install-with-pkg-manager 'zsh'
+

@@ -156,6 +156,10 @@ function create-link-at-home () {
   create-nest-at-home "$1" ''
 }
 
+function destroy-at-home () {
+  rm -rf "$DOTFILES_USER_HOME/$1"
+}
+
 function create-nest-at-home() {
   # shellcheck disable=SC2154
   make_link "${DOTFILES_FULL_PATH:?}/$1" "${DOTFILES_USER_HOME}$2"
@@ -170,8 +174,11 @@ function rm-link-at-home () {
 }
 
 function clone-from-github () {
-  skip-if-dir-exists "$1" "$2"
-  git clone --depth 1 "https://github.com/$1" "$2"
+  if ! [ -d "$2" ] ; then
+    git clone --depth 1 "https://github.com/$1" "$2"
+  else
+    echo "skipping: repo [$1] as it already exists at $2"
+  fi
 }
 
 function is-macos () {
