@@ -20,6 +20,14 @@ do
       in_install_rust=0
       shift
       ;;
+    --no-golang)
+      in_install_golang=0
+      shift
+      ;;
+    --no-nvim)
+      in_install_nvim=0
+      shift
+      ;;
     --verbose)
       verbose=1
       shift
