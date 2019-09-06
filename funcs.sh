@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. common.sh
+
 set +e
 # shellcheck disable=SC1090
 . "$DOTFILES_FULL_PATH/runcom/.functions" 2>/dev/null

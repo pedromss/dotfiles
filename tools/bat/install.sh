@@ -8,4 +8,4 @@ save-env 'BAT_THEME' '1337'
 
 skip-if-installed 'bat'
 require-tool 'cargo'
-cargo install bat
+cargo install --force bat

@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
 set -e
-. runcom/.functions
 
 logs_dir=logs
 
@@ -35,7 +34,7 @@ done
 (( ${verbose:-0} )) && set -x
 
 set -- "$@" "${POSITIONAL[@]}"
-. common.sh
+
 . funcs.sh
 touch-dotfiles
 # ==================================================
@@ -48,10 +47,12 @@ if [ -n "$tool" ]; then
   fi
 
   file_to_eval="tools/$tool/$action.sh"
-  (( ${verbose:-0} )) && set -x
+
   set +e
   eval "$file_to_eval $*"
   set -e
+
+  # shellcheck disable=SC2181
   if [[ "$?" != 0 ]]; then
     echo "__FAIL: $tool"
   else
@@ -78,7 +79,6 @@ install-tool 'zsh' "$@"
 install-tool 'shellcheck'
 install-tool 'tpm'
 install-tool 'tmux'
-install-tool 'entr'
 
 if (( ${in_install_rust:-1} )) ; then
   install-tool 'rustup' "$@"
