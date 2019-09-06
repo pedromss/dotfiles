@@ -73,6 +73,7 @@ create-link-at-home 'runcom/.bash_profile'
 # Tools
 # ==================================================
 #install-tool 'java'
+install-tool 'llvm'
 install-tool 'python-pip'
 install-tool 'python3-pip'
 install-tool 'zsh' "$@"

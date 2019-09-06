@@ -20,12 +20,12 @@ done
 
 set -- "$@" "${POSITIONAL[@]}"
 
-mkdir -p "${XDG_CONFIG_HOME:?}/nvim"
-mkdir -p "${XDG_DATA_HOME:?}/nvim"
-make_link "${DOTFILES_FULL_PATH:?}/tools/nvim/init.vim" "${XDG_CONFIG_HOME:?}/nvim/init.vim"
 
 skip-if-requested 'nvim' "$in_install_nvim"
 
+mkdir -p "${XDG_CONFIG_HOME:?}/nvim"
+mkdir -p "${XDG_DATA_HOME:?}/nvim"
+make_link "${DOTFILES_FULL_PATH:?}/tools/nvim/init.vim" "${XDG_CONFIG_HOME:?}/nvim/init.vim"
 if is-macos ; then
   install-with-pkg-manager 'neovim'
 elif is-ubuntu ; then

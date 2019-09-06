@@ -5,5 +5,5 @@ RUN apt-get update \
 
 WORKDIR /home
 
-RUN git clone https://github.com/pedromss/dotfiles \
-      && ./install.sh --no-nvim --no-zsh --verbose --no-prompt
+RUN git clone https://github.com/pedromss/dotfiles 
+WORKDIR /home/dotfiles

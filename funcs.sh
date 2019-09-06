@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. common.sh
+. "${DOTFILES_FULL_PATH:?}/common.sh"
 
 set +e
 # shellcheck disable=SC1090
