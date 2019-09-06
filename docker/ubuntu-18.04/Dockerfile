@@ -1,0 +1,9 @@
+FROM ubuntu:18.04
+
+RUN apt-get update \
+      && apt-get -y install git
+
+WORKDIR /home
+
+RUN git clone https://github.com/pedromss/dotfiles \
+      && ./install.sh --no-nvim --no-zsh --verbose --no-prompt
