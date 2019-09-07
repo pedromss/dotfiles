@@ -4,7 +4,7 @@ set -e
 
 while [[ $# -gt 0 ]]
 do
-  key="$1" 
+  key="$1"
   case $key in
     --user)
       user="$2"
@@ -24,6 +24,10 @@ do
       ;;
     --no-rust)
       in_install_rust=0
+      shift
+      ;;
+    --no-zsh)
+      in_install_zsh=0
       shift
       ;;
     --no-golang)
@@ -100,10 +104,13 @@ create-link-at-home 'runcom/.bash_profile'
 install-tool 'llvm'
 install-tool 'python-pip'
 install-tool 'python3-pip'
-install-tool 'zsh' "$@"
 install-tool 'shellcheck'
 install-tool 'tpm'
 install-tool 'tmux'
+
+if [ ${in_install_zsh:-0} ]; then
+  install-tool 'zsh' "$@"
+fi
 
 if [ ${in_install_rust:-0} ]; then
   install-tool 'rustup' "$@"
@@ -121,6 +128,7 @@ fi
 if [ ${in_install_nvim:-1} ] ; then
   install-tool 'nvim' "$@"
 fi
+
 cleanup
 # ==================================================
 # Shutdown
