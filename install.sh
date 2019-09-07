@@ -99,9 +99,15 @@ fi
 create-link-at-home 'runcom/.custom_profile'
 create-link-at-home 'runcom/.bash_profile'
 # ==================================================
+# Package managers
+# ==================================================
+# ==================================================
 # Tools
 # ==================================================
 #install-tool 'java'
+install-tool 'rustup'
+install-tool 'cargo'
+
 install-tool 'llvm'
 install-tool 'python-pip'
 install-tool 'python3-pip'
@@ -109,26 +115,17 @@ install-tool 'shellcheck'
 install-tool 'tpm'
 install-tool 'tmux'
 
-if [ ${in_install_zsh:-0} ]; then
-	install-tool 'zsh' "$@"
-fi
+install-tool 'zsh'
 
-if [ ${in_install_rust:-0} ]; then
-	install-tool 'rustup' "$@"
-	install-tool 'exa' "$@"
-	install-tool 'bat' "$@"
-	install-tool 'mdcat' "$@"
-fi
+install-tool 'exa'
+install-tool 'bat'
+install-tool 'mdcat'
 
-if [ ${in_install_golang:-1} ] ; then
-	install-tool 'go' "$@"
-	install-tool 'gomplate' "$@"
-	install-tool 'vault' "$@"
-fi
+install-tool 'go' "$@"
+install-tool 'gomplate' "$@"
+install-tool 'vault' "$@"
 
-if [ ${in_install_nvim:-1} ] ; then
-	install-tool 'nvim' "$@"
-fi
+install-tool 'nvim' "$@"
 
 cleanup
 # ==================================================

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-! [ "$(command -v vault)" ] || { echo 'vault is already installed, skipping!'; exit 0; }
+skip-if-requested 'golang'
+skip-if-requested
+skip-if-installed
 
 GO111MODULE=off go get -v -u github.com/hashicorp/vault

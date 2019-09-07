@@ -15,6 +15,28 @@ set +e
 . "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
 
+function install-with-cargo () {
+  if [ -z "$1" ]; then
+    get-name-of-tool-from-path
+    in_tool="${DOTFILES_CURRENT_TOOL}"
+  else
+    in_tool="$1"
+  fi
+  tool="$in_tool"
+  cargo install --force "$tool"
+}
+
+function skip-if-installed () {
+  if [ -z "$1" ]; then
+    get-name-of-tool-from-path
+    in_tool="${DOTFILES_CURRENT_TOOL}"
+  else
+    in_tool="$1"
+  fi
+  tool="$in_tool"
+  ! command_exists "$tool" || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
+}
+
 function skip-if-requested () {
   if [ -z "$1" ]; then
     get-name-of-tool-from-path
@@ -242,12 +264,6 @@ function is-macos () {
   [[ "$OSTYPE" =~ 'darwin' ]] || return 1
 }
 
-function skip-if-installed () {
-  get-name-of-tool-from-path
-  tool="$DOTFILES_CURRENT_TOOL"
-  ! command_exists "$tool" || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
-}
-
 function skip-if-dir-exists () {
   get-name-of-tool-from-path
   tool="$DOTFILES_CURRENT_TOOL"
@@ -274,10 +290,6 @@ function require-dir () {
 
 function require-file () {
   [ -f "$1" ] || { echo "$1 is required"; exit 1; }
-}
-
-function install-with-cargo () {
-  cargo install --force "$1"
 }
 
 function install-with-pkg-manager () {

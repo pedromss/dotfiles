@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-(( ${verbose:-0} )) && set -x
-[ "$(command -v go)"  ] && { echo 'go is already installed, skipping!'; exit 0; }
+skip-if-requested 'golang'
+skip-if-installed
 
 username='pedromss'
 go_version='1.12.6'

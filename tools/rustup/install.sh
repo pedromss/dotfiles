@@ -2,40 +2,24 @@
 
 . "$DOTFILES_FULL_PATH/funcs.sh"
 
-while [[ $# -gt 0 ]]
-do
-  key="$1"
-  case $key in
-    --no-rust)
-      install_rust=0
-      shift
-      ;;
-    *)
-      POSITIONAL+=("$1")
-      shift
-      ;;
-  esac
-done
-
-
-set -- "$@" "${POSITIONAL[@]}"
-skip-if-requested "$install_rust"
-skip-if-installed "rustup"
+skip-if-requested 'rust'
+skip-if-requested
+skip-if-installed
 
 default_host_triple=''
-if [ -f /etc/os-release ]; then
-  # possibly raspberry pi
-  if [[ $(cat /etc/os-release) =~ 'Raspbian' ]]
-  then
-    # assume raspberry pi
-    default_host_triple='armv7-unknown-linux-gnueabihf'
-  fi
-elif [[ "$OSTYPE" =~ 'darwin' ]]; then
-  # assume mac os
-  default_host_triple='x86_64-apple-darwin'
+if is-rpi ; then
+	# assume raspberry pi
+	default_host_triple='armv7-unknown-linux-gnueabihf'
+elif is-ubuntu ; then
+	default_host_triple='x86_64-unknown-linux-gnu'
+elif is-macos ; then
+	default_host_triple='x86_64-apple-darwin'
+else
+	echo 'Unable to install Rust automatically'
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	exit 0
 fi
 
-[ -n "$default_host_triple" ] || { echo 'Unable to install Rust automatically'; exit 1; }
 
 echo 'Downloading rust...'
 curl -sSL -o setup-rust https://sh.rustup.rs
@@ -45,10 +29,10 @@ chmod +x setup-rust
 
 echo 'Running the install tool...'
 ./setup-rust \
-  -y \
-  --no-modify-path \
-  --default-host "$default_host_triple" \
-  --default-toolchain stable
+	-y \
+	--no-modify-path \
+	--default-host "$default_host_triple" \
+	--default-toolchain stable
 
 echo 'Cleaning up...'
 rm -rf setup-rust
