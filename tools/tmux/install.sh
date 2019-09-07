@@ -2,7 +2,7 @@
 
 . "$DOTFILES_FULL_PATH/funcs.sh"
 
-tmux_plugins_dir="$DOTFILES_USER_HOME/.tmux/plugins"
+tmux_plugins_dir="${DOTFILES_USER_HOME:?}/.tmux/plugins"
 
 create-link-at-home 'tools/tmux/.tmux.conf'
 

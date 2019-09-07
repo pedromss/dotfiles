@@ -8,6 +8,10 @@ while [[ $# -gt 0 ]]
 do
   key="$1" 
   case $key in
+    -h|--user-home|--home|--dotfiles-home)
+      user_home="$2"
+      shift 2
+      ;;
     -u|--uninstall)
       uninstall=1
       shift
@@ -44,6 +48,12 @@ done
 set -- "$@" "${POSITIONAL[@]}"
 
 . funcs.sh
+
+# After evaluating the common, we overwrite why might have been passed
+if [ -z "$user_home" ]; then
+  export DOTFILES_USER_HOME="$user_home"
+fi
+
 touch-dotfiles
 # ==================================================
 # Check single tool?
