@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO should find a formatter for the skip print...
+
 set +e
 # shellcheck disable=SC1090
 . "${DOTFILES_FULL_PATH:?}/runcom/.functions" 2>/dev/null
@@ -12,6 +14,28 @@ set +e
 # shellcheck disable=SC1090
 . "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
+
+function skip-if-requested () {
+  if [ -z "$1" ]; then
+    get-name-of-tool-from-path
+    in_tool="${DOTFILES_CURRENT_TOOL}"
+  else
+    in_tool="$1"
+  fi
+  tool="${in_tool^^}"
+  # shellcheck disable=SC2034
+  while IFS='=' read -r name value ; do
+    if [[ $name == "DOTFILES_REQUESTED_TO_SKIP_$tool"  ]]; then
+      echo " ---> skipping: [$in_tool] as it was requested with --no-$in_tool flag"
+      exit 0
+    fi
+  done < <(env)
+}
+
+function get-name-of-tool-from-path () {
+  dir=$(dirname "$0")
+  export DOTFILES_CURRENT_TOOL="${dir##*/}"
+}
 
 function download-tarball-to () {
   sudo wget -qO- "$1" | sudo tar xz -C "$2"
@@ -34,6 +58,30 @@ function touch-dotfiles () {
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE"
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE"
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE"
+}
+
+function skip-if-os-is () {
+  get-name-of-tool-from-path
+  os="$1"
+  if [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
+    echo " ---> skipping: [${DOTFILES_CURRENT_TOOL}] - not meant to be installed on $os"
+    exit 0
+  fi
+}
+
+function only-if-os-is () {
+  get-name-of-tool-from-path
+  os="$1"
+  if ! [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
+    echo " ---> skipping: [${DOTFILES_CURRENT_TOOL}] - only meant to be installed in $os"
+    exit 0
+  fi
+}
+
+function quarantine () {
+  get-name-of-tool-from-path
+  echo " ---> skipping: [${DOTFILES_CURRENT_TOOL}] is quarantined"
+  exit 0
 }
 
 function copy-dotfiles-configs () {
@@ -64,7 +112,6 @@ function is-unix () {
 }
 
 function check-os () {
-  find-os
   [[ "$DOTFILES_RESOLVED_OS" =~ $1 ]]
 }
 
@@ -86,7 +133,7 @@ function find-os () {
     read -r input_os
     os="$input_os"
   fi
-  echo "OS is: $os"
+  echo "Resolved OS is: [$os]"
   export DOTFILES_RESOLVED_OS="$os"
 }
 
@@ -187,7 +234,7 @@ function clone-from-github () {
   if ! [ -d "$2" ] ; then
     git clone --depth 1 "https://github.com/$1" "$2"
   else
-    echo "skipping: repo [$1] as it already exists at $2"
+    echo " ---> skipping: repo [$1] - already exists at $2"
   fi
 }
 
@@ -195,20 +242,20 @@ function is-macos () {
   [[ "$OSTYPE" =~ 'darwin' ]] || return 1
 }
 
-function skip-if-requested () {
-  (( ${2:-1} )) || { echo "skipping: [$1] - requested to skip"; exit 0; }
-}
-
 function skip-if-installed () {
-  ! command_exists "$1" || { echo "skipping: [$1] - already installed!"; exit 0; }
+  get-name-of-tool-from-path
+  tool="$DOTFILES_CURRENT_TOOL"
+  ! command_exists "$tool" || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
 }
 
 function skip-if-dir-exists () {
-  ! [ -d "$2" ] || { echo "skipping: [$1] - already installed!"; exit 0; }
+  get-name-of-tool-from-path
+  tool="$DOTFILES_CURRENT_TOOL"
+  ! [ -d "$1" ] || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
 }
 
 function skip-if-not-installed () {
-  command_exists "$1" || { echo "skipping: [$1] - not installed"; exit 0; }
+  command_exists "$1" || { echo " ---> skipping: [$1] - not installed"; exit 0; }
 }
 
 function require-tool () {
@@ -216,7 +263,9 @@ function require-tool () {
 }
 
 function require-tool-to-install () {
-  command_exists "$1" || { echo "$1 is required to install $2"; exit 1; }
+  get-name-of-tool-from-path
+  tool="$DOTFILES_CURRENT_TOOL"
+  command_exists "$1" || { echo "$1 is required to install $tool"; exit 1; }
 }
 
 function require-dir () {
@@ -228,7 +277,6 @@ function require-file () {
 }
 
 function install-with-cargo () {
-  require-tool 'cargo'
   cargo install --force "$1"
 }
 
@@ -274,6 +322,7 @@ function uninstall-tool-from-git-repo() {
   rm -rf "$folder"
 }
 
+# TODO should probably delete this and make things explicit
 # --function install-tool-from-git-repo (gitrepo, git tag, commands to install) {
 function install-tool-from-git-repo () {
   require-tool 'git'
@@ -301,7 +350,7 @@ function install-tool () {
   tool="$1"
   shift
   if ! [ -d "tools/$tool" ]; then
-    echo "skipping: $tool - not found!"
+    echo " ---> skipping: $tool - not found!"
   else
     cd "tools/$tool" || exit 1
 

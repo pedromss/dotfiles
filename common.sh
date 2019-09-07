@@ -9,6 +9,12 @@ export DOTFILES_ENV_NEW_FILE=".dotfiles.env.new"
 export DOTFILES_CONFIG_FILE=".dotfiles.config"
 export DOTFILES_CONFIG_NEW_FILE=".dotfiles.config.new"
 export DOTFILES_FOLDER='dotfiles'
+
+if [ -z "$DOTFILES_USER_HOME" ]; then
+  export DOTFILES_USER_HOME="$HOME"
+  export DOTFILES_USER="${DOTFILES_USER_HOME##*/}"
+fi
+
 export DOTFILES_FULL_PATH="$DOTFILES_USER_HOME/$DOTFILES_FOLDER"
 
 export XDG_CONFIG_HOME="$DOTFILES_USER_HOME/.config"

@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+. "${DOTFILES_FULL_PATH:?}/funcs.sh"
+
+skip-if-os-is 'conscript' 'rpi'
+
 save-env "$CONSCRIPT_HOME" "$HOME/.conscript"
 save-env "$CONSCRIPT_OPTS" "-XX:MaxPermSize=512M -Dfile.encoding=UTF-8"
 save-env "$PATH" "$CONSCRIPT_HOME/bin:$PATH"

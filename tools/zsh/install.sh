@@ -2,34 +2,8 @@
 
 . "$DOTFILES_FULL_PATH/funcs.sh"
 
-while [[ $# -gt 0 ]]
-do
-  key="$1"
-  case $key in
-    --no-zsh)
-      install_zsh=0
-      shift
-      ;;
-    --no-zsh-plugins)
-      install_zsh_plugins=0
-      shift
-      ;;
-    *)
-      POSITIONAL+=("$1")
-      shift
-      ;;
-  esac
-done
-
-set -- "$@" "${POSITIONAL[@]}"
-
-skip-if-requested 'zsh' "$install_zsh"
-
 create-tool-link-at-home 'zsh/.zshrc'
 create-tool-link-at-home 'zsh/.zfunctions'
-
-skip-if-requested 'zsh-plugins' "$install_zsh_plugins"
-
 
 mkdir -p "$DOTFILES_ZSH_PLUGINS_FOLDER"
 
@@ -43,6 +17,7 @@ clone-from-github 'qoomon/zjump.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zjump"
 clone-from-github 'robbyrussell/oh-my-zsh.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/oh-my-zsh"
 clone-from-github 'zsh-users/zsh-history-substring-search.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-history-substring-search"
 if ! is-rpi ; then
+  # too heavy for the rpi shell
   clone-from-github 'zsh-users/zsh-autosuggestions.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-autosuggestions"
 fi
 

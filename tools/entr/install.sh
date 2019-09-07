@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
 
-set -x
+. "${DOTFILES_FULL_PATH:?}/funcs.sh"
 
-source ../../runcom/.functions
-source ../../common.sh
-source ../../funcs.sh
-source common.sh
+skip-if-requested
+quarantine
+skip-if-installed
 
-touch-dotfiles
-
-skip-if-installed 'entr'
 mkdir -p "$DOTFILES_USER_HOME"
 
 if is-macos ; then
