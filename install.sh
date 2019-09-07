@@ -2,8 +2,6 @@
 
 set -e
 
-logs_dir=logs
-
 while [[ $# -gt 0 ]]
 do
   key="$1" 
@@ -51,6 +49,7 @@ set -- "$@" "${POSITIONAL[@]}"
 
 # After evaluating the common, we overwrite why might have been passed
 if [ -z "$user_home" ]; then
+  echo "Setting dotfiles user home to $user_home"
   export DOTFILES_USER_HOME="$user_home"
 fi
 
