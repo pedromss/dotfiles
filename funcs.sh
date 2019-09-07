@@ -1,18 +1,16 @@
 #!/usr/bin/env bash
 
-. common.sh
-
 set +e
 # shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/runcom/.functions" 2>/dev/null
+. "${DOTFILES_FULL_PATH:?}/runcom/.functions" 2>/dev/null
 # shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE" 2>/dev/null
+. "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE" 2>/dev/null
 # shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" 2>/dev/null
+. "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE" 2>/dev/null
 # shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" 2>/dev/null
+. "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE" 2>/dev/null
 # shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" 2>/dev/null
+. "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
 
 function download-tarball-to () {
@@ -36,7 +34,9 @@ function touch-dotfiles () {
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE"
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE"
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE"
+}
 
+function copy-dotfiles-configs () {
   cp "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
   cp "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
   cp "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
@@ -48,6 +48,10 @@ function is-rpi () {
 }
 
 function is-linux () {
+  check-os 'ubuntu|rpi'
+}
+
+function is-debian () {
   check-os 'ubuntu|rpi'
 }
 

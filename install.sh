@@ -6,6 +6,10 @@ while [[ $# -gt 0 ]]
 do
   key="$1" 
   case $key in
+    --user)
+      user="$2"
+      shift 2
+      ;;
     -h|--user-home|--home|--dotfiles-home)
       user_home="$2"
       shift 2
@@ -45,11 +49,13 @@ done
 
 set -- "$@" "${POSITIONAL[@]}"
 
+. common.sh
 . funcs.sh
 
 # After evaluating the common, we overwrite why might have been passed
-if [ -z "$user_home" ]; then
+if [ -n "$user_home" ]; then
   echo "Setting dotfiles user home to $user_home"
+  export DOTFILES_USER="$user"
   export DOTFILES_USER_HOME="$user_home"
 fi
 
@@ -58,6 +64,7 @@ touch-dotfiles
 # Check single tool?
 # ==================================================
 if [ -n "$tool" ]; then
+  copy-dotfiles-configs
   action='install'
   if ((${uninstall:-0})); then
     action='uninstall'
@@ -98,20 +105,20 @@ install-tool 'shellcheck'
 install-tool 'tpm'
 install-tool 'tmux'
 
-if (( ${in_install_rust:-1} )) ; then
+if [ ${in_install_rust:-0} ]; then
   install-tool 'rustup' "$@"
   install-tool 'exa' "$@"
   install-tool 'bat' "$@"
   install-tool 'mdcat' "$@"
 fi
 
-if (( ${in_install_golang:-1} )) ; then
+if [ ${in_install_golang:-1} ] ; then
   install-tool 'go' "$@"
   install-tool 'gomplate' "$@"
   install-tool 'vault' "$@"
 fi
 
-if (( ${in_install_nvim:-1} )) ; then
+if [ ${in_install_nvim:-1} ] ; then
   install-tool 'nvim' "$@"
 fi
 cleanup

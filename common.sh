@@ -1,29 +1,5 @@
 #!/usr/bin/env bash
 
-(( ${verbose:-0} )) && set -x
-user_home="$HOME"
-
-while [[ $# -gt 0 ]]
-do
-  case "$1" in
-    --user-home)
-      user_home="$2"
-      shift 2
-      ;;
-    *)
-      for x in "${POSITIONAL[@]}" ; do
-        if [[ "$x" == "$1" ]]; then
-          add=0
-        fi
-      done
-      (( ${add:-1} )) && POSITIONAL+=("$1")
-      shift
-      ;;
-  esac
-done
-
-set -- "${POSITIONAL[@]}"
-
 export DOTFILES_SOURCES_FILE=".dotfiles.sources"
 export DOTFILES_SOURCES_NEW_FILE=".dotfiles.sources.new"
 export DOTFILES_ALIAS_FILE=".dotfiles.alias"
@@ -33,8 +9,6 @@ export DOTFILES_ENV_NEW_FILE=".dotfiles.env.new"
 export DOTFILES_CONFIG_FILE=".dotfiles.config"
 export DOTFILES_CONFIG_NEW_FILE=".dotfiles.config.new"
 export DOTFILES_FOLDER='dotfiles'
-export DOTFILES_USER_HOME="$user_home"
-export DOTFILES_USER=${DOTFILES_USER_HOME##*/}
 export DOTFILES_FULL_PATH="$DOTFILES_USER_HOME/$DOTFILES_FOLDER"
 
 export XDG_CONFIG_HOME="$DOTFILES_USER_HOME/.config"
