@@ -43,9 +43,10 @@ done
 set -- "$@" "${POSITIONAL[@]}"
 
 # Expose env variables with all tools that are meant to be skipped
+printf 'Request to skip:\n'
 while IFS='=' read -r name value ; do
 	if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]]; then
-		echo "$name=$value"
+		printf '  - %s' "${name##*_}\n"
 	fi
 done < <(env)
 
@@ -106,26 +107,25 @@ create-link-at-home 'runcom/.bash_profile'
 # ==================================================
 #install-tool 'java'
 install-tool 'rustup'
-install-tool 'cargo'
 
-install-tool 'llvm'
-install-tool 'python-pip'
-install-tool 'python3-pip'
-install-tool 'shellcheck'
-install-tool 'tpm'
-install-tool 'tmux'
+#install-tool 'llvm'
+#install-tool 'python-pip'
+#install-tool 'python3-pip'
+#install-tool 'shellcheck'
+#install-tool 'tpm'
+#install-tool 'tmux'
 
-install-tool 'zsh'
+#install-tool 'zsh'
 
-install-tool 'exa'
-install-tool 'bat'
-install-tool 'mdcat'
+#install-tool 'exa'
+#install-tool 'bat'
+#install-tool 'mdcat'
 
-install-tool 'go' "$@"
-install-tool 'gomplate' "$@"
-install-tool 'vault' "$@"
+#install-tool 'go' "$@"
+#install-tool 'gomplate' "$@"
+#install-tool 'vault' "$@"
 
-install-tool 'nvim' "$@"
+#install-tool 'nvim' "$@"
 
 cleanup
 # ==================================================
