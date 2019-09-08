@@ -46,7 +46,7 @@ set -- "$@" "${POSITIONAL[@]}"
 printf 'Request to skip:\n'
 while IFS='=' read -r name value ; do
 	if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]]; then
-		printf '  - %s' "${name##*_}\n"
+		printf '  - %s\n' "${name##*_}"
 	fi
 done < <(env)
 
