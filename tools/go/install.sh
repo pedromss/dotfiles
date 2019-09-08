@@ -1,62 +1,27 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1090
+. "${DOTFILES_FULL_PATH:?}/funcs.sh"
+
+username="$DOTFILES_USER"
+go_version="$DOTFILES_GOLANG_VERSION"
+go_root_parent="$DOTFILES_GOLANG_ROOT_PARENT"
+go_root="$go_root_parent/$DOTFILES_GOLANG_ROOT"
+go_path="$DOTFILES_GOLANG_GOPATH"
+
+save-alias 'gom' 'GO111MODULE=on go'
+save-env 'PATH' "$PATH:$DOTFILES_GOLANG_GOPATH/bin:/usr/local/go/bin"
+save-env 'GOPATH' "$DOTFILES_GOLANG_GOPATH"
+save-env 'GO111MODULE' 'off'
+
 skip-if-requested 'golang'
-skip-if-installed
-
-username='pedromss'
-go_version='1.12.6'
-go_root_parent='/usr/local'
-go_root="$go_root_parent/go"
-go_path="$HOME/go"
-while [[ $# -gt 0 ]]
-do
-  case "$1" in
-    -u|--username)
-      username="$2"
-      shift 2
-      ;;
-    -v|--version)
-      go_version="$2"
-      shift 2
-      ;;
-    -y|--no-prompt)
-      prompt=0
-      POSITIONAL+=("$1")
-      shift
-      ;;
-    --go-root)
-      go_root="$2"
-      shift 2
-      ;;
-    --go-path)
-      go_path="$2"
-      shift 2
-      ;;
-    --no-golang)
-      install_golang=0
-      shift
-      ;;
-    *)
-      for x in "${POSITIONAL[@]}" ; do
-        if [[ "$x" == "$1" ]]; then
-          add=0
-        fi
-      done
-      (( ${add:-1} )) && POSITIONAL+=("$1")
-      shift
-      ;;
-  esac
-done
-
-set -- "${POSITIONAL[@]}"
-
-skip-if-requested "$install_golang"
+skip-if-installed 'go'
 
 echo "Will do:"
 echo "  - username: ${username}"
 echo "  - install go ${go_version} in ${go_root}"
 echo "  - go path set to ${go_path}"
-if (( ${prompt:-1} )) ; then
+if (( ${DOTFILES_PROMPT:-1} )) ; then
   echo 'Press any key to continue...'
   read -r -n 1
 fi

@@ -6,6 +6,11 @@ while [[ $# -gt 0 ]]
 do
   key="$1"
   case $key in
+    --fzf-version)
+      # TODO should use here the same approach as with the --no-* flags
+      fzf_version="$2"
+      shift 2
+      ;;
     --user)
       user="$2"
       shift 2
@@ -29,6 +34,10 @@ do
       ;;
     --verbose)
       verbose=1
+      shift
+      ;;
+    -y|--no-prompt)
+      export DOTFILES_PROMPT=0
       shift
       ;;
     *)
@@ -65,6 +74,10 @@ touch-dotfiles
 action='install'
 if ((${uninstall:-0})); then
   action='uninstall'
+fi
+
+if [ -n "$fzf_version" ]; then
+  export DOTFILES_FZF_VERSION="$fzf_version"
 fi
 
 function evaluate-tool-file () {
@@ -109,17 +122,23 @@ create-link-at-home 'runcom/.bash_profile'
 # Package managers
 # ==================================================
 echo 'Installing package managers...'
+install-tool 'curl'
+install-tool 'rustup'
+install-tool 'sdkman'
+install-tool 'go'
 # ==================================================
 # Tools
 # ==================================================
 echo 'Installing tools...'
 
-install-tool 'rustup'
-
+a=0
 for t in tools/* ; do
   toolname="${t##*/}"
   evaluate-tool-file "$toolname" "$action"
-  exit 0
+  a+=1
+  if [[ $a == 3 ]]; then
+    exit 0
+  fi
 done
 #install-tool 'java'
 #install-tool 'rustup'

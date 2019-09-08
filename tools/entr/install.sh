@@ -2,9 +2,9 @@
 
 . "${DOTFILES_FULL_PATH:?}/funcs.sh"
 
-skip-if-requested
-quarantine
-skip-if-installed
+skip-if-requested 'entr'
+quarantine 'entr'
+skip-if-installed 'entr'
 
 mkdir -p "$DOTFILES_USER_HOME"
 

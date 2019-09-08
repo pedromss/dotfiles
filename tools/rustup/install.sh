@@ -4,6 +4,9 @@
 
 skip-if-requested 'rust'
 skip-if-requested 'rustup'
+
+save-source "${DOTFILES_FULL_PATH:?}/tools/rustup/.env.source"
+
 skip-if-installed 'rustup'
 
 default_host_triple=''

@@ -3,7 +3,8 @@
 . "$DOTFILES_FULL_PATH/funcs.sh"
 
 skip-if-requested 'rust'
-skip-if-requested
+skip-if-requested 'rustup'
+skip-if-requested 'exa'
 
 # Exa https://github.com/ogham/exa
 save-alias 'lr' 'exa --group-directories-first --header --long --recurse --group --modified --git --all --all'
@@ -11,6 +12,6 @@ save-alias 'lrt' 'exa --group-directories-first --header --tree --long --recurse
 save-alias 'l' 'exa --group-directories-first --header --long --group --modified --git --all --all'
 save-alias 'ls' 'exa --group-directories-first -1'
 
-skip-if-installed
+skip-if-installed 'exa'
 
 cargo install --force exa

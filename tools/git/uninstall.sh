@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source ../../runcom/.functions
-source ../../common.sh
+# shellcheck disable=SC1090
+. "${DOTFILES_FULL_PATH:?}/funcs.sh"
 
 skip-if-not-installed 'git'
 uninstall-with-pkg-manager 'git'

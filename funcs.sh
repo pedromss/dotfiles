@@ -15,6 +15,14 @@ set +e
 . "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
 
+function skip-if-tool-is-not-installed () {
+  command_exists "$1" || { echo " ---> skipping: [$2] because [$1] is required for it"; exit 0; }
+}
+
+function install-with-sdkman () {
+  sdk install "$1" "$2"
+}
+
 function install-with-cargo () {
   if [ -z "$1" ]; then
     get-name-of-tool-from-path
@@ -92,10 +100,16 @@ function skip-if-os-is () {
 }
 
 function only-if-os-is () {
-  get-name-of-tool-from-path
-  os="$1"
-  if ! [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
-    echo " ---> skipping: [${DOTFILES_CURRENT_TOOL}] - only meant to be installed in $os"
+  if [ -z "$1" ]; then
+    get-name-of-tool-from-path
+    in_tool="${DOTFILES_CURRENT_TOOL}"
+  else
+    in_tool="$1"
+  fi
+  tool="$in_tool"
+  os="$2"
+  if ! [[ $DOTFILES_RESOLVED_OS =~ $os ]]; then
+    echo " ---> skipping: [$tool] - only meant to be installed in $os"
     exit 0
   fi
 }
@@ -268,9 +282,14 @@ function is-macos () {
 }
 
 function skip-if-dir-exists () {
-  get-name-of-tool-from-path
-  tool="$DOTFILES_CURRENT_TOOL"
-  ! [ -d "$1" ] || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
+  if [ -z "$1" ]; then
+    get-name-of-tool-from-path
+    in_tool="${DOTFILES_CURRENT_TOOL}"
+  else
+    in_tool="$1"
+  fi
+  tool="$in_tool"
+  ! [ -d "$2" ] || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
 }
 
 function skip-if-not-installed () {
