@@ -29,7 +29,7 @@ function install-with-cargo () {
 function skip-if-installed () {
   if [ -z "$1" ]; then
     get-name-of-tool-from-path
-    in_tool="${DOTFILES_CURRENT_TOOL}"
+    in_tool="$DOTFILES_CURRENT_TOOL"
   else
     in_tool="$1"
   fi
@@ -184,7 +184,10 @@ function save-config () {
 }
 
 function move-in-dotfiles () {
-  mv "${DOTFILES_FULL_PATH:?}/$1" "${DOTFILES_FULL_PATH:?}/$2" 2>/dev/null
+  file="${DOTFILES_FULL_PATH:?}/$1"
+  if [ -f "$file" ]; then
+    mv "$file" "${DOTFILES_FULL_PATH:?}/$2"
+  fi
 }
 
 function cleanup-dotfiles-sources-file () {
@@ -380,15 +383,15 @@ function install-tool () {
   tool="$1"
   shift
   if ! [ -d "tools/$tool" ]; then
-    echo " ---> skipping: $tool - not found!"
+    echo " ---> skipping: [$tool] - not found!"
   else
     cd "tools/$tool" || exit 1
 
     if ! [ -f 'install.sh' ]; then
-      echo "tool $tool: no install file present"
+      echo " ---> skipping: [$tool] - no install file present"
     else
       set +e
-      ./install.sh "$@"
+      ./install.sh "$tool"
       set -e
       # shellcheck disable=SC2181
       if [[ "$?" != 0 ]]; then

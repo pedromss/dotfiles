@@ -3,8 +3,8 @@
 . "$DOTFILES_FULL_PATH/funcs.sh"
 
 skip-if-requested 'rust'
-skip-if-requested
-skip-if-installed
+skip-if-requested 'rustup'
+skip-if-installed 'rustup'
 
 default_host_triple=''
 if is-rpi ; then
