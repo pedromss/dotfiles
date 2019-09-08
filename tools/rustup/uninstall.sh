@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. "${DOTFILES_FULL_PATH:?}/funcs.sh"
+
 echo 'Uninstalling rust with rustup...'
 rustup self uninstall -y
 

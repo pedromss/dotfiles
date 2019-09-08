@@ -293,22 +293,40 @@ function require-file () {
 }
 
 function install-with-pkg-manager () {
-  if is-macos ; then
-    require-tool 'brew'
-    brew install "$1"
+  if [ -z "$1" ]; then
+    get-name-of-tool-from-path
+    in_tool="${DOTFILES_CURRENT_TOOL}"
   else
-    # assume apt-get
-    sudo apt-get -y install "$1"
+    in_tool="$1"
+  fi
+  tool="$in_tool"
+
+  if is-macos ; then
+    brew install "$tool"
+  elif is-debian ; then
+    sudo apt-get -y install "$tool"
+  else
+    echo 'Unable to resolve package manager'
+    exit 1
   fi
 }
 
 function uninstall-with-pkg-manager () {
-  if is-macos ; then
-    require-tool 'brew'
-    brew uninstall "$1"
+  if [ -z "$1" ]; then
+    get-name-of-tool-from-path
+    in_tool="${DOTFILES_CURRENT_TOOL}"
   else
-    # assume apt-get
-    sudo apt-get -y remove "$1"
+    in_tool="$1"
+  fi
+  tool="$in_tool"
+
+  if is-macos ; then
+    brew uninstall "$tool"
+  elif is-debian ; then
+    sudo apt-get -y remove "$tool"
+  else
+    echo 'Unable to resolve package manager'
+    exit 1
   fi
 }
 
