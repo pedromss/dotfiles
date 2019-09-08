@@ -8,16 +8,14 @@ skip-if-installed
 
 default_host_triple=''
 if is-rpi ; then
-	# assume raspberry pi
-	default_host_triple='armv7-unknown-linux-gnueabihf'
+  # assume raspberry pi
+  default_host_triple='armv7-unknown-linux-gnueabihf'
 elif is-ubuntu ; then
-	default_host_triple='x86_64-unknown-linux-gnu'
+  default_host_triple='x86_64-unknown-linux-gnu'
 elif is-macos ; then
-	default_host_triple='x86_64-apple-darwin'
+  default_host_triple='x86_64-apple-darwin'
 else
-	echo 'Unable to install Rust automatically'
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-	exit 0
+  echo 'Unable to set default-host-triple automatically'
 fi
 
 
@@ -28,25 +26,21 @@ echo 'Making it executable...'
 chmod +x setup-rust
 
 echo 'Running the install tool...'
-./setup-rust \
-	-y \
-	--no-modify-path \
-	--default-host "$default_host_triple" \
-	--default-toolchain stable
+if [ -z "$default_host_triple" ]; then
+  ./setup-rust -y --no-modify-path --default-toolchain stable
+else
+  ./setup-rust -y --no-modify-path --default-host "$default_host_triple" --default-toolchain stable
+fi
 
 echo 'Cleaning up...'
 rm -rf setup-rust
 
 cargo_env_file="$DOTFILES_USER_HOME/.cargo/env"
 echo "Sourcing the config at ${cargo_env_file}..."
-source './.env.source'
-# shellcheck source=/dev/null
-source "$cargo_env_file"
-make-user-owner-of "$DOTFILES_USER_HOME/.cargo"
+. .env.source
 
-user_bin="$user_bin"
-echo "Making symlinks in ${user_bin} to installer and uninstaller..."
-tool_name=$(pwd)
-tool_name=${tool_name##*/}
+# shellcheck disable=SC1090
+. "$cargo_env_file"
+make-user-owner-of "$DOTFILES_USER_HOME/.cargo"
 
 echo 'Rust installation process complete. Try rustup --help to ensure is installed!'
