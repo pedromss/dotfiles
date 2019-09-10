@@ -36,7 +36,7 @@ do
       verbose=1
       shift
       ;;
-    -y|--no-prompt)
+    -y)
       export DOTFILES_PROMPT=0
       shift
       ;;
