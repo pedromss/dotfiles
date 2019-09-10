@@ -91,10 +91,10 @@ function touch-dotfiles () {
 }
 
 function skip-if-os-is () {
-  get-name-of-tool-from-path
-  os="$1"
+  tool="$1"
+  os="$2"
   if [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
-    echo " ---> skipping: [${DOTFILES_CURRENT_TOOL}] - not meant to be installed on $os"
+    echo " ---> skipping: [$tool] - not meant to be installed on $os"
     exit 0
   fi
 }
