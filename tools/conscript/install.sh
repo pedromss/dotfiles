@@ -6,7 +6,7 @@
 skip-if-os-is 'conscript' 'rpi'
 
 save-env "CONSCRIPT_HOME" "${DOTFILES_USER_HOME:?}/.conscript"
-save-env "CONSCRIPT_OPTS" "-XX:MaxPermSize=512M -Dfile.encoding=UTF-8"
+save-env "CONSCRIPT_OPTS" '"-XX:MaxPermSize=512M -Dfile.encoding=UTF-8"'
 save-source "${DOTFILES_FULL_PATH:?}/tools/conscript/path.sh"
 
 skip-if-installed 'cs'
