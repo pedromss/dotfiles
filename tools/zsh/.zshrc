@@ -131,3 +131,6 @@ complete -F _fzf_dir_completion -o default -o bashdefault tree
 source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
 # For zsh profiling
 #zprof
+
+# Added by Krypton
+export GPG_TTY=$(tty)

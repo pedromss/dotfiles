@@ -206,8 +206,12 @@ set grepprg=grep\ -nH\ $*
 nnoremap <leader>mr :MRU<cr>
 " }}}
 " Tabularize mappings -------------------- {{{
-vnoremap <localleader>qw :'<,'>Tabularize /=<cr>
-nnoremap <localleader>qw ggVG:'<,'>Tabularize /=<cr>
+vnoremap <localleader>qw= :'<,'>Tabularize /=<cr>
+vnoremap <localleader>qw, :'<,'>Tabularize /,<cr>
+vnoremap <localleader>qw :'<,'>Tabularize /
+nnoremap <localleader>qw= ggVG:'<,'>Tabularize /=<cr>
+nnoremap <localleader>qw, ggVG:'<,'>Tabularize /,<cr>
+nnoremap <localleader>qw ggVG:'<,'>Tabularize /
 " }}}
 " Vim cutlass mappings -------------------- {{{
 "nnoremap x d
