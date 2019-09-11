@@ -13,6 +13,8 @@ save-alias 'gom' 'GO111MODULE=on go'
 save-env 'PATH' "$PATH:$DOTFILES_GOLANG_GOPATH/bin:/usr/local/go/bin"
 save-env 'GOPATH' "$DOTFILES_GOLANG_GOPATH"
 save-env 'GO111MODULE' 'off'
+save-env 'DOTFILES_BIN' "${DOTFILES_BIN:?}"
+save-source "${DOTFILES_FULL_PATH:?}/tools/go/path.sh"
 
 skip-if-requested 'golang'
 skip-if-installed 'go'
@@ -26,8 +28,18 @@ if (( ${DOTFILES_PROMPT:-1} )) ; then
   read -r -n 1
 fi
 
-tarball=go${go_version}.linux-armv6l.tar.gz
-echo "Downloading go${go_version}.linux-armv6l.tar.gz..."
+if is-rpi ; then
+  arch='linux-armv6l'
+elif is-ubuntu ; then
+  arch='linux-amd64'
+elif is-macos ; then
+  arch='darwin-amd64'
+else
+  echo 'No arch defined. Aborting golang'
+  exit 1
+fi
+tarball=go"${go_version}"."$arch".tar.gz
+echo "Downloading go${go_version}.${arch}.tar.gz..."
 sudo wget -qO- "https://dl.google.com/go/${tarball}" | sudo tar xz -C "$go_root_parent"
 
 echo "Changing ownership of ${go_root} to ${username}"

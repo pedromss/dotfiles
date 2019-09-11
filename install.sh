@@ -36,7 +36,7 @@ do
       verbose=1
       shift
       ;;
-    -y|--no-prompt)
+    -y)
       export DOTFILES_PROMPT=0
       shift
       ;;
@@ -52,7 +52,7 @@ done
 set -- "$@" "${POSITIONAL[@]}"
 
 # Expose env variables with all tools that are meant to be skipped
-printf 'Request to skip:\n'
+printf 'Tools requested to skip:\n'
 while IFS='=' read -r name value ; do
   if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]]; then
     printf '  - %s\n' "${name##*_}"
