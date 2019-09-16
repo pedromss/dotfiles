@@ -140,21 +140,6 @@ for t in tools/* ; do
     exit 0
   fi
 done
-#install-tool 'java'
-#install-tool 'rustup'
-#install-tool 'llvm'
-#install-tool 'python-pip'
-#install-tool 'python3-pip'
-#install-tool 'shellcheck'
-#install-tool 'tpm'
-#install-tool 'tmux'
-#install-tool 'zsh'
-#install-tool 'exa'
-#install-tool 'bat'
-#install-tool 'mdcat'
-#install-tool 'gomplate' "$@"
-#install-tool 'vault' "$@"
-#install-tool 'nvim' "$@"
 cleanup
 # ==================================================
 # Shutdown

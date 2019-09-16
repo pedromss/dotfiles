@@ -3,7 +3,7 @@
 # shellcheck disable=SC1090
 . "$DOTFILES_FULL_PATH/funcs.sh"
 
-skip-if-os-is 'rpi'
+skip-if-os-is 'sdkman' 'rpi'
 
 save-env 'SDKMAN_DIR' "$DOTFILES_SDKMAN_DIR"
 save-source "${DOTFILES_FULL_PATH:?}/tools/sdkman/.env.source"
