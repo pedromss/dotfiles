@@ -2,7 +2,7 @@
 
 . "${DOTFILES_FULL_PATH:?}/funcs.sh"
 
-only-if-os-is 'llvm' 'ubuntu'
+skip-if-os-is 'llvm' 'macos'
 
 # From http://apt.llvm.org/
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
