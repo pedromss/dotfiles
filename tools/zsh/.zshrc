@@ -30,18 +30,6 @@ ZSH_CUSTOM=$HOME/.zsh/custom
 
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=( "$HOME/.zfunctions" $fpath )
-autoload -U promptinit; promptinit
-PURE_GIT_PULL=0
-prompt pure
-PROMPT='%F{white}%* '$PROMPT
-#prompt_newline='%666v'
-#PROMPT=" $PROMPT"
-precmd_pipestatus() {
-  RPROMPT="${(j.|.)pipestatus}"
-}
-add-zsh-hook precmd precmd_pipestatus
-ZSH_THEME=""
-
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
@@ -111,26 +99,38 @@ setopt RM_STAR_WAIT
 # ==================================================
 # plugins
 # ==================================================
-source $HOME/zsh-plugin-repos/appup/appup.plugin.zsh
-source $HOME/zsh-plugin-repos/zsh-autopair/autopair.plugin.zsh
-source $HOME/zsh-plugin-repos/enhancd/init.sh
-source $HOME/zsh-plugin-repos/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-source $HOME/zsh-plugin-repos/forgit/forgit.plugin.zsh
-source $HOME/zsh-plugin-repos/k/k.plugin.zsh
-source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/globalias/globalias.plugin.zsh
-source $HOME/zsh-plugin-repos/oh-my-zsh/plugins/vi-mode/vi-mode.plugin.zsh
-source $HOME/zsh-plugin-repos/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/appup/appup.plugin.zsh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/zsh-autopair/autopair.plugin.zsh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/enhancd/init.sh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/forgit/forgit.plugin.zsh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/k/k.plugin.zsh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/oh-my-zsh/plugins/globalias/globalias.plugin.zsh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/oh-my-zsh/plugins/vi-mode/vi-mode.plugin.zsh"
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/zsh-history-substring-search/zsh-history-substring-search.plugin.zsh"
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 if ! [ -f '/etc/os-release' ] || ! [[ $(cat /etc/os-release) =~ 'Raspbian' ]]; then
-  source $HOME/zsh-plugin-repos/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+  source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh"
 fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 complete -F _fzf_path_completion -o default -o bashdefault ag
 complete -F _fzf_dir_completion -o default -o bashdefault tree
-source $HOME/zsh-plugin-repos/zjump/zjump.plugin.zsh
+source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/zjump/zjump.plugin.zsh"
 # For zsh profiling
 #zprof
+
+autoload -U promptinit; promptinit
+PURE_GIT_PULL=0
+prompt pure
+PROMPT='%F{white}%* '$PROMPT
+#prompt_newline='%666v'
+#PROMPT=" $PROMPT"
+precmd_pipestatus() {
+  RPROMPT="${(j.|.)pipestatus}"
+}
+add-zsh-hook precmd precmd_pipestatus
+ZSH_THEME=""
 
 # Added by Krypton
 export GPG_TTY=$(tty)

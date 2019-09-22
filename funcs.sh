@@ -4,6 +4,8 @@
 
 set +e
 # shellcheck disable=SC1090
+. "${DOTFILES_FULL_PATH:?}/common.sh" 2>/dev/null
+# shellcheck disable=SC1090
 . "${DOTFILES_FULL_PATH:?}/runcom/.functions" 2>/dev/null
 # shellcheck disable=SC1090
 . "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE" 2>/dev/null
@@ -80,7 +82,6 @@ function cleanup () {
   cleanup-dotfiles-alias-file
   cleanup-dotfiles-env-file
   cleanup-dotfiles-sources-file
-  rm -rf "$DOTFILES_TOOLS_INSTALLATION_FOLDER"
 }
 
 function touch-dotfiles () {
@@ -183,12 +184,6 @@ function save-alias () {
   # shellcheck disable=SC2139
   alias "$1"="$2"
   echo "alias $1='$2'" >> "$filename"
-}
-
-function save-env () {
-  filename="$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
-  export "$1"="$2"
-  echo "export $1=$2" >> "$filename"
 }
 
 function save-config () {
@@ -363,7 +358,6 @@ function toolname-from-pwd () {
 }
 
 function uninstall-tool-from-git-repo() {
-  require-tool 'git'
   toolname-from-git-repo-http-url "$1"
   curr=$(pwd)
   # shellcheck disable=SC2154
@@ -377,11 +371,10 @@ function uninstall-tool-from-git-repo() {
 # TODO should probably delete this and make things explicit
 # --function install-tool-from-git-repo (gitrepo, git tag, commands to install) {
 function install-tool-from-git-repo () {
-  require-tool 'git'
   curr=$(pwd)
   toolname="${1##*/}"
   toolname="${toolname%%.git}"
-  folder="$DOTFILES_TOOLS_INSTALLATION_FOLDER/entr"
+  folder="${DOTFILES_TOOLS_INSTALLATION_FOLDER:?}/$toolname"
   if ! [ -d "$folder" ]; then
     git clone --depth 1 "$1" "$folder"
   fi

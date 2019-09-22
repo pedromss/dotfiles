@@ -5,6 +5,8 @@
 create-tool-link-at-home 'zsh/.zshrc'
 create-tool-link-at-home 'zsh/.zfunctions'
 
+save-env 'DOTFILES_ZSH_PLUGINS_FOLDER' "$DOTFILES_ZSH_PLUGINS_FOLDER"
+
 mkdir -p "$DOTFILES_ZSH_PLUGINS_FOLDER"
 
 clone-from-github 'Cloudstek/zsh-plugin-appup.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/appup"
@@ -16,6 +18,7 @@ clone-from-github 'supercrabtree/k.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/k"
 clone-from-github 'qoomon/zjump.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zjump"
 clone-from-github 'robbyrussell/oh-my-zsh.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/oh-my-zsh"
 clone-from-github 'zsh-users/zsh-history-substring-search.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-history-substring-search"
+clone-from-github 'sindresorhus/pure.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/pure"
 if ! is-rpi ; then
   # too heavy for the rpi shell
   clone-from-github 'zsh-users/zsh-autosuggestions.git' "$DOTFILES_ZSH_PLUGINS_FOLDER/zsh-autosuggestions"
