@@ -23,6 +23,8 @@ function save-env () {
   echo "export $1=$2" >> "$filename"
 }
 
+save-env 'DOTFILES_FULL_PATH' "$DOTFILES_FULL_PATH"
+save-env 'DOTFILES_USER_HOME' "$DOTFILES_USER_HOME"
 save-env 'XDG_CONFIG_HOME' "$DOTFILES_USER_HOME/.config"
 save-env 'XDG_DATA_HOME' "$DOTFILES_USER_HOME/.local/share"
 
