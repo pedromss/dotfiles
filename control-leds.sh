@@ -1,0 +1,4 @@
+#!/usr/bin/env bash 
+
+echo "$1" | sudo tee /sys/class/leds/led0/brightness
+echo "$1" | sudo tee /sys/class/leds/led1/brightness
