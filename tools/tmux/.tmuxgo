@@ -4,21 +4,32 @@ session_name='rpi-cluster'
 
 tmux -2 new-session -d -s "$session_name"
 tmux rename-window -t "${session_name}:0" "$session_name"
-tmux split-window -h
-tmux select-pane -t 0
-tmux split-window -v
-tmux select-pane -t 2
-tmux split-window -v
-tmux select-pane -t 0
 tmux send-keys 'ssh pedromss@rpi-kube-master.local'
-tmux select-pane -t 2
+tmux send-keys 'Enter'
+tmux send-keys 'clear'
+tmux send-keys 'Enter'
+tmux split-window -v
 tmux send-keys 'ssh pedromss@rpi-kube-node-01.local'
-tmux select-pane -t 1
+tmux send-keys 'Enter'
+tmux send-keys 'clear'
+tmux send-keys 'Enter'
+tmux split-window -v
 tmux send-keys 'ssh pedromss@rpi-kube-node-02.local'
-tmux select-pane -t 3
+tmux send-keys 'Enter'
+tmux send-keys 'clear'
+tmux send-keys 'Enter'
+tmux split-window -v
 tmux send-keys 'ssh pedromss@rpi-kube-node-03.local'
+tmux send-keys 'Enter'
+tmux send-keys 'clear'
+tmux send-keys 'Enter'
+
+# must be done before attaching
+tmux select-layout even-vertical
+tmux setw synchronize-panes
+tmux select-pane -t 0
+
 tmux attach -t "${session_name}:0"
 
-tmux select-pane -t 0
-
 tmux select-window -t "${session_name}:0"
+
