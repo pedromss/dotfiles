@@ -86,7 +86,7 @@ set splitbelow
 set splitright
 " }}}
 " Commands -------------------- {{{
-command! MakeTags !ctags -R . --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build
+command! MakeTags !ctags -R --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build . 
 " }}}
 " Plugins -------------------- {{{
 let g:ale_emit_conflict_warnings = 0
