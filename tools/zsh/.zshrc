@@ -7,12 +7,12 @@ bindkey '[C' beginning-of-line
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+source "$HOME/dotfiles/runcom/.custom_profile"
 for f in `find "$HOME" -maxdepth 1 \( -iname \*.env -o -iname \*.alia \) -type f`
 do
-  source $f > /dev/null
+  source $f 1>/dev/null
 done
 
-source "$HOME/dotfiles/runcom/.custom_profile"
 
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
 ZSH_AUTOSUGGEST_USE_ASYNC=yes
@@ -20,7 +20,6 @@ ZSH_AUTOSUGGEST_USE_ASYNC=yes
 HISTSIZE=15000
 SAVEHIST=10000
 HISTFILE=$HOME/.zhistory
-
 
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
@@ -117,9 +116,6 @@ fi
 complete -F _fzf_path_completion -o default -o bashdefault ag
 complete -F _fzf_dir_completion -o default -o bashdefault tree
 source "${DOTFILES_ZSH_PLUGINS_FOLDER:?}/zjump/zjump.plugin.zsh"
-# For zsh profiling
-#zprof
-
 autoload -U promptinit; promptinit
 PURE_GIT_PULL=0
 prompt pure
@@ -131,6 +127,7 @@ precmd_pipestatus() {
 }
 add-zsh-hook precmd precmd_pipestatus
 ZSH_THEME=""
-
 # Added by Krypton
 export GPG_TTY=$(tty)
+# For zsh profiling
+#zprof

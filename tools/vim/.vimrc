@@ -57,6 +57,8 @@ set path+=**
 set wildignore=*.class,**/target/**,**/.idea/**,**/node_modules/**,**/bower_components/**
 set wildmenu
 set tags+=.git/tags
+set cursorcolumn
+set cursorline
 set tabstop=2 " how many columns a tab counts for
 set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
 set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
@@ -115,6 +117,8 @@ if executable('fzf')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+
+Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'yegappan/mru'
 Plug 'jlanzarotta/bufexplorer'
@@ -279,6 +283,7 @@ noremap <leader>af :Autoformat<CR>
 noremap <localleader>nf :set nofoldenable!<CR>
 noremap <C-n> :cn<CR>
 noremap <C-m> :cp<CR>
+nnoremap <S-space> vt<space>
 
 " edit a new buffer in the current pane event with changes
 nnoremap <leader>enn :ene<cr>
@@ -324,6 +329,12 @@ augroup go_mappings
 augroup END
 " }}}
 " Fzf mappings -------------------- {{{
+" " This is the default extra key bindings
+let g:fzf_action = {
+  \ 'alt-t': 'tab split',
+  \ 'alt-x': 'split',
+  \ 'alt-v': 'vsplit' }
+
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
@@ -718,7 +729,7 @@ augroup filetype_bash
   au FileType sh :call SetTabs(2)
   "au FileType sh :colorscheme monochrome
   au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
-  au FileType sh :silent ![ -f tags ] || ctags -R --language-force=sh
+  "au FileType sh :silent ! [ -f tags ] || ctags -R --language-force=sh .
 augroup END
 " }}}
 " Markdown file settings -------------------- {{{
