@@ -161,3 +161,5 @@ function GetGroovyIndent()
 endfunction
 
 " vi: sw=2 et
+"
+:call SetTabs(4)
