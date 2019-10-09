@@ -1,59 +1,15 @@
 " Functions... -------------------- {{{
-function! SetTabs(amount)
-  let &l:tabstop = a:amount
-  let &l:shiftwidth = a:amount
-  let &l:softtabstop = a:amount
-endfunction
-
 function! LoadColorScheme(scheme)
-  if filereadable(expand("~/.vim/colors/" . a:scheme . ".vim"))
-    execute ":colorscheme " . a:scheme
+  if filereadable(expand('~/.vim/colors/' . a:scheme . '.vim'))
+    execute ':colorscheme ' . a:scheme
   endif
-endfunction
-
-function! IsShebang(line)
-  if match(a:line, '#!.*') == -1
-    return 0
-  endif
-  return 1
-endfunction
-
-function! AddShebang()
-  " TODO dont use marks when it is a new file
-  let lines = getline(0, 50)
-  let shebangLines = filter(lines, 'IsShebang(v:val)')
-  if len(shebangLines) > 0 
-    return
-  endif
-  if &filetype ==? ''
-    echo 'Setting filetype to "sh"'
-    set filetype=sh
-    return AddShebang()
-  elseif &filetype !=? 'sh'
-    echo 'Filetype is ' . &filetype . ' not adding the shebang line'
-  else
-    let shebang = get(g:, 'shebanger_shebang_line', '#!/usr/bin/env bash')
-    :execute 'normal! mtggI' . shebang "\<cr>\<esc>o\<esc>`t"
-  endif
-endfunction
-
-function! CloseGoErrors()
-  let buffers = filter(range(1, bufnr('$')), 'bufexists(v:val)')
-  echo buffers
 endfunction
 " }}}
 " Basic settings -------------------- {{{
-if has('gui_running')
-  if has('gui_win32')
-    set guifont=Consolas:h11:cANSI
-  else
-    set guifont=Monaco\ for\ Powerline:h11
-  endif
-endif
 let mapleader = ','
 let localleader = "\\"
 call LoadColorScheme('gruvbox')
-set bg=dark
+set background=dark
 syntax on
 filetype plugin indent on
 set textwidth=80
@@ -687,7 +643,7 @@ augroup END
 " Scala file settings -------------------- {{{
 augroup scala_auto_cmds
   autocmd!
-  au FileType scala :call SetTabs(2)
+  au FileType scala :call SetTabs(8)
   "au FileType scala silent :EnTypeCheck
 augroup END
 " }}}
@@ -729,8 +685,8 @@ augroup END
 " Bash file settings -------------------- {{{
 augroup filetype_bash
   autocmd!
-  au FileType sh :normal gg=G
-  au FileType sh :call SetTabs(2)
+  "au FileType sh :normal gg=G
+  "au FileType sh :call SetTabs(2)
   "au FileType sh :colorscheme monochrome
   au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
   "au FileType sh :silent ! [ -f tags ] || ctags -R --language-force=sh .
@@ -743,11 +699,11 @@ augroup filetype_markdown
 augroup END
 " }}}
 " HTML file settings -------------------- {{{
-augroup filetype_html
-  autocmd!
-  au FileType html setlocal nowrap
-  au FileType html :call SetTabs(2)
-augroup END
+"augroup filetype_html
+  "autocmd!
+  "au FileType html setlocal nowrap
+  "au FileType html :call SetTabs(2)
+"augroup END
 "}}}
 " Json file settings -------------------- {{{
 augroup filetype_json
@@ -756,19 +712,18 @@ augroup filetype_json
 augroup END
 " }}}
 " Groovy file settings -------------------- {{{
-augroup groovy_aus
-  autocmd!
-  au FileType groovy :call SetTabs(4)
-augroup END
+"augroup groovy_aus
+  "autocmd!
+  "au FileType groovy :call SetTabs(4)
+"augroup END
 " }}}
 " Vimscript file settings ------------------------------ {{{
 augroup filetype_vim
   autocmd!
-  au FileType vim :cal SetTabs(2)
-  au FileType vim setlocal foldmethod=marker
+  "au FileType vim :cal SetTabs(2)
+  "au FileType vim setlocal foldmethod=marker
   au FileType vim nnoremap <leader>mf o" Fold description <esc>20a-<esc>a {{{<cr><cr>}}}<esc>kcc
 augroup END
-" }}}
 " }}}
 " Operator pending movements -------------------- {{{
 " Parentheses -------------------- {{{
