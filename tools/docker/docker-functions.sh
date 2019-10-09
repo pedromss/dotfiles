@@ -2,14 +2,13 @@
 
 # --docker_rmi_dangling([$@ passed to docker rmi]) {
 function docker_rmi_dangling () {
-  docker rmi "$(docker images -f dangling=true -q)" "$@"
+  docker rmi $(docker images -f dangling=true -q) "$@"
 }
-
 
 # --function drmf([containerName | partial matches allowed]) {
 function drmf() {
   query=${1:-'.*'}
-  docker rm -f "$(docker ps -a -q -f name=".*$query.*")"
+  docker rm -f $(docker ps -a --format '{{.Names}}' --filter name=".*$query.*")
 }
 
 # --function drmftls(remoteHost, [containerName | partial matches allowed]) {
@@ -32,42 +31,36 @@ function dpsq() {
 
 # --function dpstls(remoteHost, [containerName | partial matches allowed]) {
 function dpstls() {
-  
   query=${2:-'.*'}
   docker --tlsverify -H "$1" ps -a -f name=".*$query.*"
 }
 
 # --function dpsqtls(remoteHost, [containerName | partial matches allowed]) {
 function dpsqtls() {
-  
   query=${2:-'.*'}
   docker --tlsverify -H "$1" ps -a -q -f name=".*$query.*"
 }
 
 # --function dnetls([networkName | partial matches allowed]) {
 function dnetls() {
-  
   query=${1:-'.*'}
   docker network ls -f name=".*$query.*"
 }
 
 # --function dnetlstls(remoteHost, [networkName | partial matches allowed]) {
 function dnetlstls() {
-  
   query=${2:-'.*'}
   docker --tlsverify -H "$1" network ls -f name=".*$query.*"
 }
 
 # --function dnetrm([networkName | partial matches allowed]) {
 function dnetrm() {
-  
   query=${1:-'.*'}
   docker network rm "$(docker network ls -f name=".*$query.*" -q)"
 }
 
 # --function dnetrmtls(remoteHost, [networkName]) {
 function dnetrmtls() {
-  
   query=${2:-'.*'}
   docker --tlsverify -H "$1" network rm "$(docker network ls -f name=".*$query.*" -q)"
 }
@@ -75,7 +68,7 @@ function dnetrmtls() {
 # --function din(containerName, [propertyToInspect]) {
 function din() {
   command_exists 'gron'
-  
+
   command_exists 'ag'
   query=${2:-'.*'}
   docker inspect "$1" | gron | ag "$query" | gron --ungron
