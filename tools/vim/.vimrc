@@ -52,6 +52,7 @@ command! MakeTags !ctags -R -f .git/tags --exclude=plugins --exclude=plugged --e
 " }}}
 " Plugins -------------------- {{{
 let g:ale_emit_conflict_warnings = 0
+execute pathogen#infect()
 if has('nvim')
   if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -78,6 +79,7 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'junegunn/goyo.vim'
 Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'yegappan/mru'
@@ -166,6 +168,9 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
+" Goyo mappings -------------------- {{{
+nnoremap <F3> :Goyo<cr>
+" }}}
 " MRU mappings -------------------- {{{
 nnoremap <leader>mr :MRU<cr>
 " }}}
