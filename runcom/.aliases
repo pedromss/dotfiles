@@ -11,3 +11,4 @@ alias l="ls -lah"
 # maconly!
 alias pbc='pbcopy'
 alias pbp='pbpaste'
+alias szsh='source ~/.zshrc'
