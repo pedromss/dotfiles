@@ -21,11 +21,16 @@ save-alias 'gtagp' 'git push --tags'
 save-alias 'gtagf' 'git fetch --tags'
 save-alias 'gco' 'git checkout'
 save-alias 'glc' 'git rev-parse --short HEAD'
-save-alias 'glcc' 'git rev-parse --short HEAD | pbcopy'
-save-alias 'gbn' 'gbname | pbcopy'
 
-save-source "${DOTFILES_FULL_PATH:?}/tools/git/git-functions.sh"
-create-tool-link-at-home 'git/.gitconfig'
+if is-linux ; then
+  save-alias 'glcc' 'git rev-parse --short HEAD | xclip -selection clipboard'
+  save-alias 'gbn' 'gbname | xclip -selection clipboard'
+elif is-macos ; then
+  save-source "${DOTFILES_FULL_PATH:?}/tools/git/git-functions.sh"
+  create-tool-link-at-home 'git/.gitconfig'
+else
+  echo 'Ignoring git aliases because I do not know how to "pbcopy" in this os'
+fi
 
 skip-if-installed 'git'
 install-with-pkg-manager 'git'
