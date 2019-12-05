@@ -52,6 +52,7 @@ command! MakeTags !ctags -R -f .git/tags --exclude=plugins --exclude=plugged --e
 " }}}
 " Plugins -------------------- {{{
 let g:ale_emit_conflict_warnings = 0
+execute pathogen#infect()
 if has('nvim')
   if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -78,6 +79,7 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'junegunn/goyo.vim'
 Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'yegappan/mru'
@@ -166,6 +168,9 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
+" Goyo mappings -------------------- {{{
+nnoremap <F3> :Goyo<cr>
+" }}}
 " MRU mappings -------------------- {{{
 nnoremap <leader>mr :MRU<cr>
 " }}}
@@ -260,9 +265,9 @@ nnoremap <localleader>ldk :LivedownKill<CR>
 nnoremap <localleader>ldt :LivedownToggle<CR>
 " }}}
 " Vim Diff Mappings -------------------- {{{
-nnoremap <localleader>gl :diffg LO
-nnoremap <localleader>gb :diffg BA
-nnoremap <localleader>gr :diffg RE
+nnoremap <localleader>gl :diffget LOCAL<cr>
+nnoremap <localleader>gb :diffget BASE<cr>
+nnoremap <localleader>gr :diffget REMOTE<cr>
 " }}}
 " Buffer mappings -------------------- {{{
 nnoremap <silent> <M-F12> :BufExplorer<CR>
@@ -424,6 +429,11 @@ let g:go_highlight_function_calls = 0
 let g:go_highlight_types = 1
 let g:go_highlight_format_strings = 1
 let g:go_highlight_variable_assignments = 1
+let g:go_auto_sameids = 1
+let g:go_auto_type_info = 1
+let g:go_doc_popup_window = 1
+let g:go_snippet_engine = 'ultisnips'
+let g:go_statusline_duration = 20000
 " }}}
 " VIM yoink variables -------------------- {{{
 let g:yoinkIncludeDeleteOperations = 1
