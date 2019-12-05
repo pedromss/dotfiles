@@ -11,5 +11,6 @@
 . "$HOME/dotfiles/.dotfiles.env"
 . "$HOME/dotfiles/.dotfiles.config"
 . "$HOME/dotfiles/.dotfiles.sources"
+. "$HOME/dotfiles/funcs.min.sh"
 
 export PATH="$HOME/dotfiles/bin/neovim/bin:$HOME/.cargo/bin:$HOME/dotfiles/bin/go/bin:$HOME/dotfiles/bin:$PATH"

@@ -4,6 +4,8 @@
 
 set +e
 # shellcheck disable=SC1090
+. "${DOTFILES_FULL_PATH:?}/funcs.min.sh" 2>/dev/null
+# shellcheck disable=SC1090
 . "${DOTFILES_FULL_PATH:?}/common.sh" 2>/dev/null
 # shellcheck disable=SC1090
 . "${DOTFILES_FULL_PATH:?}/runcom/.functions" 2>/dev/null
@@ -128,52 +130,6 @@ function copy-dotfiles-configs () {
   cp "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
 }
 
-function is-rpi () {
-  check-os 'rpi'
-}
-
-function is-linux () {
-  check-os 'ubuntu|rpi'
-}
-
-function is-debian () {
-  check-os 'ubuntu|rpi'
-}
-
-function is-ubuntu () {
-  check-os 'ubuntu'
-}
-
-function is-unix () {
-  check-os 'mac|ubuntu|rpi'
-}
-
-function check-os () {
-  [[ "$DOTFILES_RESOLVED_OS" =~ $1 ]]
-}
-
-function find-os () {
-  [ -z "$DOTFILES_RESOLVED_OS" ] || return
-  supported_oses='mac, rpi, ubuntu'
-  os=''
-  if is-macos ; then
-    os='mac'
-  elif [ -f '/etc/os-release' ]; then
-    os_release=$(cat /etc/os-release)
-    if [[ "$os_release" =~ 'Raspbian' ]]; then
-      os='rpi'
-    elif [[ "$os_release" =~ 'Ubuntu' ]]; then
-      os='ubuntu'
-    fi
-  else
-    echo "__FAIL: unable to detect os. Should be one of: $supported_oses"
-    read -r input_os
-    os="$input_os"
-  fi
-  echo "Resolved OS is: [$os]"
-  export DOTFILES_RESOLVED_OS="$os"
-}
-
 function save-source () {
   filename="$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
   echo ". $1 2>/dev/null" >> "$filename"
@@ -270,10 +226,6 @@ function clone-from-github () {
   else
     echo " ---> skipping: repo [$1] - already exists at $2"
   fi
-}
-
-function is-macos () {
-  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
 }
 
 function skip-if-dir-exists () {

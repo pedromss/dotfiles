@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+function is-rpi () {
+  check-os 'rpi'
+}
+
+function is-linux () {
+  check-os 'ubuntu|rpi'
+}
+
+function is-debian () {
+  check-os 'ubuntu|rpi'
+}
+
+function is-ubuntu () {
+  check-os 'ubuntu'
+}
+
+function is-unix () {
+  check-os 'mac|ubuntu|rpi'
+}
+
+function check-os () {
+  if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
+    find-os
+  fi
+  [[ "$DOTFILES_RESOLVED_OS" =~ $1 ]]
+}
+
+function is-macos () {
+  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
+}
+
+
+function find-os () {
+  [ -z "$DOTFILES_RESOLVED_OS" ] || return
+  supported_oses='mac, rpi, ubuntu'
+  os=''
+  if is-macos ; then
+    os='mac'
+  elif [ -f '/etc/os-release' ]; then
+    os_release=$(cat /etc/os-release)
+    if [[ "$os_release" =~ 'Raspbian' ]]; then
+      os='rpi'
+    elif [[ "$os_release" =~ 'Ubuntu' ]]; then
+      os='ubuntu'
+    fi
+  else
+    echo "__FAIL: unable to detect os. Should be one of: $supported_oses"
+    read -r input_os
+    os="$input_os"
+  fi
+  echo "Resolved OS is: [$os]"
+  export DOTFILES_RESOLVED_OS="$os"
+}

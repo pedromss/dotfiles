@@ -1,0 +1,16 @@
+#!/usr/bin/env bash 
+
+# --kpod(context, namespace, fuzzy-pod-name)
+function kpodc () {
+  if is-linux ; then
+    kpod "$@" | xclip -selection clipboard
+  elif is-macos ; then
+    kpod "$@" | pbcopy
+  else
+    echo 'Unknown OS. Will not run kpod()'
+  fi
+}
+
+function kpod () {
+  kubectl --context="$1" --namespace="$2" get pods | ag "$3" | awk '{ print $1 }' 
+}
