@@ -19,6 +19,16 @@ set +e
 . "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE" 2>/dev/null
 set -e
 
+function prompt_for_continue () {
+  question='Continue?'
+  move_on_quietly=${2:-0}
+  if [[ $DOTFILES_PROMPT != 0 ]] ; then
+    ask_yes_or_no \
+      "$question" \
+      "$move_on_quietly"
+  fi
+}
+
 function skip-if-tool-is-not-installed () {
   command_exists "$1" || { echo " ---> skipping: [$2] because [$1] is required for it"; exit 0; }
 }

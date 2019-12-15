@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+. ./funcs.min.sh
+
 function print_help () {
   echo 'Usage: ./install.sh [options]'
   echo ' '
@@ -49,6 +51,7 @@ do
       ;;
     -v|--verbose)
       verbose=1
+      export DOTFILES_VERBOSE=1
       shift
       ;;
     -y)
@@ -72,38 +75,50 @@ done
 set -- "$@" "${POSITIONAL[@]}"
 
 # Expose env variables with all tools that are meant to be skipped
-printf 'Tools requested to skip:\n'
+echo 'Tools requested to skip:'
 while IFS='=' read -r name value ; do
-  if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]]; then
+  if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]] ; then
     printf '  - %s\n' "${name##*_}"
   fi
 done < <(env)
 
-if [ -n "$user_home" ]; then
-  echo "Setting dotfiles user home to $user_home"
-  export DOTFILES_USER="$user"
-  export DOTFILES_USER_HOME="$user_home"
+if [ -z "$user" ] ; then
+  user=$(id -u -n)
+fi
+
+if [ -z "$user_home" ]; then
+  user_home="${HOME:?}/dotfiles"
 fi
 
 . common.sh
 . funcs.sh
 
+export DOTFILES_USER="$user"
+export DOTFILES_USER_HOME="$user_home"
+echo 'Installing with:'
+echo "  user: $DOTFILES_USER"
+echo "  home: $DOTFILES_USER_HOME"
+
+prompt_for_continue
+
 find-os
+
+prompt_for_continue
 
 touch-dotfiles
 action='install'
 if ((${uninstall:-0})); then
-  action='uninstall'
+action='uninstall'
 fi
 
 if [ -n "$fzf_version" ]; then
-  export DOTFILES_FZF_VERSION="$fzf_version"
+export DOTFILES_FZF_VERSION="$fzf_version"
 fi
 
 function evaluate-tool-file () {
-  tool="$1"
-  action="$2"
-  file_to_eval="tools/$tool/$action.sh"
+tool="$1"
+action="$2"
+file_to_eval="tools/$tool/$action.sh"
 
   set +e
   eval "$file_to_eval $tool"
@@ -111,7 +126,7 @@ function evaluate-tool-file () {
 
   # shellcheck disable=SC2181
   if [[ "$?" != 0 ]]; then
-    echo "__FAIL: $tool"
+  echo "__FAIL: $tool"
   fi
 
 }
@@ -119,46 +134,46 @@ function evaluate-tool-file () {
 # Check single tool?
 # ==================================================
 if [ -n "$tool" ]; then
-  # when installing a single tool we make copies of the configs
-  # because only a subset of them will be overwritten.
-  # In or not to lose the configs of the tools we won't install,
-  # we back then up first
-  copy-dotfiles-configs
-  evaluate-tool-file "$tool" "$action"
-  echo "Finished $action $tool"
+# when installing a single tool we make copies of the configs
+# because only a subset of them will be overwritten.
+# In or not to lose the configs of the tools we won't install,
+# we back then up first
+copy-dotfiles-configs
+evaluate-tool-file "$tool" "$action"
+echo "Finished $action $tool"
 
   if ! (("${uninstall:-0}")); then
-    cleanup
+  cleanup
   fi
   exit 0
-fi
-# ==================================================
-# Make links
-# ==================================================
-echo 'Creating links...'
-create-link-at-home 'runcom/.custom_profile'
-create-link-at-home 'runcom/.bash_profile'
-# ==================================================
-# Package managers
-# ==================================================
-echo 'Installing package managers...'
-install-tool 'curl'
-install-tool 'rustup'
-install-tool 'sdkman'
-install-tool 'go'
-# ==================================================
-# Tools
-# ==================================================
-echo 'Installing tools...'
+  fi
+  # ==================================================
+  # Make links
+  # ==================================================
+  echo 'Creating links...'
+  create-link-at-home 'runcom/.custom_profile'
+  create-link-at-home 'runcom/.bash_profile'
+  # ==================================================
+  # Package managers
+  # ==================================================
+  echo 'Installing package managers...'
+  install-tool 'curl'
+  install-tool 'rustup'
+  install-tool 'sdkman'
+  install-tool 'go'
+  # ==================================================
+  # Tools
+  # ==================================================
+  echo 'Installing tools...'
 
 a=0
 for t in tools/* ; do
-  toolname="${t##*/}"
-  evaluate-tool-file "$toolname" "$action"
-  a+=1
-  if [[ $a == 3 ]]; then
-    exit 0
-  fi
+toolname="${t##*/}"
+evaluate-tool-file "$toolname" "$action"
+a+=1
+if [[ $a == 3 ]]; then
+exit 0
+fi
 done
 cleanup
 # ==================================================

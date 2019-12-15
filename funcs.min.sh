@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+function ask_yes_or_no () {
+  question="$1"
+  move_on_quietly=${2:-0}
+
+  printf "$question [Y/n]: "
+  read -r yesno
+  yesno=${yesno,,}
+  if [[ "${yesno:-y}" =~ ^(y|yes)$ ]] ; then
+    if [[ $move_on_quietly != 0 ]] ; then
+      echo 'Continuing...'
+    fi
+  else
+    echo 'Aborting installation!'
+    exit 0
+  fi
+}
+
 function is-rpi () {
   check-os 'rpi'
 }
