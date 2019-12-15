@@ -1,6 +1,4 @@
-#! /usr/bin/env bash
-
-set -e
+#!/usr/bin/env bash
 
 while [[ $# -gt 0 ]]
 do
@@ -32,7 +30,7 @@ do
       export "DOTFILES_REQUESTED_TO_SKIP_${name^^}"=0
       shift
       ;;
-    --verbose)
+    -v|--verbose)
       verbose=1
       shift
       ;;
