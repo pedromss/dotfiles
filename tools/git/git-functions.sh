@@ -1,10 +1,35 @@
 #!/usr/bin/env bash
 
-function gaacmp () {
-  git add -A && git commit -m "$1" && git push
+function gaa () {
+  git add -A
+}
+
+function gau () {
+  git add -u
+}
+
+function gcm () {
+  git commit -m "$1"
+}
+
+function gaacm () {
+  gaa
+  gcm "$1"
+}
+
+function gaucm () {
+  gau
+  gcm "$1"
 }
 
 function gaucmp () {
-  git add -u && git commit -m "$1" && git push
+  gaucm "$1"
+  git push
 }
+
+function gaacmp () {
+  gaacm "$1"
+  git push
+}
+
 
