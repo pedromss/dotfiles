@@ -1,5 +1,22 @@
 #!/usr/bin/env bash
 
+function print_help () {
+  echo 'Usage: ./install.sh [options]'
+  echo ' '
+  echo 'Options:'
+  echo '  -t, --tool the tool to install. Example "-t vim"'
+  echo '  -u, --uninstall uninstall something or everything'
+  echo '  -v, --verbose print every command. Same as set -x'
+  echo '  -y, --no-prompt say yes to everything and automate as much as possible'
+  echo '  -h, --help print this help menu'
+  echo '  --user the user name to use to install and for folder finding. Useful when running as root but setting up for some other user'
+  echo '  --home the home of the dotfiles folder. Every folder or file created will be relative to this'
+  echo ' '
+  echo 'Notes:'
+  echo ' '
+  echo '  - During installation tools can be opt out by prefixing "--no-" to the tool name. Example: "./install --no-vim" will install everything except vim'
+}
+
 while [[ $# -gt 0 ]]
 do
   key="$1"
@@ -13,7 +30,7 @@ do
       user="$2"
       shift 2
       ;;
-    -h|--user-home|--home|--dotfiles-home)
+    --home)
       user_home="$2"
       shift 2
       ;;
@@ -36,6 +53,11 @@ do
       ;;
     -y)
       export DOTFILES_PROMPT=0
+      shift
+      ;;
+    -h|--help)
+      print_help
+      exit 0
       shift
       ;;
     *)
