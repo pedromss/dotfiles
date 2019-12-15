@@ -26,11 +26,14 @@ if is-linux ; then
   save-alias 'glcc' 'git rev-parse --short HEAD | xclip -selection clipboard'
   save-alias 'gbn' 'gbname | xclip -selection clipboard'
 elif is-macos ; then
-  save-source "${DOTFILES_FULL_PATH:?}/tools/git/git-functions.sh"
-  create-tool-link-at-home 'git/.gitconfig'
+  save-alias 'glcc' 'git rev-parse --short HEAD | pbcopy'
+  save-alias 'gbn' 'gbname | pbcopy'
 else
   echo 'Ignoring git aliases because I do not know how to "pbcopy" in this os'
 fi
+
+save-source "${DOTFILES_FULL_PATH:?}/tools/git/git-functions.sh"
+create-tool-link-at-home 'git/.gitconfig'
 
 skip-if-installed 'git'
 install-with-pkg-manager 'git'
