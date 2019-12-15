@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+function touch-dotfiles () {
+  echo 'boo'
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE"
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE"
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE"
+  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE"
+}
+
 function ask_yes_or_no () {
   question="$1"
   move_on_quietly=${2:-0}

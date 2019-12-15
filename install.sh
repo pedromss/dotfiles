@@ -11,6 +11,7 @@ function print_help () {
   echo '  -v, --verbose print every command. Same as set -x'
   echo '  -y, --no-prompt say yes to everything and automate as much as possible'
   echo '  -h, --help print this help menu'
+  echo '  --folder the name of the dotfiles folder. Defaults to [dotfiles]'
   echo '  --user the user name to use to install and for folder finding. Useful when running as root but setting up for some other user'
   echo '  --home the home of the dotfiles folder. Every folder or file created will be relative to this'
   echo ' '
@@ -26,6 +27,10 @@ do
     --fzf-version)
       # TODO should use here the same approach as with the --no-* flags
       fzf_version="$2"
+      shift 2
+      ;;
+    --folder)
+      dotfiles_folder="$2"
       shift 2
       ;;
     --user)
@@ -87,25 +92,26 @@ if [ -z "$user" ] ; then
 fi
 
 if [ -z "$user_home" ]; then
-  user_home="${HOME:?}/dotfiles"
+  user_home="${HOME:?}"
 fi
-
-. common.sh
-. funcs.sh
 
 export DOTFILES_USER="$user"
 export DOTFILES_USER_HOME="$user_home"
+export DOTFILES_FOLDER="$dotfiles_folder"
+export DOTFILES_FULL_PATH="${DOTFILES_USER_HOME:?}/$DOTFILES_FOLDER"
+mkdir -p "$DOTFILES_FULL_PATH"
+
 echo 'Installing with:'
 echo "  user: $DOTFILES_USER"
 echo "  home: $DOTFILES_USER_HOME"
 
-prompt_for_continue
+. common.sh
+. funcs.sh
 
+prompt_for_continue
 find-os
-
 prompt_for_continue
 
-touch-dotfiles
 action='install'
 if ((${uninstall:-0})); then
 action='uninstall'

@@ -96,13 +96,6 @@ function cleanup () {
   cleanup-dotfiles-sources-file
 }
 
-function touch-dotfiles () {
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE"
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE"
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE"
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE"
-}
-
 function skip-if-os-is () {
   tool="$1"
   os="$2"

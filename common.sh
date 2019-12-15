@@ -8,18 +8,13 @@ export DOTFILES_ENV_FILE='.dotfiles.env'
 export DOTFILES_ENV_NEW_FILE='.dotfiles.env.new'
 export DOTFILES_CONFIG_FILE='.dotfiles.config'
 export DOTFILES_CONFIG_NEW_FILE='.dotfiles.config.new'
-export DOTFILES_FOLDER='dotfiles'
-
-if [ -z "$DOTFILES_USER_HOME" ]; then
-  export DOTFILES_USER_HOME="$HOME"
-  export DOTFILES_USER="${DOTFILES_USER_HOME##*/}"
-fi
-
-export DOTFILES_FULL_PATH="$DOTFILES_USER_HOME/$DOTFILES_FOLDER"
 
 function save-env () {
   filename="$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
   export "$1"="$2"
+  if ! [ -f "$filename" ] ; then
+    touch-dotfiles
+  fi
   echo "export $1=$2" >> "$filename"
 }
 
