@@ -24,9 +24,13 @@ while [[ $# -gt 0 ]]
 do
   key="$1"
   case $key in
-    --fzf-version)
-      # TODO should use here the same approach as with the --no-* flags
-      fzf_version="$2"
+    #--fzf-version)
+      ## TODO should use here the same approach as with the --no-* flags
+      #fzf_version="$2"
+      #shift 2
+      #;;
+    --lite)
+      lite=1
       shift 2
       ;;
     --folder)
@@ -75,17 +79,38 @@ do
   esac
 done
 
+function evaluate-tool-file () {
+  tool="$1"
+  action="$2"
+  file_to_eval="tools/$tool/$action.sh"
+  eval "$file_to_eval $tool"
+
+  # shellcheck disable=SC2181
+  if [[ "$?" != 0 ]]; then
+    echo "__FAIL: $tool"
+  fi
+}
+
+function resolve_if_installing_or_uninstalling () {
+  action='install'
+  if ((${uninstall:-0})); then
+    action='uninstall'
+  fi
+}
+
+function check_which_tools_should_be_skipped () {
+  # Expose env variables with all tools that are meant to be skipped
+  echo 'Tools requested to skip:'
+  while IFS='=' read -r name value ; do
+    if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]] ; then
+      printf '  - %s\n' "${name##*_}"
+    fi
+  done < <(env)
+}
+
 (( ${verbose:-0} )) && set -x
 
 set -- "$@" "${POSITIONAL[@]}"
-
-# Expose env variables with all tools that are meant to be skipped
-echo 'Tools requested to skip:'
-while IFS='=' read -r name value ; do
-  if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]] ; then
-    printf '  - %s\n' "${name##*_}"
-  fi
-done < <(env)
 
 if [ -z "$user" ] ; then
   user=$(id -u -n)
@@ -109,85 +134,74 @@ echo "  home: $DOTFILES_USER_HOME"
 . funcs.sh
 
 prompt_for_continue
+check_if_single_tool
+check_which_tools_should_be_skipped
+prompt_for_continue
 find-os
 prompt_for_continue
 
-action='install'
-if ((${uninstall:-0})); then
-action='uninstall'
-fi
+#if [ -n "$fzf_version" ]; then
+#export DOTFILES_FZF_VERSION="$fzf_version"
+#fi
 
-if [ -n "$fzf_version" ]; then
-export DOTFILES_FZF_VERSION="$fzf_version"
-fi
-
-function evaluate-tool-file () {
-tool="$1"
-action="$2"
-file_to_eval="tools/$tool/$action.sh"
-
-  set +e
-  eval "$file_to_eval $tool"
-  set -e
-
-  # shellcheck disable=SC2181
-  if [[ "$?" != 0 ]]; then
-  echo "__FAIL: $tool"
-  fi
-
-}
 # ==================================================
 # Check single tool?
 # ==================================================
-if [ -n "$tool" ]; then
-# when installing a single tool we make copies of the configs
-# because only a subset of them will be overwritten.
-# In or not to lose the configs of the tools we won't install,
-# we back then up first
-copy-dotfiles-configs
-evaluate-tool-file "$tool" "$action"
-echo "Finished $action $tool"
+function check_if_single_tool () {
 
-  if ! (("${uninstall:-0}")); then
-  cleanup
+  # TODO WE ARE HERE. UNDERSTANDING THE COPY-DOTFILES-CONFIGS REASON
+
+
+  if [ -n "$tool" ]; then
+    # when installing a single tool we make copies of the configs
+    # because only a subset of them will be overwritten.
+    # In order not to lose the configs of the tools we won't install,
+    # we back then up first
+    copy-dotfiles-configs
+    evaluate-tool-file "$tool" "$action"
+    echo "Finished $action $tool"
+
+    if ! (("${uninstall:-0}")); then
+      cleanup
+    fi
+    exit 0
   fi
-  exit 0
-  fi
-  # ==================================================
-  # Make links
-  # ==================================================
-  echo 'Creating links...'
-  create-link-at-home 'runcom/.custom_profile'
-  create-link-at-home 'runcom/.bash_profile'
-  # ==================================================
-  # Package managers
-  # ==================================================
-  echo 'Installing package managers...'
-  install-tool 'curl'
-  install-tool 'rustup'
-  install-tool 'sdkman'
-  install-tool 'go'
-  # ==================================================
-  # Tools
-  # ==================================================
-  echo 'Installing tools...'
+}
+## ==================================================
+## Make links
+## ==================================================
+#echo 'Creating links...'
+#create-link-at-home 'runcom/.custom_profile'
+#create-link-at-home 'runcom/.bash_profile'
+## ==================================================
+## Package managers
+## ==================================================
+#echo 'Installing package managers...'
+#install-tool 'curl'
+#install-tool 'rustup'
+#install-tool 'sdkman'
+#install-tool 'go'
+## ==================================================
+## Tools
+## ==================================================
+#echo 'Installing tools...'
 
-a=0
-for t in tools/* ; do
-toolname="${t##*/}"
-evaluate-tool-file "$toolname" "$action"
-a+=1
-if [[ $a == 3 ]]; then
-exit 0
-fi
-done
-cleanup
-# ==================================================
-# Shutdown
-# ==================================================
-echo 'Be sure to checkout:'
-echo ' - https://github.com/ryanoasis/nerd-fonts'
-echo ' - https://github.com/so-fancy/diff-so-fancy'
-echo ' - Do C-x + i to install tpm inside tmux!'
+#a=0
+#for t in tools/* ; do
+#toolname="${t##*/}"
+#evaluate-tool-file "$toolname" "$action"
+#a+=1
+#if [[ $a == 3 ]]; then
+#exit 0
+#fi
+#done
+#cleanup
+## ==================================================
+## Shutdown
+## ==================================================
+#echo 'Be sure to checkout:'
+#echo ' - https://github.com/ryanoasis/nerd-fonts'
+#echo ' - https://github.com/so-fancy/diff-so-fancy'
+#echo ' - Do C-x + i to install tpm inside tmux!'
 
-echo 'All done!'
+#echo 'All done!'
