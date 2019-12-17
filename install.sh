@@ -2,6 +2,8 @@
 
 . ./funcs.min.sh
 
+tools_to_install=()
+
 function print_help () {
   echo 'Usage: ./install.sh [options]'
   echo ' '
@@ -122,7 +124,7 @@ fi
 
 export DOTFILES_USER="$user"
 export DOTFILES_USER_HOME="$user_home"
-export DOTFILES_FOLDER="$dotfiles_folder"
+export DOTFILES_FOLDER="${dotfiles_folder:-dotfiles}"
 export DOTFILES_FULL_PATH="${DOTFILES_USER_HOME:?}/$DOTFILES_FOLDER"
 mkdir -p "$DOTFILES_FULL_PATH"
 
@@ -133,9 +135,24 @@ echo "  home: $DOTFILES_USER_HOME"
 . common.sh
 . funcs.sh
 
+function scan_all_tools () {
+  for f in `find "$DOTFILES_FULL_PATH/tools" -type f -name install.sh` ; do
+    name="${f%*/install.sh}" # remove /install.sh
+    name="${name##*/}" # remove the path, leaving only the tool name
+    tools_to_install+=($name)
+  done
+
+  for n in "${tools_to_install[@]}" ; do
+    echo "$n"
+  done
+}
+
+
 prompt_for_continue
-check_if_single_tool
+scan_all_tools
 check_which_tools_should_be_skipped
+prompt_for_continue
+remove_tools_to_skip
 prompt_for_continue
 find-os
 prompt_for_continue
