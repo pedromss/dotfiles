@@ -7,8 +7,8 @@ bindkey '[C' beginning-of-line
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-source "$HOME/dotfiles/runcom/.custom_profile"
-for f in `find "$HOME" -maxdepth 1 \( -iname \*.env -o -iname \*.alia \) -type f`
+source "$DOTFILES_FULL_PATH/runcom/.custom_profile"
+for f in `find "$HOME" -maxdepth 1 \( -iname \*.env -o -iname \*.alia \) -type l`
 do
   source $f 1>/dev/null
 done
