@@ -2,7 +2,9 @@
 
 . ./funcs.min.sh
 
+all_tools=()
 tools_to_install=()
+tools_to_skip=()
 
 function print_help () {
   echo 'Usage: ./install.sh [options]'
@@ -13,6 +15,7 @@ function print_help () {
   echo '  -v, --verbose print every command. Same as set -x'
   echo '  -y, --no-prompt say yes to everything and automate as much as possible'
   echo '  -h, --help print this help menu'
+  echo '  --show-output Shows the stdout of every tool. Default is false and only prints errors'
   echo '  --folder the name of the dotfiles folder. Defaults to [dotfiles]'
   echo '  --user the user name to use to install and for folder finding. Useful when running as root but setting up for some other user'
   echo '  --home the home of the dotfiles folder. Every folder or file created will be relative to this'
@@ -31,6 +34,10 @@ do
       #fzf_version="$2"
       #shift 2
       #;;
+    --show-output)
+      show_output=1
+      shift
+      ;;
     --lite)
       lite=1
       shift 2
@@ -57,7 +64,8 @@ do
       ;;
     --no-*)
       name="${1##*-}"
-      export "DOTFILES_REQUESTED_TO_SKIP_${name^^}"=0
+      name=$(tr '[:upper:]' '[:lower:]' <<< "$name")
+      tools_to_skip+=("$name")
       shift
       ;;
     -v|--verbose)
@@ -81,33 +89,32 @@ do
   esac
 done
 
+function print_installed_tool () {
+  echo "  - [INSTALLED] $1"
+}
+
 function evaluate-tool-file () {
   tool="$1"
   action="$2"
   file_to_eval="tools/$tool/$action.sh"
-  eval "$file_to_eval $tool"
-
+  if (( ${show_output:-0} )) ; then
+    eval "$file_to_eval $tool"
+  else
+    eval "$file_to_eval $tool" 1>/dev/null
+  fi
   # shellcheck disable=SC2181
   if [[ "$?" != 0 ]]; then
     echo "__FAIL: $tool"
+  else
+    print_installed_tool "$tool"
   fi
 }
 
+action='install'
 function resolve_if_installing_or_uninstalling () {
-  action='install'
   if ((${uninstall:-0})); then
     action='uninstall'
   fi
-}
-
-function check_which_tools_should_be_skipped () {
-  # Expose env variables with all tools that are meant to be skipped
-  echo 'Tools requested to skip:'
-  while IFS='=' read -r name value ; do
-    if [[ $name == *'DOTFILES_REQUESTED_TO_SKIP'*  ]] ; then
-      printf '  - %s\n' "${name##*_}"
-    fi
-  done < <(env)
 }
 
 (( ${verbose:-0} )) && set -x
@@ -139,24 +146,93 @@ function scan_all_tools () {
   for f in `find "$DOTFILES_FULL_PATH/tools" -type f -name install.sh` ; do
     name="${f%*/install.sh}" # remove /install.sh
     name="${name##*/}" # remove the path, leaving only the tool name
-    tools_to_install+=($name)
-  done
-
-  for n in "${tools_to_install[@]}" ; do
-    echo "$n"
+    all_tools+=($name)
   done
 }
 
+function print_all_tools () {
+  echo 'Available tools:'
+  for n in "${all_tools[@]}" ; do
+    print_tool_name "$n"
+  done
+}
+
+function print_tools_to_skip () {
+  echo 'Tools to skip'
+  for n in "${tools_to_skip[@]}" ; do
+    print_tool_name "$n"
+  done
+}
+
+function print_tools_to_install () {
+  echo 'Tools to install:'
+  for n in "${tools_to_install[@]}" ; do
+    print_tool_name "$n"
+  done
+}
+
+function print_skip_tool_name () {
+  echo "  - [SKIPPED] $1"
+}
+
+function print_to_install_tool_name () {
+  echo "  - [INSTALL] $1"
+}
+
+function make_execution_plan () {
+  if [ -n "$tool" ] ; then
+    tools_to_install+=("$tool")
+    return
+  fi
+  for t1 in "${all_tools[@]}" ; do
+    for t2 in "${tools_to_skip[@]}" ; do
+      if [[ "$t1" = "$t2" ]] ; then
+        continue
+      fi
+    done
+    tools_to_install+=("$t1")
+  done
+}
+
+function print_execution_plan () {
+  echo 'Execution plan:'
+  for t2 in "${tools_to_skip[@]}" ; do
+    print_skip_tool_name "$t2"
+  done
+  for t3 in "${tools_to_install[@]}" ; do
+    print_to_install_tool_name "$t3"
+  done
+}
+
+function execute_plan () {
+  for t in "${tools_to_install[@]}" ; do
+    evaluate-tool-file "$t" "$action"
+  done
+}
 
 prompt_for_continue
 scan_all_tools
-check_which_tools_should_be_skipped
-prompt_for_continue
-remove_tools_to_skip
+make_execution_plan
+print_execution_plan
 prompt_for_continue
 find-os
 prompt_for_continue
+execute_plan
+echo ''
+echo 'All done!'
+echo 'State was saved to:'
+echo "  - $DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE"
+echo "  - $DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
+echo "  - $DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
+echo "  - $DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
 
+export DOTFILES_SOURCES_FILE='.dotfiles.sources'
+export DOTFILES_SOURCES_NEW_FILE='.dotfiles.sources.new'
+export DOTFILES_ALIAS_FILE='.dotfiles.alias'
+export DOTFILES_ALIAS_NEW_FILE='.dotfiles.alias.new'
+export DOTFILES_ENV_FILE='.dotfiles.env'
+export DOTFILES_ENV_NEW_FILE='.dotfiles.env.new'
+export DOTFILES_CONFIG_FILE='.dotfiles.config'
 #if [ -n "$fzf_version" ]; then
 #export DOTFILES_FZF_VERSION="$fzf_version"
 #fi
