@@ -1,5 +1,6 @@
 #!/usr/bin/env bash 
 
-. "${DOTFILES_FULL_PATH:?}/funcs.sh"
+# shellcheck disable=1090
+. "$DOTFILES_FULL_PATH/funcs.sh"
 
 install-with-pkg-manager 'jq'

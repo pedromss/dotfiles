@@ -274,10 +274,17 @@ function install-with-pkg-manager () {
   fi
   tool="$in_tool"
 
+  set +e
   if is-macos ; then
     brew install "$tool"
   elif is-debian ; then
-    sudo apt-get -y install "$tool"
+    apt-get -y install "$tool"
+    if [[ "$?" == 100 ]] ; then
+      echo "SETTTTTTTTTINNNNNGGG"
+      export DOTFILES_SUDO_REQUIRED=1
+      echo "SETTTTTTTTTINNNNNGGG $DOTFILES_SUDO_REQUIRED"
+      exit 0
+    fi
   else
     echo 'Unable to resolve package manager'
     exit 1
@@ -293,14 +300,21 @@ function uninstall-with-pkg-manager () {
   fi
   tool="$in_tool"
 
+  set +e
   if is-macos ; then
     brew uninstall "$tool"
   elif is-debian ; then
-    sudo apt-get -y remove "$tool"
+    apt-get -y remove "$tool"
+    if [[ $? == 100 ]] ; then
+      export DOTFILES_SUDO_REQUIRED='requires sudo for "apt-get remove"'
+      exit 0
+    fi
   else
     echo 'Unable to resolve package manager'
+    set -e
     exit 1
   fi
+  set -e
 }
 
 function toolname-from-git-repo-http-url() {

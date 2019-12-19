@@ -96,9 +96,13 @@ done
 
 function print_installed_tool () {
   if (( ${progress:-0} )) ; then
+      echo "AJSKDNAKJSNDJKANSDJKANSK $DOTFILES_SUDO_REQUIRED"
     if (( ${DOTFILES_TOOL_WAS_SKIPPED:-0} )) ; then
       export DOTFILES_TOOL_WAS_SKIPPED=0
-      printf " Skipped\n"
+      printf " Skipped ---> Incompatile OS\n"
+    elif (( ${DOTFILES_SUDO_REQUIRED:-0} )) ; then
+      printf " Skipped ---> $DOTFILES_SUDO_REQUIRED!\n"
+      export DOTFILES_SUDO_REQUIRED=0
     else
       printf " DONE!\n"
     fi
@@ -119,7 +123,7 @@ function evaluate-tool-file () {
   fi
   # shellcheck disable=SC2181
   if [[ "$?" != 0 ]]; then
-    if (( ${progress:-0} )) ; then
+    if ! (( ${progress:-0} )) ; then
       echo "__FAIL: $tool"
     fi
   else
