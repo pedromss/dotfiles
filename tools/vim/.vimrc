@@ -207,7 +207,7 @@ nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 " }}}
 " Fugitive VIM mappings -------------------- {{{
 nnoremap <localleader>fgb :Gblame<CR>
-nnoremap <localleader>fgs :Gstatus<CR>
+"nnoremap <localleader>fgs :Gstatus<CR>
 nnoremap <localleader>fgc :Gcommit %<CR>
 " }}}
 " Navigation -------------------- {{{
@@ -241,8 +241,6 @@ nnoremap <leader>sv :so $MYVIMRC<CR>
 nnoremap <localleader>sv :source $MYVIMRC<CR>
 nnoremap <s-d> yyp
 nnoremap <localleader>t :NERDTreeToggle<CR>
-nnoremap <leader>F :Files<CR>
-nnoremap <leader>G :GFiles<Cr>
 inoremap jk <esc>
 noremap <leader>af :Autoformat<CR>
 noremap <localleader>nf :set nofoldenable!<CR>
@@ -300,10 +298,21 @@ let g:fzf_action = {
   \ 'alt-x': 'split',
   \ 'alt-v': 'vsplit' }
 
+nnoremap <leader>F :FzfFiles<cr>
+nnoremap <leader>G :FzfGFiles<cr>
+nnoremap <leader>S :FzfSnippets<cr>
+nnoremap <leader>GS :FzfGFiles?<cr>
+nnoremap <leader>B :FzfBuffers<cr>
+nnoremap <leader><c-f> :FzfBLines<cr>
+nnoremap <leader><c-l> :FzfLines<cr>
+nnoremap <leader><c-a> :FzfAg<cr>
+
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
+
+let g:fzf_command_prefix = 'Fzf'
 
 " Insert mode completion
 imap <c-q><c-f> <plug>(fzf-complete-path)
@@ -312,7 +321,7 @@ imap <c-q><c-j> <plug>(fzf-complete-file-ag)
 "imap <c-q><c-l> <plug>(fzf-complete-line)
 
 " Advanced customization using autoload functions
-inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+"inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 " }}}
 " Titlecase mappings -------------------- {{{
 " TODO review this plugins config
