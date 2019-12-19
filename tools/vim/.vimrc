@@ -206,7 +206,7 @@ xmap <leader>s <plug>(SubversiveSubstituteRange)
 nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
 " }}}
 " Fugitive VIM mappings -------------------- {{{
-nnoremap <localleader>fgb :Gblame<CR>
+nnoremap <F4> :Gblame<CR>
 "nnoremap <localleader>fgs :Gstatus<CR>
 nnoremap <localleader>fgc :Gcommit %<CR>
 " }}}
@@ -301,11 +301,12 @@ let g:fzf_action = {
 nnoremap <leader>F :FzfFiles<cr>
 nnoremap <leader>G :FzfGFiles<cr>
 nnoremap <leader>S :FzfSnippets<cr>
-nnoremap <leader>GS :FzfGFiles?<cr>
+nnoremap <f7> :FzfGFiles?<cr>
 nnoremap <leader>B :FzfBuffers<cr>
 nnoremap <leader><c-f> :FzfBLines<cr>
 nnoremap <leader><c-l> :FzfLines<cr>
 nnoremap <leader><c-a> :FzfAg<cr>
+nnoremap <leader>M :FzfMarks<cr>
 
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
