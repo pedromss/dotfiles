@@ -16,6 +16,7 @@ function print_help () {
   echo '  -y, --no-prompt say yes to everything and automate as much as possible'
   echo '  -h, --help print this help menu'
   echo '  --show-output Shows the stdout of every tool. Default is false and only prints errors'
+  echo '  --progress Print for every progress made'
   echo '  --folder the name of the dotfiles folder. Defaults to [dotfiles]'
   echo '  --user the user name to use to install and for folder finding. Useful when running as root but setting up for some other user'
   echo '  --home the home of the dotfiles folder. Every folder or file created will be relative to this'
@@ -34,6 +35,10 @@ do
       #fzf_version="$2"
       #shift 2
       #;;
+    --progress)
+      progress=1
+      shift
+      ;;
     --show-output)
       show_output=1
       shift
@@ -90,21 +95,28 @@ do
 done
 
 function print_installed_tool () {
-  echo "  - [INSTALLED] $1"
+  if (( ${progress:-0} )) ; then
+    printf " DONE!\n"
+  else
+    echo "  - [INSTALLED] $1"
+  fi
 }
 
 function evaluate-tool-file () {
   tool="$1"
   action="$2"
   file_to_eval="tools/$tool/$action.sh"
+  (( ${progress:-0} )) && printf "  - Installing %s..." "$tool"
   if (( ${show_output:-0} )) ; then
     eval "$file_to_eval $tool"
   else
-    eval "$file_to_eval $tool" 1>/dev/null
+    eval "$file_to_eval $tool" 1>/dev/null 2>/dev/null
   fi
   # shellcheck disable=SC2181
   if [[ "$?" != 0 ]]; then
-    echo "__FAIL: $tool"
+    if (( ${progress:-0} )) ; then
+      echo "__FAIL: $tool"
+    fi
   else
     print_installed_tool "$tool"
   fi
@@ -211,11 +223,11 @@ function execute_plan () {
 }
 
 prompt_for_continue
+find-os
+prompt_for_continue
 scan_all_tools
 make_execution_plan
 print_execution_plan
-prompt_for_continue
-find-os
 prompt_for_continue
 execute_plan
 echo ''
@@ -225,14 +237,6 @@ echo "  - $DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE"
 echo "  - $DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
 echo "  - $DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
 echo "  - $DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
-
-export DOTFILES_SOURCES_FILE='.dotfiles.sources'
-export DOTFILES_SOURCES_NEW_FILE='.dotfiles.sources.new'
-export DOTFILES_ALIAS_FILE='.dotfiles.alias'
-export DOTFILES_ALIAS_NEW_FILE='.dotfiles.alias.new'
-export DOTFILES_ENV_FILE='.dotfiles.env'
-export DOTFILES_ENV_NEW_FILE='.dotfiles.env.new'
-export DOTFILES_CONFIG_FILE='.dotfiles.config'
 #if [ -n "$fzf_version" ]; then
 #export DOTFILES_FZF_VERSION="$fzf_version"
 #fi
