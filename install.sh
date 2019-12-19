@@ -96,7 +96,12 @@ done
 
 function print_installed_tool () {
   if (( ${progress:-0} )) ; then
-    printf " DONE!\n"
+    if (( ${DOTFILES_TOOL_WAS_SKIPPED:-0} )) ; then
+      export DOTFILES_TOOL_WAS_SKIPPED=0
+      printf " Skipped\n"
+    else
+      printf " DONE!\n"
+    fi
   else
     echo "  - [INSTALLED] $1"
   fi
@@ -217,6 +222,7 @@ function print_execution_plan () {
 }
 
 function execute_plan () {
+  echo 'Starting...'
   for t in "${tools_to_install[@]}" ; do
     evaluate-tool-file "$t" "$action"
   done

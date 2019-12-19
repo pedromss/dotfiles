@@ -100,6 +100,7 @@ function skip-if-os-is () {
   tool="$1"
   os="$2"
   if [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
+    export DOTFILES_TOOL_WAS_SKIPPED=1
     echo " ---> skipping: [$tool] - not meant to be installed on $os"
     exit 0
   fi

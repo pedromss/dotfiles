@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=1090
 . "${DOTFILES_FULL_PATH:?}/funcs.sh"
 
-skip-if-os-is 'llvm' 'macos'
+skip-if-os-is 'llvm' 'mac'
 
 # From http://apt.llvm.org/
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
