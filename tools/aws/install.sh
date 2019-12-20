@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 
-# TODO uninstall script
+quarantine
 
-# shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/funcs.sh"
-
-# only if working with AWS, like in the job
-quarantine 'aws'
-save-alias 'awscf' 'aws cloudformation'
-
-skip-if-installed 'aws'
-install-with-pkg-manager 'aws'
-
+if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+  install-with-pkg-manager
+fi

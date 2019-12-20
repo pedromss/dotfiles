@@ -1,0 +1,4 @@
+#!/usr/bin/env bash 
+
+alias shcheck='shellcheck --external-sources --format=tty --exclude=SC1090,1091 --shell=bash'
+

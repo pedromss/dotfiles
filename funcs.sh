@@ -1,31 +1,22 @@
 #!/usr/bin/env bash
 
-# TODO should find a formatter for the skip print...
+function update_github_repo () {
+  git pull origin master
+}
 
-set +e
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/funcs.min.sh" 2>/dev/null
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/common.sh" 2>/dev/null
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/runcom/.functions" 2>/dev/null
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE" 2>/dev/null
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE" 2>/dev/null
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE" 2>/dev/null
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE" 2>/dev/null
-set -e
+function check_is_root () {
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    if ! [ "$(id -u)" -eq 0 ] ; then
+      export DOTFILES_SUDO_REQUIRED=1
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+    fi
+  fi
+}
 
 function prompt_for_continue () {
   question='Continue?'
-  move_on_quietly=${2:-0}
   if [[ $DOTFILES_PROMPT != 0 ]] ; then
-    ask_yes_or_no \
-      "$question" \
-      "$move_on_quietly"
+    ask_yes_or_no "$question"
   fi
 }
 
@@ -38,42 +29,29 @@ function install-with-sdkman () {
 }
 
 function install-with-cargo () {
-  if [ -z "$1" ]; then
-    get-name-of-tool-from-path
-    in_tool="${DOTFILES_CURRENT_TOOL}"
-  else
-    in_tool="$1"
-  fi
-  tool="$in_tool"
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
   cargo install --force "$tool"
 }
 
-function skip-if-installed () {
-  if [ -z "$1" ]; then
-    get-name-of-tool-from-path
-    in_tool="$DOTFILES_CURRENT_TOOL"
-  else
-    in_tool="$1"
+function depends_on () {
+  tool="$1"
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    if ! command_exists "$tool" ; then
+      export DOTFILES_DEPENDENCY_MISSING=1
+      export DOTFILES_REQUIRED_DEPENDENCY="$tool"
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+    fi
   fi
-  tool="$in_tool"
-  ! command_exists "$tool" || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
 }
 
-function skip-if-requested () {
-  if [ -z "$1" ]; then
-    get-name-of-tool-from-path
-    in_tool="${DOTFILES_CURRENT_TOOL}"
-  else
-    in_tool="$1"
-  fi
-  tool="${in_tool^^}"
-  # shellcheck disable=SC2034
-  while IFS='=' read -r name value ; do
-    if [[ $name == "DOTFILES_REQUESTED_TO_SKIP_$tool"  ]]; then
-      echo " ---> skipping: [$in_tool] as it was requested with --no-$in_tool flag"
-      exit 0
+function skip-if-installed () {
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    if command_exists "$tool" ; then
+      export DOTFILES_TOOL_ALREADY_INSTALLED=1
+      export DOTFILES_SHOULD_STOP_CURRENT=1
     fi
-  done < <(env)
+  fi
 }
 
 function get-name-of-tool-from-path () {
@@ -97,34 +75,30 @@ function cleanup () {
 }
 
 function skip-if-os-is () {
-  tool="$1"
-  os="$2"
-  if [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
-    export DOTFILES_TOOL_WAS_SKIPPED=1
-    echo " ---> skipping: [$tool] - not meant to be installed on $os"
-    exit 0
+  os="$1"
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    if [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
+      export DOTFILES_TOOL_NOT_MEANT_FOR_OS=1
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+    fi
   fi
 }
 
 function only-if-os-is () {
-  if [ -z "$1" ]; then
-    get-name-of-tool-from-path
-    in_tool="${DOTFILES_CURRENT_TOOL}"
-  else
-    in_tool="$1"
-  fi
-  tool="$in_tool"
-  os="$2"
-  if ! [[ $DOTFILES_RESOLVED_OS =~ $os ]]; then
-    echo " ---> skipping: [$tool] - only meant to be installed in $os"
-    exit 0
+  os="$1"
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    if ! [[ $DOTFILES_RESOLVED_OS =~ $os ]]; then
+      export DOTFILES_TOOL_NOT_COMPATIBLE_WITH_OS=1
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+    fi
   fi
 }
 
 function quarantine () {
-  get-name-of-tool-from-path
-  echo " ---> skipping: [${DOTFILES_CURRENT_TOOL}] is quarantined"
-  exit 0
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    export DOTFILES_TOOL_QUARANTINED=1
+    export DOTFILES_SHOULD_STOP_CURRENT=1
+  fi
 }
 
 function copy-dotfiles-configs () {
@@ -134,22 +108,32 @@ function copy-dotfiles-configs () {
   cp "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
 }
 
+function save-env () {
+  #echo "NEED TO FIX save-env"
+  return
+}
+
 function save-source () {
-  filename="$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
-  echo ". $1 2>/dev/null" >> "$filename"
+  #echo "NEED TO FIX save-source"
+  return
+  #filename="$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
+  #echo ". $1 2>/dev/null" >> "$filename"
 }
 
 function save-alias () {
-  filename="$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
-  # shellcheck disable=SC2139
-  alias "$1"="$2"
-  echo "alias $1='$2'" >> "$filename"
+  #echo "NEED TO FIX save-alias"
+  return
+  #filename="$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
+  ## shellcheck disable=SC2139
+  #alias "$1"="$2"
+  #echo "alias $1='$2'" >> "$filename"
 }
 
 function save-config () {
-  filename="$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
-  export "$1"="$2"
-  echo "export $1=$2" >> "$filename"
+  return
+  #filename="$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
+  #export "$1"="$2"
+  #echo "export $1=$2" >> "$filename"
 }
 
 function move-in-dotfiles () {
@@ -227,20 +211,17 @@ function rm-link-at-home () {
 function clone-from-github () {
   if ! [ -d "$2" ] ; then
     git clone --depth 1 "https://github.com/$1" "$2"
-  else
-    echo " ---> skipping: repo [$1] - already exists at $2"
   fi
 }
 
 function skip-if-dir-exists () {
-  if [ -z "$1" ]; then
-    get-name-of-tool-from-path
-    in_tool="${DOTFILES_CURRENT_TOOL}"
-  else
-    in_tool="$1"
+  dir="$1"
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    if [ -d "$dir" ]; then
+      export DOTFILES_TOOL_ALREADY_INSTALLED=1
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+    fi
   fi
-  tool="$in_tool"
-  ! [ -d "$2" ] || { echo " ---> skipping: [$tool] - already installed!"; exit 0; }
 }
 
 function skip-if-not-installed () {
@@ -266,13 +247,7 @@ function require-file () {
 }
 
 function install-with-pkg-manager () {
-  if [ -z "$1" ]; then
-    get-name-of-tool-from-path
-    in_tool="${DOTFILES_CURRENT_TOOL}"
-  else
-    in_tool="$1"
-  fi
-  tool="$in_tool"
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
 
   set +e
   if is-macos ; then
@@ -280,10 +255,9 @@ function install-with-pkg-manager () {
   elif is-debian ; then
     apt-get -y install "$tool"
     if [[ "$?" == 100 ]] ; then
-      echo "SETTTTTTTTTINNNNNGGG"
       export DOTFILES_SUDO_REQUIRED=1
-      echo "SETTTTTTTTTINNNNNGGG $DOTFILES_SUDO_REQUIRED"
-      exit 0
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+      return
     fi
   else
     echo 'Unable to resolve package manager'

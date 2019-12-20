@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+alias c="clear"
+alias b='pushd'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias brc="vim ~/.bashrc"
+
+alias l="ls -lah"
+
+if is-macos ; then
+  alias pbc='pbcopy'
+  alias pbp='pbpaste'
+else
+  alias pbc='xclip -selection clipboard'
+fi
+alias szsh='source ~/.zshrc'

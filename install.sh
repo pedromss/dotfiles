@@ -1,70 +1,59 @@
 #!/usr/bin/env bash
 
-. ./funcs.min.sh
+. funcs.min.sh
 
 all_tools=()
 tools_to_install=()
 tools_to_skip=()
+tools_requested=()
+tool_log_suffix='.log'
+
+tools_not_meant_for_os=()
+tools_failed=()
+tools_sudo_required=()
+tools_quarantined=()
+tools_already_installed=()
+
+export DOTFILES_PROMPT=1
+export DOTFILES_SHOW_PROGRESS=0
+export DOTFILES_TOOL_PACKAGE_MANAGER=''
+export DOTFILES_TOOL_WAS_SKIPPED=0
+export DOTFILES_TOOL_ALREADY_INSTALLED=0
+export DOTFILES_TOOL_NOT_COMPATIBLE_WITH_OS=0
+export DOTFILES_TOOL_NOT_MEANT_FOR_OS=0
+export DOTFILES_TOOL_QUARANTINED=0
+export DOTFILES_SUDO_REQUIRED=0
+export DOTFILES_MANAGED_BY_ZPLUG=0
 
 function print_help () {
-  echo 'Usage: ./install.sh [options]'
-  echo ' '
-  echo 'Options:'
-  echo '  -t, --tool the tool to install. Example "-t vim"'
-  echo '  -u, --uninstall uninstall something or everything'
-  echo '  -v, --verbose print every command. Same as set -x'
-  echo '  -y, --no-prompt say yes to everything and automate as much as possible'
-  echo '  -h, --help print this help menu'
-  echo '  --show-output Shows the stdout of every tool. Default is false and only prints errors'
-  echo '  --progress Print for every progress made'
-  echo '  --folder the name of the dotfiles folder. Defaults to [dotfiles]'
-  echo '  --user the user name to use to install and for folder finding. Useful when running as root but setting up for some other user'
-  echo '  --home the home of the dotfiles folder. Every folder or file created will be relative to this'
-  echo ' '
-  echo 'Notes:'
-  echo ' '
-  echo '  - During installation tools can be opt out by prefixing "--no-" to the tool name. Example: "./install --no-vim" will install everything except vim'
-}
+  cat << EOF
+Usage: ./install.sh [options]'
 
+Options:
+  -t, --tool {toolname}   > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
+  -v, --verbose           > If set a table with all tools and status will be printed as things are installed
+  --no{-tool}             > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
+  -x                      > Equivalent to 'set -x' in bash. Does not work well with '-v'
+                          > Defaults to [0] which only prints progress information
+  -y, --no-prompt         > say yes to everything and automate as much as possible
+  -h, --help              > Print this help menu
+  --dry-run               > Don't install anything, just print what would happen
+EOF
+}
 while [[ $# -gt 0 ]]
 do
   key="$1"
   case $key in
-    #--fzf-version)
-      ## TODO should use here the same approach as with the --no-* flags
-      #fzf_version="$2"
-      #shift 2
-      #;;
-    --progress)
-      progress=1
+    --dry-run)
+      dry_run=1
       shift
       ;;
-    --show-output)
-      show_output=1
-      shift
-      ;;
-    --lite)
-      lite=1
-      shift 2
-      ;;
-    --folder)
-      dotfiles_folder="$2"
-      shift 2
-      ;;
-    --user)
-      user="$2"
-      shift 2
-      ;;
-    --home)
-      user_home="$2"
-      shift 2
-      ;;
-    -u|--uninstall)
-      uninstall=1
-      shift
-      ;;
-    -t|--tool|--tools)
-      tool="$2"
+    -t)
+      if [ -d "tools/$tool" ] ; then
+        tools_requested+=("$2")
+      else
+        echo "Ignoring unknown tool $2"
+      fi
       shift 2
       ;;
     --no-*)
@@ -74,8 +63,11 @@ do
       shift
       ;;
     -v|--verbose)
-      verbose=1
-      export DOTFILES_VERBOSE=1
+      export DOTFILES_SHOW_PROGRESS=1
+      shift
+      ;;
+    -x)
+      set -x
       shift
       ;;
     -y)
@@ -88,227 +80,366 @@ do
       shift
       ;;
     *)
-      POSITIONAL+=("$1")
-      shift
+      echo "Unknown option: $1"
+      print_help
+      exit -1
       ;;
   esac
 done
 
+function print_table_border () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  printf "| --------------- | --------- | ------------------------------ |\n"
+}
+
+function print_execution_plan_table_border () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  printf "| --------------- | --------- |\n"
+}
+
+function print_table_entry () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  print_first_cell "$1"
+  print_remainder_of_line "$2" "$3"
+}
+
+function print_first_cell () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  printf "| %15s |" "$1"
+}
+
+function print_second_cell () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  printf " %-9s |" "$1"
+}
+
+function print_third_cell () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  printf " %-30s |" "$1"
+}
+
+function print_remainder_of_line () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  print_second_cell "$1"
+  print_third_cell "$2"
+  printf "\n"
+}
+
 function print_installed_tool () {
-  if (( ${progress:-0} )) ; then
-      echo "AJSKDNAKJSNDJKANSDJKANSK $DOTFILES_SUDO_REQUIRED"
-    if (( ${DOTFILES_TOOL_WAS_SKIPPED:-0} )) ; then
-      export DOTFILES_TOOL_WAS_SKIPPED=0
-      printf " Skipped ---> Incompatile OS\n"
-    elif (( ${DOTFILES_SUDO_REQUIRED:-0} )) ; then
-      printf " Skipped ---> $DOTFILES_SUDO_REQUIRED!\n"
-      export DOTFILES_SUDO_REQUIRED=0
-    else
-      printf " DONE!\n"
-    fi
+  local tool="$1"
+  local last_exit_code="$2"
+  local upper_case_os
+  upper_case_os=$(tr '[:lower:]' '[:upper:]' <<< "$DOTFILES_RESOLVED_OS")
+
+  if (( ${last_exit_code:-0} )) ; then
+    print_remainder_of_line 'Failure' "Check ${tool}${tool_log_suffix} file"
+    tools_failed+=("$tool")
+  elif (( "${DOTFILES_SUDO_REQUIRED:-0}" )) ; then
+    tools_sudo_required+=("$tool")
+    print_remainder_of_line 'Skipped' '"sudo" required'
+  elif (( "${DOTFILES_TOOL_QUARANTINED:-0}" )) ; then
+    tools_quarantined+=("$tool")
+    print_remainder_of_line 'Skipped' "Quarantined"
+  elif (( "${DOTFILES_TOOL_NOT_MEANT_FOR_OS:-0}" )) ; then
+    tools_not_meant_for_os+=("$tool")
+    print_remainder_of_line 'Skipped' "Not meant for $upper_case_os"
+  elif (( "${DOTFILES_EXTRAS_ONLY:-0}" )) ; then
+    tools_extras_only+=("$tool")
+    print_remainder_of_line 'Updated' 'Extras only'
+  elif (( "${DOTFILES_DEPENDENCY_MISSING:-0}" )) ; then
+    counter_tools_dependency_missing=$(( counter_tools_dependency_missing + 1 ))
+    print_remainder_of_line 'Skipped' "Needs '$DOTFILES_REQUIRED_DEPENDENCY'"
+  elif (( "${DOTFILES_TOOL_ALREADY_INSTALLED:-0}" )) ; then
+    print_remainder_of_line 'Skipped ' 'Already Installed'
+    tools_already_installed+=("$tool")
   else
-    echo "  - [INSTALLED] $1"
+    print_remainder_of_line 'Installed' '-'
+  fi
+
+  reset_control_env_variables
+}
+
+function reset_control_env_variables () {
+  export DOTFILES_SHOULD_STOP_CURRENT=0
+  export DOTFILES_TOOL_ALREADY_INSTALLED=0
+  export DOTFILES_DEPENDENCY_MISSING=0
+  export DOTFILES_REQUIRED_DEPENDENCY=''
+  export DOTFILES_EXTRAS_ONLY=0
+  export DOTFILES_TOOL_NOT_MEANT_FOR_OS=0
+  export DOTFILES_TOOL_QUARANTINED=0
+  export DOTFILES_SUDO_REQUIRED=0
+}
+
+function unset_control_env_variables () {
+  unset DOTFILES_SHOW_PROGRESS
+  unset DOTFILES_SHOULD_STOP_CURRENT
+  unset DOTFILES_TOOL_ALREADY_INSTALLED
+  unset DOTFILES_DEPENDENCY_MISSING
+  unset DOTFILES_REQUIRED_DEPENDENCY
+  unset DOTFILES_EXTRAS_ONLY
+  unset DOTFILES_TOOL_NOT_MEANT_FOR_OS
+  unset DOTFILES_TOOL_QUARANTINED
+  unset DOTFILES_SUDO_REQUIRED
+  unset DOTFILES_PROMPT
+  unset DOTFILES_MANAGED_BY_ZPLUG
+  unset DOTFILES_CURRENT_TOOL
+}
+
+function check_tool_metadata_to_save () {
+  local tool="$1"
+  local tool_folder="$DOTFILES_FULL_PATH/tools/$tool"
+  if [ -f "$tool_folder/$tool.env" ] ; then
+    # shellcheck disable=1090
+    source "$tool_folder/$tool.env"
+  fi
+
+  if [ -f "$tool_folder/$tool.functions" ] ; then
+    # shellcheck disable=1090
+    source "$tool_folder/$tool.functions"
+  fi
+
+  if [ -f "$tool_folder/$tool.alias" ] ; then
+    # shellcheck disable=1090
+    source "$tool_folder/$tool.alias"
   fi
 }
 
 function evaluate-tool-file () {
-  tool="$1"
-  action="$2"
-  file_to_eval="tools/$tool/$action.sh"
-  (( ${progress:-0} )) && printf "  - Installing %s..." "$tool"
-  if (( ${show_output:-0} )) ; then
-    eval "$file_to_eval $tool"
+  local tool="$1"
+  local action="$2"
+  local file_to_eval="tools/$tool/$action.sh"
+
+  print_first_cell "$tool"
+  check_tool_metadata_to_save "$tool"
+
+  export DOTFILES_CURRENT_TOOL="$tool"
+  skip-if-installed
+  if ! [ -f "$file_to_eval" ] ; then
+    export DOTFILES_EXTRAS_ONLY=1
   else
-    eval "$file_to_eval $tool" 1>/dev/null 2>/dev/null
-  fi
-  # shellcheck disable=SC2181
-  if [[ "$?" != 0 ]]; then
-    if ! (( ${progress:-0} )) ; then
-      echo "__FAIL: $tool"
+    if (( ${DOTFILES_SHOW_OUTPUT:-0} )) ; then
+      # shellcheck disable=1090
+      source "$file_to_eval" "$tool"
+    else
+      # shellcheck disable=1090
+      error_log="${tool}$tool_log_suffix"
+      echo '' >> "$error_log"
+      # shellcheck disable=1090
+      source "$file_to_eval" "$tool" 1>"$error_log" 2>"$error_log"
+      exit_code="$?"
+      if [[ $exit_code == 0 ]] ; then
+        rm -rf "$error_log"
+      fi
     fi
-  else
-    print_installed_tool "$tool"
   fi
+  print_installed_tool "$tool" "$exit_code"
+}
+
+function set_file_system_env () {
+  curr=$(pwd)
+  export DOTFILES_USER_HOME="${curr%/*}"
+  export DOTFILES_USER="${DOTFILES_USER_HOME##*/}"
+  export DOTFILES_FOLDER="${curr##*/}"
+  export DOTFILES_FULL_PATH="$curr"
+  export DOTFILES_BIN="$DOTFILES_FULL_PATH/bin"
+  export DOTFILES_XDG="$DOTFILES_FULL_PATH/xdg"
+  export DOTFILES_REPOS="$DOTFILES_FULL_PATH/repos"
+  export DOTFILES_XDG_CONFIG_HOME="$DOTFILES_XDG/.config"
+  export DOTFILES_XDG_DATA_HOME="$DOTFILES_XDG/.local/share"
+  export XDG_CONFIG_HOME="$DOTFILES_XDG_CONFIG_HOME"
+  export XDG_DATA_HOME="$DOTFILES_XDG_DATA_HOME"
+}
+
+function ensure_required_directories_exist () {
+  mkdir -p "$DOTFILES_FULL_PATH"
+  mkdir -p "$DOTFILES_BIN"
+  mkdir -p "$DOTFILES_XDG"
+  mkdir -p "$XDG_CONFIG_HOME"
+  mkdir -p "$XDG_DATA_HOME"
+  mkdir -p "$DOTFILES_REPOS"
+}
+
+function scan_all_tools () {
+  for f in `find "$DOTFILES_FULL_PATH/tools" -maxdepth 1 -type d` ; do
+    name="${f##*/}" # remove the path, leaving only the tool name
+    if [[ "$name" == "tools" ]] ; then
+      # ignore the current dir
+      continue
+    fi
+    all_tools+=("$name")
+  done
+  IFS=$'\n' all_tools=($(sort <<<"${all_tools[*]}"))
+  unset IFS
 }
 
 action='install'
-function resolve_if_installing_or_uninstalling () {
-  if ((${uninstall:-0})); then
-    action='uninstall'
-  fi
-}
-
-(( ${verbose:-0} )) && set -x
-
-set -- "$@" "${POSITIONAL[@]}"
-
-if [ -z "$user" ] ; then
-  user=$(id -u -n)
-fi
-
-if [ -z "$user_home" ]; then
-  user_home="${HOME:?}"
-fi
-
-export DOTFILES_USER="$user"
-export DOTFILES_USER_HOME="$user_home"
-export DOTFILES_FOLDER="${dotfiles_folder:-dotfiles}"
-export DOTFILES_FULL_PATH="${DOTFILES_USER_HOME:?}/$DOTFILES_FOLDER"
-mkdir -p "$DOTFILES_FULL_PATH"
+set_file_system_env
+. funcs.sh
 
 echo 'Installing with:'
 echo "  user: $DOTFILES_USER"
 echo "  home: $DOTFILES_USER_HOME"
+prompt_for_continue
+ensure_required_directories_exist
 
-. common.sh
-. funcs.sh
-
-function scan_all_tools () {
-  for f in `find "$DOTFILES_FULL_PATH/tools" -type f -name install.sh` ; do
-    name="${f%*/install.sh}" # remove /install.sh
-    name="${name##*/}" # remove the path, leaving only the tool name
-    all_tools+=($name)
-  done
-}
-
-function print_all_tools () {
-  echo 'Available tools:'
-  for n in "${all_tools[@]}" ; do
-    print_tool_name "$n"
-  done
-}
-
-function print_tools_to_skip () {
-  echo 'Tools to skip'
-  for n in "${tools_to_skip[@]}" ; do
-    print_tool_name "$n"
-  done
-}
-
-function print_tools_to_install () {
-  echo 'Tools to install:'
-  for n in "${tools_to_install[@]}" ; do
-    print_tool_name "$n"
-  done
-}
-
-function print_skip_tool_name () {
-  echo "  - [SKIPPED] $1"
-}
-
-function print_to_install_tool_name () {
-  echo "  - [INSTALL] $1"
-}
 
 function make_execution_plan () {
-  if [ -n "$tool" ] ; then
-    tools_to_install+=("$tool")
-    return
+  local tools_to_consider=()
+  if (( ${#tools_requested[@]} > 0 )) ; then
+    tools_to_consider=("${tools_requested[@]}")
+  else
+    tools_to_consider=("${all_tools[@]}")
   fi
-  for t1 in "${all_tools[@]}" ; do
+
+  should_install=1
+  for t1 in "${tools_to_consider[@]}" ; do
     for t2 in "${tools_to_skip[@]}" ; do
       if [[ "$t1" = "$t2" ]] ; then
+        should_install=0
         continue
       fi
     done
-    tools_to_install+=("$t1")
+    if [ $should_install != 1 ] ; then
+      should_install=1
+    else
+      tools_to_install+=("$t1")
+    fi
   done
+  IFS=$'\n'
+  tools_to_skip=($(sort <<<"${tools_to_skip[*]}"))
+  tools_to_install=($(sort <<<"${tools_to_install[*]}"))
+  tools_to_install=($(uniq <<<"${tools_to_install[*]}"))
+  unset IFS
+}
+
+function print_2_cell_row () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
+  print_first_cell "$1"
+  print_second_cell "$2"
+  printf "\n"
 }
 
 function print_execution_plan () {
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    return
+  fi
   echo 'Execution plan:'
+  print_execution_plan_table_border
+  print_2_cell_row 'Tool' 'Action'
+  print_execution_plan_table_border
   for t2 in "${tools_to_skip[@]}" ; do
-    print_skip_tool_name "$t2"
+    print_2_cell_row "$t2" 'Skip'
   done
   for t3 in "${tools_to_install[@]}" ; do
-    print_to_install_tool_name "$t3"
+    if command_exists "$t3" ; then
+      print_2_cell_row "$t3" 'Update'
+    else
+      print_2_cell_row "$t3" 'Install'
+    fi
   done
+  print_execution_plan_table_border
 }
 
 function execute_plan () {
-  echo 'Starting...'
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    print_table_border
+    print_table_entry 'Tool' 'Outcome' 'Hint'
+    print_table_border
+  fi
+
   for t in "${tools_to_install[@]}" ; do
     evaluate-tool-file "$t" "$action"
   done
+
+  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+    print_table_border
+  fi
 }
 
-prompt_for_continue
+function link_and_prepare_env_to_source () {
+  echo 'Linking profiles...'
+  ln -sfv "$DOTFILES_FULL_PATH/runcom/bash_profile" "$DOTFILES_USER_HOME/.bash_profile"
+  ln -sfv "$DOTFILES_FULL_PATH/runcom/bash_profile" "$DOTFILES_USER_HOME/.bashrc"
+  ln -sfv "$DOTFILES_FULL_PATH/.gitignore_global" "$DOTFILES_USER_HOME/.gitignore_global"
+  ln -sfv "$DOTFILES_FULL_PATH/tools/zsh/zshrc" "$DOTFILES_USER_HOME/.zshrc"
+
+  unset_control_env_variables
+  dotfiles_env_file="$DOTFILES_FULL_PATH/bin/dotfiles.env"
+  IFS=$'\n' envs=($(sort <<<"$(env | grep DOTFILES)"))
+  unset IFS
+  rm -rf "$DOTFILES_FULL_PATH/bin/dotfiles.env"
+
+  echo "source $DOTFILES_FULL_PATH/funcs.min.sh" >> "$dotfiles_env_file"
+  echo "source $DOTFILES_FULL_PATH/funcs.sh" >> "$dotfiles_env_file"
+
+
+  for e in "${envs[@]}" ; do
+    echo "export $e" >> "$dotfiles_env_file"
+  done
+
+  echo "export XDG_CONFIG_HOME=$DOTFILES_XDG_CONFIG_HOME" >> "$dotfiles_env_file"
+  echo "export XDG_DATA_HOME=$DOTFILES_XDG_DATA_HOME" >> "$dotfiles_env_file"
+
+  echo "source $DOTFILES_FULL_PATH/runcom/alias" >> "$dotfiles_env_file"
+
+  for f in tools/*/*.env ; do
+    echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
+  done
+
+  for f in tools/*/*.functions ; do
+    echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
+  done
+
+  for f in tools/*/*.alias ; do
+    echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
+  done
+
+  echo 'Changing ownership of dotfiles bin to user...'
+  chown -R "$DOTFILES_USER" "$DOTFILES_BIN"
+  chown -R "$DOTFILES_USER" "$DOTFILES_FULL_PATH/tools/vim/.vim"
+}
+
 find-os
 prompt_for_continue
 scan_all_tools
 make_execution_plan
 print_execution_plan
 prompt_for_continue
-execute_plan
-echo ''
+
+if ! (( ${dry_run:-0} )) ; then
+  execute_plan
+fi
+
+link_and_prepare_env_to_source
+
 echo 'All done!'
-echo 'State was saved to:'
-echo "  - $DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE"
-echo "  - $DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE"
-echo "  - $DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE"
-echo "  - $DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE"
-#if [ -n "$fzf_version" ]; then
-#export DOTFILES_FZF_VERSION="$fzf_version"
-#fi
-
-# ==================================================
-# Check single tool?
-# ==================================================
-function check_if_single_tool () {
-
-  # TODO WE ARE HERE. UNDERSTANDING THE COPY-DOTFILES-CONFIGS REASON
-
-
-  if [ -n "$tool" ]; then
-    # when installing a single tool we make copies of the configs
-    # because only a subset of them will be overwritten.
-    # In order not to lose the configs of the tools we won't install,
-    # we back then up first
-    copy-dotfiles-configs
-    evaluate-tool-file "$tool" "$action"
-    echo "Finished $action $tool"
-
-    if ! (("${uninstall:-0}")); then
-      cleanup
-    fi
-    exit 0
-  fi
-}
-## ==================================================
-## Make links
-## ==================================================
-#echo 'Creating links...'
-#create-link-at-home 'runcom/.custom_profile'
-#create-link-at-home 'runcom/.bash_profile'
-## ==================================================
-## Package managers
-## ==================================================
-#echo 'Installing package managers...'
-#install-tool 'curl'
-#install-tool 'rustup'
-#install-tool 'sdkman'
-#install-tool 'go'
-## ==================================================
-## Tools
-## ==================================================
-#echo 'Installing tools...'
-
-#a=0
-#for t in tools/* ; do
-#toolname="${t##*/}"
-#evaluate-tool-file "$toolname" "$action"
-#a+=1
-#if [[ $a == 3 ]]; then
-#exit 0
-#fi
-#done
-#cleanup
-## ==================================================
-## Shutdown
-## ==================================================
-#echo 'Be sure to checkout:'
-#echo ' - https://github.com/ryanoasis/nerd-fonts'
-#echo ' - https://github.com/so-fancy/diff-so-fancy'
-#echo ' - Do C-x + i to install tpm inside tmux!'
-
-#echo 'All done!'
+cat << EOF
+Remember to:
+source ~/.bashrc
+If you installed vim, run inside vim:
+:PlugInstall
+If you installed tmux, run inside tmux:
+tmux source $DOTFILES_TMUX_CONF_FILE
+CTRL-B + SHIFT-I to install plugins with tpm
+If you installed zsh, consider:
+# Make zsh the default shell
+chsh -s $(type -p zsh)
+# Make zsh the default shell for root
+sudo chsh -s $(type -p zsh)
+EOF

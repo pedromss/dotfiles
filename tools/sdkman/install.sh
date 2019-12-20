@@ -1,14 +1,11 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
-# shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/funcs.sh"
+skip-if-os-is 'rpi'
+skip-if-dir-exists "$DOTFILES_SDKMAN_DIR"
 
-skip-if-os-is 'sdkman' 'rpi'
-
-save-env 'SDKMAN_DIR' "$DOTFILES_SDKMAN_DIR"
-save-source "${DOTFILES_FULL_PATH:?}/tools/sdkman/.env.source"
-
-skip-if-requested 'sdk'
-skip-if-installed 'sdk'
-
-curl -s "https://get.sdkman.io" | bash
+if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+  if ! command_exists 'zip' ; then
+    install-with-pkg-manager 'zip'
+  fi
+  curl -sSL "https://get.sdkman.io" | bash
+fi

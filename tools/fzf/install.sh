@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/funcs.sh"
-
-skip-if-requested 'fzf'
-
-save-source "${DOTFILES_FULL_PATH:?}/tools/fzf/.env.source"
-
-skip-if-dir-exists 'fzf' "${DOTFILES_USER_HOME:?}/.fzf"
-
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-echo "Installing fzf@$DOTFILES_FZF_VERSION"
-cd ~/.fzf && git fetch --tags 1>/dev/null && git checkout "$DOTFILES_FZF_VERSION"
-~/.fzf/install --key-bindings --completion --update-rc --no-fish
+if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+  curr=$(pwd)
+  git clone --depth 1 https://github.com/junegunn/fzf.git "$DOTFILES_FZF_DIR"
+  echo "Installing fzf@$DOTFILES_FZF_VERSION"
+  cd "$DOTFILES_FZF_DIR" && git fetch --tags 1>/dev/null && git checkout "$DOTFILES_FZF_VERSION"
+  # This next line fails the whole thing if curl or wget don't exit
+  # shellcheck disable=1090
+  ./install --key-bindings --completion --no-update-rc --no-fish
+  # shellcheck disable=2164
+  cd "$curr"
+fi

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/funcs.sh"
-
-skip-if-installed 'ag'
-install-with-pkg-manager 'silversearcher-ag'
+if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+  install-with-pkg-manager 'silversearcher-ag'
+fi

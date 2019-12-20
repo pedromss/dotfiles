@@ -1,0 +1,6 @@
+**/tags
+**/*.orig
+**/*.swp
+**/vim-markdown-preview.html
+**/*.jar
+**/.netrwhist

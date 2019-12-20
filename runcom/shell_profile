@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=1090
+. "$HOME/dotfiles/bin/dotfiles.env"

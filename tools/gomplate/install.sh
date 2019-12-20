@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1090
-. "${DOTFILES_FULL_PATH:?}/funcs.sh"
+depends_on 'go'
 
-skip-if-requested 'golang'
-skip-if-requested 'gomplate'
-skip-if-installed 'gomplate'
-skip-if-tool-is-not-installed 'go'
-
-# TODO add the uninstall script
-GO111MODULE=off go get -v -u github.com/hairyhenderson/gomplate/cmd/gomplate
+if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+  go get -v github.com/hairyhenderson/gomplate/cmd/gomplate
+fi

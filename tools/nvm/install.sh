@@ -1,8 +1,8 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
-# shellcheck disable=SC1090
-. "$DOTFILES_FULL_PATH/funcs.sh"
+quarantine
+skip-if-os-is 'rpi'
 
-save-env 'NVM_DIR' "$XDG_CONFIG_HOME"
-
-wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$DOTFILES_NVM_VERSION/install.sh" | bash
+if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+  wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$DOTFILES_NVM_VERSION/install.sh" | bash
+fi

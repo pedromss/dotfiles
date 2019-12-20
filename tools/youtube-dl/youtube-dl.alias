@@ -1,0 +1,6 @@
+#!/usr/bin/env bash 
+
+# shellcheck disable=2139
+alias ydl="youtube-dl -x --audio-format mp3 --audio-quality 0 --no-playlist -o '$DOTFILES_YDL_MUSIC_FOLDER/%(title)s.%(ext)s'"
+# shellcheck disable=2139
+alias ydl-list="youtube-dl -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '$DOTFILES_YDL_MUSIC_FOLDER/%(title)s.%(ext)s'"

@@ -1,12 +1,7 @@
 #!/usr/bin/env bash
 
-. "$DOTFILES_FULL_PATH/funcs.sh"
+depends_on 'cargo'
 
-skip-if-requested 'rust'
-skip-if-requested 'bat'
-
-save-alias 'cat' 'bat'
-save-env 'BAT_THEME' '1337'
-
-skip-if-installed 'bat'
-install-with-cargo 'bat'
+if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+  install-with-cargo
+fi

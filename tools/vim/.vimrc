@@ -1,6 +1,6 @@
 " Functions... -------------------- {{{
 function! LoadColorScheme(scheme)
-  if filereadable(expand('~/.vim/colors/' . a:scheme . '.vim'))
+  if filereadable(expand($DOTFILES_FULL_PATH . '/tools/vim/.vim/colors/' . a:scheme . '.vim'))
     execute ':colorscheme ' . a:scheme
   endif
 endfunction
@@ -48,39 +48,22 @@ set splitbelow
 set splitright
 " }}}
 " Commands -------------------- {{{
-command! MakeTags !ctags -R -f .git/tags --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build . 
+command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build . 
 " }}}
 " Plugins -------------------- {{{
 let g:ale_emit_conflict_warnings = 0
-execute pathogen#infect()
-if has('nvim')
-  if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
-else
-  if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-          \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
-endif
-if has('gui_win32')
-  call plug#begin('~/vimfiles/plugged')
-else
-  call plug#begin('~/.dotfiles/vim/.vim/plugged')
-endif
+let g:ale_echo_msg_format = 'VIM-ALE: %linter% %s'
+call plug#begin($DOTFILES_BIN . '/vim-plugins')
 " FZF / Ctrlp for file navigation
 if executable('fzf')
-  Plug '/usr/local/opt/fzf'
+  Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
 Plug 'junegunn/goyo.vim'
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 
 Plug 'yegappan/mru'
 Plug 'jlanzarotta/bufexplorer'
@@ -109,7 +92,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-latex/vim-latex'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'keith/investigate.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
@@ -149,12 +132,6 @@ endif
 " TODO are these really necessary?!
 Plug 'jiangmiao/auto-pairs'
 call plug#end()
-" }}}
-" Gui settings -------------------- {{{
-set guioptions-=m
-set guioptions-=T
-set guioptions-=r
-set guioptions-=L
 " }}}
 " Latex settings -------------------- {{{
 " REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
@@ -217,6 +194,7 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " }}}
 " General mappings -------------------- {{{
+nnoremap <leader>zf f{v%zf<esc>
 nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 if has('nvim')
   nnoremap <F2> :below 20split \| :terminal<CR>
@@ -622,8 +600,8 @@ elseif has('python')
   let g:UltiSnipsUsePythonVersion = 2
 endif
 let g:UltiSnipsEditSplit = "vertical"
-let g:UltiSnipsSnippetsDir = $HOME."/dotfiles/vim/ultisnips"
-let g:UltiSnipsSnippetDirectories = [$HOME."/dotfiles/vim/ultisnips"]
+let g:UltiSnipsSnippetsDir = $HOME."/dotfiles/tools/vim/ultisnips"
+let g:UltiSnipsSnippetDirectories = [$HOME."/dotfiles/tools/vim/ultisnips"]
 " }}}
 " Vimwiki variables -------------------- {{{
 let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
