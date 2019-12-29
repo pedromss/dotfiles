@@ -61,7 +61,7 @@ if ! shopt -oq posix; then
 fi
 
 # shellcheck disable=1090
-[[ -s "$DOTFILES_SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$DOTFILES_SDKMAN_DIR/bin/sdkman-init.sh"
+[ -s "$DOTFILES_SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$DOTFILES_SDKMAN_DIR/bin/sdkman-init.sh"
 export NVM_DIR="$XDG_CONFIG_HOME"
 # shellcheck disable=1090
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

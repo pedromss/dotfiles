@@ -131,7 +131,13 @@ function register_progress () {
   progress="$new_progress"
 
   desc=$(printf "Tool: %-${DOTFILES_LARGET_TOOL_SIZE}s" "$tool")
-  printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\r" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
+  if [[ $processed_so_far -eq $total_tools ]] ; then
+    printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\n" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
+  elif [[ $processed_so_far -eq $total_tools ]] ; then
+    printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\n" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
+  else
+    printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\r" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
+  fi
 }
 
 
@@ -403,10 +409,10 @@ function execute_plan () {
   fi
 
   for t in "${tools_to_install[@]}" ; do
-    evaluate-tool-file "$t" "$action"
     if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
       register_progress "$t"
     fi
+    evaluate-tool-file "$t" "$action"
   done
 
   if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then

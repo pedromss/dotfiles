@@ -47,7 +47,9 @@ function depends_on () {
 function skip-if-installed () {
   tool="${1:-$DOTFILES_CURRENT_TOOL}"
   if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if command_exists "$tool" ; then
+    if command_exists "$tool" \
+      || [ -d "$DOTFILES_BIN/$tool" ] \
+      || [ -f "$DOTFILES_BIN/cargo/bin/$tool" ] ; then
       export DOTFILES_TOOL_ALREADY_INSTALLED=1
       export DOTFILES_SHOULD_STOP_CURRENT=1
     fi
@@ -222,28 +224,6 @@ function skip-if-dir-exists () {
       export DOTFILES_SHOULD_STOP_CURRENT=1
     fi
   fi
-}
-
-function skip-if-not-installed () {
-  command_exists "$1" || { echo " ---> skipping: [$1] - not installed"; exit 0; }
-}
-
-function require-tool () {
-  command_exists "$1" || { echo "$1 is required"; exit 1; }
-}
-
-function require-tool-to-install () {
-  get-name-of-tool-from-path
-  tool="$DOTFILES_CURRENT_TOOL"
-  command_exists "$1" || { echo "$1 is required to install $tool"; exit 1; }
-}
-
-function require-dir () {
-  [ -d "$1" ] || { echo "$1 should be a directory"; exit 1; }
-}
-
-function require-file () {
-  [ -f "$1" ] || { echo "$1 is required"; exit 1; }
 }
 
 function install-with-pkg-manager () {
