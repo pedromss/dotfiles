@@ -13,7 +13,7 @@ fi
 bindkey 'K' history-substring-search-up
 bindkey 'J' history-substring-search-down
 
-for f in `find "$HOME" -maxdepth 1 \( -iname \*.env -o -iname \*.alia \) -type f`
+for f in `find "$HOME" -maxdepth 1 \( -iname \*.env -o -iname \*.alia \) -type l`
 do
   source $f 1>/dev/null
 done

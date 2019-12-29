@@ -79,6 +79,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'tpope/vim-cucumber'
 
 "Plug 'svermeulen/vim-cutlass'
 "Plug 'svermeulen/vim-yoink'
