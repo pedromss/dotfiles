@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-RUN apt-get update && apt-get -y install git sudo curl wget
+RUN apt-get update && apt-get -y install git sudo curl wget bc
 
 # fromhttps://stackoverflow.com/questions/25845538/how-to-use-sudo-inside-a-docker-container
 RUN \

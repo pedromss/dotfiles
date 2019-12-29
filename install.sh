@@ -87,6 +87,54 @@ do
   esac
 done
 
+function resolve_largest_tool_size () {
+  typeset -x -i largest_tool_size
+  typeset -i max=0
+  for t in "${tools_to_install[@]}" ; do
+    len="${#t}"
+    if [[ $len -gt $max ]] ; then
+      max=$len
+    fi
+  done
+  export DOTFILES_LARGET_TOOL_SIZE=$max
+}
+
+typeset progress
+typeset -i -r progress_max=25
+typeset -i processed_so_far=0
+
+function register_progress () {
+  local percentage
+  typeset -r tool="$1"
+  typeset -i i=0
+  typeset -i total_tools=${#tools_to_install[@]}
+
+  processed_so_far=$(echo "$processed_so_far + 1" | bc -l)
+  percentage=$(echo "$processed_so_far / $total_tools" | bc -l)
+  local step
+  step=$(echo "$progress_max * $percentage" | bc -l)
+  percentage=$(echo "$percentage * 100" | bc -l)
+  percentage=${percentage%.*}
+  if [[ $percentage -gt 100 ]] ; then
+    percentage=100
+  fi
+
+  step=${step%.*}
+  new_progress=">"
+  typeset -i i=0
+  while [[ $i -le $step ]] ; do
+    if [[ $i -ge 1 ]] ; then
+      new_progress="=$new_progress"
+    fi
+    i=$(( i + 1 ))
+  done
+  progress="$new_progress"
+
+  desc=$(printf "Tool: %-${DOTFILES_LARGET_TOOL_SIZE}s" "$tool")
+  printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\r" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
+}
+
+
 function print_table_border () {
   if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
     return
@@ -197,6 +245,7 @@ function unset_control_env_variables () {
   unset DOTFILES_PROMPT
   unset DOTFILES_MANAGED_BY_ZPLUG
   unset DOTFILES_CURRENT_TOOL
+  unset DOTFILES_LARGET_TOOL_SIZE
 }
 
 function check_tool_metadata_to_save () {
@@ -286,17 +335,6 @@ function scan_all_tools () {
   unset IFS
 }
 
-action='install'
-set_file_system_env
-. funcs.sh
-
-echo 'Installing with:'
-echo "  user: $DOTFILES_USER"
-echo "  home: $DOTFILES_USER_HOME"
-prompt_for_continue
-ensure_required_directories_exist
-
-
 function make_execution_plan () {
   local tools_to_consider=()
   if (( ${#tools_requested[@]} > 0 )) ; then
@@ -354,6 +392,7 @@ function print_execution_plan () {
     fi
   done
   print_execution_plan_table_border
+  prompt_for_continue
 }
 
 function execute_plan () {
@@ -365,6 +404,9 @@ function execute_plan () {
 
   for t in "${tools_to_install[@]}" ; do
     evaluate-tool-file "$t" "$action"
+    if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
+      register_progress "$t"
+    fi
   done
 
   if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
@@ -415,11 +457,21 @@ function link_and_prepare_env_to_source () {
   chown -R "$DOTFILES_USER" "$DOTFILES_FULL_PATH/tools/vim/.vim"
 }
 
+action='install'
+set_file_system_env
+. funcs.sh
 find-os
+ensure_required_directories_exist
+
+printf "User: %-15s\n" "$DOTFILES_USER"
+printf "Home: %-15s\n" "$DOTFILES_USER_HOME"
+printf "OS:   %-15s\n" "$DOTFILES_RESOLVED_OS"
+
 prompt_for_continue
 scan_all_tools
 make_execution_plan
 print_execution_plan
+resolve_largest_tool_size
 prompt_for_continue
 
 if ! (( ${dry_run:-0} )) ; then

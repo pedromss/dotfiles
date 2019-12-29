@@ -156,5 +156,4 @@ function find-os () {
     fi
     export DOTFILES_RESOLVED_OS="$os"
   fi
-  echo "Resolved OS is: [$DOTFILES_RESOLVED_OS]"
 }
