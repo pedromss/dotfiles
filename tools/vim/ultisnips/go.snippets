@@ -1,3 +1,12 @@
+snippet sin "Inline struct" A
+$1 := []struct {
+	$2
+}{
+	$3
+}
+$4
+endsnippet
+
 snippet ifeff "If err log fatal format" Ab
 if err != nil {
 	log.Fatalf("$1", $2)
@@ -39,6 +48,12 @@ endsnippet
 snippet func "Function" A
 func $1($2) $3 {
 	$4
+}
+endsnippet
+
+snippet ftest "Test function" Ab
+func Test$1(t *testing.T) {
+	$2
 }
 endsnippet
 

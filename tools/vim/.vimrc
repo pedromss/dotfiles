@@ -189,7 +189,6 @@ nnoremap <F4> :Gblame<CR>
 nnoremap <localleader>fgc :Gcommit %<CR>
 " }}}
 " Navigation -------------------- {{{
-nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
@@ -200,8 +199,9 @@ nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>"))
 if has('nvim')
   nnoremap <F2> :below 20split \| :terminal<CR>
 endif
-inoremap <f1> <Esc>:w<cr>
-nnoremap <f1> :w<cr>
+inoremap <C-s> <Esc>:w<cr>
+nnoremap <C-s> :w<cr>
+nnoremap <C-S-s> :wa<cr>
 inoremap jn <Esc>o
 inoremap jI <Esc>^i
 inoremap jA <Esc>g_a
@@ -601,8 +601,8 @@ elseif has('python')
   let g:UltiSnipsUsePythonVersion = 2
 endif
 let g:UltiSnipsEditSplit = "vertical"
-let g:UltiSnipsSnippetsDir = $HOME."/dotfiles/tools/vim/ultisnips"
-let g:UltiSnipsSnippetDirectories = [$HOME."/dotfiles/tools/vim/ultisnips"]
+let g:UltiSnipsSnippetsDir = $DOTFILES_FULL_PATH."/tools/vim/ultisnips"
+let g:UltiSnipsSnippetDirectories = [$DOTFILES_FULL_PATH."/tools/vim/ultisnips"]
 " }}}
 " Vimwiki variables -------------------- {{{
 let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
@@ -775,9 +775,14 @@ if has('nvim')
 endif
 " }}}
 " Split Navigation -------------------- {{{
+let g:BASH_Ctrl_j = 'off'
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+" Tab navigation -------------------- {{{
+nnoremap <M-h> gT
+nnoremap <M-l> gt
+"" }}}
 " }}}
 let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:function;v:variables'
