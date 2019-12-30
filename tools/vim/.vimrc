@@ -22,10 +22,8 @@ set cursorline
 set tabstop=2 " how many columns a tab counts for
 set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
 set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
-set expandtab " If softtabstop is less than tabstop and expandtab is not set, vim will use a combination of tabs and spaces to make up the desired spacing. If softtabstop equals tabstop and expandtab is not set, vim will always use tabs. When expandtab is set, vim will always use the appropriate number of spaces.
-" SYNTASTIC
+set expandtab 
 set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set number
 set switchbuf=usetab
@@ -202,9 +200,17 @@ endif
 inoremap <C-s> <Esc>:w<cr>
 nnoremap <C-s> :w<cr>
 nnoremap <C-S-s> :wa<cr>
+inoremap <C-u> <Esc>ui
+inoremap <C-l> <Esc>xi
 inoremap jn <Esc>o
 inoremap jI <Esc>^i
 inoremap jA <Esc>g_a
+inoremap jW <Esc>wa
+inoremap jE <Esc>ea
+inoremap <m-j> <down>
+inoremap <m-k> <up>
+inoremap <m-h> <left>
+inoremap <m-l> <right>
 nnoremap soc :echo "below"<cr>
 nnoremap / /\v\c
 nnoremap ? ?\v\c
@@ -214,13 +220,13 @@ nnoremap <space> viw
 nnoremap <Esc> :noh<CR>
 nnoremap cm :match<cr>
 nnoremap <m-k> :m-2<CR>
-nnoremap <m-j> :m+0<CR>
+nnoremap <m-j> :m+1<CR>
 nnoremap <leader>ev :vsplit $HOME/.vimrc<CR>
 nnoremap <leader>sv :so $MYVIMRC<CR>
 nnoremap <localleader>sv :source $MYVIMRC<CR>
 nnoremap <s-d> yyp
 nnoremap <localleader>t :NERDTreeToggle<CR>
-inoremap jk <esc>
+inoremap jk <esc>l
 noremap <leader>af :Autoformat<CR>
 noremap <localleader>nf :set nofoldenable!<CR>
 noremap <C-n> :cn<CR>
@@ -776,10 +782,10 @@ endif
 " }}}
 " Split Navigation -------------------- {{{
 let g:BASH_Ctrl_j = 'off'
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+"nnoremap <C-J> <C-w><C-j>
+"nnoremap <C-K> <C-w><C-k>
+"nnoremap <C-L> <C-w><C-l>
+"nnoremap <C-H> <C-w><C-h>
 " Tab navigation -------------------- {{{
 nnoremap <M-h> gT
 nnoremap <M-l> gt
