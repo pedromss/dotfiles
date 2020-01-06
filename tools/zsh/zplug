@@ -12,7 +12,6 @@ zplug "zdharma/fast-syntax-highlighting"
 zplug "wfxr/forgit"
 zplug "stedolan/jq", from:gh-r, as:command, rename-to:jq
 zplug "mikefarah/yq", from:gh-r, as:command, rename-to:yq, lazy:true
-zplug "ogham/exa", from:gh-r, as:command, rename-to:exa, if:"! is-rpi"
 zplug "lunaryorn/mdcat", from:gh-r, as:command, rename-to:mdcat, if:"! is-rpi"
 zplug "raylee/tldr", as:command, use:"tldr"
 zplug "Cloudstek/zsh-plugin-appup"
