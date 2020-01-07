@@ -79,9 +79,9 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'tpope/vim-cucumber'
 
-"Plug 'svermeulen/vim-cutlass'
+Plug 'svermeulen/vim-cutlass'
 "Plug 'svermeulen/vim-yoink'
-"Plug 'svermeulen/vim-subversive'
+Plug 'svermeulen/vim-subversive'
 
 Plug 'Chiel92/vim-autoformat'
 Plug 'alvan/vim-closetag', { 'for': 'html' }
@@ -159,11 +159,9 @@ nnoremap <localleader>qw, ggVG:'<,'>Tabularize /,<cr>
 nnoremap <localleader>qw ggVG:'<,'>Tabularize /
 " }}}
 " Vim cutlass mappings -------------------- {{{
-"nnoremap x d
-"xnoremap x d
-"nnoremap xx dd
-"nnoremap X D
-"nnoremap cl cl<Esc>
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
 " }}}
 " Vim yoink mappings -------------------- {{{
 "nmap <c-n> <plug>(YoinkPostPasteSwapForward)
@@ -186,7 +184,12 @@ nnoremap <F4> :Gblame<CR>
 "nnoremap <localleader>fgs :Gstatus<CR>
 nnoremap <localleader>fgc :Gcommit %<CR>
 " }}}
+" Panes -------------------- {{{
+nnoremap <C-v><localleader> :vsplit ene<cr>
+nnoremap <C-v>- :split ene<cr>
+" }}}
 " Navigation -------------------- {{{
+nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
@@ -199,9 +202,9 @@ if has('nvim')
 endif
 inoremap <C-s> <Esc>:w<cr>
 nnoremap <C-s> :w<cr>
-nnoremap <C-S-s> :wa<cr>
-inoremap <C-u> <Esc>ui
-inoremap <C-l> <Esc>xi
+nnoremap <C-S> :wa<cr>
+inoremap <C-u> <Esc>xi
+inoremap <C-l> <Esc>lxi
 inoremap jn <Esc>o
 inoremap jI <Esc>^i
 inoremap jA <Esc>g_a
@@ -211,35 +214,28 @@ inoremap <m-j> <down>
 inoremap <m-k> <up>
 inoremap <m-h> <left>
 inoremap <m-l> <right>
-nnoremap soc :echo "below"<cr>
+nnoremap <Leader>sr :match TWS /\<<C-r><C-w>\>/<cr>:%s/\<<C-r><C-w>\>/
 nnoremap / /\v\c
 nnoremap ? ?\v\c
-"nnoremap <leader>w :match TWS /\v $/<cr>
 nnoremap L :b#<cr>
 nnoremap <space> viw
-nnoremap <Esc> :noh<CR>
-nnoremap cm :match<cr>
+nnoremap <Esc> :noh<CR>:mat none<cr>
+nnoremap cm :match TWS /\<<C-r><C-w>\>/<cr>
 nnoremap <m-k> :m-2<CR>
 nnoremap <m-j> :m+1<CR>
-nnoremap <leader>ev :vsplit $HOME/.vimrc<CR>
+nnoremap <leader>ev :tabnew $DOTFILES_FULL_PATH/tools/vim/.vimrc<CR>
 nnoremap <leader>sv :so $MYVIMRC<CR>
-nnoremap <localleader>sv :source $MYVIMRC<CR>
-nnoremap <s-d> yyp
-nnoremap <localleader>t :NERDTreeToggle<CR>
+nnoremap <s-d> :co.<cr>
+nnoremap <localleader><localleader>n :NERDTreeToggle<CR>
 inoremap jk <esc>l
 noremap <leader>af :Autoformat<CR>
 noremap <localleader>nf :set nofoldenable!<CR>
 noremap <C-n> :cn<CR>
 noremap <C-m> :cp<CR>
-nnoremap <S-space> vt<space>
-
-" edit a new buffer in the current pane event with changes
+" edit a new buffer in the current pane even with changes
 nnoremap <leader>enn :ene<cr>
 " edit a new buffer in the current pane if no changes
 nnoremap <leader>enf :ene!<cr>
-
-nnoremap <f10> :set readonly!<cr>
-
 "au BufWrite * :Autoformat
 " }}}
 " Livedown mappings -------------------- {{{
@@ -248,9 +244,9 @@ nnoremap <localleader>ldk :LivedownKill<CR>
 nnoremap <localleader>ldt :LivedownToggle<CR>
 " }}}
 " Vim Diff Mappings -------------------- {{{
-nnoremap <localleader>gl :diffget LOCAL<cr>
-nnoremap <localleader>gb :diffget BASE<cr>
-nnoremap <localleader>gr :diffget REMOTE<cr>
+nnoremap <localleader>vdl :diffget LOCAL<cr>
+nnoremap <localleader>vdb :diffget BASE<cr>
+nnoremap <localleader>vdr :diffget REMOTE<cr>
 " }}}
 " Buffer mappings -------------------- {{{
 nnoremap <silent> <M-F12> :BufExplorer<CR>
@@ -264,16 +260,16 @@ nnoremap <S-Q> :bd!<CR>
 " Go mappings -------------------- {{{
 augroup go_mappings
   autocmd!
-  au FileType go noremap gob :GoBuild<CR>
-  au FileType go noremap gots :GoTest<CR>
-  au FileType go noremap gota :GoTest ./...<CR>
-  au FileType go noremap goft :GoTestFunc<CR>
-  au FileType go noremap goi :GoInstall<CR>
-  au FileType go noremap gomi :GoImport
-  au FileType go noremap goma :GoImportAs
-  au FileType go noremap gor :GoRun<CR>
-  au FileType go noremap gode :GoDef<CR>
-  au FileType go noremap godo :GoDoc<CR>
+  au FileType go nnoremap <localleader>gob :GoBuild<CR>
+  au FileType go nnoremap <localleader>gots :GoTest<CR>
+  au FileType go nnoremap <localleader>gota :GoTest ./...<CR>
+  au FileType go nnoremap <localleader>goft :GoTestFunc<CR>
+  au FileType go nnoremap <localleader>goi :GoInstall<CR>
+  au FileType go nnoremap <localleader>gomi :GoImport
+  au FileType go nnoremap <localleader>goma :GoImportAs
+  au FileType go nnoremap <localleader>gor :GoRun<CR>
+  au FileType go nnoremap <localleader>gode :GoDef<CR>
+  au FileType go nnoremap <localleader>godo :GoDoc<CR>
 augroup END
 " }}}
 " Fzf mappings -------------------- {{{
@@ -302,67 +298,39 @@ let g:fzf_command_prefix = 'Fzf'
 
 " Insert mode completion
 imap <c-q><c-f> <plug>(fzf-complete-path)
-"imap <c-q><c-k> <plug>(fzf-complete-word)
 imap <c-q><c-j> <plug>(fzf-complete-file-ag)
-"imap <c-q><c-l> <plug>(fzf-complete-line)
-
-" Advanced customization using autoload functions
-"inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 " }}}
 " Titlecase mappings -------------------- {{{
 " TODO review this plugins config
-nmap <leader>gt <Plug>Titlecase
-vmap <leader>gt <Plug>Titlecase
-nmap <leader>gT <Plug>TitlecaseLine
+nmap <localleader>tcw <Plug>Titlecase
+vmap <localleader>tcw <Plug>Titlecase
+nmap <localleader>tcl <Plug>TitlecaseLine
 " }}}
 " Vimwiki mappings -------------------- {{{
 augroup vimwiki_mappings
   autocmd!
-  au FileType vimwiki map <leader>tt <Plug>VimwikiToggleListItem
-  au FileType vimwiki map <leader>wth :Vimwiki2HTML<CR>
-  au FileType vimwiki map <leader>wthb :Vimwiki2HTMLBrowse<CR>
+  au FileType vimwiki map <localleader>vwt <Plug>VimwikiToggleListItem
+  au FileType vimwiki map <localleader>vwhh :Vimwiki2HTML<CR>
+  au FileType vimwiki map <localleader>vwhb :Vimwiki2HTMLBrowse<CR>
 augroup END
 " }}}
-" Scrollcolor mappings -------------------- {{{
-map <silent><S-F4> :NEXTCOLOR<cr>
-map <silent><S-F5> :PREVCOLOR<cr>
-" }}}
 " Easymotion mappings -------------------- {{{
-"map  <Leader>f <Plug>(easymotion-bd-f)
-nmap <Leader>f <Plug>(easymotion-overwin-f)
-nmap s <Plug>(easymotion-overwin-f2)
-"" MOVE TO LINE
-"map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
-"" MOVE TO WORD
-"map  <Leader>w <Plug>(easymotion-bd-w)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-" }}}
-" Ensime mappings -------------------- {{{
-"augroup ensime_mappings
-"autocmd!
-"autocmd BufWritePost *.scala silent :EnTypeCheck
-"au FileType scala nnoremap <localleader>et :EnTypeCheck<CR>
-"au FileType scala nnoremap <localleader>df :EnDeclaration<CR>
-"au FileType scala nnoremap <localleader>dhf :EnDeclarationSplit<CR>
-"au FileType scala nnoremap <localleader>dvf :EnDeclarationSplit v<CR>
-"au FileType scala nnoremap <localleader>db :EnDocBrowse<CR>
-"augroup END
+nmap <localleader>emw <Plug>(easymotion-overwin-w)
+map <localleader>emj <Plug>(easymotion-j)
+map <localleader>emk <Plug>(easymotion-k)
 " }}}
 " Tern mappings -------------------- {{{
 augroup tern_mappings
   autocmd!
-  au FileType javascript,typescript nnoremap <Leader>td :TernDef<CR>
-  au FileType javascript,typescript nnoremap <Leader>tp :TernDefPreview<CR>
-  au FileType javascript,typescript nnoremap <Leader>ts :TernDefSplit<CR>
-  au FileType javascript,typescript nnoremap <Leader>tT :TernDefTab<CR>
-  au FileType javascript,typescript nnoremap <Leader>tD :TernDoc<CR>
-  au FileType javascript,typescript nnoremap <Leader>tbD :TernDocBrowse<CR>
-  au FileType javascript,typescript nnoremap <Leader>tR :TernRefs<CR>
-  au FileType javascript,typescript nnoremap <Leader>tr :TernRename<CR>
-  au FileType javascript,typescript nnoremap <Leader>tt :TernType<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjd :TernDef<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjp :TernDefPreview<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjs :TernDefSplit<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjT :TernDefTab<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjD :TernDoc<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjbD :TernDocBrowse<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjR :TernRefs<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjr :TernRename<CR>
+  au FileType javascript,typescript nnoremap <localleader>tjt :TernType<CR>
 augroup END
 " }}}
 " Quick fix file mappings -------------------- {{{
@@ -371,22 +339,6 @@ augroup filetype_mappings_quickfix
   autocmd FileType qf noremap <localleader>n :cnext<cr>
   autocmd FileType qf noremap <localleader>p :cprevious<cr>
   autocmd FileType qf noremap <localleader>cc :ccl<cr>
-augroup END
-" }}}
-" Vim file mappings -------------------- {{{
-augroup filetype_mappings_vim
-  autocmd!
-  autocmd FileType vim nnoremap soc :w \| :so %<cr>
-augroup END
-" }}}
-" Java file mappings -------------------- {{{
-augroup filetype_mappings_java
-  autocmd!
-  "autocmd FileType java nnoremap <localleader>ji :JavaImport<cr>
-  autocmd FileType java nnoremap <localleader>jc :JavaCorrect<cr>
-  autocmd FileType java nnoremap <localleader>jr :JavaRename<cr>
-  autocmd FileType java nnoremap <localleader>jd :JavaDocPreview<cr>
-  "autocmd FileType java nnoremap <localleader>jc :JavaConstructor<cr>
 augroup END
 " }}}
 " Terminal variables -------------------- {{{
@@ -400,7 +352,7 @@ noremap <F8> :NextColorScheme<cr>
 noremap <F9> :PrevColorScheme<cr>
 " }}}
 " Tagbar mappings -------------------- {{{
-nmap <leader>tb :TagbarToggle<CR>
+nmap <localleader><localleader>t :TagbarToggle<CR>
 " }}}
 " }}}
 " Variables -------------------- {{{
@@ -752,7 +704,7 @@ onoremap il' :<c-u>normal! F'vi'<cr>
 onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
 " }}}
 " Hightlight groups -------------------- {{{
-highlight TWS ctermbg=red guibg=red
+highlight TWS ctermbg=green guibg=green
 " }}}
 " Neomake Filetype makers -------------------- {{{
 if has('nvim')
