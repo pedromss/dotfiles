@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+skip-if-dir-exists "$DOTFILES_FZF_DIR"
+
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
   curr=$(pwd)
   git clone --depth 1 https://github.com/junegunn/fzf.git "$DOTFILES_FZF_DIR"
