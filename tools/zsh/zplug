@@ -22,6 +22,7 @@ zplug "zsh-users/zsh-history-substring-search"
 zplug "sindresorhus/pure"
 zplug "zsh-users/zsh-autosuggestions", if:"! is-rpi"
 zplug "zsh-users/zsh-completions", if:"! is-rpi"
+zplug "greymd/tmux-xpanes"
 
 if ! zplug check ; then
 	zplug install 

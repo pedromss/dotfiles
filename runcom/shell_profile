@@ -2,3 +2,4 @@
 
 # shellcheck disable=1090
 . "$HOME/dotfiles/bin/dotfiles.env"
+export PATH="/usr/local/bin:$PATH"
