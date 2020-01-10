@@ -1,3 +1,5 @@
 #!/usr/bin/env bash 
 
 alias gom='GO111MODULE=on go'
+alias got='go test ./...'
+alias gotnc='go test ./... -'
