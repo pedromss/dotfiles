@@ -94,7 +94,7 @@ Plug 'vim-latex/vim-latex'
 "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'keith/investigate.vim'
 Plug 'leafgarland/typescript-vim'
-Plug 'majutsushi/tagbar'
+"Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'
@@ -200,11 +200,27 @@ nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>"))
 if has('nvim')
   nnoremap <F2> :below 20split \| :terminal<CR>
 endif
+nnoremap <leader>qe a<cr><esc>
+nnoremap <leader>qw i<cr><esc>
 inoremap <C-s> <Esc>:w<cr>
 nnoremap <C-s> :w<cr>
 nnoremap <C-S> :wa<cr>
 inoremap <C-u> <Esc>xi
 inoremap <C-l> <Esc>lxi
+" Commodities, maybe this can be improved with operator pending movements
+" but then it won't work in IDEA as only the vim default operator pending
+" movements are supported
+inoremap jF) <Esc>f)i
+inoremap jF} <Esc>f}i
+inoremap jF, <Esc>f,i
+inoremap jB( <Esc>F(i
+inoremap jB, <Esc>F,i
+inoremap jB{ <Esc>F{i
+inoremap jZ) <Esc>mpf)dl`pa
+inoremap jZ, <Esc>mpf,dl`pa
+inoremap jR2 <Esc>20a
+inoremap jR5 <Esc>50a
+" ==================================================
 inoremap jn <Esc>o
 inoremap jI <Esc>^i
 inoremap jA <Esc>g_a
