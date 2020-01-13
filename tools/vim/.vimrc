@@ -196,6 +196,7 @@ nnoremap <C-H> <C-W><C-H>
 " }}}
 " General mappings -------------------- {{{
 nnoremap <leader>zf f{v%zf<esc>
+nnoremap <leader>zF F{v%zf<esc>
 nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 if has('nvim')
   nnoremap <F2> :below 20split \| :terminal<CR>
@@ -218,14 +219,20 @@ inoremap jB, <Esc>F,i
 inoremap jB{ <Esc>F{i
 inoremap jZ) <Esc>mpf)dl`pa
 inoremap jZ, <Esc>mpf,dl`pa
+inoremap jQ  <Esc>f{%O
 inoremap jR2 <Esc>20a
 inoremap jR5 <Esc>50a
+inoremap jK <Esc>:m-2<cr>i
+inoremap jJ <Esc>:m+1<cr>i
+nnoremap <m-k> :m-2<CR>
+nnoremap <m-j> :m+1<CR>
 " ==================================================
 inoremap jn <Esc>o
 inoremap jI <Esc>^i
 inoremap jA <Esc>g_a
 inoremap jW <Esc>wa
 inoremap jE <Esc>ea
+inoremap jO <Esc>O
 inoremap <m-j> <down>
 inoremap <m-k> <up>
 inoremap <m-h> <left>
