@@ -60,6 +60,8 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+
 Plug 'junegunn/goyo.vim'
 "Plug 'ludovicchabant/vim-gutentags'
 

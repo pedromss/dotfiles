@@ -1,6 +1,3 @@
-[user]
-	name = Pedro Silva
-	email = pedromss91@gmail.com
 [core]
 	autocrlf = input
 	editor = vim --noplugin
