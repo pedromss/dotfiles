@@ -36,8 +36,5 @@
 	process = git-lfs filter-process
 	required = true
 [gpg]
-	program = /usr/local/bin/krgpg
 [commit]
-	gpgsign = true
 [tag]
-	forceSignAnnotated = true

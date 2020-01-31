@@ -224,6 +224,7 @@ inoremap jR2 <Esc>20a
 inoremap jR5 <Esc>50a
 inoremap jK <Esc>:m-2<cr>i
 inoremap jJ <Esc>:m+1<cr>i
+inoremap jU <Esc>ui
 nnoremap <m-k> :m-2<CR>
 nnoremap <m-j> :m+1<CR>
 " ==================================================
