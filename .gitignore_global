@@ -4,3 +4,4 @@
 **/vim-markdown-preview.html
 **/*.jar
 **/.netrwhist
+.env

@@ -60,6 +60,23 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'uezk/vim-js', { 'for': 'javascript' }
+Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
+"Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+Plug 'othree/yajs.vim', { 'for': 'javascript' }
+Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
+Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+"Plug 'mhartington/oceanic-next', { 'for': 'javascript' }
+Plug 'HerringtonDarkholme/yats', { 'for': 'typescript' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+
 Plug 'junegunn/goyo.vim'
 "Plug 'ludovicchabant/vim-gutentags'
 
@@ -91,14 +108,12 @@ Plug 'easymotion/vim-easymotion'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-latex/vim-latex'
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'keith/investigate.vim'
 Plug 'leafgarland/typescript-vim'
 "Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -311,6 +326,7 @@ nnoremap <leader>B :FzfBuffers<cr>
 nnoremap <leader><c-f> :FzfBLines<cr>
 nnoremap <leader><c-l> :FzfLines<cr>
 nnoremap <leader><c-a> :FzfAg<cr>
+nnoremap <leader><c-t> :FzfBTags<cr>
 nnoremap <leader>M :FzfMarks<cr>
 
 " Mapping selecting mappings
@@ -380,6 +396,19 @@ nmap <localleader><localleader>t :TagbarToggle<CR>
 " }}}
 " }}}
 " Variables -------------------- {{{
+" ALE variables -------------------- {{{
+let g:ale_linters = {
+\   'python': ['flake8', 'pylint'],
+\   'javascript': ['eslint'],
+\   'vue': ['eslint']
+\}
+
+let g:ale_fixers = {
+\   'javascript': ['eslint']
+\}
+
+let g:ale_fix_on_save = 1
+" }}}
 " mru variables -------------------- {{{
 let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'
 let MRU_Window_Height = 15

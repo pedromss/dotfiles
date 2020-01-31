@@ -315,6 +315,7 @@ function set_file_system_env () {
   export DOTFILES_REPOS="$DOTFILES_FULL_PATH/repos"
   export DOTFILES_XDG_CONFIG_HOME="$DOTFILES_XDG/.config"
   export DOTFILES_XDG_DATA_HOME="$DOTFILES_XDG/.local/share"
+  export DOTFILES_LSP="$DOTFILES_BIN/lsp"
   export XDG_CONFIG_HOME="$DOTFILES_XDG_CONFIG_HOME"
   export XDG_DATA_HOME="$DOTFILES_XDG_DATA_HOME"
 }
@@ -322,6 +323,7 @@ function set_file_system_env () {
 function ensure_required_directories_exist () {
   mkdir -p "$DOTFILES_FULL_PATH"
   mkdir -p "$DOTFILES_BIN"
+  mkdir -p "$DOTFILES_LSP"
   mkdir -p "$DOTFILES_XDG"
   mkdir -p "$XDG_CONFIG_HOME"
   mkdir -p "$XDG_DATA_HOME"
