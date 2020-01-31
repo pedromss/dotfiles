@@ -67,7 +67,15 @@ function get-name-of-tool-from-path () {
 }
 
 function download-tarball-to () {
-  sudo wget -qO- "$1" | sudo tar xz -C "$2"
+  curr=$(pwd)
+  wget -q "$1"
+  tarball_name="${1##*/}"
+  mkdir -p "$2"
+  mv "$tarball_name" "$2"
+  cd "$2"
+  tar -xf "$tarball_name"
+  rm -f "$tarball_name"
+  cd "$curr"
 }
 
 function cleanup () {

@@ -60,6 +60,7 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'uezk/vim-js', { 'for': 'javascript' }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
 "Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
@@ -402,10 +403,10 @@ let g:ale_linters = {
 \}
 
 let g:ale_fixers = {
-\   'javascript': ['eslint'],
-\   'javascript.jsx': ['eslint'],
-\   'jsx': ['eslint']
+\   'javascript': ['eslint']
 \}
+
+let g:ale_fix_on_save = 1
 " }}}
 " mru variables -------------------- {{{
 let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'
