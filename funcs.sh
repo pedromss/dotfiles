@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+function install_with_npm () {
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
+  npm install -g --save-dev "$tool"
+}
+
 function update_github_repo () {
   git pull origin master
 }
