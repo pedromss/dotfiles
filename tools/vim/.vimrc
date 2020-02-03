@@ -70,11 +70,11 @@ Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 "Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
+""Plug 'prabirshrestha/async.vim'
+""Plug 'prabirshrestha/asyncomplete.vim'
+""Plug 'prabirshrestha/asyncomplete-lsp.vim'
+""Plug 'prabirshrestha/vim-lsp'
+""Plug 'mattn/vim-lsp-settings'
 
 Plug 'junegunn/goyo.vim'
 "Plug 'ludovicchabant/vim-gutentags'
@@ -133,7 +133,7 @@ if has('nvim')
   "Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make'}
   "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
   "Plug 'neomake/neomake'
-  Plug 'mdempsky/gocode', { 'rtp': 'nvim' }
+  "Plug 'mdempsky/gocode', { 'rtp': 'nvim' }
   Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 endif
 if has('python') || has('python3')
