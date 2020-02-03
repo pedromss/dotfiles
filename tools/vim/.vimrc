@@ -1,3 +1,5 @@
+set encoding=utf-8
+scriptencoding uft8 
 " Functions... -------------------- {{{
 function! LoadColorScheme(scheme)
   if filereadable(expand($DOTFILES_FULL_PATH . '/tools/vim/.vim/colors/' . a:scheme . '.vim'))
@@ -28,7 +30,6 @@ set statusline+=%*
 set number
 set switchbuf=usetab
 set backspace=2 " make backspace work like most other apps
-set encoding=utf-8
 set scrolloff=3
 set hlsearch " highlight search words
 set incsearch " search as you type
@@ -49,8 +50,6 @@ set splitright
 command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build . 
 " }}}
 " Plugins -------------------- {{{
-let g:ale_emit_conflict_warnings = 0
-let g:ale_echo_msg_format = 'VIM-ALE: %linter% %s'
 call plug#begin($DOTFILES_BIN . '/vim-plugins')
 " FZF / Ctrlp for file navigation
 if executable('fzf')
@@ -124,27 +123,21 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
+Plug 'w0rp/ale'
+Plug 'jiangmiao/auto-pairs'
 if has('nvim')
-  Plug 'Shougo/neco-vim', { 'for': 'go' }
-  Plug 'zchee/deoplete-clang'
-  Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make'}
+  "Plug 'Shougo/neco-vim', { 'for': 'go' }
+  "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  "Plug 'zchee/deoplete-clang'
+  "Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make'}
+  "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+  "Plug 'neomake/neomake'
   Plug 'mdempsky/gocode', { 'rtp': 'nvim' }
   Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
-  Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 endif
-
-" TODO too powerful, need to read
-Plug 'w0rp/ale'
 if has('python') || has('python3')
   Plug 'SirVer/ultisnips'
 endif
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'neomake/neomake'
-endif
-
-" TODO are these really necessary?!
-Plug 'jiangmiao/auto-pairs'
 call plug#end()
 " }}}
 " Latex settings -------------------- {{{
@@ -159,6 +152,12 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Mappings -------------------- {{{
+" ALE Mappings -------------------- {{{
+nmap <silent> <localleader>ap <Plug>(ale_previous_wrap)
+nmap <silent> <localleader>an <Plug>(ale_next_wrap) 
+nnoremap <localleader>al :ALELint<cr>
+nnoremap <localleader>af :ALEFix<cr>
+" }}}
 " Goyo mappings -------------------- {{{
 nnoremap <F3> :Goyo<cr>
 " }}}
@@ -397,10 +396,20 @@ nmap <localleader><localleader>t :TagbarToggle<CR>
 " }}}
 " Variables -------------------- {{{
 " ALE variables -------------------- {{{
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_emit_conflict_warnings = 0
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:airline#extensions#ale#enabled = 1
 let g:ale_linters = {
 \   'python': ['flake8', 'pylint'],
 \   'javascript': ['eslint'],
-\   'vue': ['eslint']
+\   'vue': ['eslint'],
+\   'vim': ['vint']
 \}
 
 let g:ale_fixers = {
@@ -429,6 +438,8 @@ let g:go_highlight_function_calls = 0
 let g:go_highlight_types = 1
 let g:go_highlight_format_strings = 1
 let g:go_highlight_variable_assignments = 1
+let g:go_code_completion_enabled = 1
+let g:go_test_show_name = 1
 let g:go_auto_sameids = 1
 let g:go_auto_type_info = 1
 let g:go_doc_popup_window = 1
@@ -453,7 +464,7 @@ let g:livedown_open = 1
 " the port on which Livedown server will run
 let g:livedown_port = 1337
 " the browser to use
-let g:livedown_browser = "chrome"
+let g:livedown_browser = 'chrome'
 " }}}
 " Ag variables -------------------- {{{
 if executable('ag')
@@ -475,78 +486,78 @@ let g:formatters_scala = ['scalafmt']
 "let vim_markdown_preview_browser='Safari'
 " }}}
 " Deoplete TernJS variables -------------------- {{{
-if has('nvim')
-  let g:deoplete#enable_at_startup = 1
-  " DEOPLETE TERN
-  " Set bin if you have many instalations
-  "let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
-  let g:deoplete#sources#ternjs#timeout = 1
+"if has('nvim')
+  "let g:deoplete#enable_at_startup = 1
+  "" DEOPLETE TERN
+  "" Set bin if you have many instalations
+  ""let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
+  "let g:deoplete#sources#ternjs#timeout = 1
 
-  " Whether to include the types of the completions in the result data. Default: 0
-  let g:deoplete#sources#ternjs#types = 1
+  "" Whether to include the types of the completions in the result data. Default: 0
+  "let g:deoplete#sources#ternjs#types = 1
 
-  " Whether to include the distance (in scopes for variables, in prototypes for
-  " properties) between the completions and the origin position in the result
-  " data. Default: 0
-  let g:deoplete#sources#ternjs#depths = 1
+  "" Whether to include the distance (in scopes for variables, in prototypes for
+  "" properties) between the completions and the origin position in the result
+  "" data. Default: 0
+  "let g:deoplete#sources#ternjs#depths = 1
 
-  " Whether to include documentation strings (if found) in the result data.
-  " Default: 0
-  let g:deoplete#sources#ternjs#docs = 1
+  "" Whether to include documentation strings (if found) in the result data.
+  "" Default: 0
+  "let g:deoplete#sources#ternjs#docs = 1
 
-  " When on, only completions that match the current word at the given point will
-  " be returned. Turn this off to get all results, so that you can filter on the
-  " client side. Default: 1
-  let g:deoplete#sources#ternjs#filter = 0
+  "" When on, only completions that match the current word at the given point will
+  "" be returned. Turn this off to get all results, so that you can filter on the
+  "" client side. Default: 1
+  "let g:deoplete#sources#ternjs#filter = 0
 
-  " Whether to use a case-insensitive compare between the current word and
-  " potential completions. Default 0
-  let g:deoplete#sources#ternjs#case_insensitive = 1
+  "" Whether to use a case-insensitive compare between the current word and
+  "" potential completions. Default 0
+  "let g:deoplete#sources#ternjs#case_insensitive = 1
 
-  " When completing a property and no completions are found, Tern will use some
-  " heuristics to try and return some properties anyway. Set this to 0 to
-  " turn that off. Default: 1
-  let g:deoplete#sources#ternjs#guess = 0
+  "" When completing a property and no completions are found, Tern will use some
+  "" heuristics to try and return some properties anyway. Set this to 0 to
+  "" turn that off. Default: 1
+  "let g:deoplete#sources#ternjs#guess = 0
 
-  " Determines whether the result set will be sorted. Default: 1
-  let g:deoplete#sources#ternjs#sort = 0
+  "" Determines whether the result set will be sorted. Default: 1
+  "let g:deoplete#sources#ternjs#sort = 0
 
-  " When disabled, only the text before the given position is considered part of
-  " the w_rd. When enabled (the default), the whole variable namn that the cursor
-  " is on will be included. Default: 1
-  let g:deoplete#sources#ternjs#expand_word_forward = 0
+  "" When disabled, only the text before the given position is considered part of
+  "" the w_rd. When enabled (the default), the whole variable namn that the cursor
+  "" is on will be included. Default: 1
+  "let g:deoplete#sources#ternjs#expand_word_forward = 0
 
-  " Whether to ignore the properties of Object.prototype unless they have been
-  " spelled out by at least to characters. Default: 1
-  let g:deoplete#sources#ternjs#omit_object_prototype = 0
+  "" Whether to ignore the properties of Object.prototype unless they have been
+  "" spelled out by at least to characters. Default: 1
+  "let g:deoplete#sources#ternjs#omit_object_prototype = 0
 
-  " Whether to include JavaScript keywords when completing something that is not
-  " a property. Default: 0
-  let g:deoplete#sources#ternjs#include_keywords = 1
+  "" Whether to include JavaScript keywords when completing something that is not
+  "" a property. Default: 0
+  "let g:deoplete#sources#ternjs#include_keywords = 1
 
-  " If completions should be returned when inside a literal. Default: 1
-  let g:deoplete#sources#ternjs#in_literal = 0
-  "Add extra filetypes
-  let g:deoplete#sources#ternjs#filetypes = [
-        \ 'jsx',
-        \ 'javascript.jsx',
-        \ 'vue',
-        \ '...'
-        \ ]
-  let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
-  let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
+  "" If completions should be returned when inside a literal. Default: 1
+  "let g:deoplete#sources#ternjs#in_literal = 0
+  ""Add extra filetypes
+  "let g:deoplete#sources#ternjs#filetypes = [
+        "\ 'jsx',
+        "\ 'javascript.jsx',
+        "\ 'vue',
+        "\ '...'
+        "\ ]
+  "let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
+  "let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
   " DEOPLETE-GO
-  let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
+  "let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
 
-  augroup deoplete_aus
-    autocmd!
-    au FileType let g:deoplete#enable_at_startup = 1
-  augroup END
-endif
+  "augroup deoplete_aus
+    "autocmd!
+    "au FileType let g:deoplete#enable_at_startup = 1
+  "augroup END
+"endif
 " }}}
 " Tern variables -------------------- {{{
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
+let g:tern#command = ['tern']
+let g:tern#arguments = ['--persistent']
 " }}}
 " Titlecase variables -------------------- {{{
 let g:titlecase_map_keys = 0
@@ -602,18 +613,18 @@ let g:javascript_plugin_flow = 1
 let g:tex_flavor='latex'
 " }}}
 " UltiSnips variables -------------------- {{{
-let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsListSnippets = '<s-tab>'
-let g:UltiSnipsJumpForwardTrigger = "<c-b>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-g>"
+let g:UltiSnipsJumpForwardTrigger = '<c-b>'
+let g:UltiSnipsJumpBackwardTrigger = '<c-g>'
 if has('python3')
   let g:UltiSnipsUsePythonVersion = 3
 elseif has('python')
   let g:UltiSnipsUsePythonVersion = 2
 endif
-let g:UltiSnipsEditSplit = "vertical"
-let g:UltiSnipsSnippetsDir = $DOTFILES_FULL_PATH."/tools/vim/ultisnips"
-let g:UltiSnipsSnippetDirectories = [$DOTFILES_FULL_PATH."/tools/vim/ultisnips"]
+let g:UltiSnipsEditSplit = 'vertical'
+let g:UltiSnipsSnippetsDir = $DOTFILES_FULL_PATH.'/tools/vim/ultisnips'
+let g:UltiSnipsSnippetDirectories = [$DOTFILES_FULL_PATH.'/tools/vim/ultisnips']
 " }}}
 " Vimwiki variables -------------------- {{{
 let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
@@ -760,30 +771,30 @@ onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
 highlight TWS ctermbg=green guibg=green
 " }}}
 " Neomake Filetype makers -------------------- {{{
-if has('nvim')
-  " Java makers -------------------- {{{
-  augroup makers_java
-    autocmd!
-    autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-    autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-  augroup END
-  " }}}
-  " Scala makers -------------------- {{{
-  augroup makers_scala
-    autocmd!
-    autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-    autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-  augroup END
-  " }}}
-  " Vimscript makers -------------------- {{{
-  augroup makers_vimscript
-    autocmd!
-    autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
-    autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
-  augroup END
-  " }}}
-  call neomake#configure#automake('w')
-endif
+"if has('nvim')
+  "" Java makers -------------------- {{{
+  "augroup makers_java
+    "autocmd!
+    "autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+    "autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+  "augroup END
+  "" }}}
+  "" Scala makers -------------------- {{{
+  "augroup makers_scala
+    "autocmd!
+    "autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+    "autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+  "augroup END
+  "" }}}
+  "" Vimscript makers -------------------- {{{
+  "augroup makers_vimscript
+    "autocmd!
+    "autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
+    "autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
+  "augroup END
+  "" }}}
+  "call neomake#configure#automake('w')
+"endif
 " }}}
 " Split Navigation -------------------- {{{
 let g:BASH_Ctrl_j = 'off'

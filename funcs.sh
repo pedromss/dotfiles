@@ -29,6 +29,11 @@ function skip-if-tool-is-not-installed () {
   command_exists "$1" || { echo " ---> skipping: [$2] because [$1] is required for it"; exit 0; }
 }
 
+function install_with_pip () {
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
+  pip install "$tool"
+}
+
 function install-with-sdkman () {
   sdk install "$1" "$2"
 }
