@@ -2,6 +2,7 @@
   "suggest.autoTrigger": "always",
   "suggest.triggerAfterInsertEnter": true,
   "suggest.noselect": false,
+  "suggest.minTriggerInputLength": 3,
   "diagnostic.refreshAfterSave": true,
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "",
