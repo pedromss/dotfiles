@@ -68,7 +68,6 @@ Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 "Plug 'mhartington/oceanic-next', { 'for': 'javascript' }
 "Plug 'HerringtonDarkholme/yats', { 'for': 'typescript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 ""Plug 'prabirshrestha/async.vim'
 ""Plug 'prabirshrestha/asyncomplete.vim'
@@ -124,8 +123,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
-"Plug 'jiangmiao/auto-pairs'
-Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lock-file' }
+Plug 'jiangmiao/auto-pairs'
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 if has('nvim')
   "Plug 'Shougo/neco-vim', { 'for': 'go' }
   "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -939,5 +938,6 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:go_def_mapping_enabled = 0
-" }}}
+ "}}}
 set completeopt=menuone,noinsert,noselect,preview,longest
+let g:coc_node_path = $DOTFILES_BIN . '/nvm/versions/node/v13.5.0/bin/node'
