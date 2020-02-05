@@ -1,0 +1,22 @@
+{
+  "suggest.autoTrigger": "always",
+  "suggest.triggerAfterInsertEnter": true,
+  "suggest.noselect": false,
+  "diagnostic.refreshAfterSave": true,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextPrefix": "",
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": [
+        "go.mod",
+        ".vim/",
+        ".git/",
+        ".hg/"
+      ],
+      "filetypes": [
+        "go"
+      ]
+    }
+  }
+}

@@ -219,7 +219,6 @@ nnoremap <leader>qe a<cr><esc>
 nnoremap <leader>qw i<cr><esc>
 inoremap <C-s> <Esc>:w<cr>
 nnoremap <C-s> :w<cr>
-nnoremap <C-S> :wa<cr>
 inoremap <C-u> <Esc>xi
 inoremap <C-l> <Esc>lxi
 " Commodities, maybe this can be improved with operator pending movements

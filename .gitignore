@@ -1,5 +1,4 @@
 *.log
-xdg
 bin
 .dotfiles.*
 **/tags
@@ -8,3 +7,8 @@ repos
 tools/vim/.vim/bundle
 tools/vim/.vim/autoload/plug.vim
 tools/vim/.vim/doc
+xdg/.local
+xdg/.config/nvim/*
+xdg/.config/configstore/*
+xdg/.config/git/*
+!xdg/.config/nvim/coc-settings.json
