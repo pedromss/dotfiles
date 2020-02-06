@@ -68,7 +68,6 @@ Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 "Plug 'mhartington/oceanic-next', { 'for': 'javascript' }
 "Plug 'HerringtonDarkholme/yats', { 'for': 'typescript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 ""Plug 'prabirshrestha/async.vim'
 ""Plug 'prabirshrestha/asyncomplete.vim'
@@ -124,8 +123,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
-"Plug 'jiangmiao/auto-pairs'
-Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lock-file' }
+Plug 'jiangmiao/auto-pairs'
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 if has('nvim')
   "Plug 'Shougo/neco-vim', { 'for': 'go' }
   "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -614,7 +613,7 @@ let g:tex_flavor='latex'
 " }}}
 " UltiSnips variables -------------------- {{{
 let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsListSnippets = '<s-tab>'
+"let g:UltiSnipsListSnippets = '<s-tab>'
 let g:UltiSnipsJumpForwardTrigger = '<c-b>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-g>'
 if has('python3')
@@ -654,7 +653,6 @@ augroup abbreviations_java
   autocmd FileType java :iabbrev pfb public final boolean;<Esc>ha
   autocmd FileType java :iabbrev pfi public final int;<Esc>ha
   autocmd FileType java :iabbrev pfl public final long;<Esc>ha
-  autocmd FileType java setlocal omnifunc=javacomplete#Complete
   autocmd FileType java :iabbrev pfc public final class {<cr>}<Esc>kk$ha
   autocmd FileType java :iabbrev sout System.out.println();<esc>hi
 augroup END
@@ -872,7 +870,10 @@ function! s:show_documentation()
 endfunction
 
 " Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup coc_cursorhold
+  autocmd!
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup end
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -938,5 +939,10 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:go_def_mapping_enabled = 0
-" }}}
+ "}}}
 set completeopt=menuone,noinsert,noselect,preview,longest
+let g:coc_node_path = $DOTFILES_BIN . '/nvm/versions/node/v13.5.0/bin/node'
+" use <c-space>for trigger completion
+inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
