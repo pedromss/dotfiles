@@ -1,5 +1,5 @@
 set encoding=utf-8
-scriptencoding uft8 
+scriptencoding uft8
 " Functions... -------------------- {{{
 function! LoadColorScheme(scheme)
   if filereadable(expand($DOTFILES_FULL_PATH . '/tools/vim/.vim/colors/' . a:scheme . '.vim'))
@@ -24,7 +24,7 @@ set cursorline
 set tabstop=2 " how many columns a tab counts for
 set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
 set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
-set expandtab 
+set expandtab
 set statusline+=%#warningmsg#
 set statusline+=%*
 set number
@@ -47,7 +47,7 @@ set splitbelow
 set splitright
 " }}}
 " Commands -------------------- {{{
-command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build . 
+command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build .
 " }}}
 " Plugins -------------------- {{{
 call plug#begin($DOTFILES_BIN . '/vim-plugins')
@@ -55,7 +55,7 @@ call plug#begin($DOTFILES_BIN . '/vim-plugins')
 if executable('fzf')
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
-"else
+  "else
   "Plug 'ctrlpvim/ctrlp.vim'
 endif
 
@@ -154,7 +154,7 @@ set grepprg=grep\ -nH\ $*
 " Mappings -------------------- {{{
 " ALE Mappings -------------------- {{{
 nmap <silent> <localleader>ap <Plug>(ale_previous_wrap)
-nmap <silent> <localleader>an <Plug>(ale_next_wrap) 
+nmap <silent> <localleader>an <Plug>(ale_next_wrap)
 nnoremap <localleader>al :ALELint<cr>
 nnoremap <localleader>af :ALEFix<cr>
 " }}}
@@ -312,9 +312,18 @@ augroup END
 " Fzf mappings -------------------- {{{
 " " This is the default extra key bindings
 let g:fzf_action = {
-  \ 'alt-t': 'tab split',
-  \ 'alt-x': 'split',
-  \ 'alt-v': 'vsplit' }
+      \ 'alt-t': 'tab split',
+      \ 'alt-x': 'split',
+      \ 'alt-v': 'vsplit' }
+
+"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+if has('nvim') && !exists('g:fzf_layout')
+  augroup fzf_no_statusline
+    autocmd! FileType fzf
+    autocmd  FileType fzf set laststatus=0 noshowmode noruler
+          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+  augroup end
+endif
 
 nnoremap <leader>F :FzfFiles<cr>
 nnoremap <leader>G :FzfGFiles<cr>
@@ -405,15 +414,15 @@ let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:airline#extensions#ale#enabled = 1
 let g:ale_linters = {
-\   'python': ['flake8', 'pylint'],
-\   'javascript': ['eslint'],
-\   'vue': ['eslint'],
-\   'vim': ['vint']
-\}
+      \   'python': ['flake8', 'pylint'],
+      \   'javascript': ['eslint'],
+      \   'vue': ['eslint'],
+      \   'vim': ['vint']
+      \}
 
 let g:ale_fixers = {
-\   'javascript': ['eslint']
-\}
+      \   'javascript': ['eslint']
+      \}
 
 let g:ale_fix_on_save = 1
 " }}}
@@ -424,7 +433,7 @@ let MRU_Use_Current_Window = 0
 let MRU_Auto_Close = 1
 " }}}
 " Shebang plugin variables -------------------- {{{
-  "let g:shebanger_shebang_line = '#!/usr/bin/env zsh'
+"let g:shebanger_shebang_line = '#!/usr/bin/env zsh'
 " }}}
 " Rust variable -------------------- {{{
 let g:rustfmt_autosave = 1
@@ -486,72 +495,72 @@ let g:formatters_scala = ['scalafmt']
 " }}}
 " Deoplete TernJS variables -------------------- {{{
 "if has('nvim')
-  "let g:deoplete#enable_at_startup = 1
-  "" DEOPLETE TERN
-  "" Set bin if you have many instalations
-  ""let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
-  "let g:deoplete#sources#ternjs#timeout = 1
+"let g:deoplete#enable_at_startup = 1
+"" DEOPLETE TERN
+"" Set bin if you have many instalations
+""let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
+"let g:deoplete#sources#ternjs#timeout = 1
 
-  "" Whether to include the types of the completions in the result data. Default: 0
-  "let g:deoplete#sources#ternjs#types = 1
+"" Whether to include the types of the completions in the result data. Default: 0
+"let g:deoplete#sources#ternjs#types = 1
 
-  "" Whether to include the distance (in scopes for variables, in prototypes for
-  "" properties) between the completions and the origin position in the result
-  "" data. Default: 0
-  "let g:deoplete#sources#ternjs#depths = 1
+"" Whether to include the distance (in scopes for variables, in prototypes for
+"" properties) between the completions and the origin position in the result
+"" data. Default: 0
+"let g:deoplete#sources#ternjs#depths = 1
 
-  "" Whether to include documentation strings (if found) in the result data.
-  "" Default: 0
-  "let g:deoplete#sources#ternjs#docs = 1
+"" Whether to include documentation strings (if found) in the result data.
+"" Default: 0
+"let g:deoplete#sources#ternjs#docs = 1
 
-  "" When on, only completions that match the current word at the given point will
-  "" be returned. Turn this off to get all results, so that you can filter on the
-  "" client side. Default: 1
-  "let g:deoplete#sources#ternjs#filter = 0
+"" When on, only completions that match the current word at the given point will
+"" be returned. Turn this off to get all results, so that you can filter on the
+"" client side. Default: 1
+"let g:deoplete#sources#ternjs#filter = 0
 
-  "" Whether to use a case-insensitive compare between the current word and
-  "" potential completions. Default 0
-  "let g:deoplete#sources#ternjs#case_insensitive = 1
+"" Whether to use a case-insensitive compare between the current word and
+"" potential completions. Default 0
+"let g:deoplete#sources#ternjs#case_insensitive = 1
 
-  "" When completing a property and no completions are found, Tern will use some
-  "" heuristics to try and return some properties anyway. Set this to 0 to
-  "" turn that off. Default: 1
-  "let g:deoplete#sources#ternjs#guess = 0
+"" When completing a property and no completions are found, Tern will use some
+"" heuristics to try and return some properties anyway. Set this to 0 to
+"" turn that off. Default: 1
+"let g:deoplete#sources#ternjs#guess = 0
 
-  "" Determines whether the result set will be sorted. Default: 1
-  "let g:deoplete#sources#ternjs#sort = 0
+"" Determines whether the result set will be sorted. Default: 1
+"let g:deoplete#sources#ternjs#sort = 0
 
-  "" When disabled, only the text before the given position is considered part of
-  "" the w_rd. When enabled (the default), the whole variable namn that the cursor
-  "" is on will be included. Default: 1
-  "let g:deoplete#sources#ternjs#expand_word_forward = 0
+"" When disabled, only the text before the given position is considered part of
+"" the w_rd. When enabled (the default), the whole variable namn that the cursor
+"" is on will be included. Default: 1
+"let g:deoplete#sources#ternjs#expand_word_forward = 0
 
-  "" Whether to ignore the properties of Object.prototype unless they have been
-  "" spelled out by at least to characters. Default: 1
-  "let g:deoplete#sources#ternjs#omit_object_prototype = 0
+"" Whether to ignore the properties of Object.prototype unless they have been
+"" spelled out by at least to characters. Default: 1
+"let g:deoplete#sources#ternjs#omit_object_prototype = 0
 
-  "" Whether to include JavaScript keywords when completing something that is not
-  "" a property. Default: 0
-  "let g:deoplete#sources#ternjs#include_keywords = 1
+"" Whether to include JavaScript keywords when completing something that is not
+"" a property. Default: 0
+"let g:deoplete#sources#ternjs#include_keywords = 1
 
-  "" If completions should be returned when inside a literal. Default: 1
-  "let g:deoplete#sources#ternjs#in_literal = 0
-  ""Add extra filetypes
-  "let g:deoplete#sources#ternjs#filetypes = [
-        "\ 'jsx',
-        "\ 'javascript.jsx',
-        "\ 'vue',
-        "\ '...'
-        "\ ]
-  "let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
-  "let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
-  " DEOPLETE-GO
-  "let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
+"" If completions should be returned when inside a literal. Default: 1
+"let g:deoplete#sources#ternjs#in_literal = 0
+""Add extra filetypes
+"let g:deoplete#sources#ternjs#filetypes = [
+      "\ 'jsx',
+      "\ 'javascript.jsx',
+      "\ 'vue',
+      "\ '...'
+      "\ ]
+"let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
+"let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
+" DEOPLETE-GO
+"let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
 
-  "augroup deoplete_aus
-    "autocmd!
-    "au FileType let g:deoplete#enable_at_startup = 1
-  "augroup END
+"augroup deoplete_aus
+"autocmd!
+"au FileType let g:deoplete#enable_at_startup = 1
+"augroup END
 "endif
 " }}}
 " Tern variables -------------------- {{{
@@ -719,9 +728,9 @@ augroup END
 " }}}
 " HTML file settings -------------------- {{{
 "augroup filetype_html
-  "autocmd!
-  "au FileType html setlocal nowrap
-  "au FileType html :call SetTabs(2)
+"autocmd!
+"au FileType html setlocal nowrap
+"au FileType html :call SetTabs(2)
 "augroup END
 "}}}
 " Json file settings -------------------- {{{
@@ -732,8 +741,8 @@ augroup END
 " }}}
 " Groovy file settings -------------------- {{{
 "augroup groovy_aus
-  "autocmd!
-  "au FileType groovy :call SetTabs(4)
+"autocmd!
+"au FileType groovy :call SetTabs(4)
 "augroup END
 " }}}
 " Vimscript file settings ------------------------------ {{{
@@ -770,28 +779,28 @@ highlight TWS ctermbg=green guibg=green
 " }}}
 " Neomake Filetype makers -------------------- {{{
 "if has('nvim')
-  "" Java makers -------------------- {{{
-  "augroup makers_java
-    "autocmd!
-    "autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-    "autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-  "augroup END
-  "" }}}
-  "" Scala makers -------------------- {{{
-  "augroup makers_scala
-    "autocmd!
-    "autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-    "autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-  "augroup END
-  "" }}}
-  "" Vimscript makers -------------------- {{{
-  "augroup makers_vimscript
-    "autocmd!
-    "autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
-    "autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
-  "augroup END
-  "" }}}
-  "call neomake#configure#automake('w')
+"" Java makers -------------------- {{{
+"augroup makers_java
+"autocmd!
+"autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+"autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
+"augroup END
+"" }}}
+"" Scala makers -------------------- {{{
+"augroup makers_scala
+"autocmd!
+"autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+"autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
+"augroup END
+"" }}}
+"" Vimscript makers -------------------- {{{
+"augroup makers_vimscript
+"autocmd!
+"autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
+"autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
+"augroup END
+"" }}}
+"call neomake#configure#automake('w')
 "endif
 " }}}
 " Split Navigation -------------------- {{{
@@ -939,7 +948,7 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:go_def_mapping_enabled = 0
- "}}}
+"}}}
 set completeopt=menuone,noinsert,noselect,preview,longest
 let g:coc_node_path = $DOTFILES_BIN . '/nvm/versions/node/v13.5.0/bin/node'
 " use <c-space>for trigger completion
