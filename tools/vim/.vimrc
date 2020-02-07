@@ -59,6 +59,8 @@ if executable('fzf')
   "Plug 'ctrlpvim/ctrlp.vim'
 endif
 
+Plug 'neoclide/jsonc.vim'
+
 Plug 'yuezk/vim-js', { 'for': 'javascript' }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
 "Plug 'mxw/vim-jsx', { 'for': 'javascript' }

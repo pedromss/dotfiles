@@ -7,6 +7,27 @@
   "diagnostic.virtualText": true,
   "diagnostic.virtualTextPrefix": "",
   "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": [
+        "start"
+      ],
+      "filetypes": [
+        "sh"
+      ],
+      "ignoredRootPaths": [
+        "~"
+      ]
+    },
+    "dockerfile": {
+      "command": "docker-langserver",
+      "filetypes": [
+        "dockerfile"
+      ],
+      "args": [
+        "--stdio"
+      ]
+    },
     "golang": {
       "command": "gopls",
       "rootPatterns": [

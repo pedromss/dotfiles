@@ -1,11 +1,25 @@
 #!/usr/bin/env bash
 
-jdt_install_dir="$DOTFILES_LSP/jdt"
-if ! [ -d "$jdt_install_dir" ]; then
-  jdt_lsp_version=0.47.0
-  jdt_lsp_tarball_id="jdt-language-server-${jdt_lsp_version}-201911150945"
-
-  download-tarball-to \
-    "http://download.eclipse.org/jdtls/milestones/${jdt_lsp_version}/${jdt_lsp_tarball_id}.tar.gz" \
-    "$jdt_install_dir"
+if ! command_exists 'docker-langserver' ; then
+  install_with_npm 'dockerfile-language-server-nodejs'
 fi
+
+if ! command_exists 'bash-language-server' ; then
+  install_with_npm 'bash-language-server'
+fi
+
+if ! command_exists 'python-language-server' ; then
+  install_with_pip 'jedi'
+  install_with_pip 'python-language-server'
+fi
+
+# :CocInstall coc-json
+# :CocInstall coc-metals
+# :CocInstall coc-java
+# :CocInstall coc-tsserver
+# :CocInstall coc-vimlsp
+# :CocInstall coc-yaml
+# :CocInstall coc-vetur
+# :CocInstall coc-highlight - disabled CTRL+S in insert mode
+# :CocInstall coc-tslint-plugin
+# :CocInstall coc-jest
