@@ -5,3 +5,7 @@
 **/*.jar
 **/.netrwhist
 .env
+**/bin
+.classpath
+.project
+.settings
