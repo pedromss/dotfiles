@@ -114,7 +114,8 @@ Plug 'vim-latex/vim-latex'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'
-Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
+"Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
+Plug 'modille/groovy.vim', { 'for': 'groovy' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
@@ -463,7 +464,19 @@ let g:yoinkIncludeDeleteOperations = 1
 let g:signify_vcs_list = [ 'git']
 " }}}
 " AutoFormat variables -------------------- {{{
-"let g:formatterpath = ['/usr/local/bin/jq']
+let g:formatterpath = [
+      \  $DOTFILES_BIN . '/zplug/bin/jq',
+      \  $DOTFILES_BIN . '/nvm/versions/node/v13.5.0/bin/eslint'
+      \]
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+let g:autoformat_remove_trailing_spaces = 0
+augroup auto_format_defaults
+	autocmd!
+  autocmd FileType vim,tex let b:autoformat_autoindent=1
+  autocmd FileType vim,tex let b:autoformat_retab=1
+  autocmd FileType vim,tex let b:autoformat_remove_trailling_spaces=1
+augroup end
 let g:autoformat_verbosemode=0
 " }}}
 " Livedown variables -------------------- {{{
