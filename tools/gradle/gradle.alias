@@ -3,4 +3,5 @@
 alias gwc='gw --console=plain'
 alias gwn='gw --no-daemon'
 alias gwcn='gw --console=plain --no-daemon'
+alias gwct='gw --console=plain tasks --all | ag -i '
 
