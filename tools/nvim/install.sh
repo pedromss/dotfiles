@@ -2,7 +2,6 @@
 
 make_link "$DOTFILES_FULL_PATH/tools/nvim/init.vim" "$DOTFILES_NVIM_CONFIG_FOLDER/init.vim"
 
-
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
   if is-macos ; then
     install-with-pkg-manager 'neovim'

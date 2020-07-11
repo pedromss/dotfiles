@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-function skch_one () {
-    shellcheck --external-sources --check-sourced --format=tty --exclude=SC1090,1091 --shell=bash "$1"
+function shck_one () {
+    shellcheck --external-sources --external-sources --format=tty --exclude=SC1090,1091 --shell=bash "$1"
 }
 
 function shck_dotfiles_recursive () {

@@ -56,6 +56,10 @@ function depends_on () {
 
 function skip-if-installed () {
   tool="${1:-$DOTFILES_CURRENT_TOOL}"
+  if (( ${DOTFILES_UPDATE_RUN:-0} )) ; then
+    DOTFILES_SHOULD_STOP_CURRENT=0
+    return
+  fi
   if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
     if command_exists "$tool" \
       || [ -d "$DOTFILES_BIN/$tool" ] \

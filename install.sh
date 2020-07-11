@@ -30,14 +30,17 @@ function print_help () {
 Usage: ./install.sh [options]'
 
 Options:
-  -t, --tool {toolname}   > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
-  -v, --verbose           > If set a table with all tools and status will be printed as things are installed
-  --no{-tool}             > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
-  -x                      > Equivalent to 'set -x' in bash. Does not work well with '-v'
-                          > Defaults to [0] which only prints progress information
-  -y, --no-prompt         > say yes to everything and automate as much as possible
-  -h, --help              > Print this help menu
-  --dry-run               > Don't install anything, just print what would happen
+  -t, --tool {toolname}     > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
+  -u, --update              > Whether or not to update the selected tool. If not specfied installers will only run if
+  --utils                   > Sources envs and utility functions, does not install any tool
+                            > the tool is missing
+  -v, --verbose             > If set a table with all tools and status will be printed as things are installed
+  --no{-tool}               > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
+  -x                        > Equivalent to 'set -x' in bash. Does not work well with '-v'
+                            > Defaults to [0] which only prints progress information
+  -y, --no-prompt           > say yes to everything and automate as much as possible
+  -h, --help                > Print this help menu
+  --dry-run                 > Don't install anything, just print what would happen
 EOF
 }
 while [[ $# -gt 0 ]]
@@ -68,6 +71,14 @@ do
       ;;
     -x)
       set -x
+      shift
+      ;;
+    -u|--update)
+      update=1
+      shift
+      ;;
+    --utils)
+      utils=1
       shift
       ;;
     -y)
@@ -235,6 +246,7 @@ function reset_control_env_variables () {
   export DOTFILES_EXTRAS_ONLY=0
   export DOTFILES_TOOL_NOT_MEANT_FOR_OS=0
   export DOTFILES_TOOL_QUARANTINED=0
+  export DOTFILES_UPDATE_RUN=0
   export DOTFILES_SUDO_REQUIRED=0
 }
 
@@ -252,6 +264,7 @@ function unset_control_env_variables () {
   unset DOTFILES_MANAGED_BY_ZPLUG
   unset DOTFILES_CURRENT_TOOL
   unset DOTFILES_LARGET_TOOL_SIZE
+  unset DOTFILES_UPDATE_RUN
 }
 
 function check_tool_metadata_to_save () {
@@ -282,6 +295,7 @@ function evaluate-tool-file () {
   check_tool_metadata_to_save "$tool"
 
   export DOTFILES_CURRENT_TOOL="$tool"
+  export DOTFILES_UPDATE_RUN=$update
   skip-if-installed
   if ! [ -f "$file_to_eval" ] ; then
     export DOTFILES_EXTRAS_ONLY=1
@@ -464,6 +478,11 @@ function link_and_prepare_env_to_source () {
   chown -R "$DOTFILES_USER" "$DOTFILES_BIN"
   chown -R "$DOTFILES_USER" "$DOTFILES_FULL_PATH/tools/vim/.vim"
 }
+
+if (( ${utils:-0} )) ; then 
+  link_and_prepare_env_to_source
+  exit 0
+fi
 
 action='install'
 set_file_system_env

@@ -6,6 +6,7 @@ bin
 repos
 tools/vim/.vim/bundle
 tools/vim/.vim/autoload/plug.vim
+tools/vim/.vim/autoload/plug.vim.old
 tools/vim/.vim/doc
 xdg/.local
 xdg/.config
