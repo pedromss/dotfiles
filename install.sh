@@ -141,7 +141,6 @@ function reset_control_env_variables () {
   export DOTFILES_TOOL_ALREADY_INSTALLED=0
   export DOTFILES_DEPENDENCY_MISSING=0
   export DOTFILES_REQUIRED_DEPENDENCY=''
-  export DOTFILES_EXTRAS_ONLY=0
   export DOTFILES_TOOL_NOT_MEANT_FOR_OS=0
   export DOTFILES_TOOL_QUARANTINED=0
   export DOTFILES_UPDATE_RUN=0
@@ -153,7 +152,6 @@ function unset_control_env_variables () {
   unset DOTFILES_TOOL_ALREADY_INSTALLED
   unset DOTFILES_DEPENDENCY_MISSING
   unset DOTFILES_REQUIRED_DEPENDENCY
-  unset DOTFILES_EXTRAS_ONLY
   unset DOTFILES_TOOL_NOT_MEANT_FOR_OS
   unset DOTFILES_TOOL_QUARANTINED
   unset DOTFILES_SUDO_REQUIRED
@@ -194,10 +192,21 @@ function evaluate_tool_file () {
   # shellcheck disable=SC2119
   skip_if_installed
   if ! [ -f "$file_to_eval" ] ; then
-    export DOTFILES_EXTRAS_ONLY=1
+    echo "$tool no install file"
   else
     if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-      source "$file_to_eval" "$tool"
+      # shellcheck disable=1090
+      printf "Installing %s,,," "$tool"
+      source "$file_to_eval" "$tool" 1>"${tool}.log" 2>"${tool}.log"
+      exit_code="$?"
+      if [[ $exit_code == 0 ]] ; then
+        printf 'PASS\n'
+        rm -rf "$error_log"
+      else
+        printf 'FAIL\n'
+        cat "$error_log"
+      fi
+    else 
     fi
   fi
 }
