@@ -195,18 +195,17 @@ function evaluate_tool_file () {
     echo "$tool no install file"
   else
     if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-      # shellcheck disable=1090
       printf "Installing %s,,," "$tool"
+    # shellcheck disable=1090
       source "$file_to_eval" "$tool" 1>"${tool}.log" 2>"${tool}.log"
       exit_code="$?"
       if [[ $exit_code == 0 ]] ; then
         printf 'PASS\n'
-        rm -rf "$error_log"
+        rm -f "${tool}.log"
       else
         printf 'FAIL\n'
-        cat "$error_log"
+        cat "${tool}.log"
       fi
-    else 
     fi
   fi
 }
