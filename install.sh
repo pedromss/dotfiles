@@ -33,7 +33,6 @@ function main() {
     exit 0
   fi
 
-  action='install'
   . funcs.sh
   find_os
   ensure_required_directories_exist
@@ -348,6 +347,13 @@ function link_and_prepare_env_to_source () {
   echo 'Changing ownership of dotfiles bin to user...'
   chown -R "$DOTFILES_USER" "$DOTFILES_BIN"
   chown -R "$DOTFILES_USER" "$DOTFILES_FULL_PATH/tools/vim/.vim"
+}
+
+function prompt_for_continue () {
+  question='Continue?'
+  if [[ $DOTFILES_PROMPT != 0 ]] ; then
+    ask_yes_or_no "$question"
+  fi
 }
 
 main "$@"
