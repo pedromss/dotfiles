@@ -191,21 +191,10 @@ function evaluate_tool_file () {
   export DOTFILES_UPDATE_RUN=$update
   # shellcheck disable=SC2119
   skip_if_installed
-  if ! [ -f "$file_to_eval" ] ; then
-    echo "$tool no install file"
-  else
+  if [ -f "$file_to_eval" ] ; then
     if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-      printf "Installing %s,,," "$tool"
-    # shellcheck disable=1090
-      source "$file_to_eval" "$tool" 1>"${tool}.log" 2>"${tool}.log"
-      exit_code="$?"
-      if [[ $exit_code == 0 ]] ; then
-        printf 'PASS\n'
-        rm -f "${tool}.log"
-      else
-        printf 'FAIL\n'
-        cat "${tool}.log"
-      fi
+      # shellcheck disable=1090
+      source "$file_to_eval" "$tool"
     fi
   fi
 }
