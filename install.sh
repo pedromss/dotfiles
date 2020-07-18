@@ -66,7 +66,7 @@ do
       shift
       ;;
     -v|--verbose)
-      export DOTFILES_SHOW_PROGRESS=1
+      export DOTFILES_SHOW_OUTPUT=1
       shift
       ;;
     -x)
@@ -262,9 +262,6 @@ function make_execution_plan () {
 
 function execute_plan () {
   for t in "${tools_to_install[@]}" ; do
-    if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-      register_progress "$t"
-    fi
     evaluate-tool-file "$t" "$action"
   done
 }
@@ -331,7 +328,6 @@ prompt_for_continue
 scan_all_tools
 make_execution_plan
 resolve_largest_tool_size
-prompt_for_continue
 
 if ! (( ${dry_run:-0} )) ; then
   execute_plan
