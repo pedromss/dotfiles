@@ -38,7 +38,6 @@ function main() {
   prompt_for_continue
   scan_all_tools
   make_execution_plan
-  resolve_largest_tool_size
 
   if ! (( ${dry_run:-0} )) ; then
     execute_plan
@@ -250,7 +249,6 @@ function scan_all_tools () {
       continue
     fi
     all_tools+=("$name")
-    echo "$name"
   done < <(find "$DOTFILES_FULL_PATH/tools" -maxdepth 1 -type d -print0)
   unset IFS
 }
