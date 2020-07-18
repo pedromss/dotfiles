@@ -15,7 +15,6 @@ tools_quarantined=()
 tools_already_installed=()
 
 export DOTFILES_PROMPT=1
-export DOTFILES_SHOW_PROGRESS=0
 export DOTFILES_TOOL_PACKAGE_MANAGER=''
 export DOTFILES_TOOL_WAS_SKIPPED=0
 export DOTFILES_TOOL_ALREADY_INSTALLED=0
@@ -35,9 +34,8 @@ function main() {
   fi
 
   action='install'
-  set_file_system_env
   . funcs.sh
-  find-os
+  find_os
   ensure_required_directories_exist
 
   printf "User: %-15s\n" "$DOTFILES_USER"
@@ -63,18 +61,15 @@ function print_help () {
 Usage: ./install.sh [options]'
 
 Options:
-  -t, --tool {toolname}      > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
-  -u, --update               > Whether or not to update the selected tool. If not specfied installers will only run if
-  --utils                    > Sources envs and utility functions, does not install any tool
-                             > the tool is missing
-  -v, --verbose              > If set a table with all tools and status will be printed as things are installed
-  --no{-tool}                > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
-  -x                         > Equivalent to 'set -x' in bash. Does not work well with '-v'
-                             > Defaults to [0] which only prints progress information
-  -y, --no-prompt            > say yes to everything and automate as much as possible
-  -h, --help                 > Print this help menu
-  --dry-run                  > Don't install anything, just print what would happen
-  --reminders                > Print reminders about system changes that should be done for all tools to work well
+  -t, --tool {toolname}        > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
+  -u, --update                 > Whether or not to update the selected tool. If not specfied installers will only run if
+  --utils                      > Sources envs and utility functions, does not install any tool
+                               > the tool is missing
+  --no{-tool}                  > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
+  -y, --no-prompt              > say yes to everything and automate as much as possible
+  -h, --help                   > Print this help menu
+  --dry-run                    > Don't install anything, just print what would happen
+  --reminders                  > Print reminders about system changes that should be done for all tools to work well
 EOF
 }
 
@@ -120,14 +115,6 @@ function parse_flags () {
         name="${1##*-}"
         name=$(tr '[:upper:]' '[:lower:]' <<< "$name")
         tools_to_skip+=("$name")
-        shift
-        ;;
-      -v|--verbose)
-        export DOTFILES_SHOW_OUTPUT=1
-        shift
-        ;;
-      -x)
-        set -x
         shift
         ;;
       -u|--update)
@@ -181,7 +168,6 @@ function reset_control_env_variables () {
 }
 
 function unset_control_env_variables () {
-  unset DOTFILES_SHOW_PROGRESS
   unset DOTFILES_SHOULD_STOP_CURRENT
   unset DOTFILES_TOOL_ALREADY_INSTALLED
   unset DOTFILES_DEPENDENCY_MISSING
@@ -216,7 +202,7 @@ function check_tool_metadata_to_save () {
   fi
 }
 
-function evaluate-tool-file () {
+function evaluate_tool_file () {
   local tool="$1"
   local action="$2"
   local file_to_eval="tools/$tool/$action.sh"
@@ -225,7 +211,7 @@ function evaluate-tool-file () {
 
   export DOTFILES_CURRENT_TOOL="$tool"
   export DOTFILES_UPDATE_RUN=$update
-  skip-if-installed
+  skip_if_installed
   if ! [ -f "$file_to_eval" ] ; then
     export DOTFILES_EXTRAS_ONLY=1
   else
@@ -260,6 +246,7 @@ function set_file_system_env () {
   export DOTFILES_LSP="$DOTFILES_BIN/lsp"
   export XDG_CONFIG_HOME="$DOTFILES_XDG_CONFIG_HOME"
   export XDG_DATA_HOME="$DOTFILES_XDG_DATA_HOME"
+  env | grep 'DOTFILES|XDG'
 }
 
 function ensure_required_directories_exist () {
@@ -316,7 +303,7 @@ function make_execution_plan () {
 
 function execute_plan () {
   for t in "${tools_to_install[@]}" ; do
-    evaluate-tool-file "$t" "$action"
+    evaluate_tool_file "$t" "$action"
   done
 }
 

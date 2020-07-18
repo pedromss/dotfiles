@@ -8,7 +8,7 @@ alias brc="vim ~/.bashrc"
 
 alias l="ls -lah"
 
-if is-macos ; then
+if is_macos ; then
   alias pbc='pbcopy'
   alias pbp='pbpaste'
 else

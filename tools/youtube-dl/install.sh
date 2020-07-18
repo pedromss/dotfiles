@@ -1,7 +1,7 @@
 #!/usr/bin/env bash 
 
-skip-if-os-is 'rpi'
+skip_if_os_is 'rpi'
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-  install-with-pkg-manager
+  install_with_pkg_manager
 fi
 

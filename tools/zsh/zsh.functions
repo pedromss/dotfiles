@@ -16,7 +16,7 @@ function zsh_install_plugin () {
     # shellcheck disable=2164
     cd "$curr"
   else
-    clone-from-github "$1" "$DOTFILES_ZSH_PLUGINS_FOLDER/$plugin_name"
+    clone_from_github "$1" "$DOTFILES_ZSH_PLUGINS_FOLDER/$plugin_name"
   fi
 }
 

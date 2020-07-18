@@ -25,7 +25,7 @@ function prompt_for_continue () {
   fi
 }
 
-function skip-if-tool-is-not-installed () {
+function skip_if_tool_is_not_installed () {
   command_exists "$1" || { echo " ---> skipping: [$2] because [$1] is required for it"; exit 0; }
 }
 
@@ -34,11 +34,11 @@ function install_with_pip () {
   pip install "$tool"
 }
 
-function install-with-sdkman () {
+function install_with_sdkman () {
   sdk install "$1" "$2"
 }
 
-function install-with-cargo () {
+function install_with_cargo () {
   tool="${1:-$DOTFILES_CURRENT_TOOL}"
   cargo install --force "$tool"
 }
@@ -54,7 +54,7 @@ function depends_on () {
   fi
 }
 
-function skip-if-installed () {
+function skip_if_installed () {
   tool="${1:-$DOTFILES_CURRENT_TOOL}"
   if (( ${DOTFILES_UPDATE_RUN:-0} )) ; then
     DOTFILES_SHOULD_STOP_CURRENT=0
@@ -70,12 +70,12 @@ function skip-if-installed () {
   fi
 }
 
-function get-name-of-tool-from-path () {
+function get_name_of_tool_from_path () {
   dir=$(dirname "$0")
   export DOTFILES_CURRENT_TOOL="${dir##*/}"
 }
 
-function download-tarball-to () {
+function download_tarball_to () {
   curr=$(pwd)
   wget -q "$1"
   tarball_name="${1##*/}"
@@ -88,17 +88,17 @@ function download-tarball-to () {
 }
 
 function cleanup () {
-  remove-duplicates-from-config-file
-  remove-duplicates-from-alias-file
-  remove-duplicates-from-env-file
-  remove-duplicates-from-sources-file
-  cleanup-dotfiles-config-file
-  cleanup-dotfiles-alias-file
-  cleanup-dotfiles-env-file
-  cleanup-dotfiles-sources-file
+  remove_duplicates_from_config_file
+  remove_duplicates_from_alias_file
+  remove_duplicates_from_env_file
+  remove_duplicates_from_sources_file
+  cleanup_dotfiles_config_file
+  cleanup_dotfiles_alias_file
+  cleanup_dotfiles_env_file
+  cleanup_dotfiles_sources_file
 }
 
-function skip-if-os-is () {
+function skip_if_os_is () {
   os="$1"
   if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
     if [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
@@ -108,7 +108,7 @@ function skip-if-os-is () {
   fi
 }
 
-function only-if-os-is () {
+function only_if_os_is () {
   os="$1"
   if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
     if ! [[ $DOTFILES_RESOLVED_OS =~ $os ]]; then
@@ -125,27 +125,27 @@ function quarantine () {
   fi
 }
 
-function copy-dotfiles-configs () {
+function copy_dotfiles_configs () {
   cp "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
   cp "$DOTFILES_FULL_PATH/$DOTFILES_ENV_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_ENV_NEW_FILE"
   cp "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
   cp "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_FILE" "$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
 }
 
-function save-env () {
-  #echo "NEED TO FIX save-env"
+function save_env () {
+  #echo "NEED TO FIX save_env"
   return
 }
 
-function save-source () {
-  #echo "NEED TO FIX save-source"
+function save_source () {
+  #echo "NEED TO FIX save_source"
   return
   #filename="$DOTFILES_FULL_PATH/$DOTFILES_SOURCES_NEW_FILE"
   #echo ". $1 2>/dev/null" >> "$filename"
 }
 
-function save-alias () {
-  #echo "NEED TO FIX save-alias"
+function save_alias () {
+  #echo "NEED TO FIX save_alias"
   return
   #filename="$DOTFILES_FULL_PATH/$DOTFILES_ALIAS_NEW_FILE"
   ## shellcheck disable=SC2139
@@ -153,37 +153,37 @@ function save-alias () {
   #echo "alias $1='$2'" >> "$filename"
 }
 
-function save-config () {
+function save_config () {
   return
   #filename="$DOTFILES_FULL_PATH/$DOTFILES_CONFIG_NEW_FILE"
   #export "$1"="$2"
   #echo "export $1=$2" >> "$filename"
 }
 
-function move-in-dotfiles () {
+function move_in_dotfiles () {
   file="${DOTFILES_FULL_PATH:?}/$1"
   if [ -f "$file" ]; then
     mv "$file" "${DOTFILES_FULL_PATH:?}/$2"
   fi
 }
 
-function cleanup-dotfiles-sources-file () {
-  move-in-dotfiles "$DOTFILES_SOURCES_NEW_FILE" "$DOTFILES_SOURCES_FILE"
+function cleanup_dotfiles_sources_file () {
+  move_in_dotfiles "$DOTFILES_SOURCES_NEW_FILE" "$DOTFILES_SOURCES_FILE"
 }
 
-function cleanup-dotfiles-config-file () {
-  move-in-dotfiles "$DOTFILES_CONFIG_NEW_FILE" "$DOTFILES_CONFIG_FILE"
+function cleanup_dotfiles_config_file () {
+  move_in_dotfiles "$DOTFILES_CONFIG_NEW_FILE" "$DOTFILES_CONFIG_FILE"
 }
 
-function cleanup-dotfiles-env-file() {
-  move-in-dotfiles "$DOTFILES_ENV_NEW_FILE" "$DOTFILES_ENV_FILE"
+function cleanup_dotfiles_env_file() {
+  move_in_dotfiles "$DOTFILES_ENV_NEW_FILE" "$DOTFILES_ENV_FILE"
 }
 
-function cleanup-dotfiles-alias-file () {
-  move-in-dotfiles "$DOTFILES_ALIAS_NEW_FILE" "$DOTFILES_ALIAS_FILE"
+function cleanup_dotfiles_alias_file () {
+  move_in_dotfiles "$DOTFILES_ALIAS_NEW_FILE" "$DOTFILES_ALIAS_FILE"
 }
 
-function remove-duplicates-from-file () {
+function remove_duplicates_from_file () {
   if ! [ -f "$1" ]; then
     return
   fi
@@ -191,54 +191,54 @@ function remove-duplicates-from-file () {
   mv "$1.tmp" "$1"
 }
 
-function remove-duplicates-from-sources-file () {
-  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_NEW_FILE"
+function remove_duplicates_from_sources_file () {
+  remove_duplicates_from_file "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_NEW_FILE"
 }
 
-function remove-duplicates-from-config-file () {
-  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_NEW_FILE"
+function remove_duplicates_from_config_file () {
+  remove_duplicates_from_file "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_NEW_FILE"
 }
 
-function remove-duplicates-from-env-file() {
-  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_NEW_FILE"
+function remove_duplicates_from_env_file() {
+  remove_duplicates_from_file "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_NEW_FILE"
 }
 
-function remove-duplicates-from-alias-file() {
-  remove-duplicates-from-file "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_NEW_FILE"
+function remove_duplicates_from_alias_file() {
+  remove_duplicates_from_file "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_NEW_FILE"
 }
 
 function make_link () {
   ln -sfv "$1" "$2"
 }
 
-function create-link-at-home () {
-  create-nest-at-home "$1" ''
+function create_link_at_home () {
+  create_nest_at_home "$1" ''
 }
 
-function destroy-at-home () {
+function destroy_at_home () {
   rm -rf "$DOTFILES_USER_HOME/$1"
 }
 
-function create-nest-at-home() {
+function create_nest_at_home() {
   # shellcheck disable=SC2154
   make_link "${DOTFILES_FULL_PATH:?}/$1" "${DOTFILES_USER_HOME}$2"
 }
 
-function create-tool-link-at-home() {
-  create-link-at-home "tools/$1"
+function create_tool_link_at_home() {
+  create_link_at_home "tools/$1"
 }
 
-function rm-link-at-home () {
+function rm_link_at_home () {
   rm -f "${DOTFILES_USER:?}/$1"
 }
 
-function clone-from-github () {
+function clone_from_github () {
   if ! [ -d "$2" ] ; then
     git clone --depth 1 "https://github.com/$1" "$2"
   fi
 }
 
-function skip-if-dir-exists () {
+function skip_if_dir_exists () {
   dir="$1"
   if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
     if [ -d "$dir" ]; then
@@ -248,13 +248,13 @@ function skip-if-dir-exists () {
   fi
 }
 
-function install-with-pkg-manager () {
+function install_with_pkg_manager () {
   tool="${1:-$DOTFILES_CURRENT_TOOL}"
 
   set +e
-  if is-macos ; then
+  if is_macos ; then
     brew install "$tool"
-  elif is-debian ; then
+  elif is_debian ; then
     apt-get -y install "$tool"
     if [[ "$?" == 100 ]] ; then
       export DOTFILES_SUDO_REQUIRED=1
@@ -267,9 +267,9 @@ function install-with-pkg-manager () {
   fi
 }
 
-function uninstall-with-pkg-manager () {
+function uninstall_with_pkg_manager () {
   if [ -z "$1" ]; then
-    get-name-of-tool-from-path
+    get_name_of_tool_from_path
     in_tool="${DOTFILES_CURRENT_TOOL}"
   else
     in_tool="$1"
@@ -277,9 +277,9 @@ function uninstall-with-pkg-manager () {
   tool="$in_tool"
 
   set +e
-  if is-macos ; then
+  if is_macos ; then
     brew uninstall "$tool"
-  elif is-debian ; then
+  elif is_debian ; then
     apt-get -y remove "$tool"
     if [[ $? == 100 ]] ; then
       export DOTFILES_SUDO_REQUIRED='requires sudo for "apt-get remove"'
@@ -293,18 +293,18 @@ function uninstall-with-pkg-manager () {
   set -e
 }
 
-function toolname-from-git-repo-http-url() {
+function toolname_from_git_repo_http_url() {
   toolname="${1##*/}"
   toolname="${toolname%%.git}"
 }
 
-function toolname-from-pwd () {
+function toolname_from_pwd () {
   toolname=$(pwd)
   toolname=${toolname##*/}
 }
 
-function uninstall-tool-from-git-repo() {
-  toolname-from-git-repo-http-url "$1"
+function uninstall_tool_from_git_repo() {
+  toolname_from_git_repo_http_url "$1"
   curr=$(pwd)
   # shellcheck disable=SC2154
   folder="$DOTFILES_TOOLS_INSTALLATION_FOLDER/$toolname"
@@ -316,7 +316,7 @@ function uninstall-tool-from-git-repo() {
 
 # TODO should probably delete this and make things explicit
 # --function install-tool-from-git-repo (gitrepo, git tag, commands to install) {
-function install-tool-from-git-repo () {
+function install_tool_from_git_repo () {
   curr=$(pwd)
   toolname="${1##*/}"
   toolname="${toolname%%.git}"
@@ -336,7 +336,7 @@ function install-tool-from-git-repo () {
   cd "$curr" || exit 1
 }
 
-function install-tool () {
+function install_tool () {
   curr=$(pwd)
   tool="$1"
   shift

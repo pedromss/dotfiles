@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-skip-if-installed 'rustup'
+skip_if_installed 'rustup'
 
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
   default_host_triple=''
-  if is-rpi ; then
+  if is_rpi ; then
     # assume raspberry pi
     default_host_triple='armv7-unknown-linux-gnueabihf'
-  elif is-ubuntu ; then
+  elif is_ubuntu ; then
     default_host_triple='x86_64-unknown-linux-gnu'
-  elif is-macos ; then
+  elif is_macos ; then
     default_host_triple='x86_64-apple-darwin'
   else
     echo 'Unable to set default-host-triple automatically'

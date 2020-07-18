@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
 echo 'Creating links...'
-create-link-at-home 'tools/vim/.vim'
-create-link-at-home 'tools/vim/ultisnips'
-create-link-at-home 'tools/vim/.vimrc'
-create-link-at-home 'tools/vim/.ideavim'
-create-link-at-home 'tools/vim/.ideavimrc'
+create_link_at_home 'tools/vim/.vim'
+create_link_at_home 'tools/vim/ultisnips'
+create_link_at_home 'tools/vim/.vimrc'
+create_link_at_home 'tools/vim/.ideavim'
+create_link_at_home 'tools/vim/.ideavimrc'
 
 echo 'Check is skip'
-skip-if-installed
+skip_if_installed
 if ! (( ${DOTFILES_SHOULD_STOP_CURRENT:-0} )) ; then
 
   echo 'Installing with package manager'
-  install-with-pkg-manager
+  install_with_pkg_manager
 
   echo 'Installing Vim Plug, the plugin manager'
   mkdir -p "$DOTFILES_FULL_PATH/tools/vim/.vim/autoload"

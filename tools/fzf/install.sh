@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-skip-if-dir-exists "$DOTFILES_FZF_DIR"
+skip_if_dir_exists "$DOTFILES_FZF_DIR"
 
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
   curr=$(pwd)

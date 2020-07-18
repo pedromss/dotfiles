@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-skip-if-os-is 'rpi'
+skip_if_os_is 'rpi'
 
 ln -sfv "$DOTFILES_FULL_PATH/tools/ctags/.ctags" "$DOTFILES_USER_HOME/.ctags"
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-  install-with-pkg-manager
+  install_with_pkg_manager
 fi
 

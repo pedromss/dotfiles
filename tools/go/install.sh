@@ -11,11 +11,11 @@ if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
     read -r -n 1
   fi
 
-  if is-rpi ; then
+  if is_rpi ; then
     arch='linux-armv6l'
-  elif is-ubuntu ; then
+  elif is_ubuntu ; then
     arch='linux-amd64'
-  elif is-macos ; then
+  elif is_macos ; then
     arch='darwin-amd64'
   else
     echo 'No arch defined. Aborting golang'

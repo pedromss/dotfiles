@@ -2,9 +2,9 @@
 
 # --kpod(context, namespace, fuzzy-pod-name)
 function kpodc () {
-  if is-linux ; then
+  if is_linux ; then
     kpod "$@" | xclip -selection clipboard
-  elif is-macos ; then
+  elif is_macos ; then
     kpod "$@" | pbcopy
   else
     echo 'Unknown OS. Will not run kpod()'

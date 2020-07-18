@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-skip-if-installed 'pip3'
+skip_if_installed 'pip3'
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-  install-with-pkg-manager 'python3-pip'
+  install_with_pkg_manager 'python3-pip'
 fi

@@ -3,9 +3,9 @@
 depends_on 'cargo'
 
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-  if is-macos ; then
-    install-with-pkg-manager
+  if is_macos ; then
+    install_with_pkg_manager
   else
-    install-with-cargo
+    install_with_cargo
   fi
 fi

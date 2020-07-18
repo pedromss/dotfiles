@@ -21,7 +21,7 @@ shck_dotfiles () {
 
 # --leds_off({0 | 1}) {
 leds_off () {
-  if is-rpi ; then
+  if is_rpi ; then
     echo "$1" | sudo tee /sys/class/leds/led0/brightness
     echo "$1" | sudo tee /sys/class/leds/led1/brightness
   else
@@ -84,8 +84,7 @@ function command_exists () {
   type "$1" 1>/dev/null 2>/dev/null
 }
 
-function touch-dotfiles () {
-  echo 'boo'
+function touch_dotfiles () {
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE"
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE"
   touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE"
@@ -104,43 +103,43 @@ function ask_yes_or_no () {
   fi
 }
 
-function is-rpi () {
-  check-os 'rpi'
+function is_rpi () {
+  check_os 'rpi'
 }
 
-function is-linux () {
-  check-os 'ubuntu|rpi'
+function is_linux () {
+  check_os 'ubuntu|rpi'
 }
 
-function is-debian () {
-  check-os 'ubuntu|rpi'
+function is_debian () {
+  check_os 'ubuntu|rpi'
 }
 
-function is-ubuntu () {
-  check-os 'ubuntu'
+function is_ubuntu () {
+  check_os 'ubuntu'
 }
 
-function is-unix () {
-  check-os 'mac|ubuntu|rpi'
+function is_unix () {
+  check_os 'mac|ubuntu|rpi'
 }
 
-function check-os () {
+function check_os () {
   if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
-    find-os
+    find_os
   fi
   [[ "$DOTFILES_RESOLVED_OS" =~ $1 ]]
 }
 
-function is-macos () {
+function is_macos () {
   [[ "$OSTYPE" =~ 'darwin' ]] || return 1
 }
 
 
-function find-os () {
+function find_os () {
   if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
     supported_oses='mac, rpi, ubuntu'
     os=''
-    if is-macos ; then
+    if is_macos ; then
       os='mac'
     elif [ -f '/etc/os-release' ]; then
       os_release=$(cat /etc/os-release)

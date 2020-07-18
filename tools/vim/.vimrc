@@ -110,7 +110,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'vim-latex/vim-latex'
 "Plug 'keith/investigate.vim'
 "Plug 'leafgarland/typescript-vim'
-"Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'

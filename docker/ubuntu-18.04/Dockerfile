@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update && apt-get -y install git sudo curl wget bc
 
-# fromhttps://stackoverflow.com/questions/25845538/how-to-use-sudo-inside-a-docker-container
+# from https://stackoverflow.com/questions/25845538/how-to-use-sudo-inside-a-docker-container
 RUN \
     groupadd -g 999 dummy && useradd -u 999 -g dummy -G sudo -m -s /bin/bash dummy && \
     sed -i /etc/sudoers -re 's/^%sudo.*/%sudo ALL=(ALL:ALL) NOPASSWD: ALL/g' && \

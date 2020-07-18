@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 quarantine
-skip-if-os-is 'rpi'
-skip-if-installed 'cs'
+skip_if_os_is 'rpi'
+skip_if_installed 'cs'
 
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
   conscript_version=${1:-'v0.5.0'}

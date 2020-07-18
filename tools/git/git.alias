@@ -19,10 +19,10 @@ alias gtagf='git fetch --tags'
 alias gco='git checkout'
 alias glc='git rev-parse --short HEAD'
 
-if is-linux ; then
+if is_linux ; then
   alias glcc='git rev-parse --short HEAD | xclip -selection clipboard'
   alias gbn='gbname | xclip -selection clipboard'
-elif is-macos ; then
+elif is_macos ; then
   alias glcc='git rev-parse --short HEAD | pbcopy'
   alias gbn='gbname | pbcopy'
 else

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-skip-if-os-is 'mac'
+skip_if_os_is 'mac'
 check_is_root
 
 if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
