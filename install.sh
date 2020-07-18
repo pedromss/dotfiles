@@ -8,12 +8,6 @@ tools_to_skip=()
 tools_requested=()
 tool_log_suffix='.log'
 
-tools_not_meant_for_os=()
-tools_failed=()
-tools_sudo_required=()
-tools_quarantined=()
-tools_already_installed=()
-
 export DOTFILES_PROMPT=1
 export DOTFILES_TOOL_PACKAGE_MANAGER=''
 export DOTFILES_TOOL_WAS_SKIPPED=0
@@ -136,22 +130,10 @@ function parse_flags () {
       *)
         echo "Unknown option: $1"
         print_help
-        exit -1
+        exit 1
         ;;
     esac
   done
-}
-
-function resolve_largest_tool_size () {
-  typeset -x -i largest_tool_size
-  typeset -i max=0
-  for t in "${tools_to_install[@]}" ; do
-    len="${#t}"
-    if [[ $len -gt $max ]] ; then
-      max=$len
-    fi
-  done
-  export DOTFILES_LARGET_TOOL_SIZE=$max
 }
 
 function reset_control_env_variables () {
@@ -210,6 +192,7 @@ function evaluate_tool_file () {
 
   export DOTFILES_CURRENT_TOOL="$tool"
   export DOTFILES_UPDATE_RUN=$update
+  # shellcheck disable=SC2119
   skip_if_installed
   if ! [ -f "$file_to_eval" ] ; then
     export DOTFILES_EXTRAS_ONLY=1
@@ -259,15 +242,16 @@ function ensure_required_directories_exist () {
 }
 
 function scan_all_tools () {
-  for f in `find "$DOTFILES_FULL_PATH/tools" -maxdepth 1 -type d` ; do
+  while IFS= read -r -d '' f
+  do
     name="${f##*/}" # remove the path, leaving only the tool name
     if [[ "$name" == "tools" ]] ; then
       # ignore the current dir
       continue
     fi
     all_tools+=("$name")
-  done
-  IFS=$'\n' all_tools=($(sort <<<"${all_tools[*]}"))
+    echo "$name"
+  done < <(find "$DOTFILES_FULL_PATH/tools" -maxdepth 1 -type d -print0)
   unset IFS
 }
 
@@ -293,10 +277,9 @@ function make_execution_plan () {
       tools_to_install+=("$t1")
     fi
   done
-  IFS=$'\n'
-  tools_to_skip=($(sort <<<"${tools_to_skip[*]}"))
-  tools_to_install=($(sort <<<"${tools_to_install[*]}"))
-  tools_to_install=($(uniq <<<"${tools_to_install[*]}"))
+  IFS=" " read -r -a tools_to_skip <<< "$(sort <<<"${tools_to_skip[*]}")"
+  IFS=" " read -r -a tools_to_install <<< "$(sort <<<"${tools_to_install[*]}")"
+  IFS=" " read -r -a tools_to_install <<< "$(uniq <<<"${tools_to_install[*]}")"
   unset IFS
 }
 
@@ -315,7 +298,7 @@ function link_and_prepare_env_to_source () {
 
   unset_control_env_variables
   dotfiles_env_file="$DOTFILES_FULL_PATH/bin/dotfiles.env"
-  IFS=$'\n' envs=($(sort <<<"$(env | grep DOTFILES)"))
+  IFS=$'\n' read -r -a envs <<< "$(sort <<<"$(env | grep DOTFILES)")"
   unset IFS
   rm -rf "$DOTFILES_FULL_PATH/bin/dotfiles.env"
 
@@ -327,6 +310,7 @@ function link_and_prepare_env_to_source () {
     echo "export $e" >> "$dotfiles_env_file"
   done
 
+  # shellcheck disable=SC2129
   echo "export XDG_CONFIG_HOME=$DOTFILES_XDG_CONFIG_HOME" >> "$dotfiles_env_file"
   echo "export XDG_DATA_HOME=$DOTFILES_XDG_DATA_HOME" >> "$dotfiles_env_file"
 
@@ -350,9 +334,14 @@ function link_and_prepare_env_to_source () {
 }
 
 function prompt_for_continue () {
-  question='Continue?'
   if [[ $DOTFILES_PROMPT != 0 ]] ; then
-    ask_yes_or_no "$question"
+    printf "Continue? [Y/n]: "
+    read -r yesno
+    yesno=${yesno,,}
+    if ! [[ "${yesno:-y}" =~ ^(y|yes)$ ]] ; then
+      echo 'Aborting installation!'
+      exit 0
+    fi
   fi
 }
 

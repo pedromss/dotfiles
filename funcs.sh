@@ -13,13 +13,6 @@ function check_is_root () {
   fi
 }
 
-function prompt_for_continue () {
-  question='Continue?'
-  if [[ $DOTFILES_PROMPT != 0 ]] ; then
-    ask_yes_or_no "$question"
-  fi
-}
-
 function install_with_npm () {
   tool="${1:-$DOTFILES_CURRENT_TOOL}"
   npm install -g --save-dev "$tool"
@@ -76,7 +69,7 @@ function create_link_at_home () {
 }
 
 function destroy_at_home () {
-  rm -rf "$DOTFILES_USER_HOME/$1"
+  rm -rf "${DOTFILES_USER_HOME:?}/$1"
 }
 
 function create_nest_at_home() {

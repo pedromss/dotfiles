@@ -12,7 +12,7 @@ function shck_dotfiles_recursive () {
   done <   <(find "$dir" -type f \( -name "*.sh" -or -name '*.alias' -or -name '*.functions' -or -name '*.env' \) -print0)
 }
 
-shck_dotfiles () {
+function shck_dotfiles () {
   shck_dotfiles_recursive "$DOTFILES_FULL_PATH/tools"
   shck_one "$DOTFILES_FULL_PATH/install.sh"
   shck_one "$DOTFILES_FULL_PATH/func.sh"
@@ -20,7 +20,7 @@ shck_dotfiles () {
 }
 
 # --leds_off({0 | 1}) {
-leds_off () {
+function leds_off () {
   if is_rpi ; then
     echo "$1" | sudo tee /sys/class/leds/led0/brightness
     echo "$1" | sudo tee /sys/class/leds/led1/brightness
@@ -30,7 +30,7 @@ leds_off () {
 }
 
 # --listfn([toolName = runcom/.functions]) {
-listfn () {
+function listfn () {
   function_path="$HOME/dotfiles/tools"
   if [ -n "$1" ]
   then
@@ -49,7 +49,7 @@ listfn () {
 }
 
 # --print_cmd_exists(commandName) {
-print_cmd_exists() {
+function print_cmd_exists() {
   if command_exists "$1"
   then
     echo 'yes'
@@ -58,19 +58,19 @@ print_cmd_exists() {
   fi
 }
 
-mk() {
+function mk() {
   mkdir -p "$1" && cd "$_" || exit 1
 }
 
-open_conns() {
+function open_conns() {
   netstat -nat | awk '{print $6}' | sort | uniq -c | sort -n
 }
 
-command_exists() {
+function command_exists() {
   type "$1" 1>/dev/null 2>/dev/null
 }
 
-cag() {
+function cag() {
   if command_exists ag
   then
     ag "$1" --numbers --pager less --stats --nopager "${@:2}"
@@ -82,25 +82,6 @@ cag() {
 
 function command_exists () {
   type "$1" 1>/dev/null 2>/dev/null
-}
-
-function touch_dotfiles () {
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ALIAS_FILE"
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_CONFIG_FILE"
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_ENV_FILE"
-  touch -a "${DOTFILES_FULL_PATH:?}/$DOTFILES_SOURCES_FILE"
-}
-
-function ask_yes_or_no () {
-  question="$1"
-
-  printf "$question [Y/n]: "
-  read -r yesno
-  yesno=${yesno,,}
-  if ! [[ "${yesno:-y}" =~ ^(y|yes)$ ]] ; then
-    echo 'Aborting installation!'
-    exit 0
-  fi
 }
 
 function is_rpi () {
@@ -133,7 +114,6 @@ function check_os () {
 function is_macos () {
   [[ "$OSTYPE" =~ 'darwin' ]] || return 1
 }
-
 
 function find_os () {
   if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
