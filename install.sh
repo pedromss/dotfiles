@@ -114,130 +114,6 @@ typeset progress
 typeset -i -r progress_max=25
 typeset -i processed_so_far=0
 
-function register_progress () {
-  local percentage
-  typeset -r tool="$1"
-  typeset -i i=0
-  typeset -i total_tools=${#tools_to_install[@]}
-
-  processed_so_far=$(echo "$processed_so_far + 1" | bc -l)
-  percentage=$(echo "$processed_so_far / $total_tools" | bc -l)
-  local step
-  step=$(echo "$progress_max * $percentage" | bc -l)
-  percentage=$(echo "$percentage * 100" | bc -l)
-  percentage=${percentage%.*}
-  if [[ $percentage -gt 100 ]] ; then
-    percentage=100
-  fi
-
-  step=${step%.*}
-  new_progress=">"
-  typeset -i i=0
-  while [[ $i -le $step ]] ; do
-    if [[ $i -ge 1 ]] ; then
-      new_progress="=$new_progress"
-    fi
-    i=$(( i + 1 ))
-  done
-  progress="$new_progress"
-
-  desc=$(printf "Tool: %-${DOTFILES_LARGET_TOOL_SIZE}s" "$tool")
-  if [[ $processed_so_far -eq $total_tools ]] ; then
-    printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\n" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
-  elif [[ $processed_so_far -eq $total_tools ]] ; then
-    printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\n" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
-  else
-    printf "%s [%-26s] Installed: [%3d/%-3d] Failed: [%3d] %d%s\r" "$desc" "$progress" "$processed_so_far" "$total_tools" "${#tools_failed[@]}" "$percentage" "%"
-  fi
-}
-
-
-function print_table_border () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  printf "| --------------- | --------- | ------------------------------ |\n"
-}
-
-function print_execution_plan_table_border () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  printf "| --------------- | --------- |\n"
-}
-
-function print_table_entry () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  print_first_cell "$1"
-  print_remainder_of_line "$2" "$3"
-}
-
-function print_first_cell () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  printf "| %15s |" "$1"
-}
-
-function print_second_cell () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  printf " %-9s |" "$1"
-}
-
-function print_third_cell () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  printf " %-30s |" "$1"
-}
-
-function print_remainder_of_line () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  print_second_cell "$1"
-  print_third_cell "$2"
-  printf "\n"
-}
-
-function print_installed_tool () {
-  local tool="$1"
-  local last_exit_code="$2"
-  local upper_case_os
-  upper_case_os=$(tr '[:lower:]' '[:upper:]' <<< "$DOTFILES_RESOLVED_OS")
-
-  if (( ${last_exit_code:-0} )) ; then
-    print_remainder_of_line 'Failure' "Check ${tool}${tool_log_suffix} file"
-    tools_failed+=("$tool")
-  elif (( "${DOTFILES_SUDO_REQUIRED:-0}" )) ; then
-    tools_sudo_required+=("$tool")
-    print_remainder_of_line 'Skipped' '"sudo" required'
-  elif (( "${DOTFILES_TOOL_QUARANTINED:-0}" )) ; then
-    tools_quarantined+=("$tool")
-    print_remainder_of_line 'Skipped' "Quarantined"
-  elif (( "${DOTFILES_TOOL_NOT_MEANT_FOR_OS:-0}" )) ; then
-    tools_not_meant_for_os+=("$tool")
-    print_remainder_of_line 'Skipped' "Not meant for $upper_case_os"
-  elif (( "${DOTFILES_EXTRAS_ONLY:-0}" )) ; then
-    tools_extras_only+=("$tool")
-    print_remainder_of_line 'Updated' 'Extras only'
-  elif (( "${DOTFILES_DEPENDENCY_MISSING:-0}" )) ; then
-    counter_tools_dependency_missing=$(( counter_tools_dependency_missing + 1 ))
-    print_remainder_of_line 'Skipped' "Needs '$DOTFILES_REQUIRED_DEPENDENCY'"
-  elif (( "${DOTFILES_TOOL_ALREADY_INSTALLED:-0}" )) ; then
-    print_remainder_of_line 'Skipped ' 'Already Installed'
-    tools_already_installed+=("$tool")
-  else
-    print_remainder_of_line 'Installed' '-'
-  fi
-
-  reset_control_env_variables
-}
-
 function reset_control_env_variables () {
   export DOTFILES_SHOULD_STOP_CURRENT=0
   export DOTFILES_TOOL_ALREADY_INSTALLED=0
@@ -291,7 +167,6 @@ function evaluate-tool-file () {
   local action="$2"
   local file_to_eval="tools/$tool/$action.sh"
 
-  print_first_cell "$tool"
   check_tool_metadata_to_save "$tool"
 
   export DOTFILES_CURRENT_TOOL="$tool"
@@ -315,7 +190,6 @@ function evaluate-tool-file () {
       fi
     fi
   fi
-  print_installed_tool "$tool" "$exit_code"
 }
 
 function set_file_system_env () {
@@ -386,54 +260,13 @@ function make_execution_plan () {
   unset IFS
 }
 
-function print_2_cell_row () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  print_first_cell "$1"
-  print_second_cell "$2"
-  printf "\n"
-}
-
-function print_execution_plan () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    return
-  fi
-  echo 'Execution plan:'
-  print_execution_plan_table_border
-  print_2_cell_row 'Tool' 'Action'
-  print_execution_plan_table_border
-  for t2 in "${tools_to_skip[@]}" ; do
-    print_2_cell_row "$t2" 'Skip'
-  done
-  for t3 in "${tools_to_install[@]}" ; do
-    if command_exists "$t3" ; then
-      print_2_cell_row "$t3" 'Update'
-    else
-      print_2_cell_row "$t3" 'Install'
-    fi
-  done
-  print_execution_plan_table_border
-  prompt_for_continue
-}
-
 function execute_plan () {
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    print_table_border
-    print_table_entry 'Tool' 'Outcome' 'Hint'
-    print_table_border
-  fi
-
   for t in "${tools_to_install[@]}" ; do
     if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
       register_progress "$t"
     fi
     evaluate-tool-file "$t" "$action"
   done
-
-  if ! (( ${DOTFILES_SHOW_PROGRESS:-0} )) ; then
-    print_table_border
-  fi
 }
 
 function link_and_prepare_env_to_source () {
@@ -497,7 +330,6 @@ printf "OS:   %-15s\n" "$DOTFILES_RESOLVED_OS"
 prompt_for_continue
 scan_all_tools
 make_execution_plan
-print_execution_plan
 resolve_largest_tool_size
 prompt_for_continue
 
