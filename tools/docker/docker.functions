@@ -2,13 +2,13 @@
 
 # --docker_rmi_dangling([$@ passed to docker rmi]) {
 function docker_rmi_dangling () {
-  docker rmi $(docker images -f dangling=true -q) "$@"
+  docker rmi "$(docker images -f dangling=true -q)" "$@"
 }
 
 # --function drmf([containerName | partial matches allowed]) {
 function drmf() {
   query=${1:-'.*'}
-  docker rm -f $(docker ps -a --format '{{.Names}}' --filter name=".*$query.*")
+  docker rm -f "$(docker ps -a --format '{{.Names}}' --filter name=".*$query.*")"
 }
 
 # --function drmftls(remoteHost, [containerName | partial matches allowed]) {

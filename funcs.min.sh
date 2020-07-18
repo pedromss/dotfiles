@@ -15,8 +15,8 @@ function shck_dotfiles_recursive () {
 function shck_dotfiles () {
   shck_dotfiles_recursive "$DOTFILES_FULL_PATH/tools"
   shck_one "$DOTFILES_FULL_PATH/install.sh"
-  shck_one "$DOTFILES_FULL_PATH/func.sh"
-  shck_one "$DOTFILES_FULL_PATH/func.min.sh"
+  shck_one "$DOTFILES_FULL_PATH/funcs.sh"
+  shck_one "$DOTFILES_FULL_PATH/funcs.min.sh"
 }
 
 # --leds_off({0 | 1}) {
