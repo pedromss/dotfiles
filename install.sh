@@ -25,78 +25,134 @@ export DOTFILES_TOOL_QUARANTINED=0
 export DOTFILES_SUDO_REQUIRED=0
 export DOTFILES_MANAGED_BY_ZPLUG=0
 
+function main() {
+  parse_flags "$@"
+  if (( ${utils:-0} )) ; then 
+    link_and_prepare_env_to_source
+    exit 0
+  fi
+
+  action='install'
+  set_file_system_env
+  . funcs.sh
+  find-os
+  ensure_required_directories_exist
+
+  printf "User: %-15s\n" "$DOTFILES_USER"
+  printf "Home: %-15s\n" "$DOTFILES_USER_HOME"
+  printf "OS:   %-15s\n" "$DOTFILES_RESOLVED_OS"
+
+  prompt_for_continue
+  scan_all_tools
+  make_execution_plan
+  resolve_largest_tool_size
+
+  if ! (( ${dry_run:-0} )) ; then
+    execute_plan
+  fi
+
+  link_and_prepare_env_to_source
+
+  echo 'All done!'
+}
+
 function print_help () {
   cat << EOF
 Usage: ./install.sh [options]'
 
 Options:
-  -t, --tool {toolname}     > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
-  -u, --update              > Whether or not to update the selected tool. If not specfied installers will only run if
-  --utils                   > Sources envs and utility functions, does not install any tool
-                            > the tool is missing
-  -v, --verbose             > If set a table with all tools and status will be printed as things are installed
-  --no{-tool}               > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
-  -x                        > Equivalent to 'set -x' in bash. Does not work well with '-v'
-                            > Defaults to [0] which only prints progress information
-  -y, --no-prompt           > say yes to everything and automate as much as possible
-  -h, --help                > Print this help menu
-  --dry-run                 > Don't install anything, just print what would happen
+  -t, --tool {toolname}      > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
+  -u, --update               > Whether or not to update the selected tool. If not specfied installers will only run if
+  --utils                    > Sources envs and utility functions, does not install any tool
+                             > the tool is missing
+  -v, --verbose              > If set a table with all tools and status will be printed as things are installed
+  --no{-tool}                > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
+  -x                         > Equivalent to 'set -x' in bash. Does not work well with '-v'
+                             > Defaults to [0] which only prints progress information
+  -y, --no-prompt            > say yes to everything and automate as much as possible
+  -h, --help                 > Print this help menu
+  --dry-run                  > Don't install anything, just print what would happen
+  --reminders                > Print reminders about system changes that should be done for all tools to work well
 EOF
 }
-while [[ $# -gt 0 ]]
-do
-  key="$1"
-  case $key in
-    --dry-run)
-      dry_run=1
-      shift
-      ;;
-    -t)
-      if [ -d "tools/$tool" ] ; then
-        tools_requested+=("$2")
-      else
-        echo "Ignoring unknown tool $2"
-      fi
-      shift 2
-      ;;
-    --no-*)
-      name="${1##*-}"
-      name=$(tr '[:upper:]' '[:lower:]' <<< "$name")
-      tools_to_skip+=("$name")
-      shift
-      ;;
-    -v|--verbose)
-      export DOTFILES_SHOW_OUTPUT=1
-      shift
-      ;;
-    -x)
-      set -x
-      shift
-      ;;
-    -u|--update)
-      update=1
-      shift
-      ;;
-    --utils)
-      utils=1
-      shift
-      ;;
-    -y)
-      export DOTFILES_PROMPT=0
-      shift
-      ;;
-    -h|--help)
-      print_help
-      exit 0
-      shift
-      ;;
-    *)
-      echo "Unknown option: $1"
-      print_help
-      exit -1
-      ;;
-  esac
-done
+
+function print_reminders() {
+cat << EOF
+Remember to:
+source ~/.bashrc
+If you installed vim, run inside vim:
+:PlugInstall
+If you installed tmux, run inside tmux:
+tmux source $DOTFILES_TMUX_CONF_FILE
+CTRL-B + SHIFT-I to install plugins with tpm
+If you installed zsh, consider:
+# Make zsh the default shell
+chsh -s $(type -p zsh)
+# Make zsh the default shell for root
+sudo chsh -s $(type -p zsh)
+EOF
+}
+
+function parse_flags () {
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case $key in
+      --reminders)
+        print_reminders
+        exit 0
+        ;;
+      --dry-run)
+        dry_run=1
+        shift
+        ;;
+      -t)
+        if [ -d "tools/$tool" ] ; then
+          tools_requested+=("$2")
+        else
+          echo "Ignoring unknown tool $2"
+        fi
+        shift 2
+        ;;
+      --no-*)
+        name="${1##*-}"
+        name=$(tr '[:upper:]' '[:lower:]' <<< "$name")
+        tools_to_skip+=("$name")
+        shift
+        ;;
+      -v|--verbose)
+        export DOTFILES_SHOW_OUTPUT=1
+        shift
+        ;;
+      -x)
+        set -x
+        shift
+        ;;
+      -u|--update)
+        update=1
+        shift
+        ;;
+      --utils)
+        utils=1
+        shift
+        ;;
+      -y)
+        export DOTFILES_PROMPT=0
+        shift
+        ;;
+      -h|--help)
+        print_help
+        exit 0
+        shift
+        ;;
+      *)
+        echo "Unknown option: $1"
+        print_help
+        exit -1
+        ;;
+    esac
+  done
+}
 
 function resolve_largest_tool_size () {
   typeset -x -i largest_tool_size
@@ -309,44 +365,4 @@ function link_and_prepare_env_to_source () {
   chown -R "$DOTFILES_USER" "$DOTFILES_FULL_PATH/tools/vim/.vim"
 }
 
-if (( ${utils:-0} )) ; then 
-  link_and_prepare_env_to_source
-  exit 0
-fi
-
-action='install'
-set_file_system_env
-. funcs.sh
-find-os
-ensure_required_directories_exist
-
-printf "User: %-15s\n" "$DOTFILES_USER"
-printf "Home: %-15s\n" "$DOTFILES_USER_HOME"
-printf "OS:   %-15s\n" "$DOTFILES_RESOLVED_OS"
-
-prompt_for_continue
-scan_all_tools
-make_execution_plan
-resolve_largest_tool_size
-
-if ! (( ${dry_run:-0} )) ; then
-  execute_plan
-fi
-
-link_and_prepare_env_to_source
-
-echo 'All done!'
-cat << EOF
-Remember to:
-source ~/.bashrc
-If you installed vim, run inside vim:
-:PlugInstall
-If you installed tmux, run inside tmux:
-tmux source $DOTFILES_TMUX_CONF_FILE
-CTRL-B + SHIFT-I to install plugins with tpm
-If you installed zsh, consider:
-# Make zsh the default shell
-chsh -s $(type -p zsh)
-# Make zsh the default shell for root
-sudo chsh -s $(type -p zsh)
-EOF
+main "$@"
