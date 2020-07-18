@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-function install_with_npm () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-  npm install -g --save-dev "$tool"
-}
-
 function update_github_repo () {
   git pull origin master
 }
@@ -25,8 +20,74 @@ function prompt_for_continue () {
   fi
 }
 
-function skip_if_tool_is_not_installed () {
-  command_exists "$1" || { echo " ---> skipping: [$2] because [$1] is required for it"; exit 0; }
+function install_with_pkg_manager () {
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
+
+  set +e
+  if is_macos ; then
+    brew install "$tool"
+  elif is_debian ; then
+    apt-get -y install "$tool"
+    if [[ "$?" == 100 ]] ; then
+      export DOTFILES_SUDO_REQUIRED=1
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+      return
+    fi
+  else
+    echo 'Unable to resolve package manager'
+    exit 1
+  fi
+}
+
+# TODO should probably delete this and make things explicit
+# --function install-tool-from-git-repo (gitrepo, git tag, commands to install) {
+function install_tool_from_git_repo () {
+  curr=$(pwd)
+  toolname="${1##*/}"
+  toolname="${toolname%%.git}"
+  folder="${DOTFILES_TOOLS_INSTALLATION_FOLDER:?}/$toolname"
+  if ! [ -d "$folder" ]; then
+    git clone --depth 1 "$1" "$folder"
+  fi
+  cd "$folder" || exit 1
+  git fetch -q --tags
+  echo "Checking out $2..."
+  git checkout -q "$2"
+
+  echo "Installing..."
+  eval "$3"
+
+  echo "Installed $toolname!"
+  cd "$curr" || exit 1
+}
+
+function install_tool () {
+  curr=$(pwd)
+  tool="$1"
+  shift
+  if ! [ -d "tools/$tool" ]; then
+    echo " ---> skipping: [$tool] - not found!"
+  else
+    cd "tools/$tool" || exit 1
+
+    if ! [ -f 'install.sh' ]; then
+      echo " ---> skipping: [$tool] - no install file present"
+    else
+      set +e
+      ./install.sh "$tool"
+      set -e
+      # shellcheck disable=SC2181
+      if [[ "$?" != 0 ]]; then
+        echo "FAILED installing $tool"
+      fi
+    fi
+  fi
+  cd "$curr" || exit
+}
+
+function install_with_npm () {
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
+  npm install -g --save-dev "$tool"
 }
 
 function install_with_pip () {
@@ -49,22 +110,6 @@ function depends_on () {
     if ! command_exists "$tool" ; then
       export DOTFILES_DEPENDENCY_MISSING=1
       export DOTFILES_REQUIRED_DEPENDENCY="$tool"
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-    fi
-  fi
-}
-
-function skip_if_installed () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-  if (( ${DOTFILES_UPDATE_RUN:-0} )) ; then
-    DOTFILES_SHOULD_STOP_CURRENT=0
-    return
-  fi
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if command_exists "$tool" \
-      || [ -d "$DOTFILES_BIN/$tool" ] \
-      || [ -f "$DOTFILES_BIN/cargo/bin/$tool" ] ; then
-      export DOTFILES_TOOL_ALREADY_INSTALLED=1
       export DOTFILES_SHOULD_STOP_CURRENT=1
     fi
   fi
@@ -96,16 +141,6 @@ function cleanup () {
   cleanup_dotfiles_alias_file
   cleanup_dotfiles_env_file
   cleanup_dotfiles_sources_file
-}
-
-function skip_if_os_is () {
-  os="$1"
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if [[ "$DOTFILES_RESOLVED_OS" =~ $os ]]; then
-      export DOTFILES_TOOL_NOT_MEANT_FOR_OS=1
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-    fi
-  fi
 }
 
 function only_if_os_is () {
@@ -238,6 +273,26 @@ function clone_from_github () {
   fi
 }
 
+function skip_if_tool_is_not_installed () {
+  command_exists "$1" || { echo " ---> skipping: [$2] because [$1] is required for it"; exit 0; }
+}
+
+function skip_if_installed () {
+  tool="${1:-$DOTFILES_CURRENT_TOOL}"
+  if (( ${DOTFILES_UPDATE_RUN:-0} )) ; then
+    DOTFILES_SHOULD_STOP_CURRENT=0
+    return
+  fi
+  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
+    if command_exists "$tool" \
+      || [ -d "$DOTFILES_BIN/$tool" ] \
+      || [ -f "$DOTFILES_BIN/cargo/bin/$tool" ] ; then
+      export DOTFILES_TOOL_ALREADY_INSTALLED=1
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+    fi
+  fi
+}
+
 function skip_if_dir_exists () {
   dir="$1"
   if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
@@ -245,25 +300,6 @@ function skip_if_dir_exists () {
       export DOTFILES_TOOL_ALREADY_INSTALLED=1
       export DOTFILES_SHOULD_STOP_CURRENT=1
     fi
-  fi
-}
-
-function install_with_pkg_manager () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-
-  set +e
-  if is_macos ; then
-    brew install "$tool"
-  elif is_debian ; then
-    apt-get -y install "$tool"
-    if [[ "$?" == 100 ]] ; then
-      export DOTFILES_SUDO_REQUIRED=1
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-      return
-    fi
-  else
-    echo 'Unable to resolve package manager'
-    exit 1
   fi
 }
 
@@ -312,51 +348,5 @@ function uninstall_tool_from_git_repo() {
   eval "$2"
   cd "$curr" || exit 1
   rm -rf "$folder"
-}
-
-# TODO should probably delete this and make things explicit
-# --function install-tool-from-git-repo (gitrepo, git tag, commands to install) {
-function install_tool_from_git_repo () {
-  curr=$(pwd)
-  toolname="${1##*/}"
-  toolname="${toolname%%.git}"
-  folder="${DOTFILES_TOOLS_INSTALLATION_FOLDER:?}/$toolname"
-  if ! [ -d "$folder" ]; then
-    git clone --depth 1 "$1" "$folder"
-  fi
-  cd "$folder" || exit 1
-  git fetch -q --tags
-  echo "Checking out $2..."
-  git checkout -q "$2"
-
-  echo "Installing..."
-  eval "$3"
-
-  echo "Installed $toolname!"
-  cd "$curr" || exit 1
-}
-
-function install_tool () {
-  curr=$(pwd)
-  tool="$1"
-  shift
-  if ! [ -d "tools/$tool" ]; then
-    echo " ---> skipping: [$tool] - not found!"
-  else
-    cd "tools/$tool" || exit 1
-
-    if ! [ -f 'install.sh' ]; then
-      echo " ---> skipping: [$tool] - no install file present"
-    else
-      set +e
-      ./install.sh "$tool"
-      set -e
-      # shellcheck disable=SC2181
-      if [[ "$?" != 0 ]]; then
-        echo "FAILED installing $tool"
-      fi
-    fi
-  fi
-  cd "$curr" || exit
 }
 
