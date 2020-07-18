@@ -6,7 +6,6 @@ all_tools=()
 tools_to_install=()
 tools_to_skip=()
 tools_requested=()
-tool_log_suffix='.log'
 
 export DOTFILES_PROMPT=1
 export DOTFILES_TOOL_PACKAGE_MANAGER=''
@@ -40,7 +39,9 @@ function main() {
   make_execution_plan
 
   if ! (( ${dry_run:-0} )) ; then
-    execute_plan
+    for t in "${tools_to_install[@]}" ; do
+      evaluate_tool_file "$t"
+    done
   fi
 
   link_and_prepare_env_to_source
@@ -184,8 +185,7 @@ function check_tool_metadata_to_save () {
 
 function evaluate_tool_file () {
   local tool="$1"
-  local action="$2"
-  local file_to_eval="tools/$tool/$action.sh"
+  local file_to_eval="tools/$tool/install.sh"
 
   check_tool_metadata_to_save "$tool"
 
@@ -196,19 +196,8 @@ function evaluate_tool_file () {
   if ! [ -f "$file_to_eval" ] ; then
     export DOTFILES_EXTRAS_ONLY=1
   else
-    if (( ${DOTFILES_SHOW_OUTPUT:-0} )) ; then
-      # shellcheck disable=1090
+    if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
       source "$file_to_eval" "$tool"
-    else
-      # shellcheck disable=1090
-      error_log="${tool}$tool_log_suffix"
-      echo '' >> "$error_log"
-      # shellcheck disable=1090
-      source "$file_to_eval" "$tool" 1>"$error_log" 2>"$error_log"
-      exit_code="$?"
-      if [[ $exit_code == 0 ]] ; then
-        rm -rf "$error_log"
-      fi
     fi
   fi
 }
@@ -279,12 +268,6 @@ function make_execution_plan () {
   IFS=" " read -r -a tools_to_install <<< "$(sort <<<"${tools_to_install[*]}")"
   IFS=" " read -r -a tools_to_install <<< "$(uniq <<<"${tools_to_install[*]}")"
   unset IFS
-}
-
-function execute_plan () {
-  for t in "${tools_to_install[@]}" ; do
-    evaluate_tool_file "$t" "$action"
-  done
 }
 
 function link_and_prepare_env_to_source () {
