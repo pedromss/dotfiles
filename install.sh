@@ -26,7 +26,9 @@ export DOTFILES_SUDO_REQUIRED=0
 export DOTFILES_MANAGED_BY_ZPLUG=0
 
 function main() {
+  reset_control_env_variables
   parse_flags "$@"
+  set_file_system_env
   if (( ${utils:-0} )) ; then 
     link_and_prepare_env_to_source
     exit 0
@@ -165,10 +167,6 @@ function resolve_largest_tool_size () {
   done
   export DOTFILES_LARGET_TOOL_SIZE=$max
 }
-
-typeset progress
-typeset -i -r progress_max=25
-typeset -i processed_so_far=0
 
 function reset_control_env_variables () {
   export DOTFILES_SHOULD_STOP_CURRENT=0
