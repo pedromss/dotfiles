@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+make_link "$DOTFILES_FULL_PATH/tools/nvim/init.vim" "$DOTFILES_NVIM_CONFIG_FOLDER/init.vim"

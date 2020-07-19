@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+if is_ubuntu ; then
+  echo 'Installing prerequisites to build neovim...'
+
+  export CMAKE_INSTALL_PREFIX="$DOTFILES_NVIM_INSTALLATION"
+
+  install_with_pkg_manager 'ninja-build'
+  install_with_pkg_manager 'gettext'
+  install_with_pkg_manager 'libtool'
+  install_with_pkg_manager 'libtool-bin'
+  install_with_pkg_manager 'autoconf'
+  install_with_pkg_manager 'automake'
+  install_with_pkg_manager 'cmake'
+  install_with_pkg_manager 'g++'
+  install_with_pkg_manager 'pkg-config'
+  install_with_pkg_manager 'unzip'
+
+  if ! [ -d "$DOTFILES_NVIM_REPO" ]; then
+    clone_from_github 'neovim/neovim' "$DOTFILES_NVIM_REPO"
+  fi
+  current=$(pwd)
+  cd "$DOTFILES_NVIM_REPO" || exit 1
+  git fetch --tags
+  git checkout stable
+  rm -rf build/  # clear the CMake cache
+  make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$DOTFILES_NVIM_INSTALLATION"
+  make install
+  cd "$current" || exit 1
+fi

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+#wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$DOTFILES_NVM_VERSION/install.sh" | bash
+curr=$(pwd)
+mkdir -p "$DOTFILES_NVM_DIR"
+git clone https://github.com/nvm-sh/nvm.git "$DOTFILES_NVM_DIR"
+git checkout "$DOTFILES_NVM_VERSION"
+cd "$curr" || exit 1

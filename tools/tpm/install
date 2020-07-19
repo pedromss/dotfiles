@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+clone_from_github 'tmux-plugins/tpm' "$DOTFILES_TPM_DIR"
+

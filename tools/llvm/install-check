@@ -1,0 +1,5 @@
+#/usr/bin/env bash
+
+if [ -f /usr/bin/clangd ] && [ -f /usr/bin/llvm-config ] ; then
+  export DOTFILES_TOOL_ALREADY_INSTALLED=1
+fi
