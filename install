@@ -1,0 +1,594 @@
+#!/usr/bin/env bash
+
+. 'funcs-export'
+
+all_tools=()
+tools_to_install=()
+tools_to_skip=()
+tools_requested=()
+
+export DOTFILES_PROMPT=1
+export DOTFILES_TOOL_PACKAGE_MANAGER=''
+export DOTFILES_TOOL_WAS_SKIPPED=0
+export DOTFILES_TOOL_ALREADY_INSTALLED=0
+export DOTFILES_TOOL_NOT_COMPATIBLE_WITH_OS=0
+export DOTFILES_TOOL_NOT_MEANT_FOR_OS=0
+export DOTFILES_TOOL_QUARANTINED=0
+export DOTFILES_SUDO_REQUIRED=0
+export DOTFILES_MANAGED_BY_ZPLUG=0
+
+function main() {
+  reset_control_env_variables
+  parse_flags "$@"
+  set_file_system_env
+
+  . funcs
+  find_os
+  ensure_required_directories_exist
+
+  printf "User: %-15s\n" "$DOTFILES_USER"
+  printf "Home: %-15s\n" "$DOTFILES_USER_HOME"
+  printf "OS:   %-15s\n" "$DOTFILES_RESOLVED_OS"
+
+  scan_all_tools
+  make_execution_plan
+
+  if ! (( ${utils:-0} )) ; then
+    update_package_managers
+    install_tools "$t"
+  fi
+
+  link_and_prepare_env_to_source
+
+  echo 'All done!'
+}
+
+function print_help () {
+  cat << EOF
+Usage: ./install.sh [options]'
+
+Options:
+  -t, --tool {toolname}          > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
+  -u, --update                   > Whether or not to update the selected tool. If not specfied installers will only run if
+  --utils                        > Sources envs and utility functions, does not install any tool
+                                 > the tool is missing
+  --packages{-type}              > Installs only the packages of the given type: os,cargo,go,python,curl,manager
+                                 > manager - installs packages with tools like brew, yum, apt-get
+                                 > os      - installs packages only for this specific os
+                                 > cargo   - installs packages with cargo, like mdcat, bat and exa
+                                 > go      - installs packages with go get
+                                 > curl    - installs packages from urls like curl ... https://script.com | bash
+                                 > python  - installs packages with pip or pip3
+  --no{-tool}                    > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
+  -y, --no-prompt                > say yes to everything and automate as much as possible
+  -h, --help                     > Print this help menu
+  --reminders                    > Print reminders about system changes that should be done for all tools to work well
+EOF
+}
+
+function print_reminders() {
+cat << EOF
+Remember to:
+source ~/.bashrc
+If you installed vim, run inside vim:
+:PlugInstall
+If you installed tmux, run inside tmux:
+tmux source $DOTFILES_TMUX_CONF_FILE
+CTRL-B + SHIFT-I to install plugins with tpm
+If you installed zsh, consider:
+# Make zsh the default shell
+chsh -s $(type -p zsh)
+# Make zsh the default shell for root
+sudo chsh -s $(type -p zsh)
+EOF
+}
+
+function parse_flags () {
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
+    case $key in
+      --reminders)
+        print_reminders
+        exit 0
+        ;;
+      -t)
+        if [ -d "tools/$tool" ] ; then
+          tools_requested+=("$2")
+        else
+          echo "Ignoring unknown tool $2"
+        fi
+        shift 2
+        ;;
+      --*-version)
+        x="$1"
+        t="${x#--}"
+        t="${t%%-*}"
+        t=$(tr '[:lower:]' '[:upper:]' <<< "$t")
+        export "DOTFILES_${t}_VERSION"="$2"
+        shift 2
+        ;;
+      --packages)
+        package_types=$(tr '[:upper:]' '[:lower:]' <<< "$2,")
+        echo "Types $package_types"
+        while read -r -d ',' package_type ; do
+          if [[ "$package_type" == 'os' ]] ; then os_packages=1; all_packages=0
+          elif [[ "$package_type" == 'manager' ]] ; then manager_packages=1; all_packages=0
+          elif [[ "$package_type" == 'go' ]] ; then go_packages=1; all_packages=0
+          elif [[ "$package_type" == 'npm' ]] ; then npm_packages=1; all_packages=0
+          elif [[ "$package_type" == 'cargo' ]] ; then cargo_packages=1; all_packages=0
+          elif [[ "$package_type" == 'python' ]] ; then python_packages=1; all_packages=0
+          elif [[ "$package_type" == 'curl' ]] ; then curl_packages=1; all_packages=0
+          elif [[ "$package_type" == 'custom' ]] ; then custom_packages=1; all_packages=0
+          fi
+        done < <(echo "$package_types")
+        shift 2
+        ;;
+      --no-*)
+        name="${1##*-}"
+        name=$(tr '[:upper:]' '[:lower:]' <<< "$name")
+        tools_to_skip+=("$name")
+        shift
+        ;;
+      -u|--update)
+        update=1
+        shift
+        ;;
+      --utils)
+        utils=1
+        shift
+        ;;
+      -y)
+        export DOTFILES_PROMPT=0
+        shift
+        ;;
+      -h|--help)
+        print_help
+        exit 0
+        shift
+        ;;
+      *)
+        echo "Unknown option: $1"
+        print_help
+        exit 1
+        ;;
+    esac
+  done
+}
+
+function reset_control_env_variables () {
+  export DOTFILES_SHOULD_STOP_CURRENT=0
+  export DOTFILES_TOOL_ALREADY_INSTALLED=0
+  export DOTFILES_DEPENDENCY_MISSING=0
+  export DOTFILES_REQUIRED_DEPENDENCY=''
+  export DOTFILES_TOOL_NOT_MEANT_FOR_OS=0
+  export DOTFILES_TOOL_QUARANTINED=0
+  export DOTFILES_UPDATE_RUN=0
+  export DOTFILES_SUDO_REQUIRED=0
+}
+
+function unset_control_env_variables () {
+  unset DOTFILES_SHOULD_STOP_CURRENT
+  unset DOTFILES_TOOL_ALREADY_INSTALLED
+  unset DOTFILES_DEPENDENCY_MISSING
+  unset DOTFILES_REQUIRED_DEPENDENCY
+  unset DOTFILES_TOOL_NOT_MEANT_FOR_OS
+  unset DOTFILES_TOOL_QUARANTINED
+  unset DOTFILES_SUDO_REQUIRED
+  unset DOTFILES_PROMPT
+  unset DOTFILES_MANAGED_BY_ZPLUG
+  unset DOTFILES_CURRENT_TOOL
+  unset DOTFILES_LARGET_TOOL_SIZE
+  unset DOTFILES_UPDATE_RUN
+}
+
+function check_tool_metadata_to_save () {
+  local tool="$1"
+  local tool_folder="$DOTFILES_FULL_PATH/tools/$tool"
+  if [ -f "$tool_folder/$tool.env" ] ; then
+    # shellcheck disable=1090
+    source "$tool_folder/$tool.env"
+  fi
+
+  if [ -f "$tool_folder/$tool.functions" ] ; then
+    # shellcheck disable=1090
+    source "$tool_folder/$tool.functions"
+  fi
+
+  if [ -f "$tool_folder/$tool.alias" ] ; then
+    # shellcheck disable=1090
+    source "$tool_folder/$tool.alias"
+  fi
+}
+
+function check_skip () {
+  for must_skip in "${tools_to_skip[@]}" ; do
+    if [[ "$1" == "$must_skip" ]] ; then
+      export DOTFILES_SHOULD_STOP_CURRENT=1
+    fi
+  done
+}
+
+function run_checks () {
+  local tool="$1"
+  if [ -f "tools/$tool/$tool.checks" ] ; then
+    # shellcheck disable=SC1090
+    . "tools/$tool/$tool.checks"
+  fi
+}
+
+function collect_packages () {
+  for t in "${packages[@]}" ; do
+    tool_name="${t%%\:*}"
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    export DOTFILES_CURRENT_TOOL="$tool_name"
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool_name"
+    package_name="${t##*\:}"
+    cmd="$cmd $package_name"
+  done
+}
+
+function collect_os_specific_packages () {
+  for t in "${os_specific_packages[@]}" ; do
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    tool_name="${t%%\:*}"
+    export DOTFILES_CURRENT_TOOL="$tool_name"
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool_name"
+    package_name="${t##*\:}"
+    cmd="$cmd $package_name"
+  done
+}
+
+function install_with_custom_scripts () {
+  for tool in "${tools_to_install[@]}" ; do
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    export DOTFILES_CURRENT_TOOL="$tool"
+    # shellcheck disable=SC2119
+    skip_if_installed
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool"
+
+    local file_to_eval="tools/$tool/install"
+    if ! [ -f "$file_to_eval" ] ; then continue ; fi
+
+    # shellcheck disable=1090
+    source "$file_to_eval" "$tool"
+  done
+}
+
+function install_cargo_packages () {
+  tools_to_install=('rust')
+  install_with_custom_scripts
+  local args=''
+  for t in "${cargo_packages[@]}" ; do
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    tool_name="${t%%\:*}"
+    export DOTFILES_CURRENT_TOOL="$tool_name"
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool_name"
+    package_name="${t##*\:}"
+    args="$args $package_name"
+  done
+
+  install_with_cargo "$args"
+}
+
+function install_npm_packages () {
+  tools_to_install=('nvm')
+  install_with_custom_scripts
+  . tools/nvm/nvm.env
+  
+  source
+  local args=''
+  for t in "${npm_packages[@]}" ; do
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    tool_name="${t%%\:*}"
+    export DOTFILES_CURRENT_TOOL="$tool_name"
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool_name"
+    package_name="${t##*\:}"
+    args="$args $package_name"
+  done
+
+  install_with_npm "$args"
+}
+
+function install_python_packages () {
+  install_with_pkg_manager 'python-pip python3-pip'
+  local args=''
+  for t in "${pip_packages[@]}" ; do
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    tool_name="${t%%\:*}"
+    export DOTFILES_CURRENT_TOOL="$tool_name"
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool_name"
+    package_name="${t##*\:}"
+    args="$args $package_name"
+  done
+
+  install_with_pip "$args"
+}
+
+function install_go_packages () {
+  tools_to_install=("go")
+  install_with_custom_scripts
+  for t in "${go_packages[@]}" ; do
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    tool_name="${t%%\:*}"
+    export DOTFILES_CURRENT_TOOL="$tool_name"
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool_name"
+    package_name="${t##*\:}"
+
+    install_with_go_get "$package_name"
+  done
+}
+
+function install_curl_packages () {
+  install_with_pkg_manager 'curl'
+  for t in "${raw_curl_installers[@]}" ; do
+    export DOTFILES_SHOULD_STOP_CURRENT=0
+    tool_name="${t%%\:*}"
+    export DOTFILES_CURRENT_TOOL="$tool_name"
+    check_skip
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    run_checks "$tool_name"
+    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
+    check_tool_metadata_to_save "$tool_name"
+    package_name="${t#*\:}"
+
+    install_with_curl "$package_name"
+  done
+}
+
+function install_tools () {
+  if (( ${all_packages:-1} )) || (( ${custom_packages:-0} )) ; then install_with_custom_scripts ; fi
+  if (( ${all_packages:-1} )) || (( ${cargo_packages:-0} )) ; then install_cargo_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${npm_packages:-0} )) ; then install_npm_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${go_packages:-0} )) ; then install_go_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${python_packages:-0} )) ; then install_python_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${curl_packages:-0} )) ; then install_curl_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${os_packages:-0} )) ; then 
+    collect_os_specific_packages
+    install_with_pkg_manager
+  fi
+  if (( ${all_packages:-1} )) || (( ${manager_packages:-0} )) ; then 
+    collect_packages
+    install_with_pkg_manager 
+  fi
+}
+
+function set_file_system_env () {
+  curr=$(pwd)
+  export DOTFILES_USER_HOME="${curr%/*}"
+  export DOTFILES_USER="${DOTFILES_USER_HOME##*/}"
+  export DOTFILES_FOLDER="${curr##*/}"
+  export DOTFILES_FULL_PATH="$curr"
+  export DOTFILES_BIN="$DOTFILES_FULL_PATH/bin"
+  export DOTFILES_XDG="$DOTFILES_FULL_PATH/xdg"
+  export DOTFILES_REPOS="$DOTFILES_FULL_PATH/repos"
+  export DOTFILES_XDG_CONFIG_HOME="$DOTFILES_XDG/.config"
+  export DOTFILES_XDG_DATA_HOME="$DOTFILES_XDG/.local/share"
+  export DOTFILES_LSP="$DOTFILES_BIN/lsp"
+  export XDG_CONFIG_HOME="$DOTFILES_XDG_CONFIG_HOME"
+  export XDG_DATA_HOME="$DOTFILES_XDG_DATA_HOME"
+  env | grep 'DOTFILES|XDG'
+}
+
+function ensure_required_directories_exist () {
+  mkdir -p "$DOTFILES_FULL_PATH"
+  mkdir -p "$DOTFILES_BIN"
+  mkdir -p "$DOTFILES_LSP"
+  mkdir -p "$DOTFILES_XDG"
+  mkdir -p "$XDG_CONFIG_HOME"
+  mkdir -p "$XDG_DATA_HOME"
+  mkdir -p "$DOTFILES_REPOS"
+}
+
+function scan_all_tools () {
+  scan_packages
+  scan_go_packages
+  scan_npm_packages
+  scan_cargo_packages
+  scan_pip_packages
+  scan_raw_curl_installers
+  scan_os_specific_packages
+  scan_os_skip_tools
+  for t in "${packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
+  for t in "${os_specific_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
+  for t in "${cargo_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
+  for t in "${npm_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
+  for t in "${pip_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
+  for t in "${go_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
+  for t in "${scan_raw_curl_installers[@]}" ; do all_tools+=("${t%%\:*}") ; done
+  for t in "${os_skip_tools[@]}" ; do tools_to_skip+=("${t%%\:*}") ; done
+  while IFS= read -r -d '' f
+  do
+    name="${f##*/}" # remove the path, leaving only the tool name
+    if [[ "$name" == "tools" ]] ; then
+      # ignore the current dir
+      continue
+    fi
+    all_tools+=("$name")
+  done < <(find "$DOTFILES_FULL_PATH/tools" -maxdepth 1 -type d -print0)
+  unset IFS
+  IFS=" " read -r -a all_tools <<< "$(uniq <<<"${all_tools[*]}")"
+}
+
+function scan_packages () {
+  packages=()
+  while read -r line ; do 
+    if ! [[ "$line" =~ ^#.* ]] ; then
+      packages+=("$line") ; 
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/packages"
+}
+
+function scan_os_specific_packages () {
+  if ! [ -f "$DOTFILES_FULL_PATH/tools/packages.$DOTFILES_RESOLVED_OS" ] ; then
+    return
+  fi
+  os_specific_packages=()
+  while read -r line ; do
+    if ! [[ "$line" =~ ^#.* ]] ; then
+    os_specific_packages+=("$line") ; 
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/packages.$DOTFILES_RESOLVED_OS"
+}
+
+function scan_cargo_packages () {
+  cargo_packages=()
+  while read -r line ; do
+    if ! [[ "$line" =~ ^#.* ]] ; then
+      cargo_packages+=("$line")
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/cargo-packages"
+}
+
+function scan_npm_packages () {
+  npm_packages=()
+  while read -r line ; do
+    if ! [[ "$line" =~ ^#.* ]] ; then
+      npm_packages+=("$line")
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/npm-packages"
+}
+
+function scan_pip_packages () {
+  pip_packages=()
+  while read -r line ; do 
+    if ! [[ "$line" =~ ^#.* ]] ; then
+      pip_packages+=("$line")
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/pip-packages"
+}
+
+function scan_go_packages () {
+  go_packages=()
+  while read -r line ; do
+    if ! [[ "$line" =~ ^#.* ]] ; then
+      pip_packages+=("$line")
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/pip-packages"
+}
+
+function scan_raw_curl_installers () {
+  raw_curl_installers=()
+  while read -r line ; do
+    if ! [[ "$line" =~ ^#.* ]] ; then
+      raw_curl_installers+=("$line")
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/raw-curl-installers"
+}
+
+function scan_os_skip_tools () {
+  if ! [ -f "$DOTFILES_FULL_PATH/tools/skip.$DOTFILES_RESOLVED_OS" ] ; then
+    return
+  fi
+  os_skip_tools=()
+  while read -r line ; do 
+    if ! [[ "$line" =~ ^#.* ]] ; then
+      os_skip_tools+=("$line")
+    fi
+  done < "$DOTFILES_FULL_PATH/tools/skip.$DOTFILES_RESOLVED_OS"
+}
+
+function make_execution_plan () {
+  local tools_to_consider=()
+  if (( ${#tools_requested[@]} > 0 )) ; then
+    tools_to_install=("${tools_requested[@]}")
+  else
+    tools_to_consider=("${all_tools[@]}")
+    should_install=1
+    for t1 in "${tools_to_consider[@]}" ; do
+      for t2 in "${tools_to_skip[@]}" ; do
+        if [[ "$t1" = "$t2" ]] ; then
+          should_install=0
+          continue
+        fi
+      done
+      if [ $should_install != 1 ] ; then
+        should_install=1
+      else
+        tools_to_install+=("$t1")
+      fi
+    done
+  fi
+  IFS=" " read -r -a tools_to_skip <<< "$(sort <<<"${tools_to_skip[*]}")"
+  IFS=" " read -r -a tools_to_install <<< "$(sort <<<"${tools_to_install[*]}")"
+  IFS=" " read -r -a tools_to_install <<< "$(uniq <<<"${tools_to_install[*]}")"
+  unset IFS
+}
+
+function link_and_prepare_env_to_source () {
+  echo 'Linking profiles...'
+  ln -sfv "$DOTFILES_FULL_PATH/runcom/bash_profile" "$DOTFILES_USER_HOME/.bash_profile"
+  ln -sfv "$DOTFILES_FULL_PATH/runcom/bash_profile" "$DOTFILES_USER_HOME/.bashrc"
+  ln -sfv "$DOTFILES_FULL_PATH/.gitignore_global" "$DOTFILES_USER_HOME/.gitignore_global"
+  ln -sfv "$DOTFILES_FULL_PATH/tools/zsh/zshrc" "$DOTFILES_USER_HOME/.zshrc"
+
+  dotfiles_env_file="$DOTFILES_BIN/dotfiles.env"
+  if ! [ -f "$dotfiles_env_file" ] ; then
+    touch "$dotfiles_env_file"
+  else 
+    cp "$dotfiles_env_file" "$dotfiles_env_file.old"
+    rm -f "$dotfiles_env_file"
+    touch "$dotfiles_env_file"
+  fi
+
+  unset_control_env_variables
+  echo "source $DOTFILES_FULL_PATH/funcs-export" >> "$dotfiles_env_file"
+  echo "source $DOTFILES_FULL_PATH/funcs" >> "$dotfiles_env_file"
+
+  env | grep DOTFILES | sort | while read -r env_var ; do
+    echo "Exporting $env_var"
+    echo "export $env_var" >> "$dotfiles_env_file"
+  done
+
+  ## shellcheck disable=SC2129
+  echo "export XDG_CONFIG_HOME=$DOTFILES_XDG_CONFIG_HOME" >> "$dotfiles_env_file"
+  echo "export XDG_DATA_HOME=$DOTFILES_XDG_DATA_HOME" >> "$dotfiles_env_file"
+
+  echo "source $DOTFILES_FULL_PATH/runcom/alias" >> "$dotfiles_env_file"
+
+  for f in tools/*/*.env ; do
+      echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
+  done
+
+  for f in tools/*/*.functions ; do
+    echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
+  done
+
+  for f in tools/*/*.alias ; do
+    echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
+  done
+
+  echo 'Changing ownership of dotfiles bin to user...'
+  chown -R "$DOTFILES_USER" "$DOTFILES_BIN"
+  chown -R "$DOTFILES_USER" "$DOTFILES_FULL_PATH/tools/vim/.vim"
+}
+
+main "$@"

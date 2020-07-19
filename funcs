@@ -4,6 +4,15 @@ function update_github_repo () {
   git pull origin master
 }
 
+function update_package_managers () {
+  if is_ubuntu ; then sudo apt-get -y update
+  elif is_macos ; then brew update 
+  elif is_rpi ; then sudo apt-get -y update
+  else
+    echo 'No package manager to update, continuing'
+  fi
+}
+
 function check_is_root () {
   if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
     if ! [ "$(id -u)" -eq 0 ] ; then
@@ -14,50 +23,55 @@ function check_is_root () {
 }
 
 function install_with_npm () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-  npm install -g --save-dev "$tool"
+  cmd='npm install -g --save-dev'
+  while read -r -d ' ' package
+  do
+    cmd="$cmd $package"
+  done < <(echo "$1 ")
+  eval "$cmd"
 }
 
 function install_with_pip () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-  pip install "$tool"
-}
-
-function install_with_sdkman () {
-  sdk install "$1" "$2"
+  cmd='pip install'
+  while read -r -d ' ' package
+  do
+    cmd="$cmd $package"
+  done < <(echo "$1 ")
+  eval "$cmd"
 }
 
 function install_with_cargo () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-  cargo install --force "$tool"
+  cmd='cargo install --force'
+  while read -r -d ' ' package
+  do
+    cmd="$cmd $package"
+  done < <(echo "$1 ")
+
+  eval "$cmd"
 }
 
-function depends_on () {
-  tool="$1"
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if ! command_exists "$tool" ; then
-      export DOTFILES_DEPENDENCY_MISSING=1
-      export DOTFILES_REQUIRED_DEPENDENCY="$tool"
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-    fi
-  fi
+function install_with_go_get () {
+  go get "$1"
 }
 
-function only_if_os_is () {
-  os="$1"
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if ! [[ $DOTFILES_RESOLVED_OS =~ $os ]]; then
-      export DOTFILES_TOOL_NOT_COMPATIBLE_WITH_OS=1
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-    fi
-  fi
+function install_with_curl () {
+  curl -sSL "$1" | bash
 }
 
-function quarantine () {
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    export DOTFILES_TOOL_QUARANTINED=1
-    export DOTFILES_SHOULD_STOP_CURRENT=1
+function install_with_pkg_manager () {
+  set +e
+  if is_macos ; then
+    cmd='brew install'
+  elif is_debian ; then
+    cmd='sudo apt-get install -y'
+  else
+    echo 'Unable to resolve package manager'
+    exit 1
   fi
+  collect_packages
+  collect_os_specific_packages
+
+  eval "$cmd"
 }
 
 function make_link () {
@@ -118,24 +132,6 @@ function skip_if_dir_exists () {
       export DOTFILES_TOOL_ALREADY_INSTALLED=1
       export DOTFILES_SHOULD_STOP_CURRENT=1
     fi
-  fi
-}
-
-function install_with_pkg_manager () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-  set +e
-  if is_macos ; then
-    brew install "$tool"
-  elif is_debian ; then
-    apt-get -y install "$tool"
-    if [[ "$?" == 100 ]] ; then
-      export DOTFILES_SUDO_REQUIRED=1
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-      return
-    fi
-  else
-    echo 'Unable to resolve package manager'
-    exit 1
   fi
 }
 

@@ -1,7 +1,7 @@
 ctags
 gawk
-python-pip
-python-pip3
+pip:python-pip
+pip3:python3-pip
 zip
 shellcheck
 tmux

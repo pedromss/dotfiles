@@ -1,2 +1,5 @@
 silversearcher-ag
 apt-utils
+build-essential
+libssl-dev
+pkg-config

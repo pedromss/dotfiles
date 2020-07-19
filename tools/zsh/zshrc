@@ -35,9 +35,9 @@ ZSH_CUSTOM="$DOTFILES_FULL_PATH/tools/zsh/custom"
 fpath=(/usr/local/share/zsh-completions "$DOTFILES_FULL_PATH/tools/zsh/zfunctions" $fpath )
 # You may need to manually set your language environment export LANG=en_US.UTF-8
 
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
-[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+[ -f "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+[ -f "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+[ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 # shellcheck disable=1090
 [ -f "$DOTFILES_FZF_DIR/shell/completion.zsh" ] && source "$DOTFILES_FZF_DIR/shell/completion.zsh"
 # shellcheck disable=1090
