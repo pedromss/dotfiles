@@ -99,6 +99,7 @@ function parse_flags () {
         else
           echo "Ignoring unknown tool $2"
         fi
+        all_packages=0
         shift 2
         ;;
       --*-version)
