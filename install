@@ -367,6 +367,10 @@ function install_curl_packages () {
 }
 
 function install_tools () {
+  if [[ "${#tools_requested[@]}" -gt 0 ]] ; then
+    install_with_custom_scripts
+    return
+  fi
   if (( ${all_packages:-1} )) || (( ${custom_packages:-0} )) ; then install_with_custom_scripts ; fi
   if (( ${all_packages:-1} )) || (( ${cargo_packages:-0} )) ; then install_cargo_packages ; fi
   if (( ${all_packages:-1} )) || (( ${npm_packages:-0} )) ; then install_npm_packages ; fi
