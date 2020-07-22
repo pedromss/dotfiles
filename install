@@ -54,6 +54,7 @@ Options:
                                   > the tool is missing
   --packages                      > Installs only the packages of the given type: os,cargo,go,python,curl,manager
                                   > manager - installs packages with tools like brew, yum, apt-get
+                                  > custom  - installs packages with custom scripts
                                   > os      - installs packages only for this specific os
                                   > cargo   - installs packages with cargo, like mdcat, bat and exa
                                   > go      - installs packages with go get
@@ -222,7 +223,7 @@ function collect_packages () {
     tool_name="${t%%\:*}"
     export DOTFILES_SHOULD_STOP_CURRENT=0
     export DOTFILES_CURRENT_TOOL="$tool_name"
-    check_skip
+    check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
@@ -237,7 +238,7 @@ function collect_os_specific_packages () {
     export DOTFILES_SHOULD_STOP_CURRENT=0
     tool_name="${t%%\:*}"
     export DOTFILES_CURRENT_TOOL="$tool_name"
-    check_skip
+    check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
@@ -253,7 +254,7 @@ function install_with_custom_scripts () {
     export DOTFILES_CURRENT_TOOL="$tool"
     # shellcheck disable=SC2119
     skip_if_installed
-    check_skip
+    check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
@@ -275,12 +276,12 @@ function install_cargo_packages () {
     export DOTFILES_SHOULD_STOP_CURRENT=0
     tool_name="${t%%\:*}"
     export DOTFILES_CURRENT_TOOL="$tool_name"
-    check_skip
+    check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     check_tool_metadata_to_save "$tool_name"
-    package_name="${t##*\:}"
+    package_name="${t#*\:}"
     args="$args $package_name"
   done
 
@@ -298,12 +299,12 @@ function install_npm_packages () {
     export DOTFILES_SHOULD_STOP_CURRENT=0
     tool_name="${t%%\:*}"
     export DOTFILES_CURRENT_TOOL="$tool_name"
-    check_skip
+    check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     check_tool_metadata_to_save "$tool_name"
-    package_name="${t##*\:}"
+    package_name="${t#*\:}"
     args="$args $package_name"
   done
 
@@ -317,12 +318,12 @@ function install_python_packages () {
     export DOTFILES_SHOULD_STOP_CURRENT=0
     tool_name="${t%%\:*}"
     export DOTFILES_CURRENT_TOOL="$tool_name"
-    check_skip
+    check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     check_tool_metadata_to_save "$tool_name"
-    package_name="${t##*\:}"
+    package_name="${t#*\:}"
     args="$args $package_name"
   done
 
@@ -341,7 +342,7 @@ function install_go_packages () {
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     check_tool_metadata_to_save "$tool_name"
-    package_name="${t##*\:}"
+    package_name="${t#*\:}"
 
     install_with_go_get "$package_name"
   done
@@ -353,7 +354,7 @@ function install_curl_packages () {
     export DOTFILES_SHOULD_STOP_CURRENT=0
     tool_name="${t%%\:*}"
     export DOTFILES_CURRENT_TOOL="$tool_name"
-    check_skip
+    check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi

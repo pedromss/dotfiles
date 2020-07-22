@@ -13,5 +13,6 @@ if is_macos ; then
   alias pbp='pbpaste'
 else
   alias pbc='xclip -selection clipboard'
+  alias pbp='xclip -o'
 fi
 alias szsh='source ~/.zshrc'
