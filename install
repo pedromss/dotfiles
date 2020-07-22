@@ -48,21 +48,21 @@ function print_help () {
 Usage: ./install.sh [options]'
 
 Options:
-  -t, --tool {toolname}          > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
-  -u, --update                   > Whether or not to update the selected tool. If not specfied installers will only run if
-  --utils                        > Sources envs and utility functions, does not install any tool
-                                 > the tool is missing
-  --packages{-type}              > Installs only the packages of the given type: os,cargo,go,python,curl,manager
-                                 > manager - installs packages with tools like brew, yum, apt-get
-                                 > os      - installs packages only for this specific os
-                                 > cargo   - installs packages with cargo, like mdcat, bat and exa
-                                 > go      - installs packages with go get
-                                 > curl    - installs packages from urls like curl ... https://script.com | bash
-                                 > python  - installs packages with pip or pip3
-  --no{-tool}                    > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
-  -y, --no-prompt                > say yes to everything and automate as much as possible
-  -h, --help                     > Print this help menu
-  --reminders                    > Print reminders about system changes that should be done for all tools to work well
+  -t, --tool {toolname}           > The tool to install. Example "-t vim". Pass multiple times for multiple tools, example: "-t zsh -t rust"
+  -u, --update                    > Whether or not to update the selected tool. If not specfied installers will only run if
+  --utils                         > Sources envs and utility functions, does not install any tool
+                                  > the tool is missing
+  --packages                      > Installs only the packages of the given type: os,cargo,go,python,curl,manager
+                                  > manager - installs packages with tools like brew, yum, apt-get
+                                  > os      - installs packages only for this specific os
+                                  > cargo   - installs packages with cargo, like mdcat, bat and exa
+                                  > go      - installs packages with go get
+                                  > curl    - installs packages from urls like curl ... https://script.com | bash
+                                  > python  - installs packages with pip or pip3
+  --no{-tool}                     > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
+  -y, --no-prompt                 > say yes to everything and automate as much as possible
+  -h, --help                      > Print this help menu
+  --reminders                     > Print reminders about system changes that should be done for all tools to work well
 EOF
 }
 
