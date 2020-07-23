@@ -4,6 +4,7 @@
 curr=$(pwd)
 mkdir -p "$DOTFILES_NVM_DIR"
 git clone https://github.com/nvm-sh/nvm.git "$DOTFILES_NVM_DIR"
+git fetch --tags
 git checkout "$DOTFILES_NVM_VERSION"
 "$DOTFILES_NVM_DIR"/install.sh
 cd "$curr" || exit 1
