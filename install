@@ -120,7 +120,6 @@ function parse_flags () {
           elif [[ "$package_type" == 'npm' ]] ; then npm_packages=1; all_packages=0
           elif [[ "$package_type" == 'cargo' ]] ; then cargo_packages=1; all_packages=0
           elif [[ "$package_type" == 'python' ]] ; then python_packages=1; all_packages=0
-          elif [[ "$package_type" == 'curl' ]] ; then curl_packages=1; all_packages=0
           elif [[ "$package_type" == 'custom' ]] ; then custom_packages=1; all_packages=0
           fi
         done < <(echo "$package_types")
@@ -349,23 +348,6 @@ function install_go_packages () {
   done
 }
 
-function install_curl_packages () {
-  install_with_pkg_manager 'curl'
-  for t in "${raw_curl_installers[@]}" ; do
-    export DOTFILES_SHOULD_STOP_CURRENT=0
-    tool_name="${t%%\:*}"
-    export DOTFILES_CURRENT_TOOL="$tool_name"
-    check_skip "$tool_name"
-    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
-    run_checks "$tool_name"
-    if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
-    check_tool_metadata_to_save "$tool_name"
-    package_name="${t#*\:}"
-
-    install_with_curl "$package_name"
-  done
-}
-
 function install_tools () {
   if [[ "${#tools_requested[@]}" -gt 0 ]] ; then
     install_with_custom_scripts
@@ -376,7 +358,6 @@ function install_tools () {
   if (( ${all_packages:-1} )) || (( ${npm_packages:-0} )) ; then install_npm_packages ; fi
   if (( ${all_packages:-1} )) || (( ${go_packages:-0} )) ; then install_go_packages ; fi
   if (( ${all_packages:-1} )) || (( ${python_packages:-0} )) ; then install_python_packages ; fi
-  if (( ${all_packages:-1} )) || (( ${curl_packages:-0} )) ; then install_curl_packages ; fi
   if (( ${all_packages:-1} )) || (( ${os_packages:-0} )) ; then 
     collect_os_specific_packages
     install_with_pkg_manager
@@ -420,7 +401,6 @@ function scan_all_tools () {
   scan_npm_packages
   scan_cargo_packages
   scan_pip_packages
-  scan_raw_curl_installers
   scan_os_specific_packages
   scan_os_skip_tools
   for t in "${packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
@@ -429,7 +409,6 @@ function scan_all_tools () {
   for t in "${npm_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
   for t in "${pip_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
   for t in "${go_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
-  for t in "${scan_raw_curl_installers[@]}" ; do all_tools+=("${t%%\:*}") ; done
   for t in "${os_skip_tools[@]}" ; do tools_to_skip+=("${t%%\:*}") ; done
   while IFS= read -r -d '' f
   do
@@ -499,15 +478,6 @@ function scan_go_packages () {
       pip_packages+=("$line")
     fi
   done < "$DOTFILES_FULL_PATH/tools/pip-packages"
-}
-
-function scan_raw_curl_installers () {
-  raw_curl_installers=()
-  while read -r line ; do
-    if ! [[ "$line" =~ ^#.* ]] ; then
-      raw_curl_installers+=("$line")
-    fi
-  done < "$DOTFILES_FULL_PATH/tools/raw-curl-installers"
 }
 
 function scan_os_skip_tools () {
