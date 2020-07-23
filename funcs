@@ -102,6 +102,11 @@ function rm_link_at_home () {
 function clone_from_github () {
   if ! [ -d "$2" ] ; then
     git clone --depth 1 "https://github.com/$1" "$2"
+    git fetch --tags
+    if [ -n "$3" ] ; then 
+      git config --local advice.detachedHead false
+      git checkout "$3" 
+    fi
   fi
 }
 

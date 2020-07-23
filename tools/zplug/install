@@ -1,5 +1,6 @@
 #!/usr/bin/env bash 
 
+. ../zsh/zsh.env
 mkdir -p "$DOTFILES_ZSH_PLUGINS_FOLDER"
 
 clone_from_github 'zplug/zplug' "$DOTFILES_ZPLUG_HOME"
