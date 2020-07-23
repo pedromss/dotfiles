@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
 curr=$(pwd)
-git clone --depth 1 https://github.com/junegunn/fzf.git "$DOTFILES_FZF_DIR"
-echo "Installing fzf@$DOTFILES_FZF_VERSION"
-cd "$DOTFILES_FZF_DIR" || exit 1
+clone_from_github 'junegunn/fzf' '0.21.1'
 # shellcheck disable=1090
 ./install --key-bindings --completion --no-update-rc --no-fish
 cd "$curr" || exit 1

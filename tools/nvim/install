@@ -7,13 +7,8 @@ if is_ubuntu ; then
 
   install_with_pkg_manager 'ninja-build libtool libtool-bin autoconf automake cmake g++ pkg-config unzip'
 
-  if ! [ -d "$DOTFILES_NVIM_REPO" ]; then
-    clone_from_github 'neovim/neovim' "$DOTFILES_NVIM_REPO"
-  fi
   current=$(pwd)
-  cd "$DOTFILES_NVIM_REPO" || exit 1
-  git fetch --tags
-  git checkout stable
+  clone_from_github 'neovim/neovim' 'stable'
   rm -rf build/  # clear the CMake cache
   make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$DOTFILES_NVIM_INSTALLATION"
   make install

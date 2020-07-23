@@ -2,12 +2,8 @@
 
 #wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$DOTFILES_NVM_VERSION/install.sh" | bash
 curr=$(pwd)
-mkdir -p "$DOTFILES_NVM_DIR"
-git clone https://github.com/nvm-sh/nvm.git "$DOTFILES_NVM_DIR"
-git fetch --tags
-git checkout "$DOTFILES_NVM_VERSION"
+clone_from_github 'nvm-sh/nvm' 'v0.35.2'
 "$DOTFILES_NVM_DIR"/install.sh
 cd "$curr" || exit 1
 
-. "tools/nvm/nvm.env"
-nvm install "$DOTFILES_NODE_VERSION"
+nvm install "12.16.1"

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-clone_from_github 'tmux-plugins/tpm' "$DOTFILES_TPM_DIR" 'v3.0.0'
+curr=$(pwd)
+clone_from_github 'tmux-plugins/tpm' 'v3.0.0'
+cd "$curr" || exit 1
 
