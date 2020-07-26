@@ -830,6 +830,7 @@ nnoremap <M-l> gt
 "" }}}
 " }}}
 let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:function;v:variables'
+" }}}
 " COC Settings -------------------- {{{
 " if hidden is not set, TextEdit might fail.
 set hidden

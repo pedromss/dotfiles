@@ -2,6 +2,7 @@
 bin
 .dotfiles.*
 **/tags
+**/*.tar.gz*
 .local/
 repos
 tools/vim/.vim/bundle
