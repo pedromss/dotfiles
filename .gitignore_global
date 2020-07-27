@@ -5,6 +5,7 @@
 **/vim-markdown-preview.html
 **/*.jar
 **/.netrwhist
+**/.DS_Store
 .env
 **/bin
 .classpath
