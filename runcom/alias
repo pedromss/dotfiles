@@ -16,3 +16,9 @@ else
   alias pbp='xclip -o'
 fi
 alias szsh='source ~/.zshrc'
+
+if is_ubuntu ; then
+  if command_exists 'gdb' ; then
+    alias cdebug='gdb --batch --ex bt --ex run --ex q --args '
+  fi
+fi

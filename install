@@ -253,7 +253,9 @@ function install_with_custom_scripts () {
     export DOTFILES_SHOULD_STOP_CURRENT=0
     export DOTFILES_CURRENT_TOOL="$tool"
     # shellcheck disable=SC2119
-    skip_if_installed
+    if [[ "${#tools_requested[@]}" -eq 0 ]] ; then
+      skip_if_installed
+    fi
     check_skip "$tool_name"
     if (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then continue ; fi
     run_checks "$tool_name"
@@ -263,6 +265,7 @@ function install_with_custom_scripts () {
     local file_to_eval="tools/$tool/install"
     if ! [ -f "$file_to_eval" ] ; then continue ; fi
 
+    echo "Installing $tool with a custom script"
     # shellcheck disable=1090
     source "$file_to_eval" "$tool"
   done
@@ -350,6 +353,10 @@ function install_go_packages () {
 
 function install_tools () {
   if [[ "${#tools_requested[@]}" -gt 0 ]] ; then
+    tools_to_install=()
+    for t in "${tools_requested[@]}" ; do
+      tools_to_install+=("$t")
+    done
     install_with_custom_scripts
     return
   fi
