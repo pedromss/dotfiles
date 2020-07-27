@@ -59,6 +59,7 @@ Options:
                                   > cargo   - installs packages with cargo, like mdcat, bat and exa
                                   > go      - installs packages with go get
                                   > curl    - installs packages from urls like curl ... https://script.com | bash
+                                  > npm     - installs packages from npm
                                   > python  - installs packages with pip or pip3
   --no{-tool}                     > Will skip the request 'tool'. Example './install -y --no-zsh' will install all except zsh
   -y, --no-prompt                 > say yes to everything and automate as much as possible
@@ -114,13 +115,13 @@ function parse_flags () {
         package_types=$(tr '[:upper:]' '[:lower:]' <<< "$2,")
         echo "Types $package_types"
         while read -r -d ',' package_type ; do
-          if [[ "$package_type" == 'os' ]] ; then os_packages=1; all_packages=0
-          elif [[ "$package_type" == 'manager' ]] ; then manager_packages=1; all_packages=0
-          elif [[ "$package_type" == 'go' ]] ; then go_packages=1; all_packages=0
-          elif [[ "$package_type" == 'npm' ]] ; then npm_packages=1; all_packages=0
-          elif [[ "$package_type" == 'cargo' ]] ; then cargo_packages=1; all_packages=0
-          elif [[ "$package_type" == 'python' ]] ; then python_packages=1; all_packages=0
-          elif [[ "$package_type" == 'custom' ]] ; then custom_packages=1; all_packages=0
+          if [[ "$package_type" == 'os' ]] ; then should_install_os_packages=1; all_packages=0
+          elif [[ "$package_type" == 'manager' ]] ; then should_install_manager_packages=1; all_packages=0
+          elif [[ "$package_type" == 'go' ]] ; then should_install_go_packages=1; all_packages=0
+          elif [[ "$package_type" == 'npm' ]] ; then should_install_npm_packages=1; all_packages=0
+          elif [[ "$package_type" == 'cargo' ]] ; then should_install_cargo_packages=1; all_packages=0
+          elif [[ "$package_type" == 'python' ]] ; then should_install_python_packages=1; all_packages=0
+          elif [[ "$package_type" == 'custom' ]] ; then should_install_custom_packages=1; all_packages=0
           fi
         done < <(echo "$package_types")
         shift 2
@@ -294,7 +295,6 @@ function install_cargo_packages () {
 function install_npm_packages () {
   tools_to_install=('nvm')
   install_with_custom_scripts
-  . tools/nvm/nvm.env
   
   source
   local args=''
@@ -360,12 +360,13 @@ function install_tools () {
     install_with_custom_scripts
     return
   fi
-  if (( ${all_packages:-1} )) || (( ${custom_packages:-0} )) ; then install_with_custom_scripts ; fi
-  if (( ${all_packages:-1} )) || (( ${cargo_packages:-0} )) ; then install_cargo_packages ; fi
-  if (( ${all_packages:-1} )) || (( ${npm_packages:-0} )) ; then install_npm_packages ; fi
-  if (( ${all_packages:-1} )) || (( ${go_packages:-0} )) ; then install_go_packages ; fi
-  if (( ${all_packages:-1} )) || (( ${python_packages:-0} )) ; then install_python_packages ; fi
-  if (( ${all_packages:-1} )) || (( ${os_packages:-0} )) ; then 
+
+  if (( ${all_packages:-1} )) || (( ${should_install_custom_packages:-0} )) ; then install_with_custom_scripts ; fi
+  if (( ${all_packages:-1} )) || (( ${should_install_cargo_packages:-0} )) ; then install_cargo_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${should_install_npm_packages:-0} )) ; then install_npm_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${should_install_go_packages:-0} )) ; then install_go_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${should_install_python_packages:-0} )) ; then install_python_packages ; fi
+  if (( ${all_packages:-1} )) || (( ${should_install_os_packages:-0} )) ; then 
     collect_os_specific_packages
     install_with_pkg_manager
   fi
@@ -463,7 +464,7 @@ function scan_cargo_packages () {
 function scan_npm_packages () {
   npm_packages=()
   while read -r line ; do
-    if ! [[ "$line" =~ ^#.* ]] ; then
+    if [[ -n "$line" ]] && ! [[ "$line" =~ ^#.* ]] ; then
       npm_packages+=("$line")
     fi
   done < "$DOTFILES_FULL_PATH/tools/npm-packages"
