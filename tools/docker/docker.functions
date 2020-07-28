@@ -8,13 +8,19 @@ function docker_rmi_dangling () {
 # --function drmf([containerName | partial matches allowed]) {
 function drmf() {
   query=${1:-'.*'}
-  docker rm -f "$(docker ps -a --format '{{.Names}}' --filter name=".*$query.*")"
+  docker ps -a -q --filter name=".*$query.*" | while read -r container_id
+  do
+    docker rm -f "$container_id"
+  done
 }
 
 # --function drmftls(remoteHost, [containerName | partial matches allowed]) {
 function drmftls() {
   query=${2:-'.*'}
-  docker --tlsverify -H "$1" rm -f "$(docker --tlsverify -H "$1" ps -a -q -f name=".*$query.*")"
+  docker --tlsverify -H "$1" ps -a -q --filter name=".*$query.*" | while read -r container_id
+  do
+    docker --tlsverify -H "$1" rm -f "$container_id"
+  done
 }
 
 # --function dps([containerName | partial matches allowed]) {
