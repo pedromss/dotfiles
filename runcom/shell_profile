@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=1090
-[ -f "$HOME/dotfiles/bin/dotfiles.env" ] && . "$HOME/dotfiles/bin/dotfiles.env"
-# shellcheck disable=1090
-[ -f "$DOTFILES_BIN/nvm/nvm.sh" ] && . "$DOTFILES_BIN/nvm/nvm.sh"
-export PATH="/usr/local/bin:$DOTFILES_BIN:$PATH"
+if [ -f "$HOME/dotfiles/bin/dotfiles.env" ] ; then
+  # shellcheck disable=1090
+  . "$HOME/dotfiles/bin/dotfiles.env"
+fi
+if [ -f "$DFILES/bin/nvm/nvm.sh" ] ; then
+  # shellcheck disable=1090
+  . "$DFILES/bin/nvm/nvm.sh"
+fi
+if [ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] ; then
+  # shellcheck disable=1090
+  . "$SDKMAN_DIR/bin/sdkman-init.sh"
+fi
+export PATH="/usr/local/bin:$DFILES/bin:$PATH"

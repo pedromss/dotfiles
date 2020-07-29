@@ -382,6 +382,7 @@ function set_file_system_env () {
   export DOTFILES_USER="${DOTFILES_USER_HOME##*/}"
   export DOTFILES_FOLDER="${curr##*/}"
   export DOTFILES_FULL_PATH="$curr"
+  export DFILES="$DOTFILES_FULL_PATH"
   export DOTFILES_BIN="$DOTFILES_FULL_PATH/bin"
   export DOTFILES_XDG="$DOTFILES_FULL_PATH/xdg"
   export DOTFILES_REPOS="$DOTFILES_FULL_PATH/repos"
@@ -390,7 +391,6 @@ function set_file_system_env () {
   export DOTFILES_LSP="$DOTFILES_BIN/lsp"
   export XDG_CONFIG_HOME="$DOTFILES_XDG_CONFIG_HOME"
   export XDG_DATA_HOME="$DOTFILES_XDG_DATA_HOME"
-  env | grep 'DOTFILES|XDG'
 }
 
 function ensure_required_directories_exist () {
@@ -426,7 +426,7 @@ function scan_all_tools () {
       continue
     fi
     all_tools+=("$name")
-  done < <(find "$DOTFILES_FULL_PATH/tools" -maxdepth 1 -type d -print0)
+  done < <(find "$DFILES/tools" -maxdepth 1 -type d -print0)
   unset IFS
   IFS=" " read -r -a all_tools <<< "$(uniq <<<"${all_tools[*]}")"
 }
@@ -547,7 +547,8 @@ function link_and_prepare_env_to_source () {
   echo "source $DOTFILES_FULL_PATH/funcs-export" >> "$dotfiles_env_file"
   echo "source $DOTFILES_FULL_PATH/funcs" >> "$dotfiles_env_file"
 
-  env | grep DOTFILES | sort | while read -r env_var ; do
+  echo "DFILES is $DFILES"
+  env | grep D..FILES | sort | while read -r env_var ; do
     echo "Exporting $env_var"
     echo "export $env_var" >> "$dotfiles_env_file"
   done
@@ -556,19 +557,11 @@ function link_and_prepare_env_to_source () {
   echo "export XDG_CONFIG_HOME=$DOTFILES_XDG_CONFIG_HOME" >> "$dotfiles_env_file"
   echo "export XDG_DATA_HOME=$DOTFILES_XDG_DATA_HOME" >> "$dotfiles_env_file"
 
-  echo "source $DOTFILES_FULL_PATH/runcom/alias" >> "$dotfiles_env_file"
+  echo "source $DFILES/runcom/alias" >> "$dotfiles_env_file"
 
-  for f in tools/*/*.env ; do
-      echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
-  done
-
-  for f in tools/*/*.functions ; do
-    echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
-  done
-
-  for f in tools/*/*.alias ; do
-    echo "source $DOTFILES_FULL_PATH/$f" >> "$dotfiles_env_file"
-  done
+  for f in tools/*/*.env ; do echo "source $DFILES/$f" >> "$dotfiles_env_file" ; done
+  for f in tools/*/*.functions ; do echo "source $DFILES/$f" >> "$dotfiles_env_file" ; done
+  for f in tools/*/*.alias ; do echo "source $DFILES/$f" >> "$dotfiles_env_file" ; done
 
   echo 'Changing ownership of dotfiles bin to user...'
   chown -R "$DOTFILES_USER" "$DOTFILES_BIN"

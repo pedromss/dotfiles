@@ -1,5 +1,0 @@
-#!/usr/bin/env bash 
-
-skip_if_os_is 'rpi'
-skip_if_installed 'cs'
-
