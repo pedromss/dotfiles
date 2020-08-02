@@ -302,14 +302,12 @@ augroup go_mappings
   autocmd!
   au FileType go nnoremap <localleader>gob :GoBuild<CR>
   au FileType go nnoremap <localleader>gots :GoTest<CR>
-  au FileType go nnoremap <localleader>gota :GoTest ./...<CR>
-  au FileType go nnoremap <localleader>goft :GoTestFunc<CR>
+  au FileType go nnoremap <localleader>gotf :GoTestFunc<CR>
   au FileType go nnoremap <localleader>goi :GoInstall<CR>
-  au FileType go nnoremap <localleader>gomi :GoImport
-  au FileType go nnoremap <localleader>goma :GoImportAs
-  au FileType go nnoremap <localleader>gor :GoRun<CR>
   au FileType go nnoremap <localleader>gode :GoDef<CR>
   au FileType go nnoremap <localleader>godo :GoDoc<CR>
+  au FileType go nnoremap <localleader>goc :GoCoverageToggle<CR>
+  au FileType go nnoremap <localleader>gom :GoMetaLinter<CR>
 augroup END
 " }}}
 " Fzf mappings -------------------- {{{
@@ -456,6 +454,8 @@ let g:go_auto_type_info = 1
 let g:go_doc_popup_window = 1
 let g:go_snippet_engine = 'ultisnips'
 let g:go_statusline_duration = 20000
+let g:go_metalinter_autosave = 0
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 " }}}
 " VIM yoink variables -------------------- {{{
 let g:yoinkIncludeDeleteOperations = 1
