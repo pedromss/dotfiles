@@ -45,6 +45,7 @@ augroup BgHighlight
 augroup END
 set splitbelow
 set splitright
+set tagstack
 " }}}
 " Commands -------------------- {{{
 command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build .
@@ -108,13 +109,10 @@ Plug 'christoomey/vim-titlecase'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'flazz/vim-colorschemes'
 Plug 'vim-latex/vim-latex'
-"Plug 'keith/investigate.vim'
-"Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'
-"Plug 'rdolgushin/groovy.vim', { 'for': 'groovy' }
 Plug 'modille/groovy.vim', { 'for': 'groovy' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -129,13 +127,6 @@ Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 if has('nvim')
-  "Plug 'Shougo/neco-vim', { 'for': 'go' }
-  "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  "Plug 'zchee/deoplete-clang'
-  "Plug 'zchee/deoplete-go', { 'for': 'go', 'do': 'make'}
-  "Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-  "Plug 'neomake/neomake'
-  "Plug 'mdempsky/gocode', { 'rtp': 'nvim' }
   Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 endif
 if has('python') || has('python3')
@@ -290,10 +281,6 @@ nnoremap <localleader>vdr :diffget REMOTE<cr>
 " }}}
 " Buffer mappings -------------------- {{{
 nnoremap <silent> <M-F12> :BufExplorer<CR>
-nnoremap <silent> <F11> :bn<CR>
-nnoremap <silent> <S-F12> :bp<CR>
-nnoremap <leader>bte :buffers<CR>:tabedit #
-nnoremap B :buffers<CR>:buffer<Space>
 nnoremap <S-C> :bd<CR>
 nnoremap <S-Q> :bd!<CR>
 " }}}
@@ -302,14 +289,13 @@ augroup go_mappings
   autocmd!
   au FileType go nnoremap <localleader>gob :GoBuild<CR>
   au FileType go nnoremap <localleader>gots :GoTest<CR>
-  au FileType go nnoremap <localleader>gota :GoTest ./...<CR>
-  au FileType go nnoremap <localleader>goft :GoTestFunc<CR>
+  au FileType go nnoremap <localleader>gotf :GoTestFunc<CR>
   au FileType go nnoremap <localleader>goi :GoInstall<CR>
-  au FileType go nnoremap <localleader>gomi :GoImport
-  au FileType go nnoremap <localleader>goma :GoImportAs
-  au FileType go nnoremap <localleader>gor :GoRun<CR>
-  au FileType go nnoremap <localleader>gode :GoDef<CR>
-  au FileType go nnoremap <localleader>godo :GoDoc<CR>
+  au FileType go nnoremap <localleader>god :GoDef<CR>
+  au FileType go nnoremap <localleader>goc :GoCoverageToggle<CR>
+  au FileType go nnoremap <localleader>gom :GoMetaLinter<CR>
+  au FileType go nnoremap <localleader>goa :GoAlternate<CR>
+  au FileType go nnoremap <localleader>gop :GoChannelPeers<CR>
 augroup END
 " }}}
 " Fzf mappings -------------------- {{{
@@ -388,7 +374,7 @@ augroup filetype_mappings_quickfix
   autocmd!
   autocmd FileType qf noremap <localleader>n :cnext<cr>
   autocmd FileType qf noremap <localleader>p :cprevious<cr>
-  autocmd FileType qf noremap <localleader>cc :ccl<cr>
+  autocmd FileType qf noremap <localleader>cc :cclose<cr> :lclose<cr>
 augroup END
 " }}}
 " Terminal variables -------------------- {{{
@@ -456,6 +442,8 @@ let g:go_auto_type_info = 1
 let g:go_doc_popup_window = 1
 let g:go_snippet_engine = 'ultisnips'
 let g:go_statusline_duration = 20000
+let g:go_metalinter_autosave = 0
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 " }}}
 " VIM yoink variables -------------------- {{{
 let g:yoinkIncludeDeleteOperations = 1
@@ -832,7 +820,7 @@ nnoremap <M-l> gt
 let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:function;v:variables'
 " }}}
 " COC Settings -------------------- {{{
-" if hidden is not set, TextEdit might fail.
+ "if hidden is not set, TextEdit might fail.
 set hidden
 
 " Some servers have issues with backup files, see #649
@@ -878,9 +866,9 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
