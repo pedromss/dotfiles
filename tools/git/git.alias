@@ -18,6 +18,7 @@ alias gtagp='git push --tags'
 alias gtagf='git fetch --tags'
 alias gco='git checkout'
 alias glc='git rev-parse --short HEAD'
+alias glob='glo master.."$(gbname)"'
 
 if is_linux ; then
   alias glcc='git rev-parse --short HEAD | xclip -selection clipboard'
