@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-curr=$(pwd)
-clone_from_github 'junegunn/fzf' "${DOTFILES_FZF_VERSION:-0.21.1}"
-# shellcheck disable=1090
-./install --key-bindings --completion --no-update-rc --no-fish
-cd "$curr" || exit 1
-

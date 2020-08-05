@@ -1,4 +1,0 @@
-#!/usr/bin/env bash 
-
-alias tags='ctags --tag-relative=no --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build . '
-

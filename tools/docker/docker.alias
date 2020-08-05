@@ -1,7 +1,0 @@
-#!/usr/bin/env bash 
-
-alias dlf='docker logs -f '
-alias dsr='docker --tlsverify -H '
-alias drr='docker -H '
-alias s10='--since 10m '
-alias s20='--since 20m '

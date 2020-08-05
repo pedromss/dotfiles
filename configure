@@ -1,0 +1,203 @@
+#!/usr/bin/env bash 
+
+# shellcheck disable=1090
+# shellcheck disable=2139
+. ~/dotfiles/funcs
+
+export DFILES_VERSION_GO=1.14.6
+export DFILES_VERSION_FZF=0.21.1
+export DFILES_VERSION_NVM=0.35.2
+export DFILES_VERSION_NODEJS=12.16.1
+
+export DFILES_DIR_BIN=~/dotfiles/bin
+export DFILES_XDG=~/dotfiles/xdg
+export DFILES_PATH_REPOS=~/dotfiles/repos
+
+export XDG_CONFIG_HOME="$DFILES_XDG/.config"
+export XDG_DATA_HOME="$DFILES_XDG/.local/share"
+
+# ==================================================
+# General
+# ==================================================
+alias c="clear"
+alias b='pushd'
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias brc="nvim ~/.bashrc"
+alias zrc="nvim ~/.zshrc"
+alias szrc='source ~/.zshrc'
+
+alias l="ls -lah"
+
+if is_macos ; then
+  alias ccp='pbcopy'
+  alias pcp='pbpaste'
+else
+  alias cpp='xclip -selection clipboard'
+  alias pcp='xclip -o'
+fi
+
+if is_ubuntu ; then
+  if command_exists 'gdb' ; then
+    alias cdebug='gdb --batch --ex bt --ex run --ex q --args '
+  fi
+fi
+# ==================================================
+# NVM
+# ==================================================
+export NVM_DIR=~/dotfiles/repos/nvm
+export PATH="$DOTFILES_NVM_DIR:$PATH"
+# ==================================================
+# FZF
+# ==================================================
+export DFILES_PATH_FZF=~/.fzf
+export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || bat {} || tree -C {}) 2> /dev/null | head -200'"
+export FZF_CTRL_R_OPTS="--tabstop 1 --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+export FZF_DEFAULT_OPTS='--height 10% --layout=reverse --border'
+
+_fzf_complete_docker () {
+  # shellcheck disable=SC2124
+  arr="$@"
+    _fzf_complete "--reverse" "$@" < <(
+    if [[ "$arr" =~ .*run.* ]] ; then
+      docker images --format '{{.Repository}}:{{.Tag}}' 
+    else 
+      docker ps -a --format '{{.Names}}'
+    fi
+  )
+}
+# ==================================================
+# Youtube-dl
+# ==================================================
+export DFILES_DIR_YDL=~/Music
+mkdir -p "$DFILES_DIR_YDL"
+alias ydl="youtube-dl -x --audio-format mp3 --audio-quality 0 --no-playlist -o '$DFILES_DIR_YDL/%(title)s.%(ext)s'"
+alias ydl-list="youtube-dl -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '$DFILES_DIR_YDL/%(title)s.%(ext)s'"
+# ==================================================
+# SHELLCHECK
+# ==================================================
+alias shcheck='shellcheck --external-sources --format=tty --exclude=SC1090,1091 --shell=bash'
+# ==================================================
+# Neovim
+# ==================================================
+export DFILES_PATH_NVIM="$DFILES_BIN/nvim"
+export DFILES_FOLDER_CONFIG_NVIM="$XDG_CONFIG_HOME/nvim"
+export DFILES_FOLDER_DATA_NVIM="$XDG_DATA_HOME/nvim"
+# ==================================================
+# RUST
+# ==================================================
+export DFILES_PATH_CARGO="$DFILES_DIR_BIN/cargo"
+export CARGO_HOME="$DFILES_CARGO_PATH"
+
+alias gom='GO111MODULE=on go'
+alias got='go test ./...'
+alias gotnc='go test ./... -'
+# ==================================================
+# Gradle
+# ==================================================
+alias gwc='gw --console=plain'
+alias gwn='gw --no-daemon'
+alias gwcn='gw --console=plain --no-daemon'
+alias gwct='gw --console=plain tasks --all | ag -i '
+# ==================================================
+# GOLANG
+# ==================================================
+export DFILES_PATH_GO_ROOT="$DFILES_BIN/go"
+export GOPATH=~/go
+export GO111MODULE='off'
+# ==================================================
+# SDKMAN
+# ==================================================
+export SDKMAN_DIR="$DFILES_BIN/sdkman"
+# ==================================================
+# EXA
+# ==================================================
+if command_exists 'exa' ; then
+  alias lr='exa --group-directories-first --header --long --recurse --group --modified --git --all --all'
+  alias lrt='exa --group-directories-first --header --tree --long --recurse --group --modified --git'
+  alias l='exa --group-directories-first --header --long --group --modified --git --all --all'
+  alias ls='exa --group-directories-first -1'
+else
+  alias l='ls -lah --color=auto'
+fi
+# ==================================================
+# BAT
+# ==================================================
+export BAT_THEME='1337'
+# ==================================================
+# Docker
+# ==================================================
+alias dlf='docker logs -f '
+alias dsr='docker --tlsverify -H '
+alias drr='docker -H '
+alias s10='--since 10m '
+alias s20='--since 20m '
+function drmf() {
+  query=${1:-'.*'}
+  docker ps -a -q --filter name=".*$query.*" | while read -r container_id
+  do
+    docker rm -f "$container_id"
+  done
+}
+# ==================================================
+# CTAGS
+# ==================================================
+alias tags='ctags --tag-relative=no --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build . '
+# ==================================================
+# TMUX
+# ==================================================
+export DFILES_PATH_TMUX="$DFILES_BIN/tmux"
+export DFILES_PATH_TMUX_PLUGINS="$DFILES_PATH_TMUX/plugins"
+export DOTFILES_TMUX_CONF_FILE="$DOTFILES_FULL_PATH/tools/tmux/tmux.conf"
+export TMUX_PLUGIN_MANAGER_PATH="$DOTFILES_TMUX_PLUGINS_DIR"
+# ==================================================
+# Git
+# ==================================================
+alias gl='git pull'
+alias gp='git push'
+alias gst='git status -s --branch -uall'
+alias gstl='git status --long --branch -uall -vv'
+alias glg='git log --graph --pretty format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset" --abbrev-commit --date relative'
+alias gau='git add -u'
+alias gaa='git add -A'
+alias gcm='git commit -m'
+alias gaacm='git add -A && git commit -m'
+alias gaucm='git add -u && git commit -m'
+alias gbr='git branch -vv'
+alias gbrr='git branch -r -vv'
+alias gunstage='git reset HEAD --'
+alias gchall='git checkout -- .'
+alias gbname='git rev-parse --abbrev-ref HEAD'
+alias gtagd='git push --delete origin'
+alias gtagp='git push --tags'
+alias gtagf='git fetch --tags'
+alias gco='git checkout'
+alias glc='git rev-parse --short HEAD'
+
+if is_linux ; then
+  alias glcc='git rev-parse --short HEAD | xclip -selection clipboard'
+  alias gbn='gbname | xclip -selection clipboard'
+elif is_macos ; then
+  alias glcc='git rev-parse --short HEAD | pbcopy'
+  alias gbn='gbname | pbcopy'
+else
+  echo 'Ignoring git aliases because I do not know how to "pbcopy" in this os'
+fi
+# ==================================================
+# ZSH
+# ==================================================
+function zsh_time_boot () {
+  # shellcheck disable=SC2034
+  for i in $(seq 1 "$1")
+  do 
+    /usr/bin/time zsh -i -c exit
+  done
+}
+# ==================================================
+# PATHHHH
+# ==================================================
+export PATH="$DFILES_PATH_CARGO/bin:$PATH"
+export PATH="$DFILES_PATH_NVIM/bin:$PATH"
+export PATH="$DFILES_PATH_GO_ROOT/bin:/usr/local/go/bin:$PATH"
+export PATH="$DFILES/bin:$PATH"

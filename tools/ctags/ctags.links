@@ -1,4 +1,0 @@
-#!/usr/bin/env bash 
-
-ln -sfv "$DOTFILES_FULL_PATH/tools/ctags/.ctags" "$DOTFILES_USER_HOME/.ctags"
-

@@ -1,0 +1,59 @@
+#!/usr/bin/env bash 
+
+. funcs-export
+. funcs
+
+if ! command_exists 'brew' ; then 
+  printf "Install brew: %s then come back\n" 'https://brew.sh/'
+  return 0
+fi
+
+. configure
+
+user=$(id -u -n)
+export DFILES_USER="$user"
+
+brew update
+brew install \
+  the_silver_searcher \
+  exa \
+  neovim \
+  ctags \
+  gawk \
+  python-pip \
+  python3-pip \
+  zip \
+  shellcheck \
+  tmux \
+  vim \
+  youtube-dl \
+  zsh
+
+ln -sfv ~/dotfiles/tools/ctags/.ctags ~/.ctags
+
+pip install \
+  jedi \
+  python-language-server \
+  pathlib \
+  typing \
+  vim-vint
+
+install_fzf
+install_go 'darwin-amd64'
+isntall_rustup 'x86_64-apple-darwin'
+install_sdkman
+
+go get github.com/hairyhenderson/gomplate/cmd/gomplate
+go get github.com/tomnomnom/gron
+
+cargo install --force \
+  bat \
+  mdcat
+
+npm install -g \
+  eslint \
+  livedown \
+  dockerfile-language-server-nodejs \
+  bash-language-server
+
+install_zsh_plugins

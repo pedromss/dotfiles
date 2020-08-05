@@ -34,7 +34,11 @@ function main() {
   make_execution_plan
 
   if ! (( ${utils:-0} )) ; then
-    update_package_managers
+    if (( ${all_packages:-0} )) ||
+      (( ${should_install_os_specific_packages:-0} )) ||
+      (( ${should_install_manager_packages:-0} )) ; then
+      update_package_managers
+    fi
     install_tools "$t"
   fi
 
@@ -352,28 +356,18 @@ function install_go_packages () {
 }
 
 function install_tools () {
-  if [[ "${#tools_requested[@]}" -gt 0 ]] ; then
-    tools_to_install=()
-    for t in "${tools_requested[@]}" ; do
-      tools_to_install+=("$t")
-    done
-    install_with_custom_scripts
-    return
+  if (( ${all_packages:-1} )) || 
+    (( ${should_install_os_packages:-0} )) ||
+    (( ${should_install_os_specific_packages:-0} ))
+  then 
+    collect_packages
+    collect_os_specific_packages
+    install_with_pkg_manager
   fi
-
-  if (( ${all_packages:-1} )) || (( ${should_install_custom_packages:-0} )) ; then install_with_custom_scripts ; fi
   if (( ${all_packages:-1} )) || (( ${should_install_cargo_packages:-0} )) ; then install_cargo_packages ; fi
   if (( ${all_packages:-1} )) || (( ${should_install_npm_packages:-0} )) ; then install_npm_packages ; fi
   if (( ${all_packages:-1} )) || (( ${should_install_go_packages:-0} )) ; then install_go_packages ; fi
   if (( ${all_packages:-1} )) || (( ${should_install_python_packages:-0} )) ; then install_python_packages ; fi
-  if (( ${all_packages:-1} )) || (( ${should_install_os_packages:-0} )) ; then 
-    collect_os_specific_packages
-    install_with_pkg_manager
-  fi
-  if (( ${all_packages:-1} )) || (( ${manager_packages:-0} )) ; then 
-    collect_packages
-    install_with_pkg_manager 
-  fi
 }
 
 function set_file_system_env () {
@@ -404,20 +398,24 @@ function ensure_required_directories_exist () {
 }
 
 function scan_all_tools () {
-  scan_packages
-  scan_go_packages
-  scan_npm_packages
-  scan_cargo_packages
-  scan_pip_packages
-  scan_os_specific_packages
-  scan_os_skip_tools
-  for t in "${packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
-  for t in "${os_specific_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
-  for t in "${cargo_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
-  for t in "${npm_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
-  for t in "${pip_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
-  for t in "${go_packages[@]}" ; do all_tools+=("${t%%\:*}") ; done
-  for t in "${os_skip_tools[@]}" ; do tools_to_skip+=("${t%%\:*}") ; done
+  packages=()
+  os_specific_packages=()
+  go_packages=()
+  npm_packages=()
+  pip_packages=()
+  cargo_packages=()
+
+  scan_packages "$DFILES/tools/packages" 'packages+=("$line")'
+  scan_go_packages "$DFILES/tools/go-packages" 'go_packages+=("$line")'
+  scan_npm_packages "$DFILES/tools/npm-packages" 'npm_packages+=("$line")'
+  scan_cargo_packages "$DFILES/tools/cargo-packages" 'cargo_packages+=("$line")'
+  scan_pip_packages "$DFILES/tools/pip-packages" 'pip_packages+=("$line")'
+  scan_os_specific_packages "$DFILES/tools/packages.$DOTFILES_RESOLVED_OS" 'os_specific_packages+=("$p")'
+  scan_os_skip_tools "$DFILES/tools/skip.$DOTFILES_RESOLVED_OS" 'os_skip_tools+=("$p")'
+  scan_tools_folder 
+}
+
+function scan_tools_folder() {
   while IFS= read -r -d '' f
   do
     name="${f##*/}" # remove the path, leaving only the tool name
@@ -428,86 +426,36 @@ function scan_all_tools () {
     all_tools+=("$name")
   done < <(find "$DFILES/tools" -maxdepth 1 -type d -print0)
   unset IFS
+
   IFS=" " read -r -a all_tools <<< "$(uniq <<<"${all_tools[*]}")"
 }
 
 function scan_packages () {
-  packages=()
+  local manager_type
+  local package_file="$1"
+
+  if ! [ -f "$package_file" ] ; then return ; fi
+
+  local package_line_fn="$2"
+  echo "Scanning packages from package manager..."
+  local counter=0
   while read -r line ; do 
-    if ! [[ "$line" =~ ^#.* ]] ; then
-      packages+=("$line") ; 
-    fi
-  done < "$DOTFILES_FULL_PATH/tools/packages"
-}
-
-function scan_os_specific_packages () {
-  if ! [ -f "$DOTFILES_FULL_PATH/tools/packages.$DOTFILES_RESOLVED_OS" ] ; then
-    return
-  fi
-  os_specific_packages=()
-  while read -r line ; do
-    if ! [[ "$line" =~ ^#.* ]] ; then
-    os_specific_packages+=("$line") ; 
-    fi
-  done < "$DOTFILES_FULL_PATH/tools/packages.$DOTFILES_RESOLVED_OS"
-}
-
-function scan_cargo_packages () {
-  cargo_packages=()
-  while read -r line ; do
-    if ! [[ "$line" =~ ^#.* ]] ; then
-      cargo_packages+=("$line")
-    fi
-  done < "$DOTFILES_FULL_PATH/tools/cargo-packages"
-}
-
-function scan_npm_packages () {
-  npm_packages=()
-  while read -r line ; do
     if [[ -n "$line" ]] && ! [[ "$line" =~ ^#.* ]] ; then
-      npm_packages+=("$line")
+      print_tool_and_package_name "$line"
+      eval "$package_line_fn"
+      all_tools+=("$tool_name")
+      counter=$(( counter+1 ))
     fi
-  done < "$DOTFILES_FULL_PATH/tools/npm-packages"
-}
-
-function scan_pip_packages () {
-  pip_packages=()
-  while read -r line ; do 
-    if ! [[ "$line" =~ ^#.* ]] ; then
-      pip_packages+=("$line")
-    fi
-  done < "$DOTFILES_FULL_PATH/tools/pip-packages"
-}
-
-function scan_go_packages () {
-  go_packages=()
-  while read -r line ; do
-    if ! [[ "$line" =~ ^#.* ]] ; then
-      pip_packages+=("$line")
-    fi
-  done < "$DOTFILES_FULL_PATH/tools/pip-packages"
-}
-
-function scan_os_skip_tools () {
-  if ! [ -f "$DOTFILES_FULL_PATH/tools/skip.$DOTFILES_RESOLVED_OS" ] ; then
-    return
-  fi
-  os_skip_tools=()
-  while read -r line ; do 
-    if ! [[ "$line" =~ ^#.* ]] ; then
-      os_skip_tools+=("$line")
-    fi
-  done < "$DOTFILES_FULL_PATH/tools/skip.$DOTFILES_RESOLVED_OS"
+  done < "$package_file"
+  printf "Total: %d\n" "$counter"
 }
 
 function make_execution_plan () {
-  local tools_to_consider=()
   if (( ${#tools_requested[@]} > 0 )) ; then
     tools_to_install=("${tools_requested[@]}")
   else
-    tools_to_consider=("${all_tools[@]}")
     should_install=1
-    for t1 in "${tools_to_consider[@]}" ; do
+    for t1 in "${all_tools[@]}" ; do
       for t2 in "${tools_to_skip[@]}" ; do
         if [[ "$t1" = "$t2" ]] ; then
           should_install=0
@@ -566,6 +514,20 @@ function link_and_prepare_env_to_source () {
   echo 'Changing ownership of dotfiles bin to user...'
   chown -R "$DOTFILES_USER" "$DOTFILES_BIN"
   chown -R "$DOTFILES_USER" "$DOTFILES_FULL_PATH/tools/vim/.vim"
+}
+
+function resolve_tool_name() {
+  tool_name="${1%%:*}"
+}
+
+function resolve_package_name() {
+  package_name="${1#*:}"
+}
+
+function print_tool_and_package_name() {
+  resolve_tool_name "$1"
+  resolve_package_name "$1"
+  printf " - Tool: [%-25s] from package: [%-25s]\n" "$tool_name" "$package_name"
 }
 
 main "$@"

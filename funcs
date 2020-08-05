@@ -1,149 +1,277 @@
 #!/usr/bin/env bash
 
-function update_github_repo () {
-  git pull origin master
-}
-
-function update_package_managers () {
-  if is_ubuntu ; then sudo apt-get -y update
-  elif is_macos ; then brew update 
-  elif is_rpi ; then sudo apt-get -y update
-  else
-    echo 'No package manager to update, continuing'
-  fi
-}
-
-function check_is_root () {
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if ! [ "$(id -u)" -eq 0 ] ; then
-      export DOTFILES_SUDO_REQUIRED=1
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-    fi
-  fi
-}
-
-function install_with_npm () {
-  cmd='npm install -g --save-dev'
-  while read -r -d ' ' package
-  do
-    cmd="$cmd $package"
-  done < <(echo "$1 ")
-  echo "NPM Command: $cmd"
-  eval "$cmd"
-}
-
-function install_with_pip () {
-  cmd='pip install'
-  while read -r -d ' ' package
-  do
-    cmd="$cmd $package"
-  done < <(echo "$1 ")
-  eval "$cmd"
-}
-
-function install_with_cargo () {
-  cmd='cargo install --force'
-  while read -r -d ' ' package
-  do
-    cmd="$cmd $package"
-  done < <(echo "$1 ")
-
-  eval "$cmd"
-}
-
-function install_with_go_get () {
-  go get "$1"
-}
-
-function install_with_curl () {
-  curl -sSL "$1" | bash
-}
-
-function install_with_pkg_manager () {
-  set +e
-  if is_macos ; then
-    cmd='brew install'
-  elif is_debian ; then
-    cmd='sudo apt-get install -y'
-  else
-    echo 'Unable to resolve package manager'
-    exit 1
-  fi
-  collect_packages
-  collect_os_specific_packages
-
-  eval "$cmd"
-}
-
-function make_link () {
-  ln -sfv "$1" "$2"
-}
-
-function create_link_at_home () {
-  create_nest_at_home "$1" ''
-}
-
-function destroy_at_home () {
-  rm -rf "${DOTFILES_USER_HOME:?}/$1"
-}
-
-function create_nest_at_home() {
-  # shellcheck disable=SC2154
-  make_link "${DOTFILES_FULL_PATH:?}/$1" "${DOTFILES_USER_HOME}$2"
-}
-
-function create_tool_link_at_home() {
-  create_link_at_home "tools/$1"
-}
-
-function rm_link_at_home () {
-  rm -f "${DOTFILES_USER:?}/$1"
-}
-
 function clone_from_github () {
-    folder_name="${1##*/}"
-    folder_name="${folder_name%%\.*}"
-    folder_name="$DOTFILES_FULL_PATH/repos/$folder_name"
-    tag="$2"
+  local repo="$1"
+  local folder_name="${1##*/}"
+  folder_name="${folder_name%%\.*}"
+  folder_name=~/dotfiles/repos/"$folder_name"
+  local tag="$2"
+
+  clone_from_github_into_dir "$repo" "$folder_name" "$tag"
+}
+
+function clone_from_github_into_dir () {
+    repo="$1"
+    folder_name="$2"
+    tag="$3"
 
     if ! [ -d "$folder_name" ] ; then
-      git clone --depth 1 "https://github.com/$1" "$folder_name"
+      local url="https://github.com/$repo"
+      echo "Cloning $url -> $folder_name"
+      git clone --depth 1 "$url" "$folder_name"
     fi
     cd "$folder_name" || exit 1
     git fetch --tags
     if [ -n "$tag" ] ; then 
+      echo "Checking out $repo to $tag"
       git config --local advice.detachedHead false
       git checkout "$tag" 
     fi
 }
 
-function skip_if_tool_is_not_installed () {
-  command_exists "$1" || { echo " ---> skipping: [$2] because [$1] is required for it"; exit 0; }
+function install_go() {
+  set +x
+  local arch="$1"
+  local go_version="$DFILES_VERSION_GO"
+  local bin_dir="$DFILES_DIR_BIN/go"
+  local user="$DFILES_USER"
+  local tarball=go"$go_version"."$arch".tar.gz
+
+  echo "Downloading go$go_version.${arch}.tar.gz..."
+  rm -rf "$bin_dir"
+  wget -q "https://dl.google.com/go/${tarball}"
+  tar -xf "$tarball" -C "$bin_dir"
+  rm -f "$tarball"
+  sudo chown -R "$user:$user" "$DFILES_PATH_GO_ROOT"
+  set -x
+
+  echo "Try go help"
 }
 
-function skip_if_installed () {
-  tool="${1:-$DOTFILES_CURRENT_TOOL}"
-  if (( ${DOTFILES_UPDATE_RUN:-0} )) ; then
-    DOTFILES_SHOULD_STOP_CURRENT=0
-    return
+function install_nvim() {
+  set +x
+  current=$(pwd)
+  mkdir -p "$XDG_DATA_HOME"/nvim || echo "No permissions to create 'nvim' under $XDG_DATA_HOME"
+  mkdir -p "$XDG_CONFIG_HOME"/nvim || echo "No permissions to create 'nvim' under $XDG_CONFIG_HOME"
+
+  clone_from_github 'neovim/neovim' 'stable'
+  rm -rf build/  # clear the CMake cache
+  make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$DFILES_PATH_NVIM"
+  make install
+  cd "$current" || exit 1
+  make_link ~/dotfiles/tools/nvim/init.vim "$XDG_CONFIG_HOME"/nvim/init.vim
+
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/morhetz/gruvbox/master/autoload/gruvbox.vim
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+  set -x
+
+  echo 'Try nvim'
+}
+
+function install_fzf() {
+  curr=$(pwd)
+  clone_from_github 'junegunn/fzf' "$DFILES_VERSION_FZF"
+  # shellcheck disable=1090
+  ./install --key-bindings --completion --no-update-rc --no-fish
+  cd "$curr" || exit 1
+  echo 'Try fzf --help'
+}
+
+function install_rustup() {
+  set +x
+  local default_host_triple="$1"
+  local user="$DFILES_USER"
+
+  curl -sSL -o setup-rust https://sh.rustup.rs
+  chmod +x setup-rust
+
+  echo 'Running the install tool...'
+  if [ -z "$default_host_triple" ]; then
+    ./setup-rust -y --no-modify-path --default-toolchain stable
+  else
+    ./setup-rust -y --no-modify-path --default-host "$default_host_triple" --default-toolchain stable
   fi
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if command_exists "$tool" \
-      || [ -d "$DOTFILES_BIN/$tool" ] \
-      || [ -f "$DOTFILES_BIN/cargo/bin/$tool" ] ; then
-      export DOTFILES_TOOL_ALREADY_INSTALLED=1
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-    fi
+
+  echo 'Cleaning up...'
+  rm -rf setup-rust
+
+  sudo chown -R "$user":"$user" "$DFILES_CARGO_PATH"
+
+  set -x
+  echo 'Try rustup --help'
+}
+
+function install_sdkman() {
+  if ! [ -d "$SDKMAN_DIR" ]; then
+    curl -sSL https://get.sdkman.io | bash
   fi
 }
 
-function skip_if_dir_exists () {
+function install_nvm() {
+  set +x
+  curr=$(pwd)
+  clone_from_github 'nvm-sh/nvm' "$NVM_DIR"
+  "$NVM_DIR"/install.sh
+  cd "$curr" || exit 1
+
+  sudo chmod +x "$NVM_DIR"/nvm.sh
+
+  # shellcheck disable=1090
+  . "$NVM_DIR/nvm.sh" 
+
+  nvm install "$DOTFILES_NODE_VERSION"
+  set -x
+}
+
+function install_zsh_plugins() {
+  if command_exists 'zsh' ; then 
+
+    local zsh_plugins_repos_dir=~/dotfiles/repos/zsh-plugins
+    # at this point zsh is expected to be installed with a package manager
+    mkdir -p "$zsh_plugins_repos_dir"
+
+    clone_from_github_into_dir 'ohmyzsh/ohmyzsh' "$zsh_plugins_repos_dir"
+    clone_from_github_into_dir 'wfxr/forgit' "$zsh_plugins_repos_dir"
+
+    #zplug "plugins/globalias", from:oh-my-zsh
+    #zplug "plugins/vi-mode", from:oh-my-zsh
+    #zplug "plugins/dotenv", from:oh-my-zsh
+
+    #zplug "b4b4r07/enhancd", use:"init#.sh"
+    #zplug "Cloudstek/zsh-plugin-appup"
+    #zplug "hlissner/zsh-autopair"
+    #zplug "zdharma/fast-syntax-highlighting"
+    #zplug "wfxr/forgit"
+    #zplug "stedolan/jq", from:gh-r, as:command, rename-to:jq
+    #zplug "mikefarah/yq", from:gh-r, as:command, rename-to:yq, lazy:true
+    #zplug "lunaryorn/mdcat", from:gh-r, as:command, rename-to:mdcat, if:"! is-rpi"
+    #zplug "raylee/tldr", as:command, use:"tldr"
+    #zplug "Cloudstek/zsh-plugin-appup"
+    #zplug "zdharma/fast-syntax-highlighting"
+    #zplug "b4b4r07/easy-oneliner", on:"junegunn/fzf-bin"
+    #zplug "zsh-users/zsh-history-substring-search"
+    #zplug "sindresorhus/pure"
+    #zplug "zsh-users/zsh-autosuggestions", if:"! is-rpi"
+    #zplug "zsh-users/zsh-completions", if:"! is-rpi"
+    #zplug "greymd/tmux-xpanes"
+
+  fi
+}
+
+function make_links() {
+  ln -sfv ~/dotfiles/.gitconfig ~/.gitfconfig
+  ln -sfv ~/dotfiles/.ctags ~/.ctags
+  ln -sfv ~/dotfiles/.zshrc ~/.zshrc
+  ln -sfv ~/dotfiles/.bashrc ~/.bashrc
+  ln -sfv ~/dotfiles/.vimrc ~/.vimrc
+  ln -sfv ~/dotfiles/init.vim ~/.init.vim
+  ln -sfv ~/dotfiles/.ideavimrc ~/.ideavimrc
+  ln -sfv ~/dotfiles/.minvimrc ~/.minvimrc
+  ln -sfv ~/dotfiles/vim/.vim ~/.vim
+  ln -sfv ~/dotfiles/.tmux.conf ~/.tmux.conf
+}
+
+function install_tpm() {
+  set +x
+  curr=$(pwd)
+  clone_from_github 'tmux-plugins/tpm' 'v3.0.0'
+  cd "$curr" || exit 1
+  set -x
+}
+
+function shck_one () {
+    shellcheck --external-sources --external-sources --format=tty --exclude=SC1090,1091 --shell=bash "$1"
+}
+
+function shck_dotfiles_recursive () {
   dir="$1"
-  if ! (( "${DOTFILES_SHOULD_STOP_CURRENT:-0}" )) ; then
-    if [ -d "$dir" ]; then
-      export DOTFILES_TOOL_ALREADY_INSTALLED=1
-      export DOTFILES_SHOULD_STOP_CURRENT=1
-    fi
+  while IFS= read -r -d '' f
+  do
+    shck_one "$f"
+  done <   <(find "$dir" -type f \( -name "*.sh" -or -name '*.alias' -or -name '*.functions' -or -name '*.env' \) -print0)
+}
+
+function shck_dotfiles () {
+  shck_dotfiles_recursive "$DOTFILES_FULL_PATH/tools"
+  shck_one "$DOTFILES_FULL_PATH/install.sh"
+  shck_one "$DOTFILES_FULL_PATH/funcs.sh"
+  shck_one "$DOTFILES_FULL_PATH/funcs.min.sh"
+}
+
+# --leds_off({0 | 1}) {
+function leds_off () {
+  if is_rpi ; then
+    echo "$1" | sudo tee /sys/class/leds/led0/brightness
+    echo "$1" | sudo tee /sys/class/leds/led1/brightness
+  else
+    echo 'Leds only controllable in RPI'
   fi
 }
 
+function print_cmd_exists() {
+  if command_exists "$1"
+  then
+    echo 'yes'
+  else
+    echo 'no'
+  fi
+}
+
+function command_exists() {
+  type "$1" 1>/dev/null 2>/dev/null
+}
+
+function is_rpi () {
+  check_os 'rpi'
+}
+
+function is_linux () {
+  check_os 'ubuntu|rpi'
+}
+
+function is_debian () {
+  check_os 'ubuntu|rpi'
+}
+
+function is_ubuntu () {
+  check_os 'ubuntu'
+}
+
+function is_unix () {
+  check_os 'mac|ubuntu|rpi'
+}
+
+function check_os () {
+  if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
+    find_os
+  fi
+  [[ "$DOTFILES_RESOLVED_OS" =~ $1 ]]
+}
+
+function is_macos () {
+  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
+}
+
+function find_os () {
+  if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
+    supported_oses='mac, rpi, ubuntu'
+    os=''
+    if is_macos ; then
+      os='mac'
+    elif [ -f '/etc/os-release' ]; then
+      os_release=$(cat /etc/os-release)
+      if [[ "$os_release" =~ 'Raspbian' ]]; then
+        os='rpi'
+      elif [[ "$os_release" =~ 'Ubuntu' ]]; then
+        os='ubuntu'
+      fi
+    else
+      echo "__FAIL: unable to detect os. Should be one of: $supported_oses"
+      read -r input_os
+      os="$input_os"
+    fi
+    export DOTFILES_RESOLVED_OS="$os"
+  fi
+}
