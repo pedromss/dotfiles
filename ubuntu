@@ -1,6 +1,5 @@
 #!/usr/bin/env bash 
 
-. funcs-export
 . funcs
 . configure
 
