@@ -66,6 +66,9 @@ npm install -g \
 
 install_zsh_plugins
 
+make_links
+configure_vim
+
 function install_llvm() {
   if [ -f /usr/bin/clangd ] && [ -f /usr/bin/llvm-config ] ; then
     return

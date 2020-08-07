@@ -16,6 +16,11 @@ export DFILES_PATH_REPOS=~/dotfiles/repos
 export XDG_CONFIG_HOME="$DFILES_XDG/.config"
 export XDG_DATA_HOME="$DFILES_XDG/.local/share"
 
+mkdir -p "$DFILES_DIR_BIN"
+mkdir -p "$DFILES_XDG"
+mkdir -p "$XDG_CONFIG_HOME"
+mkdir -p "$XDG_DATA_HOME"
+
 # ==================================================
 # General
 # ==================================================
@@ -87,9 +92,9 @@ export DFILES_FOLDER_DATA_NVIM="$XDG_DATA_HOME/nvim"
 # ==================================================
 # RUST
 # ==================================================
-export DFILES_PATH_CARGO="$DFILES_DIR_BIN/cargo"
-export CARGO_HOME="$DFILES_CARGO_PATH"
-
+export DFILES_PATH_CARGO="$DFILES_DIR_BIN/.cargo"
+export CARGO_HOME="$DFILES_PATH_CARGO"
+export RUSTUP_HOME="$DFILES_DIR_BIN/.rustup"
 alias gom='GO111MODULE=on go'
 alias got='go test ./...'
 alias gotnc='go test ./... -'
@@ -103,8 +108,6 @@ alias gwct='gw --console=plain tasks --all | ag -i '
 # ==================================================
 # GOLANG
 # ==================================================
-export DFILES_PATH_GO_ROOT="$DFILES_BIN/go"
-export GOPATH=~/go
 export GO111MODULE='off'
 # ==================================================
 # SDKMAN
@@ -201,3 +204,4 @@ export PATH="$DFILES_PATH_CARGO/bin:$PATH"
 export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES/bin:$PATH"
+

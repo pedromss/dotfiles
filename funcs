@@ -57,14 +57,8 @@ function install_nvim() {
   clone_from_github 'neovim/neovim' 'stable'
   rm -rf build/  # clear the CMake cache
   make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$DFILES_PATH_NVIM"
-  make install
+  sudo make install
   cd "$current" || exit 1
-  make_link ~/dotfiles/tools/nvim/init.vim "$XDG_CONFIG_HOME"/nvim/init.vim
-
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/morhetz/gruvbox/master/autoload/gruvbox.vim
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
   set -x
 
   echo 'Try nvim'
@@ -84,6 +78,12 @@ function install_rustup() {
   local default_host_triple="$1"
   local user="$DFILES_USER"
 
+  if command_exists rustup ; then
+    echo 'Rustup already installed'
+  fi
+  
+  mkdir -p "$DFILES_PATH_CARGO"
+
   curl -sSL -o setup-rust https://sh.rustup.rs
   chmod +x setup-rust
 
@@ -97,7 +97,7 @@ function install_rustup() {
   echo 'Cleaning up...'
   rm -rf setup-rust
 
-  sudo chown -R "$user":"$user" "$DFILES_CARGO_PATH"
+  sudo chown -R "$user":"$user" "$DFILES_PATH_CARGO"
 
   set -x
   echo 'Try rustup --help'
@@ -166,10 +166,9 @@ function make_links() {
   ln -sfv ~/dotfiles/.zshrc ~/.zshrc
   ln -sfv ~/dotfiles/.bashrc ~/.bashrc
   ln -sfv ~/dotfiles/.vimrc ~/.vimrc
-  ln -sfv ~/dotfiles/init.vim ~/.init.vim
   ln -sfv ~/dotfiles/.ideavimrc ~/.ideavimrc
   ln -sfv ~/dotfiles/.minvimrc ~/.minvimrc
-  ln -sfv ~/dotfiles/vim/.vim ~/.vim
+  ln -sfv ~/dotfiles/.vim ~/.vim
   ln -sfv ~/dotfiles/.tmux.conf ~/.tmux.conf
 }
 
@@ -250,28 +249,40 @@ function check_os () {
   [[ "$DOTFILES_RESOLVED_OS" =~ $1 ]]
 }
 
-function is_macos () {
-  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
-}
-
 function find_os () {
   if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
     supported_oses='mac, rpi, ubuntu'
     os=''
+    os_release=$(cat /etc/os-release)
     if is_macos ; then
       os='mac'
-    elif [ -f '/etc/os-release' ]; then
-      os_release=$(cat /etc/os-release)
-      if [[ "$os_release" =~ 'Raspbian' ]]; then
-        os='rpi'
-      elif [[ "$os_release" =~ 'Ubuntu' ]]; then
-        os='ubuntu'
-      fi
+    elif [[ "$os_release" =~ 'Ubuntu' ]]; then
+      os='ubuntu'
+    elif [[ "$os_release" =~ 'Raspbian' ]] ; then
+      os='rpi'
     else
       echo "__FAIL: unable to detect os. Should be one of: $supported_oses"
       read -r input_os
       os="$input_os"
     fi
     export DOTFILES_RESOLVED_OS="$os"
+  fi
+}
+
+function is_macos () {
+  [[ "$OSTYPE" =~ 'darwin' ]] || return 1
+}
+
+function configure_vim() {
+  ln -sfv ~/dotfiles/init.vim "$XDG_CONFIG_HOME"/nvim/init.vim
+
+  if ! [ -f ~/dotfiles/.vim/colors/gruvbox.vim ] ; then
+    curl -fLo ~/dotfiles/.vim/colors/gruvbox.vim --create-dirs \
+      https://raw.githubusercontent.com/morhetz/gruvbox/master/autoload/gruvbox.vim
+  fi
+
+  if ! [ -f ~/dotfiles/.vim/autoload/plug.vim ] ; then
+    curl -fLo ~/dotfiles/.vim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
 }
