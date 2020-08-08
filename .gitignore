@@ -8,6 +8,8 @@ repos
 .vim/autoload/plug.vim.old
 .vim/colors
 .vim/doc
+.vim/plugged
+.vim/.netrwhist
 
 xdg/.local
 xdg/.config

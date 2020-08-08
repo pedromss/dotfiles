@@ -1,17 +1,15 @@
 set encoding=utf-8
 scriptencoding uft8
-" Functions... -------------------- {{{
-function! LoadColorScheme(scheme)
-  if filereadable(expand('~/dotfiles/.vim/colors/' . a:scheme . '.vim'))
-    execute ':colorscheme ' . a:scheme
-  endif
+function! GitBranch()
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
-" }}}
+function! StatuslineGit()
+  let l:branchname = GitBranch()
+  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+endfunction
 " Basic settings -------------------- {{{
 let mapleader = ','
 let localleader = "\\"
-call LoadColorScheme('gruvbox')
-set background=dark
 syntax on
 filetype plugin indent on
 set textwidth=80
@@ -36,7 +34,7 @@ set incsearch " search as you type
 set cindent " indents more if inside brackets
 set relativenumber
 set list
-set listchars=tab:▸·,trail:·,eol:↵" Show tabs as !<dot> and spaces as <dot>
+set listchars=tab:▸·,trail:·,eol:↵
 set cul " highlight current line
 augroup BgHighlight
   autocmd!
@@ -45,29 +43,31 @@ augroup BgHighlight
 augroup END
 set splitbelow
 set splitright
+set laststatus=2
+set statusline=
+set statusline+=%f
+set statusline+=%m
+set statusline+=%=
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\[%{&fileformat}\]
+set statusline+=\ %p%%
+set statusline+=\ %l:%c
 " }}}
 " Commands -------------------- {{{
 command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build .
 " }}}
 " Plugins -------------------- {{{
 call plug#begin('~/dotfiles/.vim/plugged')
-" FZF / Ctrlp for file navigation
-if executable('fzf')
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-  "else
-  "Plug 'ctrlpvim/ctrlp.vim'
-endif
-Plug 'neoclide/jsonc.vim'
+Plug 'rakr/vim-one'
+Plug 'junegunn/seoul256.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'yuezk/vim-js', { 'for': 'javascript' }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
 Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'junegunn/goyo.vim'
-Plug 'yegappan/mru'
-Plug 'jlanzarotta/bufexplorer'
 Plug 'godlygeek/tabular'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
@@ -78,30 +78,22 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-Plug 'tpope/vim-cucumber'
 Plug 'svermeulen/vim-cutlass'
 Plug 'svermeulen/vim-subversive'
 Plug 'Chiel92/vim-autoformat'
 Plug 'alvan/vim-closetag', { 'for': 'html' }
-Plug 'bling/vim-airline'
-Plug 'christoomey/vim-titlecase'
+"Plug 'bling/vim-airline'
 Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'flazz/vim-colorschemes'
 Plug 'vim-latex/vim-latex'
 Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'
-Plug 'modille/groovy.vim', { 'for': 'groovy' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
-Plug 'tfnico/vim-gradle'
-Plug 'udalov/kotlin-vim'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
-Plug 'xolox/vim-colorscheme-switcher'
-Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 if has('python') || has('python3')
@@ -113,6 +105,7 @@ call plug#end()
 " REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
 filetype plugin on
 " IMPORTANT: win32 users will need to have 'shellslash' set so that latex
+" can be called correctly.
 " can be called correctly.
 set shellslash
 " IMPORTANT: grep will sometimes skip displaying the file name if you
@@ -554,38 +547,36 @@ let g:jsdoc_allow_input_prompt = 1
 let g:jsdoc_input_description = 1
 " }}}
 " Airline variables -------------------- {{{
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
+let g:airline_symbols = {}
 " unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.maxlinenr = '㏑'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
-" powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_powerline_fonts = 1
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_symbols.crypt = '🔒'
+"let g:airline_symbols.linenr = '☰'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.maxlinenr = ''
+"let g:airline_symbols.maxlinenr = '㏑'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.spell = 'Ꞩ'
+"let g:airline_symbols.notexists = 'Ɇ'
+"let g:airline_symbols.whitespace = 'Ξ'
+"" powerline symbols
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = '☰'
+"let g:airline_symbols.maxlinenr = ''
+"let g:airline_powerline_fonts = 1
 let g:airline_theme='wombat'
 " }}}
 " Vim-javascript variables -------------------- {{{
@@ -762,8 +753,7 @@ highlight TWS ctermbg=green guibg=green
 "augroup makers_java
 "autocmd!
 "autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-"autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-"augroup END
+"" }}}
 "" }}}
 "" Scala makers -------------------- {{{
 "augroup makers_scala
@@ -795,3 +785,8 @@ nnoremap <M-l> gt
 " }}}
 let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:function;v:variables'
 " }}}
+" }}}
+:colorscheme one
+set background=light
+set t_Co=256
+set termguicolors
