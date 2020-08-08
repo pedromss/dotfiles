@@ -52,18 +52,15 @@ set splitbelow
 set splitright
 set laststatus=2
 set statusline=
-"set statusline+=%{StatuslineGit()}
-"set statusline+=%#PmenuSel#
-"set statusline+=%#LineNr#
 set statusline+=%f
 set statusline+=%m
 set statusline+=%=
-"set statusline+=%#CursorColumn#
 set statusline+=\ %y
 set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
 set statusline+=\[%{&fileformat}\]
 set statusline+=\ %p%%
 set statusline+=\ %l:%c
+set tagstack
 " }}}
 " Commands -------------------- {{{
 command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build .
@@ -107,7 +104,6 @@ Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
 Plug 'mhinz/vim-signify'
 Plug 'mileszs/ack.vim'
-"Plug 'modille/groovy.vim', { 'for': 'groovy' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
@@ -121,6 +117,7 @@ Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 if has('python') || has('python3')
   Plug 'SirVer/ultisnips'
 endif
@@ -274,10 +271,6 @@ nnoremap <localleader>vdr :diffget REMOTE<cr>
 " }}}
 " Buffer mappings -------------------- {{{
 nnoremap <silent> <M-F12> :BufExplorer<CR>
-nnoremap <silent> <F11> :bn<CR>
-nnoremap <silent> <S-F12> :bp<CR>
-nnoremap <leader>bte :buffers<CR>:tabedit #
-nnoremap B :buffers<CR>:buffer<Space>
 nnoremap <S-C> :bd<CR>
 nnoremap <S-Q> :bd!<CR>
 " }}}
@@ -293,6 +286,7 @@ augroup go_mappings
   au FileType go nnoremap <localleader>goc :GoCoverageToggle<cr>
   au FileType go nnoremap <localleader>gom :GoMetaLinter<cr>
   au FileType go nnoremap <localleader>goa :GoAlternate<cr>
+  au FileType go nnoremap <localleader>gop :GoChannelPeers<CR>
 augroup END
 " }}}
 " Fzf mappings -------------------- {{{
@@ -371,6 +365,7 @@ augroup filetype_mappings_quickfix
   autocmd!
   autocmd FileType qf noremap <localleader>n :cnext<cr>
   autocmd FileType qf noremap <localleader>p :cprevious<cr>
+  autocmd FileType qf noremap <localleader>cc :cclose<cr> :lclose<cr>
 augroup END
 " }}}
 " Terminal variables -------------------- {{{
@@ -812,7 +807,7 @@ let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:
 " }}}
 " }}}
 " COC Settings -------------------- {{{
-" if hidden is not set, TextEdit might fail.
+ "if hidden is not set, TextEdit might fail.
 set hidden
 
 " Some servers have issues with backup files, see #649
@@ -858,9 +853,9 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
