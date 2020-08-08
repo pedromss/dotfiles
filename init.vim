@@ -3,6 +3,7 @@ set packpath+=~/.vim
 set encoding=utf-8
 scriptencoding uft8
 set t_Co=256
+" Functions -------------------- {{{
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
@@ -11,6 +12,7 @@ function! StatuslineGit()
   let l:branchname = GitBranch()
   return strlen(l:branchname) > 0?'  '.l:branchname : 'UNKNOWN'
 endfunction
+" }}}
 " Basic settings -------------------- {{{
 let mapleader = ','
 let localleader = "\\"
@@ -68,6 +70,7 @@ command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude
 " }}}
 " Plugins -------------------- {{{
 call plug#begin(stdpath('data') . '/plugged')
+Plug 'morhetz/gruvbox'
 Plug 'rakr/vim-one'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'neoclide/jsonc.vim'
@@ -133,63 +136,6 @@ set shellslash
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
 set grepprg=grep\ -nH\ $*
-" }}}
-" Mappings -------------------- {{{
-" ALE Mappings -------------------- {{{
-nmap <silent> <localleader>ap <Plug>(ale_previous_wrap)
-nmap <silent> <localleader>an <Plug>(ale_next_wrap)
-nnoremap <localleader>al :ALELint<cr>
-nnoremap <localleader>af :ALEFix<cr>
-" }}}
-" Goyo mappings -------------------- {{{
-nnoremap <F3> :Goyo<cr>
-" }}}
-" MRU mappings -------------------- {{{
-nnoremap <leader>mr :MRU<cr>
-" }}}
-" Tabularize mappings -------------------- {{{
-vnoremap <localleader>qw= :'<,'>Tabularize /=<cr>
-vnoremap <localleader>qw, :'<,'>Tabularize /,<cr>
-vnoremap <localleader>qw :'<,'>Tabularize /
-nnoremap <localleader>qw= ggVG:'<,'>Tabularize /=<cr>
-nnoremap <localleader>qw, ggVG:'<,'>Tabularize /,<cr>
-nnoremap <localleader>qw ggVG:'<,'>Tabularize /
-" }}}
-" Vim cutlass mappings -------------------- {{{
-nnoremap x d
-xnoremap x d
-nnoremap xx dd
-" }}}
-" Vim yoink mappings -------------------- {{{
-"nmap <c-n> <plug>(YoinkPostPasteSwapForward)
-"nmap <c-p> <plug>(YoinkPostPasteSwapBack)
-"nmap p <plug>(YoinkPaste_p)
-"nmap P <plug>(YoinkPaste_P)
-"nmap [y <plug>(YoinkRotateBack)
-"nmap ]y <plug>(YoinkRotateForward)
-" }}}
-" Vim Subversive -------------------- {{{
-nmap s <plug>(SubversiveSubstitute)
-nmap ss <plug>(SubversiveSubstituteLine)
-nmap S <plug>(SubversiveSubstituteToEndOfLine)
-nmap <leader>s <plug>(SubversiveSubstituteRange)
-xmap <leader>s <plug>(SubversiveSubstituteRange)
-nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
-" }}}
-" Fugitive VIM mappings -------------------- {{{
-nnoremap <F4> :Gblame<CR>
-"nnoremap <localleader>fgs :Gstatus<CR>
-nnoremap <localleader>fgc :Gcommit %<CR>
-" }}}
-" Panes -------------------- {{{
-nnoremap <C-v><localleader> :vsplit ene<cr>
-nnoremap <C-v>- :split ene<cr>
-" }}}
-" Navigation -------------------- {{{
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
 " }}}
 " General mappings -------------------- {{{
 nnoremap <silent> <localleader>cc :cclose<cr> :lclose<cr>
@@ -258,6 +204,63 @@ nnoremap <leader>enn :ene<cr>
 " edit a new buffer in the current pane if no changes
 nnoremap <leader>enf :ene!<cr>
 "au BufWrite * :Autoformat
+" }}}
+" Plugin Mappings -------------------- {{{
+" ALE Mappings -------------------- {{{
+nmap <silent> <localleader>ap <Plug>(ale_previous_wrap)
+nmap <silent> <localleader>an <Plug>(ale_next_wrap)
+nnoremap <localleader>al :ALELint<cr>
+nnoremap <localleader>af :ALEFix<cr>
+" }}}
+" Goyo mappings -------------------- {{{
+nnoremap <F3> :Goyo<cr>
+" }}}
+" MRU mappings -------------------- {{{
+nnoremap <leader>mr :MRU<cr>
+" }}}
+" Tabularize mappings -------------------- {{{
+vnoremap <localleader>qw= :'<,'>Tabularize /=<cr>
+vnoremap <localleader>qw, :'<,'>Tabularize /,<cr>
+vnoremap <localleader>qw :'<,'>Tabularize /
+nnoremap <localleader>qw= ggVG:'<,'>Tabularize /=<cr>
+nnoremap <localleader>qw, ggVG:'<,'>Tabularize /,<cr>
+nnoremap <localleader>qw ggVG:'<,'>Tabularize /
+" }}}
+" Vim cutlass mappings -------------------- {{{
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+" }}}
+" Vim yoink mappings -------------------- {{{
+"nmap <c-n> <plug>(YoinkPostPasteSwapForward)
+"nmap <c-p> <plug>(YoinkPostPasteSwapBack)
+"nmap p <plug>(YoinkPaste_p)
+"nmap P <plug>(YoinkPaste_P)
+"nmap [y <plug>(YoinkRotateBack)
+"nmap ]y <plug>(YoinkRotateForward)
+" }}}
+" Vim Subversive -------------------- {{{
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+xmap <leader>s <plug>(SubversiveSubstituteRange)
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" }}}
+" Fugitive VIM mappings -------------------- {{{
+nnoremap <F4> :Gblame<CR>
+"nnoremap <localleader>fgs :Gstatus<CR>
+nnoremap <localleader>fgc :Gcommit %<CR>
+" }}}
+" Panes -------------------- {{{
+nnoremap <C-v><localleader> :vsplit ene<cr>
+nnoremap <C-v>- :split ene<cr>
+" }}}
+" Navigation -------------------- {{{
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 " }}}
 " Livedown mappings -------------------- {{{
 nnoremap <localleader>ldp :LivedownPreview<CR>
@@ -384,7 +387,7 @@ noremap <F9> :PrevColorScheme<cr>
 nmap <localleader><localleader>t :TagbarToggle<CR>
 " }}}
 " }}}
-" Variables -------------------- {{{
+" Plugin Variables -------------------- {{{
 " ALE variables -------------------- {{{
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
@@ -941,15 +944,13 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:go_def_mapping_enabled = 0
-" TODO set this
-"let g:coc_node_path = ... '/nvm/versions/node/v13.5.0/bin/node'
+let g:coc_node_path = expand('~/dotfiles/repos/nvm/versions/node/v' . $DFILES_VERSION_NODEJS . '/bin/node')
 " use <c-space>for trigger completion
 inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "}}}
-
-" Or if you have Neovim >= 0.1.5
+" Color Settings -------------------- {{{
 if (has('termguicolors'))
  set termguicolors
 endif
@@ -957,4 +958,8 @@ endif
 syntax enable
 
 set completeopt=menuone,noinsert,noselect,preview,longest
-:colorscheme one
+:colorscheme gruvbox
+
+let g:gruvbox_contrast_light = 'hard'
+let g:gruvbox_contrast_dark = 'hard'
+" }}}

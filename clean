@@ -1,11 +1,11 @@
 #/usr/bin/env bash
 
-set +x
+set -x
 
 rustup self uninstall
 
 rm -rf ~/dotfiles/bin
-rm -rf ~/dotfiles/bin:
+rm -rf ~/dotfiles/repos
 
 # Remove links
 rm -rf ~/.gitfconfig
@@ -19,5 +19,4 @@ rm -rf ~/.minvimrc
 rm -rf ~/.vim
 rm -rf ~/.tmux.conf
 
-
-set -x
+set +x

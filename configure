@@ -52,7 +52,6 @@ fi
 # NVM
 # ==================================================
 export NVM_DIR=~/dotfiles/repos/nvm
-export PATH="$DOTFILES_NVM_DIR:$PATH"
 # ==================================================
 # FZF
 # ==================================================
@@ -95,9 +94,6 @@ export DFILES_FOLDER_DATA_NVIM="$XDG_DATA_HOME/nvim"
 export DFILES_PATH_CARGO="$DFILES_DIR_BIN/.cargo"
 export CARGO_HOME="$DFILES_PATH_CARGO"
 export RUSTUP_HOME="$DFILES_DIR_BIN/.rustup"
-alias gom='GO111MODULE=on go'
-alias got='go test ./...'
-alias gotnc='go test ./... -'
 # ==================================================
 # Gradle
 # ==================================================
@@ -108,7 +104,12 @@ alias gwct='gw --console=plain tasks --all | ag -i '
 # ==================================================
 # GOLANG
 # ==================================================
+export DFILES_PATH_GO_ROOT="$DFILES_DIR_BIN"/go
+export GO_PATH=~/go
 export GO111MODULE='off'
+alias gom='GO111MODULE=on go'
+alias got='go test ./...'
+alias gotnc='go test ./... -'
 # ==================================================
 # SDKMAN
 # ==================================================
@@ -198,10 +199,18 @@ function zsh_time_boot () {
   done
 }
 # ==================================================
+# ENHANCD
+# ==================================================
+export ENHANCD_FILTER=fzf cd
+# ==================================================
 # PATHHHH
 # ==================================================
 export PATH="$DFILES_PATH_CARGO/bin:$PATH"
 export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES/bin:$PATH"
+
+if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
+  . ~/dotfiles/repos/nvm/nvm.sh
+fi
 

@@ -10,6 +10,7 @@ repos
 .vim/doc
 .vim/plugged
 .vim/.netrwhist
+.vim/.vim
 
 xdg/.local
 xdg/.config

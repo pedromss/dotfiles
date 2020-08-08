@@ -11,39 +11,40 @@ function clone_from_github () {
 }
 
 function clone_from_github_into_dir () {
-    repo="$1"
-    folder_name="$2"
-    tag="$3"
+  set -x
+  repo="$1"
+  tag="$3"
+  name="${repo##*/}"
+  folder_name="$2"/"$name"
 
-    if ! [ -d "$folder_name" ] ; then
-      local url="https://github.com/$repo"
-      echo "Cloning $url -> $folder_name"
-      git clone --depth 1 "$url" "$folder_name"
-    fi
-    cd "$folder_name" || exit 1
-    git fetch --tags
-    if [ -n "$tag" ] ; then 
-      echo "Checking out $repo to $tag"
-      git config --local advice.detachedHead false
-      git checkout "$tag" 
-    fi
+  if ! [ -d "$folder_name" ] ; then
+    local url="https://github.com/$repo"
+    git clone --depth 1 "$url" "$folder_name"
+  fi
+  cd "$folder_name" || exit 1
+  git fetch --tags
+  if [ -n "$tag" ] ; then 
+    echo "Checking out $repo to $tag"
+    git config --local advice.detachedHead false
+    git checkout "$tag" 
+  fi
+  set +x
 }
 
 function install_go() {
-  set +x
+  set -x
   local arch="$1"
   local go_version="$DFILES_VERSION_GO"
   local bin_dir="$DFILES_DIR_BIN/go"
   local user="$DFILES_USER"
   local tarball=go"$go_version"."$arch".tar.gz
 
-  echo "Downloading go$go_version.${arch}.tar.gz..."
   rm -rf "$bin_dir"
   wget -q "https://dl.google.com/go/${tarball}"
-  tar -xf "$tarball" -C "$bin_dir"
+  mkdir -p "$bin_dir"
+  tar -xf "$tarball" -C "$DFILES_DIR_BIN"
   rm -f "$tarball"
-  sudo chown -R "$user:$user" "$DFILES_PATH_GO_ROOT"
-  set -x
+  set +x
 
   echo "Try go help"
 }
@@ -74,7 +75,7 @@ function install_fzf() {
 }
 
 function install_rustup() {
-  set +x
+  set -x
   local default_host_triple="$1"
   local user="$DFILES_USER"
 
@@ -99,7 +100,7 @@ function install_rustup() {
 
   sudo chown -R "$user":"$user" "$DFILES_PATH_CARGO"
 
-  set -x
+  set +x
   echo 'Try rustup --help'
 }
 
@@ -110,18 +111,19 @@ function install_sdkman() {
 }
 
 function install_nvm() {
+  if [ -d "$NVM_DIR" ] ; then
+    echo 'nvm already installed'
+  fi
   set +x
   curr=$(pwd)
-  clone_from_github 'nvm-sh/nvm' "$NVM_DIR"
+  clone_from_github 'nvm-sh/nvm' "$NVM_DIR" "$DFILES_VERSION_NVM"
   "$NVM_DIR"/install.sh
   cd "$curr" || exit 1
-
-  sudo chmod +x "$NVM_DIR"/nvm.sh
 
   # shellcheck disable=1090
   . "$NVM_DIR/nvm.sh" 
 
-  nvm install "$DOTFILES_NODE_VERSION"
+  nvm install "$DFILES_VERSION_NODEJS"
   set -x
 }
 
@@ -134,29 +136,13 @@ function install_zsh_plugins() {
 
     clone_from_github_into_dir 'ohmyzsh/ohmyzsh' "$zsh_plugins_repos_dir"
     clone_from_github_into_dir 'wfxr/forgit' "$zsh_plugins_repos_dir"
-
-    #zplug "plugins/globalias", from:oh-my-zsh
-    #zplug "plugins/vi-mode", from:oh-my-zsh
-    #zplug "plugins/dotenv", from:oh-my-zsh
-
-    #zplug "b4b4r07/enhancd", use:"init#.sh"
-    #zplug "Cloudstek/zsh-plugin-appup"
-    #zplug "hlissner/zsh-autopair"
-    #zplug "zdharma/fast-syntax-highlighting"
-    #zplug "wfxr/forgit"
-    #zplug "stedolan/jq", from:gh-r, as:command, rename-to:jq
-    #zplug "mikefarah/yq", from:gh-r, as:command, rename-to:yq, lazy:true
-    #zplug "lunaryorn/mdcat", from:gh-r, as:command, rename-to:mdcat, if:"! is-rpi"
-    #zplug "raylee/tldr", as:command, use:"tldr"
-    #zplug "Cloudstek/zsh-plugin-appup"
-    #zplug "zdharma/fast-syntax-highlighting"
-    #zplug "b4b4r07/easy-oneliner", on:"junegunn/fzf-bin"
-    #zplug "zsh-users/zsh-history-substring-search"
-    #zplug "sindresorhus/pure"
-    #zplug "zsh-users/zsh-autosuggestions", if:"! is-rpi"
-    #zplug "zsh-users/zsh-completions", if:"! is-rpi"
-    #zplug "greymd/tmux-xpanes"
-
+    clone_from_github_into_dir "b4b4r07/enhancd" "$zsh_plugins_repos_dir"
+    clone_from_github_into_dir "zdharma/fast-syntax-highlighting" "$zsh_plugins_repos_dir"
+    clone_from_github_into_dir "zsh-users/zsh-history-substring-search" "$zsh_plugins_repos_dir"
+    if ! is-rpi ; then
+      clone_from_github_into_dir "zsh-users/zsh-autosuggestions" "$zsh_plugins_repos_dir"
+      clone_from_github_into_dir "zsh-users/zsh-completions" "$zsh_plugins_repos_dir"
+    fi
   fi
 }
 
@@ -173,11 +159,11 @@ function make_links() {
 }
 
 function install_tpm() {
-  set +x
+  set -x
   curr=$(pwd)
   clone_from_github 'tmux-plugins/tpm' 'v3.0.0'
   cd "$curr" || exit 1
-  set -x
+  set +x
 }
 
 function shck_one () {

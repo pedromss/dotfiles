@@ -26,9 +26,9 @@ fpath=(/usr/local/share/zsh-completions $fpath )
 # You may need to manually set your language environment export LANG=en_US.UTF-8
 
 # shellcheck disable=1090
-[ -f "$DFILES/repos/fzf/shell/completion.zsh" ] && source "$DFILES/repos/fzf/shell/completion.zsh"
+[ -f ~/dotfiles/repos/fzf/shell/completion.zsh ] && source ~/dotfiles/repos/fzf/shell/completion.zsh
 # shellcheck disable=1090
-[ -f "$DFILES/repos/fzf/shell/key-bindings.zsh" ] && source "$DFILES/repos/fzf/shell/key-bindings.zsh"
+[ -f ~/dotfiles/repos/fzf/shell/key-bindings.zsh ] && source ~/dotfiles/repos/fzf/shell/key-bindings.zsh
 # ==================================================
 # Completions
 # ==================================================
@@ -36,12 +36,12 @@ zstyle ':completion:*' completer _expand _complete _ignored _correct _approximat
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' menu select=2
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
-zstyle :compinstall filename "$DFILES/tools/zsh/zshrc"
+zstyle :compinstall filename ~/dotfiles/.zshrc
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' use-compctl false
-zstyle ':completion:*' cache-path "$DOTFILES_BIN/zsh-cache"
+zstyle ':completion:*' cache-path ~/dotfiles/bin/zsh-cache
 autoload -Uz compinit
 compinit
 # The following 2 lines are needed for compatiblity with bash
@@ -102,17 +102,17 @@ autoload -U promptinit; promptinit
 # ================================================== 
 # Plugins
 # ================================================== 
-if [ -n "$DFILES" ] && [ -d "$DFILES/repos/zsh-plugins" ] ; then
-  for plugin_folder in "$DFILES"/repos/zsh-plugins/* ; do
-    if [[ "$plugin_folder" =~ ^ohmyzsh$ ]] ; then
+if [ -d ~/dotfiles/repos/zsh-plugins ] ; then
+  for plugin_folder in ~/dotfiles/repos/zsh-plugins/* ; do
+    if [[ "$plugin_folder" =~ .*ohmyzsh$ ]] ; then
       . "$plugin_folder/plugins/globalias/globalias.plugin.zsh"
       . "$plugin_folder/plugins/vi-mode/vi-mode.plugin.zsh"
       . "$plugin_folder/plugins/dotenv/dotenv.plugin.zsh"
     else 
       for plugin_file in "$plugin_folder"/*.plugin.zsh ; do
+        echo "Loading $plugin_file"
         . "$plugin_file"
       done
-    # TODO source the plugin
     fi
   done
 fi
@@ -120,26 +120,16 @@ fi
 # Plugin configs
 # ================================================== 
 ZSH_DOTENV_PROMPT=Always
-PURE_GIT_PULL=0
-#prompt pure
 #PROMPT='%F{white}%* '$PROMPT
 PROMPT='%2~ %# '
 #prompt_newline='%666v'
 #PROMPT=" $PROMPT"
-precmd_pipestatus() {
-RPROMPT="${(j.|.)pipestatus}"
-}
-add-zsh-hook precmd precmd_pipestatus
+#precmd_pipestatus() {
+#RPROMPT="${(j.|.)pipestatus}"
+#}
+#add-zsh-hook precmd precmd_pipestatus
 ZSH_THEME=""
 # Added by Krypton
 export GPG_TTY=$(tty)
 # For zsh profiling
 #zprof
-
-
-
-PATH="/home/pedromss/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/pedromss/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/pedromss/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/pedromss/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/pedromss/perl5"; export PERL_MM_OPT;

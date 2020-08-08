@@ -32,9 +32,10 @@ sudo apt-get -y install \
   python-pip \
   python3-pip \
   silversearcher-ag \
-  apt-utils
-
-ln -sfv ~/dotfiles/tools/ctags/.ctags ~/.ctags
+  apt-utils \
+  npm \
+  jq \
+  yq
 
 pip install \
   jedi \
@@ -46,12 +47,15 @@ pip install \
 install_llvm
 install_nvim
 install_fzf
+install_nvm
 install_go 'linux-amd64'
 install_rustup 'x86_64-unknown-linux-gnu'
 install_sdkman
 
+set -x
 go get github.com/hairyhenderson/gomplate/cmd/gomplate
 go get github.com/tomnomnom/gron
+set +x
 
 cargo install --force \
   exa \
