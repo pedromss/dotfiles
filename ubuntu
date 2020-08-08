@@ -51,6 +51,7 @@ install_nvm
 install_go 'linux-amd64'
 install_rustup 'x86_64-unknown-linux-gnu'
 install_sdkman
+install_tpm
 
 set -x
 go get github.com/hairyhenderson/gomplate/cmd/gomplate

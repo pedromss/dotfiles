@@ -2,9 +2,7 @@
 
 function clone_from_github () {
   local repo="$1"
-  local folder_name="${1##*/}"
-  folder_name="${folder_name%%\.*}"
-  folder_name=~/dotfiles/repos/"$folder_name"
+  local folder_name=~/dotfiles/repos
   local tag="$2"
 
   clone_from_github_into_dir "$repo" "$folder_name" "$tag"

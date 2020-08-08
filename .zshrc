@@ -7,9 +7,6 @@ source ~/dotfiles/configure
 bindkey "^[[3~" delete-char
 bindkey '[C' beginning-of-line
 
-bindkey 'K' history-substring-search-up
-bindkey 'J' history-substring-search-down
-
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
 ZSH_AUTOSUGGEST_USE_ASYNC=yes
 
@@ -110,7 +107,6 @@ if [ -d ~/dotfiles/repos/zsh-plugins ] ; then
       . "$plugin_folder/plugins/dotenv/dotenv.plugin.zsh"
     else 
       for plugin_file in "$plugin_folder"/*.plugin.zsh ; do
-        echo "Loading $plugin_file"
         . "$plugin_file"
       done
     fi
@@ -132,4 +128,7 @@ ZSH_THEME=""
 # Added by Krypton
 export GPG_TTY=$(tty)
 # For zsh profiling
+bindkey 'K' history-substring-search-up
+bindkey 'J' history-substring-search-down
+
 #zprof
