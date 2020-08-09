@@ -135,6 +135,9 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " General mappings -------------------- {{{
+let g:BASH_Ctrl_j = 'off'
+nnoremap <M-h> gT
+nnoremap <M-l> gt
 nnoremap <silent> <localleader>cc :cclose<cr> :lclose<cr>
 nnoremap <leader>zf f{v%zf<esc>
 nnoremap <leader>zF F{v%zf<esc>
@@ -187,8 +190,8 @@ nnoremap <Esc> :noh<CR>:mat none<cr>
 nnoremap cm :match TWS /\<<C-r><C-w>\>/<cr>
 nnoremap <m-k> :m-2<CR>
 nnoremap <m-j> :m+1<CR>
-nnoremap <leader>ev :tabnew ~/dotfiles/.vimrc<CR>
-nnoremap <leader>sv :so $MYVIMRC<CR>
+nnoremap <leader>ev :tabnew ~/dotfiles/init.vim<CR>
+nnoremap <leader>sv :so ~/dotfiles/init.vim<CR>
 nnoremap <s-d> :co.<cr>
 nnoremap <localleader><localleader>n :NERDTreeToggle<CR>
 inoremap jk <esc>l
@@ -656,92 +659,6 @@ augroup abbreviations_java
 augroup END
 " }}}
 " }}}
-" Filetype settings -------------------- {{{
-" Scala file settings -------------------- {{{
-augroup scala_auto_cmds
-  autocmd!
-  au FileType scala :call SetTabs(8)
-  "au FileType scala silent :EnTypeCheck
-augroup END
-" }}}
-" Go file settings -------------------- {{{
-augroup go_aus
-  autocmd!
-  au FileType go :call SetTabs(4)
-  au FileType go :set foldmethod=syntax
-augroup END
-" }}}
-" Go templates -------------------- {{{
-augroup go_templates_settings
-  autocmd!
-  au FileType gohtmltmpl set noexpandtab
-  au FileType gohtmltmpl set tabstop=4
-  au FileType gohtmltmpl set softtabstop=4
-  au FileType gohtmltmpl set shiftwidth=4
-augroup END
-" }}}
-" Java file settings -------------------- {{{
-augroup java_aus
-  autocmd!
-  au FileType java :call SetTabs(4)
-augroup END
-" }}}
-" Javascript file settings -------------------- {{{
-augroup js_aus
-  autocmd!
-  au FileType javascript :call SetTabs(2)
-  au bufwritepost *.js silent !standard --fix %
-augroup END
-" }}}
-" Typescript file settings -------------------- {{{
-augroup ts_aus
-  autocmd!
-  au FileType typescript :call SetTabs(4)
-augroup END
-" }}}
-" Bash file settings -------------------- {{{
-augroup filetype_bash
-  autocmd!
-  "au FileType sh :normal gg=G
-  "au FileType sh :call SetTabs(2)
-  "au FileType sh :colorscheme monochrome
-  au FileType sh :set fo-=t " remove line wrap if textwidth is exceeded
-  "au FileType sh :silent ! [ -f tags ] || ctags -R --language-force=sh .
-augroup END
-" }}}
-" Markdown file settings -------------------- {{{
-augroup filetype_markdown
-  autocmd!
-  au FileType markdown :set fo-=t " remove line wrap if textwidth is exceeded
-augroup END
-" }}}
-" HTML file settings -------------------- {{{
-"augroup filetype_html
-"autocmd!
-"au FileType html setlocal nowrap
-"au FileType html :call SetTabs(2)
-"augroup END
-"}}}
-" Json file settings -------------------- {{{
-augroup filetype_json
-  autocmd!
-  au FileType json nnoremap <buffer> <leader>af :%!jq '.'<CR>
-augroup END
-" }}}
-" Groovy file settings -------------------- {{{
-"augroup groovy_aus
-"autocmd!
-"au FileType groovy :call SetTabs(4)
-"augroup END
-" }}}
-" Vimscript file settings ------------------------------ {{{
-augroup filetype_vim
-  autocmd!
-  "au FileType vim :cal SetTabs(2)
-  "au FileType vim setlocal foldmethod=marker
-  au FileType vim nnoremap <leader>mf o" Fold description <esc>20a-<esc>a {{{<cr><cr>}}}<esc>kcc
-augroup END
-" }}}
 " Operator pending movements -------------------- {{{
 " Parentheses -------------------- {{{
 onoremap p i(
@@ -760,50 +677,8 @@ onoremap a i{
 onoremap in' :<c-u>normal! f'vi'<cr>
 onoremap il' :<c-u>normal! F'vi'<cr>
 " }}}
-" Markdown -------------------- {{{
-onoremap ih :<c-u>execute "normal! ?^==\\+$\\\\|^--\\+$\r:nohlsearch\rkvg_"<cr>
-" }}}
 " Hightlight groups -------------------- {{{
 highlight TWS ctermbg=green guibg=green
-" }}}
-" Neomake Filetype makers -------------------- {{{
-"if has('nvim')
-"" Java makers -------------------- {{{
-"augroup makers_java
-"autocmd!
-"autocmd Filetype java let g:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-"autocmd Filetype java let b:neomake_java_enabled_makers = [ 'gradle', 'mvn' ]
-"augroup END
-"" }}}
-"" Scala makers -------------------- {{{
-"augroup makers_scala
-"autocmd!
-"autocmd Filetype scala let g:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-"autocmd Filetype scala let b:neomake_scala_enabled_makers = [ 'sbt', 'scalac' ]
-"augroup END
-"" }}}
-"" Vimscript makers -------------------- {{{
-"augroup makers_vimscript
-"autocmd!
-"autocmd Filetype vim let g:neomake_vim_enabled_makers = [ 'vint' ]
-"autocmd Filetype vim let b:neomake_vim_enabled_makers = [ 'vint' ]
-"augroup END
-"" }}}
-"call neomake#configure#automake('w')
-"endif
-" }}}
-" Split Navigation -------------------- {{{
-let g:BASH_Ctrl_j = 'off'
-"nnoremap <C-J> <C-w><C-j>
-"nnoremap <C-K> <C-w><C-k>
-"nnoremap <C-L> <C-w><C-l>
-"nnoremap <C-H> <C-w><C-h>
-" Tab navigation -------------------- {{{
-nnoremap <M-h> gT
-nnoremap <M-l> gt
-"" }}}
-" }}}
-let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:function;v:variables'
 " }}}
 " }}}
 " COC Settings -------------------- {{{
@@ -957,4 +832,7 @@ set completeopt=menuone,noinsert,noselect,preview,longest
 
 let g:gruvbox_contrast_light = 'hard'
 let g:gruvbox_contrast_dark = 'hard'
+" }}}
+" CtrlP Settings {{{
+let g:ctrlp_show_hidden = 1
 " }}}

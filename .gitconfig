@@ -1,6 +1,6 @@
 [core]
 	autocrlf = input
-	editor = vim --noplugin
+	editor = vim -u ~/dotfiles/.minivimrc
 	excludesfile = ~/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [grep]
