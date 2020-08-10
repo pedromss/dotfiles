@@ -3,6 +3,7 @@ set packpath+=~/.vim
 set encoding=utf-8
 scriptencoding uft8
 set t_Co=256
+source ~/dotfiles/.vim/plugin/theme-changer.vim
 " Functions -------------------- {{{
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
@@ -68,6 +69,13 @@ command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude
 " Plugins -------------------- {{{
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'morhetz/gruvbox'
+Plug 'datMaffin/vim-colors-bionik'
+Plug 'srcery-colors/srcery-vim'
+Plug 'tjammer/blayu.vim'
+Plug 'aradunovic/perun.vim'
+Plug 'ajmwagar/vim-deus'
+Plug 'tudurom/bleh.vim'
+Plug 'hzchirs/vim-material'
 Plug 'rakr/vim-one'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'neoclide/jsonc.vim'
@@ -111,7 +119,7 @@ Plug 'tfnico/vim-gradle'
 Plug 'udalov/kotlin-vim'
 "Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
-Plug 'xolox/vim-colorscheme-switcher'
+"Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
@@ -377,10 +385,6 @@ if has('nvim')
   tnoremap <leader>cq <Esc>:q!<CR>
 endif
 " }}}
-" VIm colorscheme switcher -------------------- {{{
-noremap <F8> :NextColorScheme<cr>
-noremap <F9> :PrevColorScheme<cr>
-" }}}
 " Tagbar mappings -------------------- {{{
 nmap <localleader><localleader>t :TagbarToggle<CR>
 " }}}
@@ -636,28 +640,12 @@ let g:gitslides_use_custom_mappings = 0
 " }}}
 " }}}
 " Abbreviations -------------------- {{{
-" General abbr -------------------- {{{
 augroup general_abbreviations
   autocmd!
   :iabbrev adn and
   :iabbrev treu true
   :iabbrev flase false
 augroup END
-" }}}
-" Java abbr -------------------- {{{
-augroup abbreviations_java
-  autocmd!
-  autocmd FileType java :iabbrev ??? throw new UnsupportedOperationException();
-  autocmd FileType java :iabbrev psfs public static final String ;<Esc>hi
-  autocmd FileType java :iabbrev pf public final;<Esc>ha
-  autocmd FileType java :iabbrev pfs public final String;<Esc>ha
-  autocmd FileType java :iabbrev pfb public final boolean;<Esc>ha
-  autocmd FileType java :iabbrev pfi public final int;<Esc>ha
-  autocmd FileType java :iabbrev pfl public final long;<Esc>ha
-  autocmd FileType java :iabbrev pfc public final class {<cr>}<Esc>kk$ha
-  autocmd FileType java :iabbrev sout System.out.println();<esc>hi
-augroup END
-" }}}
 " }}}
 " Operator pending movements -------------------- {{{
 " Parentheses -------------------- {{{
@@ -828,10 +816,7 @@ endif
 syntax enable
 
 set completeopt=menuone,noinsert,noselect,preview,longest
-:colorscheme gruvbox
-
-let g:gruvbox_contrast_light = 'hard'
-let g:gruvbox_contrast_dark = 'hard'
+call GoDark()
 " }}}
 " CtrlP Settings {{{
 let g:ctrlp_show_hidden = 1

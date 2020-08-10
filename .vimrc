@@ -1,5 +1,6 @@
 set encoding=utf-8
 scriptencoding uft8
+source ~/dotfiles/.vim/plugin/theme-changer.vim
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
@@ -59,6 +60,14 @@ command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude
 " }}}
 " Plugins -------------------- {{{
 call plug#begin('~/dotfiles/.vim/plugged')
+Plug 'morhetz/gruvbox'
+Plug 'datMaffin/vim-colors-bionik'
+Plug 'srcery-colors/srcery-vim'
+Plug 'tjammer/blayu.vim'
+Plug 'aradunovic/perun.vim'
+Plug 'ajmwagar/vim-deus'
+Plug 'tudurom/bleh.vim'
+Plug 'hzchirs/vim-material'
 Plug 'rakr/vim-one'
 Plug 'junegunn/seoul256.vim'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -354,10 +363,6 @@ if has('nvim')
   tnoremap <Esc> <C-\><C-n>
   tnoremap <leader>cq <Esc>:q!<CR>
 endif
-" }}}
-" VIm colorscheme switcher -------------------- {{{
-noremap <F8> :NextColorScheme<cr>
-noremap <F9> :PrevColorScheme<cr>
 " }}}
 " Tagbar mappings -------------------- {{{
 nmap <localleader><localleader>t :TagbarToggle<CR>
@@ -786,7 +791,6 @@ nnoremap <M-l> gt
 let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:function;v:variables'
 " }}}
 " }}}
-:colorscheme one
-set background=light
+"set termguicolors
 set t_Co=256
-set termguicolors
+call GoDark()
