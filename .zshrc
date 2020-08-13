@@ -128,7 +128,11 @@ ZSH_THEME=""
 # Added by Krypton
 export GPG_TTY=$(tty)
 # For zsh profiling
-bindkey 'K' history-substring-search-up
-bindkey 'J' history-substring-search-down
+bindkey '^[k' history-substring-search-up
+bindkey '^[j' history-substring-search-down
 
 #zprof
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/pedromss/dotfiles/bin/sdkman"
+[[ -s "/home/pedromss/dotfiles/bin/sdkman/bin/sdkman-init.sh" ]] && source "/home/pedromss/dotfiles/bin/sdkman/bin/sdkman-init.sh"
