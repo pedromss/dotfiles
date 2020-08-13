@@ -85,7 +85,7 @@ alias shcheck='shellcheck --external-sources --format=tty --exclude=SC1090,1091 
 # ==================================================
 # Neovim
 # ==================================================
-export DFILES_PATH_NVIM="$DFILES_BIN/nvim"
+export DFILES_PATH_NVIM="$DFILES_DIR_BIN/nvim"
 export DFILES_FOLDER_CONFIG_NVIM="$XDG_CONFIG_HOME/nvim"
 export DFILES_FOLDER_DATA_NVIM="$XDG_DATA_HOME/nvim"
 # ==================================================
@@ -113,7 +113,10 @@ alias gotnc='go test ./... -'
 # ==================================================
 # SDKMAN
 # ==================================================
-export SDKMAN_DIR="$DFILES_BIN/sdkman"
+export SDKMAN_DIR="$DFILES_DIR_BIN/sdkman"
+if [ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] ; then
+  . "$SDKMAN_DIR/bin/sdkman-init.sh"
+fi
 # ==================================================
 # EXA
 # ==================================================
@@ -151,7 +154,7 @@ alias tags='ctags --tag-relative=no --sort=yes -R -f .git/tags --exclude=bin --e
 # ==================================================
 # TMUX
 # ==================================================
-export DFILES_PATH_TMUX="$DFILES_BIN/tmux"
+export DFILES_PATH_TMUX="$DFILES_DIR_BIN/tmux"
 export DFILES_PATH_TMUX_PLUGINS="$DFILES_PATH_TMUX/plugins"
 export DOTFILES_TMUX_CONF_FILE="$DOTFILES_FULL_PATH/tools/tmux/tmux.conf"
 export TMUX_PLUGIN_MANAGER_PATH="$DOTFILES_TMUX_PLUGINS_DIR"
