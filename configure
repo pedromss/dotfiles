@@ -211,7 +211,7 @@ export ENHANCD_FILTER=fzf cd
 export PATH="$DFILES_PATH_CARGO/bin:$PATH"
 export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:/usr/local/go/bin:$PATH"
-export PATH="$DFILES/bin:$PATH"
+export PATH="$DFILES_DIR_BIN:$PATH"
 
 if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
   . ~/dotfiles/repos/nvm/nvm.sh

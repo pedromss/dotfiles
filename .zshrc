@@ -1,31 +1,16 @@
-# For zsh profiling, uncomment this and the last line
 #zmodload zsh/zprof
-
-# plugins
 source ~/dotfiles/configure
-
 bindkey "^[[3~" delete-char
 bindkey '[C' beginning-of-line
-
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
 ZSH_AUTOSUGGEST_USE_ASYNC=yes
-
 HISTSIZE=15000
 SAVEHIST=10000
-#HISTFILE="$DFILES/bin/zhistory"
-
+HISTFILE="$DFILES/bin/zhistory"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-fpath=(/usr/local/share/zsh-completions $fpath )
-#fpath=("$DFILES/bin/zsh" $fpath )
-# You may need to manually set your language environment export LANG=en_US.UTF-8
-
-# shellcheck disable=1090
-[ -f ~/dotfiles/repos/fzf/shell/completion.zsh ] && source ~/dotfiles/repos/fzf/shell/completion.zsh
-# shellcheck disable=1090
-[ -f ~/dotfiles/repos/fzf/shell/key-bindings.zsh ] && source ~/dotfiles/repos/fzf/shell/key-bindings.zsh
+fpath=( /usr/local/share/zsh-completions $fpath )
 # ==================================================
 # Completions
 # ==================================================
@@ -116,23 +101,16 @@ fi
 # Plugin configs
 # ================================================== 
 ZSH_DOTENV_PROMPT=Always
-#PROMPT='%F{white}%* '$PROMPT
 PROMPT='%2~ %# '
-#prompt_newline='%666v'
-#PROMPT=" $PROMPT"
-#precmd_pipestatus() {
-#RPROMPT="${(j.|.)pipestatus}"
-#}
-#add-zsh-hook precmd precmd_pipestatus
 ZSH_THEME=""
-# Added by Krypton
-export GPG_TTY=$(tty)
-# For zsh profiling
 bindkey '^[k' history-substring-search-up
 bindkey '^[j' history-substring-search-down
-
+# shellcheck disable=1090
+if [ -f ~/dotfiles/repos/fzf/shell/completion.zsh ] ; then
+  source ~/dotfiles/repos/fzf/shell/completion.zsh
+fi
+# shellcheck disable=1090
+if [ -f ~/dotfiles/repos/fzf/shell/key-bindings.zsh ] ; then
+  source ~/dotfiles/repos/fzf/shell/key-bindings.zsh
+fi
 #zprof
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/pedromss/dotfiles/bin/sdkman"
-[[ -s "/home/pedromss/dotfiles/bin/sdkman/bin/sdkman-init.sh" ]] && source "/home/pedromss/dotfiles/bin/sdkman/bin/sdkman-init.sh"

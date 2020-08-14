@@ -295,6 +295,7 @@ augroup go_mappings
   au FileType go nnoremap <localleader>gode :GoDef<CR>
   au FileType go nnoremap <localleader>godo :GoDoc<CR>
   au FileType go nnoremap <localleader>goc :GoCoverageToggle<cr>
+  au FileType go nnoremap <localleader>gov :GoVet<cr>
   au FileType go nnoremap <localleader>gom :GoMetaLinter<cr>
   au FileType go nnoremap <localleader>goa :GoAlternate<cr>
   au FileType go nnoremap <localleader>gop :GoChannelPeers<CR>
@@ -374,8 +375,10 @@ augroup END
 " Quick fix file mappings -------------------- {{{
 augroup filetype_mappings_quickfix
   autocmd!
-  autocmd FileType qf noremap <localleader>n :cnext<cr>
-  autocmd FileType qf noremap <localleader>p :cprevious<cr>
+  autocmd FileType qf noremap <localleader>s :cnext<cr>
+  autocmd FileType qf noremap <localleader>s :lnext<cr>
+  autocmd FileType qf noremap <localleader>d :cprevious<cr>
+  autocmd FileType qf noremap <localleader>f :lprevious<cr>
   autocmd FileType qf noremap <localleader>cc :cclose<cr> :lclose<cr>
 augroup END
 " }}}
