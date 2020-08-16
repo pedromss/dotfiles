@@ -55,7 +55,7 @@ export NVM_DIR=~/dotfiles/repos/nvm
 # ==================================================
 # FZF
 # ==================================================
-export DFILES_PATH_FZF=~/.fzf
+export DFILES_PATH_FZF=~/dotfiles/repos/fzf
 export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || bat {} || tree -C {}) 2> /dev/null | head -200'"
 export FZF_CTRL_R_OPTS="--tabstop 1 --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_DEFAULT_OPTS='--height 10% --layout=reverse --border'
@@ -208,11 +208,14 @@ export ENHANCD_FILTER=fzf cd
 # ==================================================
 # PATHHHH
 # ==================================================
+export PATH="$DFILES_PATH_FZF/bin:$PATH"
 export PATH="$DFILES_PATH_CARGO/bin:$PATH"
 export PATH="$DFILES_PATH_NVIM/bin:$PATH"
-export PATH="$DFILES_PATH_GO_ROOT/bin:/usr/local/go/bin:$PATH"
+export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
+export PATH="/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
-
+new_path=$(echo $PATH | sed s/:/\\n/g | uniq | paste -sd ":")
+export PATH="$new_path"
 if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
   . ~/dotfiles/repos/nvm/nvm.sh
 fi

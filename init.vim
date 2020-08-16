@@ -77,7 +77,12 @@ Plug 'ajmwagar/vim-deus'
 Plug 'tudurom/bleh.vim'
 Plug 'hzchirs/vim-material'
 Plug 'rakr/vim-one'
-Plug 'ctrlpvim/ctrlp.vim'
+if executable('fzf')
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
+else
+  Plug 'ctrlpvim/ctrlp.vim'
+endif
 Plug 'neoclide/jsonc.vim'
 Plug 'yuezk/vim-js', { 'for': 'javascript' }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }

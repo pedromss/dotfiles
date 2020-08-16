@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+function epath () {
+  echo $PATH | sed s/:/\\n/g | sort | uniq
+}
+
 function clone_from_github () {
   local repo="$1"
   local folder_name=~/dotfiles/repos
