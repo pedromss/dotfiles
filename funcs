@@ -137,6 +137,10 @@ function install_nvm() {
   set -x
 }
 
+function remove_write_for_groups_on_insecure_dirs() {
+  compaudit | xargs chmod g-w
+}
+
 function install_zsh_plugins() {
   if command_exists 'zsh' ; then 
 
