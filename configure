@@ -214,7 +214,7 @@ export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
-new_path=$(echo $PATH | sed s/:/\\n/g | uniq | paste -sd ":")
+new_path=$(echo "$PATH" | sed s/:/\\n/g | uniq | paste -sd ":")
 export PATH="$new_path"
 if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
   . ~/dotfiles/repos/nvm/nvm.sh

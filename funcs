@@ -158,6 +158,7 @@ function make_links() {
   ln -sfv ~/dotfiles/.minvimrc ~/.minvimrc
   ln -sfv ~/dotfiles/.vim ~/.vim
   ln -sfv ~/dotfiles/.tmux.conf ~/.tmux.conf
+  ln -sfv ~/dotfiles/.Xdefaults ~/.Xdefaults
 }
 
 function install_tpm() {
