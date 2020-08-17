@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+function install_brew_casks() {
+  brew cask install \
+    google-chrome \
+    firefox \
+    intellij-idea-ce \
+    slack
+}
+
 function epath () {
   echo $PATH | sed s/:/\\n/g | sort | uniq
 }

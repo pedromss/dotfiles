@@ -29,7 +29,7 @@ brew install \
   youtube-dl \
   zsh
 
-ln -sfv ~/dotfiles/tools/ctags/.ctags ~/.ctags
+install_brew_casks
 
 pip install \
   jedi \
