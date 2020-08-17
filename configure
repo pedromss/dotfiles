@@ -214,7 +214,13 @@ export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
-new_path=$(echo "$PATH" | sed s/:/\\n/g | uniq | paste -sd ":")
+if is_macos ; then
+  echo "$PATH" | sed -e $'s/:/\\\n/g' | uniq > unique_path
+  new_path=$(paste -sd ':' unique_path)
+  rm -f unique_path
+else
+  new_path=$(echo "$PATH" | sed s/:/\\n/g | uniq | paste -sd ":")
+fi
 export PATH="$new_path"
 if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
   . ~/dotfiles/repos/nvm/nvm.sh
