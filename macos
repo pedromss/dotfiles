@@ -1,6 +1,5 @@
 #!/usr/bin/env bash 
 
-. funcs-export
 . funcs
 
 if ! command_exists 'brew' ; then 
@@ -20,18 +19,19 @@ brew install \
   neovim \
   ctags \
   gawk \
-  python-pip \
-  python3-pip \
   zip \
   shellcheck \
   tmux \
   vim \
   youtube-dl \
-  zsh
+  zsh \
+  wget
 
 install_brew_casks
 
-pip install \
+sudo python -m ensurepip
+sudo pip install --upgrade pip
+sudo pip install \
   jedi \
   python-language-server \
   pathlib \
@@ -40,7 +40,7 @@ pip install \
 
 install_fzf
 install_go 'darwin-amd64'
-isntall_rustup 'x86_64-apple-darwin'
+install_rustup 'x86_64-apple-darwin'
 install_sdkman
 
 go get github.com/hairyhenderson/gomplate/cmd/gomplate

@@ -250,7 +250,9 @@ function find_os () {
   if [ -z "$DOTFILES_RESOLVED_OS" ] ; then
     supported_oses='mac, rpi, ubuntu'
     os=''
-    os_release=$(cat /etc/os-release)
+    if [ -f /etc/os-release ] ; then
+      os_release=$(cat /etc/os-release)
+    fi
     if is_macos ; then
       os='mac'
     elif [[ "$os_release" =~ 'Ubuntu' ]]; then
