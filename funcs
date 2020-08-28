@@ -161,7 +161,7 @@ function install_zsh_plugins() {
 }
 
 function make_links() {
-  ln -sfv ~/dotfiles/.gitconfig ~/.gitfconfig
+  ln -sfv ~/dotfiles/.gitconfig ~/.gitconfig
   ln -sfv ~/dotfiles/.ctags ~/.ctags
   ln -sfv ~/dotfiles/.zshrc ~/.zshrc
   ln -sfv ~/dotfiles/.bashrc ~/.bashrc
@@ -171,6 +171,7 @@ function make_links() {
   ln -sfv ~/dotfiles/.vim ~/.vim
   ln -sfv ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -sfv ~/dotfiles/.Xdefaults ~/.Xdefaults
+  ln -sfv ~/dotfiles/.gitignore_global ~/.gitignore_global
 }
 
 function install_tpm() {
