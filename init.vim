@@ -13,6 +13,10 @@ function! StatuslineGit()
   let l:branchname = GitBranch()
   return strlen(l:branchname) > 0?'  '.l:branchname : 'UNKNOWN'
 endfunction
+
+function! Datetime()
+  return strftime("%c")
+endfunction
 " }}}
 " Basic settings -------------------- {{{
 let mapleader = ','
@@ -148,6 +152,7 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " General mappings -------------------- {{{
+inoremap <F5> <C-R>=strftime("%c")<CR>
 let g:BASH_Ctrl_j = 'off'
 nnoremap <M-h> gT
 nnoremap <M-l> gt
