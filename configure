@@ -105,7 +105,7 @@ alias gwct='gw --console=plain tasks --all | ag -i '
 # GOLANG
 # ==================================================
 export DFILES_PATH_GO_ROOT="$DFILES_DIR_BIN"/go
-export GO_PATH=~/go
+export GOPATH=~/go
 export GO111MODULE='off'
 alias gom='GO111MODULE=on go'
 alias got='go test ./...'
@@ -212,7 +212,7 @@ export PATH="$DFILES_PATH_FZF/bin:$PATH"
 export PATH="$DFILES_PATH_CARGO/bin:$PATH"
 export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
-export PATH="/usr/local/go/bin:$PATH"
+export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
 if is_macos ; then
   echo "$PATH" | sed -e $'s/:/\\\n/g' | uniq > unique_path
