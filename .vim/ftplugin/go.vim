@@ -11,3 +11,8 @@ endfunction
 :call SetTabs(4)
 :setlocal foldmethod=syntax
 :setlocal nolist
+
+augroup vim_go_custom
+  autocmd!
+  autocmd BufWritePre *.go GoImports
+augroup end
