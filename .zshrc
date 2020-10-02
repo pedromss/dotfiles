@@ -89,7 +89,6 @@ if [ -d ~/dotfiles/repos/zsh-plugins ] ; then
     if [[ "$plugin_folder" =~ .*ohmyzsh$ ]] ; then
       . "$plugin_folder/plugins/globalias/globalias.plugin.zsh"
       . "$plugin_folder/plugins/vi-mode/vi-mode.plugin.zsh"
-      . "$plugin_folder/plugins/dotenv/dotenv.plugin.zsh"
     else 
       for plugin_file in "$plugin_folder"/*.plugin.zsh ; do
         . "$plugin_file"
