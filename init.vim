@@ -68,6 +68,9 @@ command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude
 " }}}
 " Plugins -------------------- {{{
 call plug#begin(stdpath('data') . '/plugged')
+"Plug 'AndrewRadev/splitjoin.vim'
+Plug 'GEverding/vim-hocon'
+Plug 'cespare/vim-toml'
 Plug 'morhetz/gruvbox'
 Plug 'datMaffin/vim-colors-bionik'
 Plug 'srcery-colors/srcery-vim'
@@ -296,7 +299,7 @@ augroup go_mappings
   au FileType go nnoremap <localleader>gob :GoBuild<CR>
   au FileType go nnoremap <localleader>gots :GoTest<CR>
   au FileType go nnoremap <localleader>gotf :GoTestFunc<CR>
-  au FileType go nnoremap <localleader>goi :GoInstall<CR>
+  au FileType go nnoremap <localleader>goi :GoImports<CR>
   au FileType go nnoremap <localleader>gode :GoDef<CR>
   au FileType go nnoremap <localleader>godo :GoDoc<CR>
   au FileType go nnoremap <localleader>goc :GoCoverageToggle<cr>
@@ -435,12 +438,20 @@ let g:rustfmt_autosave = 1
 " }}}
 " vim-go variables -------------------- {{{
 let g:go_fold_enable = ['varconst','block','import','comment', ]
+let g:go_rename_command = 'gopls'
+let g:go_def_mode = 'gopls'
+let g:go_fillstruct_mode = 'fillstruct'
+let g:go_referrers_mode = 'gopls'
+let g:go_implements_mode = 'gopls'
 let g:go_highlight_extra_types = 1
 let g:go_highlight_function_parameters = 1
 let g:go_highlight_function_calls = 0
 let g:go_highlight_types = 1
 let g:go_highlight_format_strings = 1
 let g:go_highlight_variable_assignments = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 1
 let g:go_code_completion_enabled = 1
 let g:go_test_show_name = 1
 let g:go_auto_sameids = 0
@@ -450,6 +461,10 @@ let g:go_snippet_engine = 'ultisnips'
 let g:go_statusline_duration = 20000
 let g:go_metalinter_autosave = 0
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_template_autocreate = 1
+let g:go_fmt_options = {
+  \ 'gofmt': '-s',
+  \ }
 " }}}
 " VIM yoink variables -------------------- {{{
 let g:yoinkIncludeDeleteOperations = 1
