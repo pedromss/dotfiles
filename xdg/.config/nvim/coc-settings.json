@@ -19,6 +19,14 @@
         "~"
       ]
     },
+    "elmLS": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json"],
+      "initializationOptions": {
+        "elmAnalyseTrigger": "never"
+      }
+    },
     "dockerfile": {
       "command": "docker-langserver",
       "filetypes": [
@@ -30,6 +38,7 @@
     },
     "golang": {
       "command": "gopls",
+      "suggest.autoTrigger": "always",
       "rootPatterns": [
         "go.mod",
         ".vim/",
