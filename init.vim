@@ -73,6 +73,7 @@ command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude
 " Plugins -------------------- {{{
 call plug#begin(stdpath('data') . '/plugged')
 "Plug 'AndrewRadev/splitjoin.vim'
+Plug 'ElmCast/elm-vim'
 Plug 'GEverding/vim-hocon'
 Plug 'cespare/vim-toml'
 Plug 'morhetz/gruvbox'
@@ -135,9 +136,8 @@ Plug 'vimwiki/vimwiki'
 Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
-Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
+"Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 if has('python') || has('python3')
   Plug 'SirVer/ultisnips'
 endif
@@ -448,6 +448,7 @@ let g:go_def_mode = 'gopls'
 let g:go_fillstruct_mode = 'fillstruct'
 let g:go_referrers_mode = 'gopls'
 let g:go_implements_mode = 'gopls'
+let g:go_fmt_command='goimports'
 let g:go_term_reuse = 1
 let g:go_gopls_enabled = 1
 let g:go_highlight_extra_types = 1
