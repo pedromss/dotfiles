@@ -5,7 +5,7 @@
 . ~/dotfiles/funcs
 
 export DFILES_VERSION_GO=1.14.6
-export DFILES_VERSION_FZF=0.21.1
+export DFILES_VERSION_FZF=0.23.0
 export DFILES_VERSION_NVM=0.35.2
 export DFILES_VERSION_NODEJS=12.16.1
 
@@ -106,8 +106,9 @@ alias gwct='gw --console=plain tasks --all | ag -i '
 # ==================================================
 export DFILES_PATH_GO_ROOT="$DFILES_DIR_BIN"/go
 export GOPATH=~/go
-export GO111MODULE='off'
+export GO111MODULE='on'
 alias gom='GO111MODULE=on go'
+alias gof='GO111MODULE=off go'
 alias got='go test ./...'
 alias gotnc='go test ./... -'
 # ==================================================
