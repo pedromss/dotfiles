@@ -113,4 +113,7 @@ fi
 if [ -f ~/dotfiles/repos/fzf/shell/key-bindings.zsh ] ; then
   source ~/dotfiles/repos/fzf/shell/key-bindings.zsh
 fi
+if command_exists kubectl ; then
+  [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+fi
 #zprof
