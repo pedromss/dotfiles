@@ -155,9 +155,7 @@ alias tags='ctags --tag-relative=no --sort=yes -R -f .git/tags --exclude=bin --e
 # TMUX
 # ==================================================
 export DFILES_PATH_TMUX="$DFILES_DIR_BIN/tmux"
-export DFILES_PATH_TMUX_PLUGINS="$DFILES_PATH_TMUX/plugins"
-export DOTFILES_TMUX_CONF_FILE="$DOTFILES_FULL_PATH/tools/tmux/tmux.conf"
-export TMUX_PLUGIN_MANAGER_PATH="$DOTFILES_TMUX_PLUGINS_DIR"
+export TMUX_PLUGIN_MANAGER_PATH="$DFILES_PATH_TMUX"/plugins
 # ==================================================
 # Git
 # ==================================================
