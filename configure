@@ -5,7 +5,7 @@
 . ~/dotfiles/funcs
 
 export DFILES_VERSION_GO=1.14.6
-export DFILES_VERSION_FZF=0.21.1
+export DFILES_VERSION_FZF=0.23.0
 export DFILES_VERSION_NVM=0.35.2
 export DFILES_VERSION_NODEJS=12.16.1
 
@@ -105,9 +105,10 @@ alias gwct='gw --console=plain tasks --all | ag -i '
 # GOLANG
 # ==================================================
 export DFILES_PATH_GO_ROOT="$DFILES_DIR_BIN"/go
-export GO_PATH=~/go
-export GO111MODULE='off'
+export GOPATH=~/go
+export GO111MODULE='on'
 alias gom='GO111MODULE=on go'
+alias gof='GO111MODULE=off go'
 alias got='go test ./...'
 alias gotnc='go test ./... -'
 # ==================================================
@@ -210,7 +211,7 @@ export PATH="$DFILES_PATH_FZF/bin:$PATH"
 export PATH="$DFILES_PATH_CARGO/bin:$PATH"
 export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
-export PATH="/usr/local/go/bin:$PATH"
+export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
 if is_macos ; then
   echo "$PATH" | sed -e $'s/:/\\\n/g' | uniq > unique_path

@@ -10,3 +10,5 @@ endfunction
 
 :call SetTabs(4)
 :setlocal foldmethod=syntax
+:setlocal nolist
+
