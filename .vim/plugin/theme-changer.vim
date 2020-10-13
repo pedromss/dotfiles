@@ -8,10 +8,7 @@ function! GoLight()
   :colorscheme vim-material
 endfunction
 
-augroup ColorChoices
-  autocmd!
-  noremap <F8> :call GoDark()<cr>
-  noremap <F9> :call GoLight()<cr>
-augroup END
+command! GoLight :call GoLight()<cr>
+command! GoDark :call GoDark()<cr>
 
 

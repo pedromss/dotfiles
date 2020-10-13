@@ -1,4 +1,5 @@
 set runtimepath+=~/.vim,~/.vim/after
+set runtimepath^=~/repos/coc.nvim
 set packpath+=~/.vim
 set encoding=utf-8
 scriptencoding uft8
@@ -68,7 +69,20 @@ set statusline+=\ %l:%c
 set tagstack
 " }}}
 " Commands -------------------- {{{
-command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude=bin --exclude=xdg --exclude=build --exclude=plugins --exclude=plugged --exclude=.git --exclude=bower_components --exclude=node_modules --exclude=dist --exclude=build .
+command! MakeTags !ctags 
+      \ --tag-relative=yes
+      \ --sort=yes -R 
+      \ -f .git/tags 
+      \ --exclude=bin 
+      \ --exclude=xdg 
+      \ --exclude=build 
+      \ --exclude=plugins 
+      \ --exclude=plugged 
+      \ --exclude=.git 
+      \ --exclude=bower_components 
+      \ --exclude=node_modules 
+      \ --exclude=dist 
+      \ --exclude=build .
 " }}}
 " Plugins -------------------- {{{
 call plug#begin(stdpath('data') . '/plugged')
