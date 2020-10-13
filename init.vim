@@ -74,6 +74,8 @@ command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude
 call plug#begin(stdpath('data') . '/plugged')
 "Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ElmCast/elm-vim'
+Plug 'tpope/vim-rhubarb'
+Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'GEverding/vim-hocon'
 Plug 'cespare/vim-toml'
 Plug 'morhetz/gruvbox'
@@ -482,8 +484,8 @@ let g:signify_vcs_list = [ 'git']
 " }}}
 " AutoFormat variables -------------------- {{{
 let g:formatterpath = []
-let g:autoformat_autoindent = 0
-let g:autoformat_retab = 0
+let g:autoformat_autoindent = 1
+let g:autoformat_retab = 1
 let g:autoformat_remove_trailing_spaces = 0
 augroup auto_format_defaults
 	autocmd!
