@@ -55,6 +55,8 @@ npm install -g \
   eslint \
   livedown \
   dockerfile-language-server-nodejs \
-  bash-language-server
+  bash-language-server \
+  fixjson \
+  markdownlint-cli2
 
 install_zsh_plugins
