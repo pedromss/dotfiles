@@ -269,18 +269,15 @@ augroup END
 " }}}
 " Configs  {{{
 " ALE  {{{
-"nmap <silent> <localleader>ap <Plug>(ale_previous_wrap)
-"nmap <silent> <localleader>an <Plug>(ale_next_wrap)
-"nnoremap <localleader>al :ALELint<cr>
-"nnoremap <localleader>af :ALEFix<cr>
-
 let g:ale_completion_enabled = 0
+let g:ale_update_tagstack = 0
+let g:ale_hover_cursor = 0
 
 let g:ale_lint_on_filetype_changed = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 0
+let g:ale_lint_on_save = 1
 let g:ale_linters = {
       \   'python': ['flake8', 'pylint'],
       \   'javascript': ['eslint'],
@@ -289,7 +286,11 @@ let g:ale_linters = {
       \   'sh': ['shellcheck'],
       \   'json': ['jq'],
       \   'md': ['markdownlint-cli2'],
-      \   'ts': ['eslint']
+      \   'typescript': ['eslint']
+      \}
+
+let g:ale_linters_ignore = {
+      \ 'typescript': ['tslint']
       \}
 
 let g:airline#extensions#ale#enabled = 1
@@ -302,7 +303,8 @@ let g:ale_echo_msg_format = '[ALE: %linter%][%severity%] - %s '
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
       \   'javascript': ['eslint'],
-      \   'json': ['fixjson']
+      \   'json': ['fixjson'],
+      \   'typescript': ['eslint']
       \}
 
 let g:ale_set_loclist = 0
@@ -411,8 +413,8 @@ let g:go_metalinter_autosave = 0
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_template_autocreate = 1
 let g:go_fmt_options = {
-  \ 'gofmt': '-s',
-  \ }
+      \ 'gofmt': '-s',
+      \ }
 " }}}
 " vim-yoink  {{{
 let g:yoinkIncludeDeleteOperations = 1
@@ -461,16 +463,11 @@ let g:signify_vcs_list = [ 'git']
 " }}}
 " AutoFormat  {{{
 let g:formatterpath = []
+let g:formatters_json = ['prettier']
 let g:autoformat_autoindent = 1
 let g:autoformat_retab = 1
-let g:autoformat_remove_trailing_spaces = 0
-augroup auto_format_defaults
-	autocmd!
-  autocmd FileType vim,tex let b:autoformat_autoindent=1
-  autocmd FileType vim,tex let b:autoformat_retab=1
-  autocmd FileType vim,tex let b:autoformat_remove_trailling_spaces=1
-augroup end
-let g:autoformat_verbosemode=0
+let g:autoformat_remove_trailing_spaces = 1
+let g:autoformat_verbosemode = 1
 " }}}
 " Livedown  {{{
 " should markdown preview get shown automatically upon opening markdown buffer
@@ -568,7 +565,7 @@ let g:vimwiki_list_ignore_newline=0
 let g:gitslides_use_custom_mappings = 0
 " }}}
 " COC Settings  {{{
- "if hidden is not set, TextEdit might fail.
+"if hidden is not set, TextEdit might fail.
 set hidden
 
 " Some servers have issues with backup files, see #649
@@ -744,7 +741,7 @@ highlight TWS ctermbg=green guibg=green
 set t_Co=256
 source ~/dotfiles/.vim/plugin/theme-changer.vim
 if (has('termguicolors'))
- set termguicolors
+  set termguicolors
 endif
 
 syntax enable

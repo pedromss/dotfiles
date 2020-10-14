@@ -69,7 +69,9 @@ npm install -g \
   dockerfile-language-server-nodejs \
   bash-language-server \
   fixjson \
-  markdownlint-cli2
+  markdownlint-cli2 \
+  eslint-config-prettier \
+  prettier
 
 install_zsh_plugins
 

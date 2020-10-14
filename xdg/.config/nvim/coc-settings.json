@@ -47,8 +47,8 @@
       ]
     },
     "golang": {
+      "suggest.autoTrigger": "never",
       "command": "gopls",
-      "suggest.autoTrigger": "always",
       "rootPatterns": [
         "go.mod",
         ".vim/",
