@@ -3,9 +3,7 @@ set runtimepath^=~/repos/coc.nvim
 set packpath+=~/.vim
 set encoding=utf-8
 scriptencoding uft8
-set t_Co=256
-source ~/dotfiles/.vim/plugin/theme-changer.vim
-" Functions -------------------- {{{
+" Functions  {{{
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
@@ -19,7 +17,7 @@ function! Datetime()
   return strftime("%c")
 endfunction
 " }}}
-" Basic settings -------------------- {{{
+" Basic settings  {{{
 let mapleader = ','
 let localleader = "\\"
 set background=dark
@@ -68,7 +66,7 @@ set statusline+=\ %p%%
 set statusline+=\ %l:%c
 set tagstack
 " }}}
-" Commands -------------------- {{{
+" Commands  {{{
 command! MakeTags !ctags 
       \ --tag-relative=yes
       \ --sort=yes -R 
@@ -84,8 +82,15 @@ command! MakeTags !ctags
       \ --exclude=dist 
       \ --exclude=build .
 " }}}
-" Plugins -------------------- {{{
+" Plugins  {{{
 call plug#begin(stdpath('data') . '/plugged')
+" color schemes {{{ 
+Plug 'arcticicestudio/nord-vim'
+Plug 'morhetz/gruvbox'
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'srcery-colors/srcery-vim'
+"Plug 'xolox/vim-colorscheme-switcher'
+" }}}
 "Plug 'AndrewRadev/splitjoin.vim'
 Plug 'ElmCast/elm-vim'
 Plug 'tpope/vim-rhubarb'
@@ -101,21 +106,18 @@ Plug 'ajmwagar/vim-deus'
 Plug 'tudurom/bleh.vim'
 Plug 'hzchirs/vim-material'
 Plug 'rakr/vim-one'
-if executable('fzf')
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-else
-  Plug 'ctrlpvim/ctrlp.vim'
-endif
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'neoclide/jsonc.vim'
-Plug 'yuezk/vim-js', { 'for': 'javascript' }
-Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+" Javascript  {{{
+"Plug 'yuezk/vim-js', { 'for': 'javascript' }
+"Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
+"Plug 'othree/yajs.vim', { 'for': 'javascript' }
+"Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
+"Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" }}}
 Plug 'junegunn/goyo.vim'
-"Plug 'yegappan/mru'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'godlygeek/tabular'
 Plug 'christoomey/vim-tmux-navigator'
@@ -127,15 +129,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-"Plug 'tpope/vim-cucumber'
 Plug 'svermeulen/vim-cutlass'
 Plug 'svermeulen/vim-subversive'
 Plug 'Chiel92/vim-autoformat'
 Plug 'alvan/vim-closetag', { 'for': 'html' }
-"Plug 'bling/vim-airline'
-"Plug 'christoomey/vim-titlecase'
+Plug 'christoomey/vim-titlecase'
 Plug 'fatih/vim-go', { 'for': 'go' }
-"Plug 'flazz/vim-colorschemes'
 Plug 'vim-latex/vim-latex'
 Plug 'majutsushi/tagbar'
 Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
@@ -146,48 +145,26 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'shime/vim-livedown', { 'for': 'markdown' }
 Plug 'tfnico/vim-gradle'
 Plug 'udalov/kotlin-vim'
-"Plug 'vim-airline/vim-airline-themes'
 Plug 'vimwiki/vimwiki'
-"Plug 'xolox/vim-colorscheme-switcher'
 Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
+"Plug 'yegappan/mru'
+"Plug 'tpope/vim-cucumber'
+"Plug 'bling/vim-airline'
+"Plug 'flazz/vim-colorschemes'
 "Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
+"Plug 'vim-airline/vim-airline-themes'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 if has('python') || has('python3')
   Plug 'SirVer/ultisnips'
 endif
 call plug#end()
 " }}}
-" Latex settings -------------------- {{{
-" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
-filetype plugin on
-" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
-" can be called correctly.
-set shellslash
-" IMPORTANT: grep will sometimes skip displaying the file name if you
-" search in a singe file. This will confuse Latex-Suite. Set your grep
-" program to always generate a file-name.
-set grepprg=grep\ -nH\ $*
-" }}}
-" General mappings -------------------- {{{
-inoremap <F5> <C-R>=strftime("%c")<CR>
+" Mappings  {{{
 let g:BASH_Ctrl_j = 'off'
-nnoremap <M-h> gT
-nnoremap <M-l> gt
-nnoremap <silent> <localleader>cc :cclose<cr> :lclose<cr>
-nnoremap <leader>zf f{v%zf<esc>
-nnoremap <leader>zF F{v%zf<esc>
-nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
-if has('nvim')
-  nnoremap <F2> :below 20split \| :terminal<CR>
-endif
-nnoremap <leader>qe a<cr><esc>
-nnoremap <leader>qw i<cr><esc>
-inoremap <C-s> <Esc>:w<cr>
-nnoremap <C-s> :w<cr>
-inoremap <C-u> <Esc>xi
-inoremap <C-l> <Esc>lxi
+" Insert mode  {{{
+inoremap <F5> <C-R>=strftime("%c")<CR>
 " Commodities, maybe this can be improved with operator pending movements
 " but then it won't work in IDEA as only the vim default operator pending
 " movements are supported
@@ -197,6 +174,7 @@ inoremap jF, <Esc>f,i
 inoremap jB( <Esc>F(i
 inoremap jB, <Esc>F,i
 inoremap jB{ <Esc>F{i
+" Uses markers, should change
 inoremap jZ) <Esc>mpf)dl`pa
 inoremap jZ, <Esc>mpf,dl`pa
 inoremap jQ  <Esc>f{%O
@@ -205,132 +183,153 @@ inoremap jR5 <Esc>50a
 inoremap jK <Esc>:m-2<cr>i
 inoremap jJ <Esc>:m+1<cr>i
 inoremap jU <Esc>ui
-nnoremap <m-k> :m-2<CR>
-nnoremap <m-j> :m+1<CR>
-" ==================================================
 inoremap jn <Esc>o
 inoremap jI <Esc>^i
 inoremap jA <Esc>g_a
 inoremap jW <Esc>wa
 inoremap jE <Esc>ea
 inoremap jO <Esc>O
+inoremap <C-s> <Esc>:w<cr>
+inoremap <C-u> <Esc>xi
+inoremap <C-l> <Esc>lxi
 inoremap <m-j> <down>
 inoremap <m-k> <up>
 inoremap <m-h> <left>
 inoremap <m-l> <right>
-nnoremap <Leader>sr :match TWS /\<<C-r><C-w>\>/<cr>:%s/\<<C-r><C-w>\>/
+inoremap jk <esc>l
+" }}}
+" Normal mode  {{{
+nnoremap <silent> <localleader>cc :cclose<cr> :lclose<cr>
+"nnoremap <leader>zf f{v%zf<esc>
+"nnoremap <leader>zF F{v%zf<esc>
+"nnoremap <leader>g :silent :execute "grep! -R " . shellescape(expand("<cWORD>")) . " ."<cr>:copen<cr>
 nnoremap / /\v\c
 nnoremap ? ?\v\c
+" Open last buffer
 nnoremap L :b#<cr>
-nnoremap <space> viw
+" Clear matches and highlights
 nnoremap <Esc> :noh<CR>:mat none<cr>
+" Match word under cursor
 nnoremap cm :match TWS /\<<C-r><C-w>\>/<cr>
-nnoremap <m-k> :m-2<CR>
-nnoremap <m-j> :m+1<CR>
+" Replace word under cursor
+nnoremap <leader>sr :match TWS /\<<C-r><C-w>\>/<cr>:%s/\<<C-r><C-w>\>/
+nnoremap <leader>qe a<cr><esc>
+nnoremap <leader>qw i<cr><esc>
 nnoremap <leader>ev :tabnew ~/dotfiles/init.vim<CR>
 nnoremap <leader>sv :so ~/dotfiles/init.vim<CR>
-nnoremap <s-d> :co.<cr>
-nnoremap <localleader><localleader>n :NERDTreeToggle<CR>
-inoremap jk <esc>l
-noremap <leader>af :Autoformat<CR>
-noremap <localleader>nf :set nofoldenable!<CR>
-noremap <C-n> :cn<CR>
-noremap <C-m> :cp<CR>
 " edit a new buffer in the current pane even with changes
 nnoremap <leader>enn :ene<cr>
 " edit a new buffer in the current pane if no changes
 nnoremap <leader>enf :ene!<cr>
-"au BufWrite * :Autoformat
-" }}}
-" Plugin Mappings -------------------- {{{
-" ALE Mappings -------------------- {{{
-nmap <silent> <localleader>ap <Plug>(ale_previous_wrap)
-nmap <silent> <localleader>an <Plug>(ale_next_wrap)
-nnoremap <localleader>al :ALELint<cr>
-nnoremap <localleader>af :ALEFix<cr>
-" }}}
-" Goyo mappings -------------------- {{{
-nnoremap <F3> :Goyo<cr>
-" }}}
-" MRU mappings -------------------- {{{
-nnoremap <leader>mr :MRU<cr>
-" }}}
-" Tabularize mappings -------------------- {{{
-vnoremap <localleader>qw= :'<,'>Tabularize /=<cr>
-vnoremap <localleader>qw, :'<,'>Tabularize /,<cr>
-vnoremap <localleader>qw :'<,'>Tabularize /
-nnoremap <localleader>qw= ggVG:'<,'>Tabularize /=<cr>
-nnoremap <localleader>qw, ggVG:'<,'>Tabularize /,<cr>
-nnoremap <localleader>qw ggVG:'<,'>Tabularize /
-" }}}
-" Vim cutlass mappings -------------------- {{{
-nnoremap x d
-xnoremap x d
-nnoremap xx dd
-" }}}
-" Vim yoink mappings -------------------- {{{
-"nmap <c-n> <plug>(YoinkPostPasteSwapForward)
-"nmap <c-p> <plug>(YoinkPostPasteSwapBack)
-"nmap p <plug>(YoinkPaste_p)
-"nmap P <plug>(YoinkPaste_P)
-"nmap [y <plug>(YoinkRotateBack)
-"nmap ]y <plug>(YoinkRotateForward)
-" }}}
-" Vim Subversive -------------------- {{{
-nmap s <plug>(SubversiveSubstitute)
-nmap ss <plug>(SubversiveSubstituteLine)
-nmap S <plug>(SubversiveSubstituteToEndOfLine)
-nmap <leader>s <plug>(SubversiveSubstituteRange)
-xmap <leader>s <plug>(SubversiveSubstituteRange)
-nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
-" }}}
-" Fugitive VIM mappings -------------------- {{{
-nnoremap <F4> :Gblame<CR>
-"nnoremap <localleader>fgs :Gstatus<CR>
-nnoremap <localleader>fgc :Gcommit %<CR>
-" }}}
-" Panes -------------------- {{{
-nnoremap <C-v><localleader> :vsplit ene<cr>
-nnoremap <C-v>- :split ene<cr>
-" }}}
-" Navigation -------------------- {{{
+" Easier pane navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-" }}}
-" Livedown mappings -------------------- {{{
-nnoremap <localleader>ldp :LivedownPreview<CR>
-nnoremap <localleader>ldk :LivedownKill<CR>
-nnoremap <localleader>ldt :LivedownToggle<CR>
-" }}}
-" Vim Diff Mappings -------------------- {{{
+nnoremap <C-s> :w<cr>
+nnoremap <m-k> :m-2<CR>
+nnoremap <m-j> :m+1<CR>
+nnoremap <m-h> gT
+nnoremap <m-l> gt
+nnoremap <s-d> :co.<cr>
+nnoremap <s-c> :bd<CR>
+nnoremap <s-q> :bd!<CR>
+" Vimdiff
 nnoremap <localleader>vdl :diffget LOCAL<cr>
 nnoremap <localleader>vdb :diffget BASE<cr>
 nnoremap <localleader>vdr :diffget REMOTE<cr>
+" Open a vertical pane to the right
+nnoremap <C-v><localleader> :vsplit ene<cr>
+" Open an horizontal pane to the left
+nnoremap <C-v>- :split ene<cr>
 " }}}
-" Buffer mappings -------------------- {{{
-nnoremap <silent> <M-F12> :BufExplorer<CR>
-nnoremap <S-C> :bd<CR>
-nnoremap <S-Q> :bd!<CR>
+" All modes  {{{
+noremap <localleader>nf :set nofoldenable!<CR>
+noremap <C-n> :cn<CR>
+noremap <C-m> :cp<CR>
 " }}}
-" Go mappings -------------------- {{{
-augroup go_mappings
+" Vimwiki  {{{
+augroup vimwiki_mappings
   autocmd!
-  au FileType go nnoremap <localleader>gob :GoBuild<CR>
-  au FileType go nnoremap <localleader>gots :GoTest<CR>
-  au FileType go nnoremap <localleader>gotf :GoTestFunc<CR>
-  au FileType go nnoremap <localleader>goi :GoImports<CR>
-  au FileType go nnoremap <localleader>gode :GoDef<CR>
-  au FileType go nnoremap <localleader>godo :GoDoc<CR>
-  au FileType go nnoremap <localleader>goc :GoCoverageToggle<cr>
-  au FileType go nnoremap <localleader>gov :GoVet<cr>
-  au FileType go nnoremap <localleader>gom :GoMetaLinter<cr>
-  au FileType go nnoremap <localleader>goa :GoAlternate<cr>
-  au FileType go nnoremap <localleader>gop :GoChannelPeers<CR>
+  au FileType vimwiki map <localleader>vwt <Plug>VimwikiToggleListItem
+  au FileType vimwiki map <localleader>vwhh :Vimwiki2HTML<CR>
+  au FileType vimwiki map <localleader>vwhb :Vimwiki2HTMLBrowse<CR>
 augroup END
 " }}}
-" Fzf mappings -------------------- {{{
+" Quick fix  {{{
+augroup filetype_mappings_quickfix
+  autocmd!
+  "autocmd FileType qf noremap <localleader>s :cnext<cr>
+  "autocmd FileType qf noremap <localleader>s :lnext<cr>
+  "autocmd FileType qf noremap <localleader>d :cprevious<cr>
+  "autocmd FileType qf noremap <localleader>f :lprevious<cr>
+  autocmd FileType qf noremap <localleader>cc :cclose<cr> :lclose<cr>
+augroup END
+" }}}
+" }}}
+" Configs  {{{
+" ALE  {{{
+"nmap <silent> <localleader>ap <Plug>(ale_previous_wrap)
+"nmap <silent> <localleader>an <Plug>(ale_next_wrap)
+"nnoremap <localleader>al :ALELint<cr>
+"nnoremap <localleader>af :ALEFix<cr>
+
+let g:ale_completion_enabled = 0
+
+let g:ale_lint_on_filetype_changed = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 0
+let g:ale_linters = {
+      \   'python': ['flake8', 'pylint'],
+      \   'javascript': ['eslint'],
+      \   'vue': ['eslint'],
+      \   'vim': ['vint'],
+      \   'sh': ['shellcheck'],
+      \   'json': ['jq'],
+      \   'md': ['markdownlint-cli2'],
+      \   'ts': ['eslint']
+      \}
+
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_emit_conflict_warnings = 0
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[ALE: %linter%][%severity%] - %s '
+
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+      \   'javascript': ['eslint'],
+      \   'json': ['fixjson']
+      \}
+
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_set_highlights = 1
+let g:ale_set_signs = 1
+let g:ale_sign_highlight_linenrs = 1
+let g:ale_echo_cursor = 0
+let g:ale_virtualtext_cursor = 1
+" Opens the detail in a new buffer at bottom
+let g:ale_cursor_detail = 0
+let g:ale_close_preview_on_insert = 1
+let g:ale_set_balloons = 1
+" }}}
+" MRU  {{{
+let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'
+let MRU_Window_Height = 15
+let MRU_Use_Current_Window = 0
+let MRU_Auto_Close = 1
+" }}}
+" Shebanger  {{{
+"let g:shebanger_shebang_line = '#!/usr/bin/env zsh'
+" }}}
+" Rust  {{{
+let g:rustfmt_autosave = 1
+" }}}
+" Fzf  {{{
 " " This is the default extra key bindings
 let g:fzf_action = {
       \ 'alt-t': 'tab split',
@@ -368,96 +367,21 @@ let g:fzf_command_prefix = 'Fzf'
 imap <c-q><c-f> <plug>(fzf-complete-path)
 imap <c-q><c-j> <plug>(fzf-complete-file-ag)
 " }}}
-" Titlecase mappings -------------------- {{{
-" TODO review this plugins config
-nmap <localleader>tcw <Plug>Titlecase
-vmap <localleader>tcw <Plug>Titlecase
-nmap <localleader>tcl <Plug>TitlecaseLine
-" }}}
-" Vimwiki mappings -------------------- {{{
-augroup vimwiki_mappings
+" vim-go  {{{
+augroup vim_go_auto_commands
   autocmd!
-  au FileType vimwiki map <localleader>vwt <Plug>VimwikiToggleListItem
-  au FileType vimwiki map <localleader>vwhh :Vimwiki2HTML<CR>
-  au FileType vimwiki map <localleader>vwhb :Vimwiki2HTMLBrowse<CR>
+  au FileType go nnoremap <localleader>gob :GoBuild<CR>
+  au FileType go nnoremap <localleader>gots :GoTest<CR>
+  au FileType go nnoremap <localleader>gotf :GoTestFunc<CR>
+  au FileType go nnoremap <localleader>goi :GoImports<CR>
+  au FileType go nnoremap <localleader>gode :GoDef<CR>
+  au FileType go nnoremap <localleader>godo :GoDoc<CR>
+  au FileType go nnoremap <localleader>goc :GoCoverageToggle<cr>
+  au FileType go nnoremap <localleader>gov :GoVet<cr>
+  au FileType go nnoremap <localleader>gom :GoMetaLinter<cr>
+  au FileType go nnoremap <localleader>goa :GoAlternate<cr>
+  au FileType go nnoremap <localleader>gop :GoChannelPeers<CR>
 augroup END
-" }}}
-" Easymotion mappings -------------------- {{{
-nmap <localleader>emw <Plug>(easymotion-overwin-w)
-map <localleader>emj <Plug>(easymotion-j)
-map <localleader>emk <Plug>(easymotion-k)
-" }}}
-" Tern mappings -------------------- {{{
-augroup tern_mappings
-  autocmd!
-  au FileType javascript,typescript nnoremap <localleader>tjd :TernDef<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjp :TernDefPreview<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjs :TernDefSplit<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjT :TernDefTab<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjD :TernDoc<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjbD :TernDocBrowse<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjR :TernRefs<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjr :TernRename<CR>
-  au FileType javascript,typescript nnoremap <localleader>tjt :TernType<CR>
-augroup END
-" }}}
-" Quick fix file mappings -------------------- {{{
-augroup filetype_mappings_quickfix
-  autocmd!
-  autocmd FileType qf noremap <localleader>s :cnext<cr>
-  autocmd FileType qf noremap <localleader>s :lnext<cr>
-  autocmd FileType qf noremap <localleader>d :cprevious<cr>
-  autocmd FileType qf noremap <localleader>f :lprevious<cr>
-  autocmd FileType qf noremap <localleader>cc :cclose<cr> :lclose<cr>
-augroup END
-" }}}
-" Terminal variables -------------------- {{{
-if has('nvim')
-  tnoremap <Esc> <C-\><C-n>
-  tnoremap <leader>cq <Esc>:q!<CR>
-endif
-" }}}
-" Tagbar mappings -------------------- {{{
-nmap <localleader><localleader>t :TagbarToggle<CR>
-" }}}
-" }}}
-" Plugin Variables -------------------- {{{
-" ALE variables -------------------- {{{
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_enter = 0
-let g:ale_lint_on_save = 1
-let g:ale_emit_conflict_warnings = 0
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:airline#extensions#ale#enabled = 1
-let g:ale_linters = {
-      \   'python': ['flake8', 'pylint'],
-      \   'javascript': ['eslint'],
-      \   'vue': ['eslint'],
-      \   'vim': ['vint']
-      \}
-
-let g:ale_fixers = {
-      \   'javascript': ['eslint']
-      \}
-
-let g:ale_fix_on_save = 1
-" }}}
-" mru variables -------------------- {{{
-let MRU_Exclude_Files = '^/tmp/.*\|^/var/tmp/.*'
-let MRU_Window_Height = 15
-let MRU_Use_Current_Window = 0
-let MRU_Auto_Close = 1
-" }}}
-" Shebang plugin variables -------------------- {{{
-"let g:shebanger_shebang_line = '#!/usr/bin/env zsh'
-" }}}
-" Rust variable -------------------- {{{
-let g:rustfmt_autosave = 1
-" }}}
-" vim-go variables -------------------- {{{
 let g:go_fold_enable = ['varconst','block','import','comment', ]
 let g:go_rename_command = 'gopls'
 let g:go_def_mode = 'gopls'
@@ -490,13 +414,52 @@ let g:go_fmt_options = {
   \ 'gofmt': '-s',
   \ }
 " }}}
-" VIM yoink variables -------------------- {{{
+" vim-yoink  {{{
 let g:yoinkIncludeDeleteOperations = 1
+"nmap <c-n> <plug>(YoinkPostPasteSwapForward)
+"nmap <c-p> <plug>(YoinkPostPasteSwapBack)
+"nmap p <plug>(YoinkPaste_p)
+"nmap P <plug>(YoinkPaste_P)
+"nmap [y <plug>(YoinkRotateBack)
+"nmap ]y <plug>(YoinkRotateForward)
 " }}}
-" Signify -------------------- {{{
+" vim-cutlass  {{{
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+" }}}
+" vim-subversive  {{{
+nmap s <plug>(SubversiveSubstitute)
+nmap ss <plug>(SubversiveSubstituteLine)
+nmap S <plug>(SubversiveSubstituteToEndOfLine)
+nmap <leader>s <plug>(SubversiveSubstituteRange)
+xmap <leader>s <plug>(SubversiveSubstituteRange)
+nmap <leader>ss <plug>(SubversiveSubstituteWordRange)
+" }}}
+" vim-javascript  {{{
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow = 1
+" }}}
+" vim-latex  {{{
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
+" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
+filetype plugin on
+" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
+" can be called correctly.
+set shellslash
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse Latex-Suite. Set your grep
+" program to always generate a file-name.
+set grepprg=grep\ -nH\ $*
+" }}}
+" Signify  {{{
 let g:signify_vcs_list = [ 'git']
 " }}}
-" AutoFormat variables -------------------- {{{
+" AutoFormat  {{{
 let g:formatterpath = []
 let g:autoformat_autoindent = 1
 let g:autoformat_retab = 1
@@ -509,7 +472,7 @@ augroup auto_format_defaults
 augroup end
 let g:autoformat_verbosemode=0
 " }}}
-" Livedown variables -------------------- {{{
+" Livedown  {{{
 " should markdown preview get shown automatically upon opening markdown buffer
 let g:livedown_autorun = 0
 " should the browser window pop-up upon previewing
@@ -519,107 +482,37 @@ let g:livedown_port = 1337
 " the browser to use
 let g:livedown_browser = 'firefox'
 " }}}
-" Ag variables -------------------- {{{
+" Ag  {{{
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 " }}}
-" Netrw variables -------------------- {{{
+" Tagbar  {{{
+nmap <localleader><localleader>t :TagbarToggle<CR>
+" }}}
+" NERDTree  {{{
+nnoremap <localleader><localleader>n :NERDTreeToggle<CR>
+" }}}
+" Netrw  {{{
 let g:netrw_banner = 0
 let g:netrw_altv = 1 " open splits to the right
 let g:netrw_liststyle = 3 " tree view
 " }}}
-" Scalafmt variables -------------------- {{{
+" Scalafmt  {{{
 let g:formatdef_scalafmt = "'scalafmt --stdin'"
 let g:formatters_scala = ['scalafmt']
 " }}}
-" Vim makrdown variables -------------------- {{{
-"let vim_markdown_preview_toggle=2
-"let vim_markdown_preview_github=0
-"let vim_markdown_preview_browser='Safari'
+" Easymotion  {{{
+"nmap <localleader>emw <Plug>(easymotion-overwin-w)
+"map <localleader>emj <Plug>(easymotion-j)
+"map <localleader>emk <Plug>(easymotion-k)
 " }}}
-" Deoplete TernJS variables -------------------- {{{
-"if has('nvim')
-"let g:deoplete#enable_at_startup = 1
-"" DEOPLETE TERN
-"" Set bin if you have many instalations
-""let g:deoplete#sources#ternjs#tern_bin = '/path/to/tern_bin'
-"let g:deoplete#sources#ternjs#timeout = 1
-
-"" Whether to include the types of the completions in the result data. Default: 0
-"let g:deoplete#sources#ternjs#types = 1
-
-"" Whether to include the distance (in scopes for variables, in prototypes for
-"" properties) between the completions and the origin position in the result
-"" data. Default: 0
-"let g:deoplete#sources#ternjs#depths = 1
-
-"" Whether to include documentation strings (if found) in the result data.
-"" Default: 0
-"let g:deoplete#sources#ternjs#docs = 1
-
-"" When on, only completions that match the current word at the given point will
-"" be returned. Turn this off to get all results, so that you can filter on the
-"" client side. Default: 1
-"let g:deoplete#sources#ternjs#filter = 0
-
-"" Whether to use a case-insensitive compare between the current word and
-"" potential completions. Default 0
-"let g:deoplete#sources#ternjs#case_insensitive = 1
-
-"" When completing a property and no completions are found, Tern will use some
-"" heuristics to try and return some properties anyway. Set this to 0 to
-"" turn that off. Default: 1
-"let g:deoplete#sources#ternjs#guess = 0
-
-"" Determines whether the result set will be sorted. Default: 1
-"let g:deoplete#sources#ternjs#sort = 0
-
-"" When disabled, only the text before the given position is considered part of
-"" the w_rd. When enabled (the default), the whole variable namn that the cursor
-"" is on will be included. Default: 1
-"let g:deoplete#sources#ternjs#expand_word_forward = 0
-
-"" Whether to ignore the properties of Object.prototype unless they have been
-"" spelled out by at least to characters. Default: 1
-"let g:deoplete#sources#ternjs#omit_object_prototype = 0
-
-"" Whether to include JavaScript keywords when completing something that is not
-"" a property. Default: 0
-"let g:deoplete#sources#ternjs#include_keywords = 1
-
-"" If completions should be returned when inside a literal. Default: 1
-"let g:deoplete#sources#ternjs#in_literal = 0
-""Add extra filetypes
-"let g:deoplete#sources#ternjs#filetypes = [
-      "\ 'jsx',
-      "\ 'javascript.jsx',
-      "\ 'vue',
-      "\ '...'
-      "\ ]
-"let g:deoplete#sources#clang#libclang_path='/usr/local/Cellar/llvm/5.0.0/lib/libclang.dylib'
-"let g:deoplete#sources#clang#clang_header='/usr/local/Cellar/cmake/' " path/to/lib/clang
-" DEOPLETE-GO
-"let g:deoplete#sources#go#gocode_binary=$GOPATH.'/bin/gocode'
-
-"augroup deoplete_aus
-"autocmd!
-"au FileType let g:deoplete#enable_at_startup = 1
-"augroup END
-"endif
-" }}}
-" Tern variables -------------------- {{{
-let g:tern#command = ['tern']
-let g:tern#arguments = ['--persistent']
-" }}}
-" Titlecase variables -------------------- {{{
+" Titlecase  {{{
+nmap <localleader>tcw <Plug>Titlecase
+nmap <localleader>tcl <Plug>TitlecaseLine
 let g:titlecase_map_keys = 0
 " }}}
-" JsDoc variables -------------------- {{{
-let g:jsdoc_allow_input_prompt = 1
-let g:jsdoc_input_description = 1
-" }}}
-" Airline variables -------------------- {{{
+" Airline variables  {{{
 let g:airline_symbols = {}
 " unicode symbols
 "let g:airline_left_sep = '»'
@@ -652,18 +545,7 @@ let g:airline_symbols = {}
 "let g:airline_powerline_fonts = 1
 let g:airline_theme='wombat'
 " }}}
-" Vim-javascript variables -------------------- {{{
-let g:javascript_plugin_jsdoc = 1
-let g:javascript_plugin_ngdoc = 1
-let g:javascript_plugin_flow = 1
-" }}}
-" Vim-latex variables -------------------- {{{
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-" }}}
-" UltiSnips variables -------------------- {{{
+" UltiSnips variables  {{{
 let g:UltiSnipsExpandTrigger = '<tab>'
 "let g:UltiSnipsListSnippets = '<s-tab>'
 let g:UltiSnipsJumpForwardTrigger = '<c-b>'
@@ -677,46 +559,15 @@ let g:UltiSnipsEditSplit = 'vertical'
 let g:UltiSnipsSnippetsDir = '~/dotfiles/ultisnips'
 let g:UltiSnipsSnippetDirectories = ['~/dotfiles/ultisnips']
 " }}}
-" Vimwiki variables -------------------- {{{
+" Vimwiki variables  {{{
 let g:vimwiki_list = [{ 'auto_toc': 1, 'list_margin': 2}]
 let g:vimwiki_auto_checkbox=1
 let g:vimwiki_list_ignore_newline=0
 " }}}
-" Git slides settings -------------------- {{{
+" Git slides settings  {{{
 let g:gitslides_use_custom_mappings = 0
 " }}}
-" }}}
-" Abbreviations -------------------- {{{
-augroup general_abbreviations
-  autocmd!
-  :iabbrev adn and
-  :iabbrev treu true
-  :iabbrev flase false
-augroup END
-" }}}
-" Operator pending movements -------------------- {{{
-" Parentheses -------------------- {{{
-onoremap p i(
-onoremap in( :<c-u>normal! f(vi(<cr>
-onoremap il( :<c-u>normal! F)vi(<cr>
-" }}}
-" Double quotes -------------------- {{{
-onoremap q i"
-onoremap in" :<c-u>normal! f"vi"<cr>
-onoremap il" :<c-u>normal! F"vi"<cr>
-" }}}
-" Curly braces -------------------- {{{
-onoremap a i{
-" }}}
-" Single quotes -------------------- {{{
-onoremap in' :<c-u>normal! f'vi'<cr>
-onoremap il' :<c-u>normal! F'vi'<cr>
-" }}}
-" Hightlight groups -------------------- {{{
-highlight TWS ctermbg=green guibg=green
-" }}}
-" }}}
-" COC Settings -------------------- {{{
+" COC Settings  {{{
  "if hidden is not set, TextEdit might fail.
 set hidden
 
@@ -855,7 +706,43 @@ inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "}}}
-" Color Settings -------------------- {{{
+" CtrlP Settings {{{
+let g:ctrlp_show_hidden = 1
+" }}}
+" }}}
+" Abbreviations  {{{
+augroup general_abbreviations
+  autocmd!
+  :iabbrev adn and
+  :iabbrev treu true
+  :iabbrev flase false
+augroup END
+" }}}
+" Operator pending movements  {{{
+" Parentheses  {{{
+onoremap p i(
+onoremap in( :<c-u>normal! f(vi(<cr>
+onoremap il( :<c-u>normal! F)vi(<cr>
+" }}}
+" Double quotes  {{{
+onoremap q i"
+onoremap in" :<c-u>normal! f"vi"<cr>
+onoremap il" :<c-u>normal! F"vi"<cr>
+" }}}
+" Curly braces  {{{
+onoremap a i{
+" }}}
+" Single quotes  {{{
+onoremap in' :<c-u>normal! f'vi'<cr>
+onoremap il' :<c-u>normal! F'vi'<cr>
+" }}}
+" Hightlight groups  {{{
+highlight TWS ctermbg=green guibg=green
+" }}}
+" }}}
+" Color Settings  {{{
+set t_Co=256
+source ~/dotfiles/.vim/plugin/theme-changer.vim
 if (has('termguicolors'))
  set termguicolors
 endif
@@ -864,7 +751,20 @@ syntax enable
 
 set completeopt=menuone,noinsert,noselect,preview,longest
 call GoDark()
-" }}}
-" CtrlP Settings {{{
-let g:ctrlp_show_hidden = 1
+let g:tokyonight_style = 'night' " available: night, storm
+let g:tokyonight_enable_italic = 1
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_light = 'medium'
+let g:gruvbox_hls_cursor = 'aqua'
+"let g:gruvbox_number_column = 
+"let g:gruvbox_sign_column = 
+"let g:gruvbox_color_column = 
+"let g:gruvbox_vert_split = 
+"let g:gruvbox_italicize_comments = 
+"let g:gruvbox_italicize_strings = 
+"let g:gruvbox_invert_selection = 
+"let g:gruvbox_invert_signs = 
+"let g:gruvbox_invert_indent_guides = 
+"let g:gruvbox_invert_tabline = 
+let g:gruvbox_improved_strings = 0
 " }}}
