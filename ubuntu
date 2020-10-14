@@ -71,7 +71,11 @@ npm install -g \
   fixjson \
   markdownlint-cli2 \
   eslint-config-prettier \
-  prettier
+  prettier \
+  elm \
+  elm-test \
+  elm-oracle \
+  elm-format
 
 install_zsh_plugins
 

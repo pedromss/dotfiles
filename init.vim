@@ -54,6 +54,7 @@ augroup BgHighlight
 augroup END
 set splitbelow
 set splitright
+" Simple status line {{{
 set laststatus=2
 set statusline=
 set statusline+=%f
@@ -64,6 +65,7 @@ set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
 set statusline+=\[%{&fileformat}\]
 set statusline+=\ %p%%
 set statusline+=\ %l:%c
+" }}}
 set tagstack
 " }}}
 " Commands  {{{
@@ -85,30 +87,27 @@ command! MakeTags !ctags
 " Plugins  {{{
 call plug#begin(stdpath('data') . '/plugged')
 " color schemes {{{ 
+Plug 'ayu-theme/ayu-vim'
 Plug 'arcticicestudio/nord-vim'
+Plug 'sainnhe/forest-night'
+Plug 'rakr/vim-one'
 Plug 'morhetz/gruvbox'
 Plug 'ghifarit53/tokyonight-vim'
 Plug 'srcery-colors/srcery-vim'
-"Plug 'xolox/vim-colorscheme-switcher'
+Plug 'hzchirs/vim-material'
+Plug 'ajmwagar/vim-deus'
+Plug 'sainnhe/sonokai'
+Plug 'sainnhe/gruvbox-material'
+Plug 'franbach/miramare'
 " }}}
-"Plug 'AndrewRadev/splitjoin.vim'
-Plug 'ElmCast/elm-vim'
-Plug 'tpope/vim-rhubarb'
-Plug 'shumphrey/fugitive-gitlab.vim'
+" Syntax for configs {{{
 Plug 'GEverding/vim-hocon'
 Plug 'cespare/vim-toml'
-Plug 'morhetz/gruvbox'
-Plug 'datMaffin/vim-colors-bionik'
-Plug 'srcery-colors/srcery-vim'
-Plug 'tjammer/blayu.vim'
-Plug 'aradunovic/perun.vim'
-Plug 'ajmwagar/vim-deus'
-Plug 'tudurom/bleh.vim'
-Plug 'hzchirs/vim-material'
-Plug 'rakr/vim-one'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
 Plug 'neoclide/jsonc.vim'
+" }}}
+" Langs {{{
+Plug 'ElmCast/elm-vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " Javascript  {{{
 "Plug 'yuezk/vim-js', { 'for': 'javascript' }
 "Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
@@ -117,48 +116,58 @@ Plug 'neoclide/jsonc.vim'
 "Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 " }}}
+" Markdown {{{
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'shime/vim-livedown', { 'for': 'markdown' }
+" }}}
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
+Plug 'vim-latex/vim-latex'
+Plug 'udalov/kotlin-vim'
+Plug 'tfnico/vim-gradle'
+Plug 'vimwiki/vimwiki'
+"Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
+"Plug 'tpope/vim-cucumber'
+" }}}
+" Git {{{
+Plug 'tpope/vim-fugitive'
+Plug 'shumphrey/fugitive-gitlab.vim'
+" fugitive extension for Github
+Plug 'tpope/vim-rhubarb'
+" }}}
+" Search {{{
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
+"Plug 'ctrlpvim/ctrlp.vim'
+" }}}
 Plug 'junegunn/goyo.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'godlygeek/tabular'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'svermeulen/vim-cutlass'
 Plug 'svermeulen/vim-subversive'
 Plug 'Chiel92/vim-autoformat'
 Plug 'alvan/vim-closetag', { 'for': 'html' }
 Plug 'christoomey/vim-titlecase'
-Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'vim-latex/vim-latex'
 Plug 'majutsushi/tagbar'
-Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
+" Git signs for modified files
 Plug 'mhinz/vim-signify'
-Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'shime/vim-livedown', { 'for': 'markdown' }
-Plug 'tfnico/vim-gradle'
-Plug 'udalov/kotlin-vim'
-Plug 'vimwiki/vimwiki'
 Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
 "Plug 'yegappan/mru'
-"Plug 'tpope/vim-cucumber'
 "Plug 'bling/vim-airline'
-"Plug 'flazz/vim-colorschemes'
-"Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
 "Plug 'vim-airline/vim-airline-themes'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-if has('python') || has('python3')
-  Plug 'SirVer/ultisnips'
-endif
+Plug 'SirVer/ultisnips'
 call plug#end()
 " }}}
 " Mappings  {{{
@@ -459,7 +468,8 @@ set shellslash
 set grepprg=grep\ -nH\ $*
 " }}}
 " Signify  {{{
-let g:signify_vcs_list = [ 'git']
+let g:signify_vcs_list = ['git']
+let g:signify_line_highlight = 0
 " }}}
 " AutoFormat  {{{
 let g:formatterpath = []
@@ -510,6 +520,7 @@ nmap <localleader>tcl <Plug>TitlecaseLine
 let g:titlecase_map_keys = 0
 " }}}
 " Airline variables  {{{
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_symbols = {}
 " unicode symbols
 "let g:airline_left_sep = '»'
@@ -540,7 +551,8 @@ let g:airline_symbols = {}
 "let g:airline_symbols.linenr = '☰'
 "let g:airline_symbols.maxlinenr = ''
 "let g:airline_powerline_fonts = 1
-let g:airline_theme='wombat'
+"let g:airline_theme='wombat'
+let g:airline_theme = 'miramare'
 " }}}
 " UltiSnips variables  {{{
 let g:UltiSnipsExpandTrigger = '<tab>'

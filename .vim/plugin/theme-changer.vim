@@ -1,6 +1,6 @@
 function! GoDark() 
   set background=dark
-  :colorscheme srcery
+  :colorscheme miramare
 endfunction
 
 function! GoLight()
