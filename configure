@@ -32,6 +32,7 @@ alias ....="cd ../../.."
 alias brc="nvim ~/.bashrc"
 alias zrc="nvim ~/.zshrc"
 alias szrc='source ~/.zshrc'
+alias senv='source .env'
 
 alias l="ls -lah"
 
