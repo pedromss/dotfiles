@@ -55,16 +55,16 @@ augroup END
 set splitbelow
 set splitright
 " Simple status line {{{
-set laststatus=2
-set statusline=
-set statusline+=%f
-set statusline+=%m
-set statusline+=%=
-set statusline+=\ %y
-set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
-set statusline+=\[%{&fileformat}\]
-set statusline+=\ %p%%
-set statusline+=\ %l:%c
+"set laststatus=2
+"set statusline=
+"set statusline+=%f
+"set statusline+=%m
+"set statusline+=%=
+"set statusline+=\ %y
+"set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+"set statusline+=\[%{&fileformat}\]
+"set statusline+=\ %p%%
+"set statusline+=\ %l:%c
 " }}}
 set tagstack
 " }}}
@@ -87,6 +87,10 @@ command! MakeTags !ctags
 " Plugins  {{{
 call plug#begin(stdpath('data') . '/plugged')
 " color schemes {{{ 
+Plug 'itchyny/lightline.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'junegunn/seoul256.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'sainnhe/forest-night'
@@ -141,6 +145,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
 "Plug 'ctrlpvim/ctrlp.vim'
 " }}}
+Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'godlygeek/tabular'
@@ -359,12 +364,11 @@ endif
 nnoremap <leader>F :FzfFiles<cr>
 nnoremap <leader>G :FzfGFiles<cr>
 nnoremap <leader>S :FzfSnippets<cr>
-nnoremap <f7> :FzfGFiles?<cr>
 nnoremap <leader>B :FzfBuffers<cr>
 nnoremap <leader><c-f> :FzfBLines<cr>
-nnoremap <leader><c-l> :FzfLines<cr>
-nnoremap <leader><c-a> :FzfAg<cr>
-nnoremap <leader><c-t> :FzfBTags<cr>
+nnoremap <leader>L :FzfLines<cr>
+nnoremap <leader>A :FzfAg<cr>
+nnoremap <leader>T :FzfBTags<cr>
 nnoremap <leader>M :FzfMarks<cr>
 
 " Mapping selecting mappings
@@ -765,15 +769,5 @@ let g:tokyonight_enable_italic = 1
 let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_contrast_light = 'medium'
 let g:gruvbox_hls_cursor = 'aqua'
-"let g:gruvbox_number_column = 
-"let g:gruvbox_sign_column = 
-"let g:gruvbox_color_column = 
-"let g:gruvbox_vert_split = 
-"let g:gruvbox_italicize_comments = 
-"let g:gruvbox_italicize_strings = 
-"let g:gruvbox_invert_selection = 
-"let g:gruvbox_invert_signs = 
-"let g:gruvbox_invert_indent_guides = 
-"let g:gruvbox_invert_tabline = 
 let g:gruvbox_improved_strings = 0
 " }}}
