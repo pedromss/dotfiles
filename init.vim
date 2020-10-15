@@ -351,15 +351,7 @@ let g:fzf_action = {
       \ 'alt-t': 'tab split',
       \ 'alt-x': 'split',
       \ 'alt-v': 'vsplit' }
-
-"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-if has('nvim') && !exists('g:fzf_layout')
-  augroup fzf_no_statusline
-    autocmd! FileType fzf
-    autocmd  FileType fzf set laststatus=0 noshowmode noruler
-          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-  augroup end
-endif
+let g:fzf_layout = { 'window': 'enew' }
 
 nnoremap <leader>F :FzfFiles<cr>
 nnoremap <leader>G :FzfGFiles<cr>
@@ -370,6 +362,7 @@ nnoremap <leader>L :FzfLines<cr>
 nnoremap <leader>A :FzfAg<cr>
 nnoremap <leader>T :FzfBTags<cr>
 nnoremap <leader>M :FzfMarks<cr>
+nnoremap <leader>C :FzfBCommits<cr>
 
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
