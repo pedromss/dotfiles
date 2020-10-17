@@ -13,3 +13,7 @@ endfunction
 :setlocal foldmethod=syntax
 :setlocal nolist
 
+augroup go_remove_folds
+  autocmd!
+  au BufEnter *.go execute 'normal! zR'
+augroup END
