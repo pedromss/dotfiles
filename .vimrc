@@ -1,6 +1,5 @@
 set encoding=utf-8
 scriptencoding uft8
-source ~/dotfiles/.vim/plugin/theme-changer.vim
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
@@ -60,54 +59,92 @@ command! MakeTags !ctags --tag-relative=yes --sort=yes -R -f .git/tags --exclude
 " }}}
 " Plugins -------------------- {{{
 call plug#begin('~/dotfiles/.vim/plugged')
-Plug 'morhetz/gruvbox'
-Plug 'datMaffin/vim-colors-bionik'
-Plug 'srcery-colors/srcery-vim'
-Plug 'tjammer/blayu.vim'
-Plug 'aradunovic/perun.vim'
-Plug 'ajmwagar/vim-deus'
-Plug 'tudurom/bleh.vim'
-Plug 'hzchirs/vim-material'
-Plug 'rakr/vim-one'
+" color schemes {{{ 
+Plug 'itchyny/lightline.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'altercation/vim-colors-solarized'
 Plug 'junegunn/seoul256.vim'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'yuezk/vim-js', { 'for': 'javascript' }
-Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
-Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
-Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
+Plug 'ayu-theme/ayu-vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'sainnhe/forest-night'
+Plug 'rakr/vim-one'
+Plug 'morhetz/gruvbox'
+Plug 'ghifarit53/tokyonight-vim'
+Plug 'srcery-colors/srcery-vim'
+Plug 'hzchirs/vim-material'
+Plug 'ajmwagar/vim-deus'
+Plug 'sainnhe/sonokai'
+Plug 'sainnhe/gruvbox-material'
+Plug 'franbach/miramare'
+" }}}
+" Syntax for configs {{{
+Plug 'GEverding/vim-hocon'
+Plug 'cespare/vim-toml'
+Plug 'neoclide/jsonc.vim'
+" }}}
+" Langs {{{
+Plug 'ElmCast/elm-vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+" Javascript  {{{
+"Plug 'yuezk/vim-js', { 'for': 'javascript' }
+"Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascript' }
+"Plug 'othree/yajs.vim', { 'for': 'javascript' }
+"Plug 'othree/es.next.syntax.vim', { 'for': 'javascript' }
+"Plug 'othree/javascript-libraries-syntax.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" }}}
+" Markdown {{{
+Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+Plug 'shime/vim-livedown', { 'for': 'markdown' }
+" }}}
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
+Plug 'vim-latex/vim-latex'
+Plug 'udalov/kotlin-vim'
+Plug 'tfnico/vim-gradle'
+Plug 'vimwiki/vimwiki'
+"Plug 'mhartington/nvim-typescript', { 'for': 'typescript' }
+"Plug 'tpope/vim-cucumber'
+" }}}
+" Git {{{
+Plug 'tpope/vim-fugitive'
+Plug 'shumphrey/fugitive-gitlab.vim'
+" fugitive extension for Github
+Plug 'tpope/vim-rhubarb'
+" }}}
+" Search {{{
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+"Plug 'ctrlpvim/ctrlp.vim'
+" }}}
+Plug 'thinca/vim-quickrun'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'junegunn/goyo.vim'
+Plug 'jlanzarotta/bufexplorer'
 Plug 'godlygeek/tabular'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-speeddating'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 Plug 'svermeulen/vim-cutlass'
 Plug 'svermeulen/vim-subversive'
-Plug 'Chiel92/vim-autoformat'
 Plug 'alvan/vim-closetag', { 'for': 'html' }
-"Plug 'bling/vim-airline'
-Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'vim-latex/vim-latex'
+Plug 'christoomey/vim-titlecase'
 Plug 'majutsushi/tagbar'
-Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'Jenkinsfile' }
+" Git signs for modified files
 Plug 'mhinz/vim-signify'
-Plug 'mileszs/ack.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'shime/vim-livedown', { 'for': 'markdown' }
-"Plug 'vim-airline/vim-airline-themes'
-Plug 'vimwiki/vimwiki'
+Plug 'xolox/vim-misc'
 Plug 'w0rp/ale'
 Plug 'jiangmiao/auto-pairs'
-if has('python') || has('python3')
-  Plug 'SirVer/ultisnips'
-endif
+"Plug 'yegappan/mru'
+"Plug 'bling/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+Plug 'SirVer/ultisnips'
 call plug#end()
 " }}}
 " Latex settings -------------------- {{{
@@ -793,4 +830,5 @@ let s:tlist_def_groovy_settings = 'groovy;p:package;c:class;i:interface;' .  'f:
 " }}}
 "set termguicolors
 set t_Co=256
+source ~/dotfiles/.vim/plugin/theme-changer.vim
 call GoDark()

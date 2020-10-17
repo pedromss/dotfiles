@@ -1,22 +1,12 @@
-set runtimepath+=~/.vim,~/.vim/after
+let g:verbose_vim = 0
+set runtimepath^=~/.vim
+set runtimepath+=~/.vim/after
+set runtimepath+=~/.vim/plugin
 set runtimepath^=~/repos/coc.nvim
 set packpath+=~/.vim
 set encoding=utf-8
 scriptencoding uft8
-" Functions  {{{
-function! GitBranch()
-  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-endfunction
-
-function! StatuslineGit()
-  let l:branchname = GitBranch()
-  return strlen(l:branchname) > 0?'  '.l:branchname : 'UNKNOWN'
-endfunction
-
-function! Datetime()
-  return strftime("%c")
-endfunction
-" }}}
+source ~/dotfiles/.vim/plugin/misc.vim
 " Basic settings  {{{
 let mapleader = ','
 let localleader = "\\"
@@ -142,9 +132,9 @@ Plug 'tpope/vim-rhubarb'
 " Search {{{
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mileszs/ack.vim'
 "Plug 'ctrlpvim/ctrlp.vim'
 " }}}
+Plug 'thinca/vim-quickrun'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'junegunn/goyo.vim'
 Plug 'jlanzarotta/bufexplorer'
@@ -157,7 +147,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'svermeulen/vim-cutlass'
 Plug 'svermeulen/vim-subversive'
-Plug 'Chiel92/vim-autoformat'
 Plug 'alvan/vim-closetag', { 'for': 'html' }
 Plug 'christoomey/vim-titlecase'
 Plug 'majutsushi/tagbar'
@@ -224,6 +213,7 @@ nnoremap L :b#<cr>
 " Clear matches and highlights
 nnoremap <Esc> :noh<CR>:mat none<cr>
 " Match word under cursor
+highlight TWS ctermbg=green guibg=green
 nnoremap cm :match TWS /\<<C-r><C-w>\>/<cr>
 " Replace word under cursor
 nnoremap <leader>sr :match TWS /\<<C-r><C-w>\>/<cr>:%s/\<<C-r><C-w>\>/
@@ -346,34 +336,25 @@ let MRU_Auto_Close = 1
 let g:rustfmt_autosave = 1
 " }}}
 " Fzf  {{{
-" " This is the default extra key bindings
-let g:fzf_action = {
-      \ 'alt-t': 'tab split',
-      \ 'alt-x': 'split',
-      \ 'alt-v': 'vsplit' }
 let g:fzf_layout = { 'window': 'enew' }
-
-nnoremap <leader>F :FzfFiles<cr>
-nnoremap <leader>G :FzfGFiles<cr>
-nnoremap <leader>S :FzfSnippets<cr>
-nnoremap <leader>B :FzfBuffers<cr>
-nnoremap <leader><c-f> :FzfBLines<cr>
-nnoremap <leader>L :FzfLines<cr>
-nnoremap <leader>A :FzfAg<cr>
-nnoremap <leader>T :FzfBTags<cr>
-nnoremap <leader>M :FzfMarks<cr>
-nnoremap <leader>C :FzfBCommits<cr>
-
+nnoremap <leader>F :FzfFiles!<cr>
+nnoremap <leader>G :FzfGFiles!<cr>
+nnoremap <leader>S :FzfSnippets!<cr>
+nnoremap <leader>B :FzfBuffers!<cr>
+nnoremap <leader><c-f> :FzfBLines!<cr>
+nnoremap <leader>L :FzfLines!<cr>
+nnoremap <leader>A :FzfAg!<cr>
+nnoremap <leader>T :FzfBTags!<cr>
+nnoremap <leader>M :FzfMarks!<cr>
+nnoremap <leader>C :FzfBCommits!<cr>
 " Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
-
 let g:fzf_command_prefix = 'Fzf'
-
 " Insert mode completion
-imap <c-q><c-f> <plug>(fzf-complete-path)
-imap <c-q><c-j> <plug>(fzf-complete-file-ag)
+imap <c-j><c-p> <plug>(fzf-complete-path)
+imap <c-j><c-f> <plug>(fzf-complete-file-ag)
 " }}}
 " vim-go  {{{
 augroup vim_go_auto_commands
@@ -468,14 +449,6 @@ set grepprg=grep\ -nH\ $*
 let g:signify_vcs_list = ['git']
 let g:signify_line_highlight = 0
 " }}}
-" AutoFormat  {{{
-let g:formatterpath = []
-let g:formatters_json = ['prettier']
-let g:autoformat_autoindent = 1
-let g:autoformat_retab = 1
-let g:autoformat_remove_trailing_spaces = 1
-let g:autoformat_verbosemode = 1
-" }}}
 " Livedown  {{{
 " should markdown preview get shown automatically upon opening markdown buffer
 let g:livedown_autorun = 0
@@ -485,11 +458,6 @@ let g:livedown_open = 1
 let g:livedown_port = 1337
 " the browser to use
 let g:livedown_browser = 'firefox'
-" }}}
-" Ag  {{{
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
 " }}}
 " Tagbar  {{{
 nmap <localleader><localleader>t :TagbarToggle<CR>
@@ -724,31 +692,16 @@ augroup general_abbreviations
   :iabbrev flase false
 augroup END
 " }}}
-" Operator pending movements  {{{
-" Parentheses  {{{
-onoremap p i(
-onoremap in( :<c-u>normal! f(vi(<cr>
-onoremap il( :<c-u>normal! F)vi(<cr>
-" }}}
-" Double quotes  {{{
-onoremap q i"
-onoremap in" :<c-u>normal! f"vi"<cr>
-onoremap il" :<c-u>normal! F"vi"<cr>
-" }}}
-" Curly braces  {{{
-onoremap a i{
-" }}}
-" Single quotes  {{{
-onoremap in' :<c-u>normal! f'vi'<cr>
-onoremap il' :<c-u>normal! F'vi'<cr>
-" }}}
-" Hightlight groups  {{{
-highlight TWS ctermbg=green guibg=green
-" }}}
-" }}}
+source ~/dotfiles/.vim/plugin/fzfext.vim
+source ~/dotfiles/.vim/plugin/tabber.vim
+source ~/dotfiles/.vim/plugin/valmanac.vim
+source ~/dotfiles/.vim/plugin/shebanger.vim
+source ~/dotfiles/.vim/plugin/grep-operator.vim
+source ~/dotfiles/.vim/plugin/op-pending-moves.vim
+source ~/dotfiles/.vim/plugin/vim-pattern-indexer.vim
+source ~/dotfiles/.vim/plugin/theme-changer.vim
 " Color Settings  {{{
 set t_Co=256
-source ~/dotfiles/.vim/plugin/theme-changer.vim
 if (has('termguicolors'))
   set termguicolors
 endif

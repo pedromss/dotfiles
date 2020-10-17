@@ -1,3 +1,4 @@
+echo 'Much go'
 if exists('b:go_ftplugin')
   finish
 endif
@@ -8,7 +9,7 @@ function! CloseGoErrors()
   echo buffers
 endfunction
 
-:call SetTabs(4)
+":call SetTabs(4)
 :setlocal foldmethod=syntax
 :setlocal nolist
 
