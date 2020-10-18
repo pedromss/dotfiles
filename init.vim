@@ -24,8 +24,6 @@ set tabstop=2 " how many columns a tab counts for
 set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
 set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
 set expandtab
-set statusline+=%#warningmsg#
-set statusline+=%*
 set number
 set switchbuf=usetab
 set backspace=2 " make backspace work like most other apps
@@ -45,6 +43,8 @@ augroup END
 set splitbelow
 set splitright
 " Simple status line {{{
+"set statusline+=%#warningmsg#
+"set statusline+=%*
 "set laststatus=2
 "set statusline=
 "set statusline+=%f
@@ -654,7 +654,7 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Using CocList
 " Show all diagnostics
@@ -717,3 +717,27 @@ let g:gruvbox_contrast_light = 'medium'
 let g:gruvbox_hls_cursor = 'aqua'
 let g:gruvbox_improved_strings = 0
 " }}}
+" Must be last
+let g:lightline = {
+      \ 'colorscheme': 'powerline',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified', 'coc' ] ]
+      \ },
+      \ 'component': {
+      \   'coc': 'coc-vim: %{coc#status()}%{get(b:,"coc_current_function","")}'
+      \ },
+      \ 'mode_map': {
+        \ 'n' : 'N',
+        \ 'i' : 'I',
+        \ 'R' : 'R',
+        \ 'v' : 'V',
+        \ 'V' : 'VL',
+        \ "\<C-v>": 'VB',
+        \ 'c' : 'C',
+        \ 's' : 'S',
+        \ 'S' : 'SL',
+        \ "\<C-s>": 'SB',
+        \ 't': 'T',
+        \ },
+      \ }
