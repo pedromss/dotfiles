@@ -1,19 +1,18 @@
-echo 'Much go'
 if exists('b:go_ftplugin')
   finish
 endif
 let b:go_ftplugin = 1
 
-function! CloseGoErrors()
-  let buffers = filter(range(1, bufnr('$')), 'bufexists(v:val)')
-  echo buffers
-endfunction
-
-":call SetTabs(4)
-:setlocal foldmethod=syntax
-:setlocal nolist
+setlocal tabstop=2
+setlocal shiftwidth=2
+setlocal softtabstop=2
+setlocal noexpandtab
+setlocal foldmethod=syntax
+setlocal nolist
+setlocal cursorline
+setlocal nocursorcolumn
 
 augroup go_remove_folds
   autocmd!
-  au BufEnter *.go execute 'normal! zR'
+  autocmd BufEnter *.go execute 'normal! zR'
 augroup END
