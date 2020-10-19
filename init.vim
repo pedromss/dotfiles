@@ -1,32 +1,28 @@
-let g:verbose_vim = 0
-set runtimepath^=~/.vim
-set runtimepath+=~/.vim/after
-set runtimepath+=~/.vim/plugin
-set runtimepath^=~/repos/coc.nvim
-set packpath+=~/.vim
-set encoding=utf-8
 scriptencoding uft8
+syntax on
+filetype plugin indent on
+set runtimepath^=~/.vim
+set runtimepath^=~/repos/coc.nvim
 source ~/dotfiles/.vim/plugin/misc.vim
 " Basic settings  {{{
 let mapleader = ','
 let localleader = "\\"
-set background=dark
-syntax on
-filetype plugin indent on
 set textwidth=80
 set path+=**
 set wildignore=*.class,**/target/**,**/.idea/**,**/node_modules/**,**/bower_components/**
 set wildmenu
 set tags+=.git/tags
-set cursorcolumn
 set cursorline
-set tabstop=2 " how many columns a tab counts for
-set softtabstop=2 " hitting Tab in insert mode will produce the appropriate number of spaces.
-set shiftwidth=2 " how many columns text is indented with the reindent operations (<< and >>)
+" Tabs -------------------- {{{
+set tabstop=2 
+set softtabstop=2 
+set shiftwidth=2 
 set expandtab
+" }}}
 set number
-set switchbuf=usetab
-set backspace=2 " make backspace work like most other apps
+set switchbuf=usetab,useopen
+" make backspace work like most other apps
+set backspace=2 
 set scrolloff=3
 set hlsearch " highlight search words
 set incsearch " search as you type
@@ -34,28 +30,8 @@ set cindent " indents more if inside brackets
 set relativenumber
 set list
 set listchars=tab:▸·,trail:·,eol:↵
-set cul " highlight current line
-augroup BgHighlight
-  autocmd!
-  autocmd WinEnter * set cul
-  autocmd WinLeave * set nocul
-augroup END
 set splitbelow
 set splitright
-" Simple status line {{{
-"set statusline+=%#warningmsg#
-"set statusline+=%*
-"set laststatus=2
-"set statusline=
-"set statusline+=%f
-"set statusline+=%m
-"set statusline+=%=
-"set statusline+=\ %y
-"set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
-"set statusline+=\[%{&fileformat}\]
-"set statusline+=\ %p%%
-"set statusline+=\ %l:%c
-" }}}
 set tagstack
 " }}}
 " Commands  {{{
@@ -521,7 +497,6 @@ let g:airline_theme = 'miramare'
 " }}}
 " UltiSnips variables  {{{
 let g:UltiSnipsExpandTrigger = '<c-b>'
-"let g:UltiSnipsListSnippets = '<s-tab>'
 let g:UltiSnipsJumpForwardTrigger = '<c-b>'
 let g:UltiSnipsJumpBackwardTrigger = '<c-g>'
 if has('python3')
@@ -564,7 +539,7 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 " Remap keys for gotos
-"nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 "nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
@@ -646,7 +621,6 @@ inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 "}}}
