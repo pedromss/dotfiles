@@ -14,7 +14,7 @@ function! GoLight()
   :colorscheme vim-material
 endfunction
 
-command! GoLight :call GoLight()<cr>
-command! GoDark :call GoDark()<cr>
+command! GoLight call GoLight()<cr>
+command! GoDark call GoDark()<cr>
 
-
+call GoDark()

@@ -1,5 +1,5 @@
 function! s:ResolveVimIndent()
-  if expand('%') =~# '.vimrc|init.vim' 
+  if expand('%') =~# '.vimrc\|init.vim' 
     setlocal foldmethod=marker
   else
     setlocal foldmethod=indent

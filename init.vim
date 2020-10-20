@@ -3,7 +3,6 @@ syntax on
 filetype plugin indent on
 set runtimepath^=~/.vim
 set runtimepath^=~/repos/coc.nvim
-source ~/dotfiles/.vim/plugin/misc.vim
 " Basic settings  {{{
 let mapleader = ','
 let localleader = "\\"
@@ -636,12 +635,6 @@ augroup general_abbreviations
   :iabbrev flase false
 augroup END
 " }}}
-source ~/dotfiles/.vim/plugin/fzfext.vim
-source ~/dotfiles/.vim/plugin/tabber.vim
-source ~/dotfiles/.vim/plugin/shebanger.vim
-source ~/dotfiles/.vim/plugin/grep-operator.vim
-source ~/dotfiles/.vim/plugin/op-pending-moves.vim
-source ~/dotfiles/.vim/plugin/theme-changer.vim
 " Color Settings  {{{
 set t_Co=256
 if (has('termguicolors'))
@@ -651,7 +644,6 @@ endif
 syntax enable
 
 set completeopt=menuone,noinsert,noselect,preview,longest
-call GoDark()
 let g:tokyonight_style = 'night' " available: night, storm
 let g:tokyonight_enable_italic = 1
 let g:gruvbox_contrast_dark = 'hard'
