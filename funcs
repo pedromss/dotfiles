@@ -165,10 +165,6 @@ function make_links() {
   ln -sfv ~/dotfiles/.ctags ~/.ctags
   ln -sfv ~/dotfiles/.zshrc ~/.zshrc
   ln -sfv ~/dotfiles/.bashrc ~/.bashrc
-  ln -sfv ~/dotfiles/.vimrc ~/.vimrc
-  ln -sfv ~/dotfiles/.ideavimrc ~/.ideavimrc
-  ln -sfv ~/dotfiles/.minvimrc ~/.minvimrc
-  ln -sfv ~/dotfiles/.vim ~/.vim
   ln -sfv ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -sfv ~/dotfiles/.Xdefaults ~/.Xdefaults
   ln -sfv ~/dotfiles/.gitignore_global ~/.gitignore_global
@@ -278,14 +274,21 @@ function is_macos () {
 }
 
 function configure_vim() {
-  ln -sfv ~/dotfiles/init.vim "$XDG_CONFIG_HOME"/nvim/init.vim
+  ln -sfv ~/dotfiles/.vimrc ~/.vimrc
+  ln -sfv ~/dotfiles/.vim ~/.vim
+  download_vimplug "$HOME"/dotfiles/.vim/autoload/plug.vim
+}
 
-  if ! [ -f ~/dotfiles/.vim/autoload/plug.vim ] ; then
-    curl -fLo ~/dotfiles/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  fi
-  if ! [ -f ~/dotfiles/.vim/autoload/plug.vim ] ; then
-    curl -fLo "${XDG_DATA_HOME}"/nvim/site/autoload/plug.vim --create-dirs \
+function configure_neovim() {
+  ln -sfv ~/dotfiles/init.vim "$XDG_CONFIG_HOME"/nvim/init.vim
+  ln -sfv ~/dotfiles/.vim ~/.vim
+  download_vimplug "${XDG_DATA_HOME}"/nvim/site/autoload/plug.vim
+}
+
+function download_vimplug() {
+  local plug_file="$1"
+  if ! [ -f "$plug_file" ] ; then
+    curl -fLo "$plug_file" --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
 }
