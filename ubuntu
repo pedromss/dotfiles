@@ -23,19 +23,14 @@ sudo apt-get -y install \
   libssl-dev \
   ctags \
   gawk \
-  zip \
   shellcheck \
-  tmux \
-  vim \
   youtube-dl \
   zsh \
   python-pip \
   python3-pip \
   silversearcher-ag \
   apt-utils \
-  npm \
-  jq \
-  yq
+  jq
 
 pip install \
   jedi \
@@ -51,11 +46,11 @@ install_nvm
 install_go 'linux-amd64'
 install_rustup 'x86_64-unknown-linux-gnu'
 install_sdkman
-install_tpm
 
 set -x
 go get github.com/hairyhenderson/gomplate/cmd/gomplate
 go get github.com/tomnomnom/gron
+go get github.com/mikefarah/yq/v3
 set +x
 
 cargo install --force \
