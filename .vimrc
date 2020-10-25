@@ -113,9 +113,7 @@ Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'tpope/vim-rhubarb'
 " }}}
 " Search {{{
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-"Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " }}}
 Plug 'thinca/vim-quickrun'
 Plug 'editorconfig/editorconfig-vim'
@@ -143,7 +141,6 @@ Plug 'jiangmiao/auto-pairs'
 "Plug 'yegappan/mru'
 "Plug 'bling/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'SirVer/ultisnips'
 call plug#end()
 " }}}
@@ -316,44 +313,6 @@ augroup go_mappings
   au FileType go nnoremap <localleader>gom :GoMetaLinter<cr>
   au FileType go nnoremap <localleader>goa :GoAlternate<cr>
 augroup END
-" }}}
-" Fzf mappings -------------------- {{{
-" " This is the default extra key bindings
-let g:fzf_action = {
-      \ 'alt-t': 'tab split',
-      \ 'alt-x': 'split',
-      \ 'alt-v': 'vsplit' }
-
-"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-if has('nvim') && !exists('g:fzf_layout')
-  augroup fzf_no_statusline
-    autocmd! FileType fzf
-    autocmd  FileType fzf set laststatus=0 noshowmode noruler
-          \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-  augroup end
-endif
-
-nnoremap <leader>F :FzfFiles<cr>
-nnoremap <leader>G :FzfGFiles<cr>
-nnoremap <leader>S :FzfSnippets<cr>
-nnoremap <f7> :FzfGFiles?<cr>
-nnoremap <leader>B :FzfBuffers<cr>
-nnoremap <leader><c-f> :FzfBLines<cr>
-nnoremap <leader><c-l> :FzfLines<cr>
-nnoremap <leader><c-a> :FzfAg<cr>
-nnoremap <leader><c-t> :FzfBTags<cr>
-nnoremap <leader>M :FzfMarks<cr>
-
-" Mapping selecting mappings
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-
-let g:fzf_command_prefix = 'Fzf'
-
-" Insert mode completion
-imap <c-q><c-f> <plug>(fzf-complete-path)
-imap <c-q><c-j> <plug>(fzf-complete-file-ag)
 " }}}
 " Titlecase mappings -------------------- {{{
 " TODO review this plugins config
