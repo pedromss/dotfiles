@@ -1,0 +1,40 @@
+#!/usr/bin/env bash 
+
+git clone https://github.com/pedromss/dotfiles
+
+. funcs
+. configure
+
+user=$(id -u -n)
+export DFILES_USER="$user"
+
+sudo apt -y update
+
+sudo apt -y install \
+  ninja-build \
+  ninja-build \
+  libtool \
+  libtool-bin \
+  autoconf \
+  automake \
+  cmake \
+  g++ \
+  pkg-config \
+  unzip \
+  build-essential \
+  libssl-dev \
+  ctags \
+  gawk \
+  zsh \
+  python-pip \
+  silversearcher-ag \
+  apt-utils \
+  jq
+
+# Make symlinks to .vimrc and .vim and download VimPlug
+configure_vim
+
+install_go 'linux-armv6l'
+install_zsh_plugins
+make_links
+
