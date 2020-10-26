@@ -147,7 +147,7 @@ function install_zsh_plugins() {
     local zsh_plugins_repos_dir=~/dotfiles/repos/zsh-plugins
     # at this point zsh is expected to be installed with a package manager
     mkdir -p "$zsh_plugins_repos_dir"
-
+    curr="$(pwd)"
     clone_from_github_into_dir 'ohmyzsh/ohmyzsh' "$zsh_plugins_repos_dir"
     clone_from_github_into_dir 'wfxr/forgit' "$zsh_plugins_repos_dir"
     clone_from_github_into_dir "b4b4r07/enhancd" "$zsh_plugins_repos_dir"
@@ -157,6 +157,7 @@ function install_zsh_plugins() {
       clone_from_github_into_dir "zsh-users/zsh-autosuggestions" "$zsh_plugins_repos_dir"
       clone_from_github_into_dir "zsh-users/zsh-completions" "$zsh_plugins_repos_dir"
     fi
+    cd "$curr" || exit 1
   fi
 }
 

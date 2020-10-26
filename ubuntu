@@ -1,114 +1,100 @@
 #!/usr/bin/env bash 
 
-. funcs
-. configure
+function setup() {
+  . funcs
+  . configure
 
-user=$(id -u -n)
-export DFILES_USER="$user"
+  user=$(id -u -n)
+  export DFILES_USER="$user"
+  echo "Sourced funcs and configure. User is $DFILES_USER"
+}
 
-sudo apt-get -y update
+function apt_update() {
+  sudo apt-get -y update
+}
 
-sudo apt-get -y install \
-  ninja-build \
-  libtool \
-  libtool-bin \
-  autoconf \
-  automake \
-  cmake \
-  g++ \
-  pkg-config \
-  unzip \
-  gnome-tweaks \
-  build-essential \
-  libssl-dev \
-  ctags \
-  gawk \
-  shellcheck \
-  youtube-dl \
-  zsh \
-  python-pip \
-  python3-pip \
-  silversearcher-ag \
-  apt-utils \
-  jq \
-  rng-tools
-
-pip install \
-  jedi \
-  python-language-server \
-  pathlib \
-  typing \
-  vim-vint
-
-install_llvm
-install_nvim
-install_fzf
-install_nvm
-install_go 'linux-amd64'
-install_rustup 'x86_64-unknown-linux-gnu'
-install_sdkman
-
-set -x
-go get github.com/hairyhenderson/gomplate/cmd/gomplate
-go get github.com/tomnomnom/gron
-go get github.com/mikefarah/yq/v3
-set +x
-
-cargo install --force \
-  exa \
-  bat \
-  mdcat
-
-npm install -g \
-  eslint \
-  livedown \
-  dockerfile-language-server-nodejs \
-  bash-language-server \
-  fixjson \
-  markdownlint-cli2 \
-  eslint-config-prettier \
-  prettier \
-  elm \
-  elm-test \
-  elm-oracle \
-  elm-format
-
-install_zsh_plugins
-
-make_links
-configure_vim
-
-function install_llvm() {
-  if [ -f /usr/bin/clangd ] && [ -f /usr/bin/llvm-config ] ; then
-    return
-  fi
-  # From http://apt.llvm.org/
-  wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-  # Fingerprint: 6084 F3CF 814B 57C1 CF12 EFD5 15CF 4D18 AF4F 7421
-
-  sudo add-apt-repository 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main'
-
-  sudo apt-get update
+function apt_install() {
+  # gettext - needed to install nvim. Ubuntu 18.04 doesn't have it by default
   sudo apt-get -y install \
-    libllvm-8-ocaml-dev \
-    libllvm8 \
-    llvm-8 \
-    llvm-8-dev \
-    llvm-8-doc \
-    llvm-8-examples \
-    llvm-8-runtime \
-    clang-8 \
-    clang-tools-8 \
-    clang-8-doc \
-    libclang-common-8-dev \
-    libclang-8-dev \
-    libclang1-8 \
-    clang-format-8 \
-    python-clang-8 \
-    libclang1 \
-    libclang-dev
+    ninja-build \
+    libtool \
+    libtool-bin \
+    autoconf \
+    automake \
+    cmake \
+    g++ \
+    pkg-config \
+    unzip \
+    gnome-tweaks \
+    build-essential \
+    libssl-dev \
+    ctags \
+    gawk \
+    shellcheck \
+    youtube-dl \
+    zsh \
+    python3-pip \
+    silversearcher-ag \
+    apt-utils \
+    jq \
+    rng-tools \
+    gettext
+}
 
-  sudo update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-8 100
-  sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-8 100
+function pip_install() {
+  pip3 install \
+    jedi \
+    python-language-server \
+    pathlib \
+    typing \
+    vim-vint
+}
+
+function install_go_packages() {
+  set -x
+  go get github.com/hairyhenderson/gomplate/cmd/gomplate
+  go get github.com/tomnomnom/gron
+  go get github.com/mikefarah/yq/v3
+  set +x
+}
+
+function install_cargo_packages() {
+  cargo install --force \
+    exa \
+    bat \
+    mdcat
+}
+
+function install_npm_packages() {
+  npm install -g \
+    eslint \
+    livedown \
+    dockerfile-language-server-nodejs \
+    bash-language-server \
+    fixjson \
+    markdownlint-cli2 \
+    eslint-config-prettier \
+    prettier \
+    elm \
+    elm-test \
+    elm-oracle \
+    elm-format
+}
+
+function run() {
+  setup
+  apt_update
+  apt_install
+  pip_install
+  install_nvim
+  install_fzf
+  install_go 'linux-amd64'
+  install_rustup 'x86_64-unknown-linux-gnu'
+  install_go_packages
+  install_cargo_packages
+  install_npm_packages
+  install_zsh_plugins
+  make_links
+  configure_neovim
 }
 
