@@ -10,7 +10,7 @@ export DFILES_VERSION_NVM=0.35.2
 export DFILES_VERSION_NODEJS=12.16.1
 
 export DFILES_DIR_BIN=~/dotfiles/bin
-export DFILES_XDG=~/dotfiles/xdg
+export DFILES_XDG=~/xdg
 export DFILES_PATH_REPOS=~/dotfiles/repos
 
 export XDG_CONFIG_HOME="$DFILES_XDG/.config"

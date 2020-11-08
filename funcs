@@ -169,6 +169,7 @@ function make_links() {
   ln -sfv ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -sfv ~/dotfiles/.Xdefaults ~/.Xdefaults
   ln -sfv ~/dotfiles/.gitignore_global ~/.gitignore_global
+  ln -sfv ~/dotfiles/coc-settings.json ~/xdg/.config/nvim/coc-settings.json
 }
 
 function install_tpm() {
