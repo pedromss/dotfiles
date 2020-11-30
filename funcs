@@ -150,7 +150,6 @@ function install_zsh_plugins() {
     curr="$(pwd)"
     clone_from_github_into_dir 'ohmyzsh/ohmyzsh' "$zsh_plugins_repos_dir"
     clone_from_github_into_dir 'wfxr/forgit' "$zsh_plugins_repos_dir"
-    clone_from_github_into_dir "b4b4r07/enhancd" "$zsh_plugins_repos_dir"
     clone_from_github_into_dir "zdharma/fast-syntax-highlighting" "$zsh_plugins_repos_dir"
     clone_from_github_into_dir "zsh-users/zsh-history-substring-search" "$zsh_plugins_repos_dir"
     if ! is-rpi ; then

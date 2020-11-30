@@ -22,10 +22,10 @@ brew install \
   zip \
   shellcheck \
   tmux \
-  vim \
-  youtube-dl \
   zsh \
-  wget
+  wget \
+  openjdk@8 \
+  openjdk@11
 
 install_brew_casks
 
@@ -41,8 +41,6 @@ sudo pip install \
 install_fzf
 install_go 'darwin-amd64'
 install_rustup 'x86_64-apple-darwin'
-install_sdkman
-install_nvm
 
 go get github.com/hairyhenderson/gomplate/cmd/gomplate
 go get github.com/tomnomnom/gron
@@ -66,3 +64,5 @@ npm install -g \
   elm-format
 
 install_zsh_plugins
+make_links
+configure_neovim

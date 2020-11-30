@@ -8,6 +8,11 @@ export DFILES_VERSION_GO=1.14.6
 export DFILES_VERSION_FZF=0.23.0
 export DFILES_VERSION_NVM=0.35.2
 export DFILES_VERSION_NODEJS=12.16.1
+export DFILES_VERSION_JAVA=8
+
+if [ -f ~/.versions ] ; then
+  source ~/.versions
+fi
 
 export DFILES_DIR_BIN=~/dotfiles/bin
 export DFILES_XDG=~/dotfiles/xdg
@@ -214,14 +219,10 @@ export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
 export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
+export PATH=~/dotfiles/sdks/nodejs/v"$DFILES_VERSION_NODEJS"/bin:"$PATH"
 if is_macos ; then
-  echo "$PATH" | sed -e $'s/:/\\\n/g' | uniq > unique_path
-  new_path=$(paste -sd ':' unique_path)
-  rm -f unique_path
-else
-  new_path=$(echo "$PATH" | sed s/:/\\n/g | uniq | paste -sd ":")
+  export PATH="/usr/local/opt/openjdk@$DFILES_VERSION_JAVA/bin:$PATH"
 fi
-export PATH="$new_path"
 if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
   . ~/dotfiles/repos/nvm/nvm.sh
 fi

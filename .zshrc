@@ -91,7 +91,9 @@ if [ -d ~/dotfiles/repos/zsh-plugins ] ; then
       . "$plugin_folder/plugins/vi-mode/vi-mode.plugin.zsh"
     else 
       for plugin_file in "$plugin_folder"/*.plugin.zsh ; do
-        . "$plugin_file"
+        if [ -f "$plugin_file" ] ; then
+          . "$plugin_file"
+        fi
       done
     fi
   done
@@ -102,6 +104,9 @@ fi
 ZSH_DOTENV_PROMPT=Always
 PROMPT='%2~ %# '
 ZSH_THEME=""
+prompt pure
+PURE_GIT_PULL=0
+PURE_GIT_UNTRACKED_DIRTY=0
 bindkey '^[k' history-substring-search-up
 bindkey '^[j' history-substring-search-down
 # shellcheck disable=1090
