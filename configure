@@ -21,6 +21,8 @@ export DFILES_PATH_REPOS=~/dotfiles/repos
 export XDG_CONFIG_HOME="$DFILES_XDG/.config"
 export XDG_DATA_HOME="$DFILES_XDG/.local/share"
 
+export GPG_TTY=$(tty)
+
 mkdir -p "$DFILES_DIR_BIN"
 mkdir -p "$DFILES_XDG"
 mkdir -p "$XDG_CONFIG_HOME"
@@ -219,9 +221,9 @@ export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
 export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
-export PATH=~/dotfiles/sdks/nodejs/v"$DFILES_VERSION_NODEJS"/bin:"$PATH"
+export PATH=~/dotfiles/sdks/nodejs/current/bin:"$PATH"
 if is_macos ; then
-  export PATH="/usr/local/opt/openjdk@$DFILES_VERSION_JAVA/bin:$PATH"
+  export PATH=~/dotfiles/sdks/java/current/bin:"$PATH"
 fi
 if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
   . ~/dotfiles/repos/nvm/nvm.sh

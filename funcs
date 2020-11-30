@@ -292,3 +292,19 @@ function download_vimplug() {
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   fi
 }
+
+function use () {
+  local tool="$1"
+  local version="$2"
+  if [[ "$tool" = 'java' ]] ; then
+    if is_macos ; then
+      rm -f ~/dotfiles/sdks/java/current
+      ln -sfv /usr/local/opt/openjdk@"$version" ~/dotfiles/sdks/java/current
+    fi
+  elif [[ "$tool" = 'nodejs' ]] ; then
+      rm -f ~/dotfiles/sdks/nodejs/current
+      ln -sfv ~/dotfiles/sdks/nodejs/"$version" ~/dotfiles/sdks/nodejs/current
+  else
+    echo "Sorry, don't know that tool"
+  fi
+}
