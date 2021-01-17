@@ -10,7 +10,7 @@ HISTFILE=~/.zhistory
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-fpath=( /usr/local/share/zsh-completions $fpath )
+fpath=( /usr/local/share/zsh-completions ~/dotfiles/repos/zsh-plugins/pure $fpath )
 # ==================================================
 # Completions
 # ==================================================
