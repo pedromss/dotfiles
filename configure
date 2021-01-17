@@ -8,6 +8,11 @@ export DFILES_VERSION_GO=1.14.6
 export DFILES_VERSION_FZF=0.23.0
 export DFILES_VERSION_NVM=0.35.2
 export DFILES_VERSION_NODEJS=12.16.1
+export DFILES_VERSION_JAVA=8
+
+if [ -f ~/.versions ] ; then
+  source ~/.versions
+fi
 
 export DFILES_DIR_BIN=~/dotfiles/bin
 export DFILES_XDG=~/xdg
@@ -15,6 +20,8 @@ export DFILES_PATH_REPOS=~/dotfiles/repos
 
 export XDG_CONFIG_HOME="$DFILES_XDG/.config"
 export XDG_DATA_HOME="$DFILES_XDG/.local/share"
+
+export GPG_TTY=$(tty)
 
 mkdir -p "$DFILES_DIR_BIN"
 mkdir -p "$DFILES_XDG"
@@ -40,8 +47,10 @@ if is_macos ; then
   alias ccp='pbcopy'
   alias pcp='pbpaste'
 else
-  alias cpp='xclip -selection clipboard'
-  alias pcp='xclip -o'
+  if command_exists 'xclip' ; then
+    alias cpp='xclip -selection clipboard'
+    alias pcp='xclip -o'
+  fi
 fi
 
 if is_ubuntu ; then
@@ -79,6 +88,7 @@ export DFILES_DIR_YDL=~/Music
 mkdir -p "$DFILES_DIR_YDL"
 alias ydl="youtube-dl -x --audio-format mp3 --audio-quality 0 --no-playlist -o '$DFILES_DIR_YDL/%(title)s.%(ext)s'"
 alias ydl-list="youtube-dl -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '$DFILES_DIR_YDL/%(title)s.%(ext)s'"
+alias ydlu="pip3 install -U youtube-dl"
 # ==================================================
 # SHELLCHECK
 # ==================================================
@@ -135,7 +145,7 @@ fi
 # ==================================================
 export BAT_THEME='1337'
 # ==================================================
-# Docker
+# docker
 # ==================================================
 alias dlf='docker logs -f '
 alias dsr='docker --tlsverify -H '
@@ -168,9 +178,10 @@ alias gstl='git status --long --branch -uall -vv'
 alias glg='git log --graph --pretty format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset" --abbrev-commit --date relative'
 alias gau='git add -u'
 alias gaa='git add -A'
-alias gcm='git commit -m'
-alias gaacm='git add -A && git commit -m'
-alias gaucm='git add -u && git commit -m'
+alias gcm='git commit -S'
+alias gcma='git commit -S --amend'
+alias gaacm='git add -A && git commit -S'
+alias gaucm='git add -u && git commit -S'
 alias gbr='git branch -vv'
 alias gbrr='git branch -r -vv'
 alias gunstage='git reset HEAD --'
@@ -214,14 +225,10 @@ export PATH="$DFILES_PATH_NVIM/bin:$PATH"
 export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
 export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
+export PATH=~/dotfiles/sdks/nodejs/current/bin:"$PATH"
 if is_macos ; then
-  echo "$PATH" | sed -e $'s/:/\\\n/g' | uniq > unique_path
-  new_path=$(paste -sd ':' unique_path)
-  rm -f unique_path
-else
-  new_path=$(echo "$PATH" | sed s/:/\\n/g | uniq | paste -sd ":")
+  export PATH=~/dotfiles/sdks/java/current/bin:"$PATH"
 fi
-export PATH="$new_path"
 if [ -f ~/dotfiles/repos/nvm/nvm.sh ] ; then
   . ~/dotfiles/repos/nvm/nvm.sh
 fi
