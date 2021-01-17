@@ -47,8 +47,10 @@ if is_macos ; then
   alias ccp='pbcopy'
   alias pcp='pbpaste'
 else
-  alias cpp='xclip -selection clipboard'
-  alias pcp='xclip -o'
+  if command_exists 'xclip' ; then
+    alias cpp='xclip -selection clipboard'
+    alias pcp='xclip -o'
+  fi
 fi
 
 if is_ubuntu ; then
@@ -86,6 +88,7 @@ export DFILES_DIR_YDL=~/Music
 mkdir -p "$DFILES_DIR_YDL"
 alias ydl="youtube-dl -x --audio-format mp3 --audio-quality 0 --no-playlist -o '$DFILES_DIR_YDL/%(title)s.%(ext)s'"
 alias ydl-list="youtube-dl -x --audio-format mp3 --audio-quality 0 --yes-playlist -o '$DFILES_DIR_YDL/%(title)s.%(ext)s'"
+alias ydlu="pip3 install -U youtube-dl"
 # ==================================================
 # SHELLCHECK
 # ==================================================
@@ -142,7 +145,7 @@ fi
 # ==================================================
 export BAT_THEME='1337'
 # ==================================================
-# Docker
+# docker
 # ==================================================
 alias dlf='docker logs -f '
 alias dsr='docker --tlsverify -H '
@@ -175,9 +178,10 @@ alias gstl='git status --long --branch -uall -vv'
 alias glg='git log --graph --pretty format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %Cblue<%an>%Creset" --abbrev-commit --date relative'
 alias gau='git add -u'
 alias gaa='git add -A'
-alias gcm='git commit -m'
-alias gaacm='git add -A && git commit -m'
-alias gaucm='git add -u && git commit -m'
+alias gcm='git commit -S'
+alias gcma='git commit -S --amend'
+alias gaacm='git add -A && git commit -S'
+alias gaucm='git add -u && git commit -S'
 alias gbr='git branch -vv'
 alias gbrr='git branch -r -vv'
 alias gunstage='git reset HEAD --'
