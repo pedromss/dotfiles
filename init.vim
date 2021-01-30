@@ -352,6 +352,7 @@ let g:go_def_mode = 'gopls'
 let g:go_fillstruct_mode = 'fillstruct'
 let g:go_referrers_mode = 'gopls'
 let g:go_implements_mode = 'gopls'
+"let g:go_info_mode='gopls'
 let g:go_fmt_command='goimports'
 let g:go_term_reuse = 1
 let g:go_gopls_enabled = 1
@@ -650,6 +651,30 @@ let g:gruvbox_contrast_dark = 'hard'
 let g:gruvbox_contrast_light = 'medium'
 let g:gruvbox_hls_cursor = 'aqua'
 let g:gruvbox_improved_strings = 0
+" }}}
+" Go LSP {{{
+"go.impl.cursor              Generate   interface   stubs
+"go.install.gomodifytags     Install    /           update    gomodifytags
+"go.install.goplay           Install    /           update    goplay
+"go.install.gopls            Install    /           update    gopls
+"go.install.gotests          Install    /           update    gotests
+"go.install.impl             Install    /           update    impl
+"go.install.tools            Install    /           update    all            tools
+"go.playground               Run        on          go        playground
+"go.tags.add                 Add        tags        to        struct         fields
+"go.tags.add.line            Add        tags        to        struct         field      in          current   line
+"go.tags.add.prompt          Add        tags        to        struct         fields     (prompt)
+"go.tags.clear               Remove     all         tags      from           struct     fields
+"go.tags.clear.line          Remove     all         tags      from           struct     fields      in        current   line
+"go.tags.remove              Remove     tags        from      struct         fields
+"go.tags.remove.line         Remove     tags        from      struct         field      in          current   line
+"go.tags.remove.prompt       Remove     tags        from      struct         fields     (prompt)
+"go.test.generate.exported   Generate   unit        tests     for            exported   functions   in        file
+"go.test.generate.file       Generate   unit        tests     for            file
+"go.test.generate.function   Generate   unit        tests     for            current    function
+"go.test.toggle              Toggle     test        file
+"go.version                  Print      extension   version
+"
 " }}}
 " Must be last
 let g:lightline = {
