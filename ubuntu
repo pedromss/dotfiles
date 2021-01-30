@@ -50,6 +50,26 @@ function pip_install() {
     vim-vint
 }
 
+function yubi_req_install () {
+  sudo apt -y install gnupg2 \
+    gnupg-agent \
+    dirmngr \
+    cryptsetup \
+    scdaemon \
+    pcscd \
+    secure-delete \
+    hopenpgp-tools \
+    yubikey-personalization \
+    python3-pip \
+    python3-pyscard
+
+  pip3 install \
+    PyOpenSSL \
+    yubikey-manager
+
+  sudo service pcscd start
+}
+
 function install_go_packages() {
   set -x
   go get github.com/hairyhenderson/gomplate/cmd/gomplate
@@ -88,7 +108,6 @@ function customize_regolith() {
 }
 
 # add ~/.local/bin to path
-
 function run() {
   setup
   apt_update
