@@ -152,6 +152,7 @@ function install_zsh_plugins() {
     clone_from_github_into_dir 'wfxr/forgit' "$zsh_plugins_repos_dir"
     clone_from_github_into_dir "zdharma/fast-syntax-highlighting" "$zsh_plugins_repos_dir"
     clone_from_github_into_dir "zsh-users/zsh-history-substring-search" "$zsh_plugins_repos_dir"
+    clone_from_github_into_dir "sindresorhus/pure" "$zsh_plugins_repos_dir"
     if ! is-rpi ; then
       clone_from_github_into_dir "zsh-users/zsh-autosuggestions" "$zsh_plugins_repos_dir"
       clone_from_github_into_dir "zsh-users/zsh-completions" "$zsh_plugins_repos_dir"
@@ -168,6 +169,7 @@ function make_links() {
   ln -sfv ~/dotfiles/.tmux.conf ~/.tmux.conf
   ln -sfv ~/dotfiles/.Xdefaults ~/.Xdefaults
   ln -sfv ~/dotfiles/.gitignore_global ~/.gitignore_global
+  ln -sfv ~/dotfiles/coc-settings.json ~/xdg/.config/nvim/coc-settings.json
 }
 
 function install_tpm() {
@@ -283,6 +285,9 @@ function configure_neovim() {
   ln -sfv ~/dotfiles/init.vim "$XDG_CONFIG_HOME"/nvim/init.vim
   ln -sfv ~/dotfiles/.vim ~/.vim
   download_vimplug "${XDG_DATA_HOME}"/nvim/site/autoload/plug.vim
+	pip3 install -U neovim
+	pip3 install -U pynvim
+	npm install -g neovim
 }
 
 function download_vimplug() {

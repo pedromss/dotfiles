@@ -81,6 +81,14 @@ function install_npm_packages() {
     elm-format
 }
 
+function customize_regolith() {
+  sudo apt install -y regolith-look-nord
+  regolith-look set nord
+  regolith-look refresh
+}
+
+# add ~/.local/bin to path
+
 function run() {
   setup
   apt_update
