@@ -4,7 +4,7 @@
 # shellcheck disable=2139
 . ~/dotfiles/funcs
 
-export DFILES_VERSION_GO=1.14.6
+export DFILES_VERSION_GO=1.15.6
 export DFILES_VERSION_FZF=0.23.0
 export DFILES_VERSION_NVM=0.35.2
 export DFILES_VERSION_NODEJS=12.16.1
@@ -209,6 +209,10 @@ function zsh_time_boot () {
   done
 }
 # ==================================================
+# KUBECTL
+# ==================================================
+export KUBE_EDITOR=/usr/local/bin/nvim
+# ==================================================
 # ENHANCD
 # ==================================================
 export ENHANCD_FILTER=fzf cd
@@ -222,6 +226,7 @@ export PATH="$DFILES_PATH_GO_ROOT/bin:$PATH"
 export PATH="$HOME/go/bin:/usr/local/go/bin:$PATH"
 export PATH="$DFILES_DIR_BIN:$PATH"
 export PATH=~/dotfiles/sdks/nodejs/current/bin:"$PATH"
+export PATH="/usr/local/opt/terraform@0.12/bin:$PATH"
 if is_macos ; then
   export PATH=~/dotfiles/sdks/java/current/bin:"$PATH"
 fi
