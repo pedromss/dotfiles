@@ -85,6 +85,43 @@ function install_cargo_packages() {
     mdcat
 }
 
+function install_docker() {
+  sudo apt update
+  sudo apt install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  sudo apt-key fingerprint 0EBFCD88
+  sudo add-apt-repository \
+     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+     $(lsb_release -cs) \
+     stable"
+
+  sudo apt update
+  sudo apt install -y docker-ce docker-ce-cli containerd.io
+}
+
+function configure_docker() {
+  if grep -q docker /etc/group ; then
+    echo 'group "docker" already exists'
+  else
+    echo 'creating group "docker"'
+    sudo groupadd docker
+  fi
+  sudo usermod -aG docker "$USER"
+  newgrp docker
+}
+
+function install_docker_compose() {
+  location="$DFILES_DIR_BIN"/docker-compose
+  sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o "$location"
+  sudo chmod +x "$location"
+}
+
 function install_npm_packages() {
   npm install -g \
     eslint \
