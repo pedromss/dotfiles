@@ -41,6 +41,10 @@ function clone_from_github_into_dir () {
   set +x
 }
 
+function install_go_linux() {
+  install_go 'linux-amd64'
+}
+
 function install_go() {
   set -x
   local arch="$1"
@@ -82,6 +86,10 @@ function install_fzf() {
   ./install --key-bindings --completion --no-update-rc --no-fish
   cd "$curr" || exit 1
   echo 'Try fzf --help'
+}
+
+function install_rust_linux() {
+  install_rustup 'x86_64-unknown-linux-gnu'
 }
 
 function install_rustup() {

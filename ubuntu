@@ -152,8 +152,8 @@ function run() {
   pip_install
   install_nvim
   install_fzf
-  install_go 'linux-amd64'
-  install_rustup 'x86_64-unknown-linux-gnu'
+  install_go_linux
+  install_rustup_linux
   install_go_packages
   install_cargo_packages
   install_npm_packages
