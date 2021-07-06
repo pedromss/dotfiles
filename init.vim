@@ -51,7 +51,9 @@ command! MakeTags !ctags
 " }}}
 " Plugins  {{{
 call plug#begin(stdpath('data') . '/plugged')
-" color schemes {{{ 
+" color schemes {{{
+Plug 'benwr/tuftish'
+Plug 'Leon-Plickat/paige'
 Plug 'itchyny/lightline.vim'
 Plug 'nanotech/jellybeans.vim'
 Plug 'altercation/vim-colors-solarized'

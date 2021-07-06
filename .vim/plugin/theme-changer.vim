@@ -11,7 +11,7 @@ function! GoLight()
   let g:lightline = {
       \ 'colorscheme': 'one',
       \ }
-  :colorscheme vim-material
+  :colorscheme tuftish
 endfunction
 
 command! GoLight call GoLight()<cr>
