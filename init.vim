@@ -116,6 +116,9 @@ Plug 'junegunn/fzf.vim'
 " }}}
 "Plug 'thinca/vim-quickrun'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'hashivim/vim-terraform'
+Plug 'vim-syntastic/syntastic', { 'for': 'terraform' }
+Plug 'juliosueiras/vim-terraform-completion'
 Plug 'junegunn/goyo.vim'
 Plug 'jlanzarotta/bufexplorer'
 " Text aligment based on a given character
