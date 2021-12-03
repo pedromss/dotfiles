@@ -141,7 +141,7 @@ Plug 'jiangmiao/auto-pairs'
 "Plug 'yegappan/mru'
 "Plug 'bling/vim-airline'
 "Plug 'vim-airline/vim-airline-themes'
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 call plug#end()
 " }}}
 " Latex settings -------------------- {{{
