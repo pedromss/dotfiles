@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # shellcheck disable=1090
-source ~/dotfiles/configure
+[ -f ~/dotboot/configure ] && source ~/dotboot/configure
+[ -f ~/.tmonly ] && . ~/.tmonly
 
 # If not running interactively, don't do anything
 case $- in
