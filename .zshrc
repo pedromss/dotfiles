@@ -11,7 +11,7 @@ HISTFILE=~/.zhistory
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-fpath=( /usr/local/share/zsh-completions "$DFILES_PURE_PROMPT_LOC" $fpath )
+fpath=( /usr/local/share/zsh-completions $DFILES_NODE_PATH/"lib/node_modules/pure-prompt/functions" $fpath )
 # ==================================================
 # Completions
 # ==================================================
