@@ -82,6 +82,16 @@
       "filetypes": [
         "go"
       ]
+    },
+    "terraform": {
+      "command": "terraform-ls serve",
+      "rootPatterns": [
+        ".tf",
+        ".variables"
+      ],
+      "filetypes": [
+        "terraform"
+      ]
     }
   }
 }
