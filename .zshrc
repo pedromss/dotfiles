@@ -10,8 +10,7 @@ SAVEHIST=10000
 HISTFILE=~/.zhistory
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-fpath=( /usr/local/share/zsh-completions $DFILES_NODE_PATH/"lib/node_modules/pure-prompt/functions" $fpath )
+fpath=( /usr/local/share/zsh-completions  $fpath )
 # ==================================================
 # Completions
 # ==================================================
@@ -101,13 +100,8 @@ if [ -d ~/dotfiles/repos/zsh-plugins ] ; then
 fi
 # ================================================== 
 # Plugin configs
-# ================================================== 
-ZSH_DOTENV_PROMPT=Always
-PROMPT='%2~ %# '
-ZSH_THEME=""
-prompt pure
-PURE_GIT_PULL=0
-PURE_GIT_UNTRACKED_DIRTY=0
+# ==================================================
+eval "$(starship init zsh)"
 bindkey '^[k' history-substring-search-up
 bindkey '^[j' history-substring-search-down
 # shellcheck disable=1090
