@@ -6,7 +6,7 @@
 [grep]
 	lineNumber = true
 [merge]
-  tool = vimdiff
+  tool = nvimdiff
   conflictStyle = diff3
 [mergetool]
 	prompt = false
