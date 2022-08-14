@@ -77,6 +77,7 @@ Plug 'cespare/vim-toml'
 Plug 'neoclide/jsonc.vim'
 " }}}
 " Langs {{{
+Plug 'elixir-editors/vim-elixir'
 Plug 'ElmCast/elm-vim'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 " Javascript  {{{
