@@ -1,6 +1,5 @@
 #zmodload zsh/zprof
 [ -f ~/dotboot/configure ] && source ~/dotboot/configure
-[ -f ~/.tmonly ] && . ~/.tmonly
 bindkey "^[[3~" delete-char
 bindkey '[C' beginning-of-line
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
