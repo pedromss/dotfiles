@@ -9,7 +9,7 @@ SAVEHIST=10000
 HISTFILE=~/.zhistory
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
-fpath=( /usr/local/share/zsh-completions  $fpath )
+fpath=( /usr/local/share/zsh-completions "$DFILES_DIR_ASDF"/completions $fpath )
 # ==================================================
 # Completions
 # ==================================================
@@ -114,5 +114,6 @@ fi
 if command_exists kubectl ; then
   source <(kubectl completion zsh) 2>/dev/null
 fi
-echo ''
+
+[ -f ~/dotboot/configure ] && _load_at_the_end
 #zprof
