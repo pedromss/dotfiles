@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 # shellcheck disable=1090
-[ -f ~/dotboot/configure ] && source ~/dotboot/configure
-[ -f ~/.tmonly ] && . ~/.tmonly
+[ -f "$HOME"dotboot/configure ] && source "$HOME"/dotboot/configure
+[ -f "$HOME".tmonly ] && . "$HOME".tmonly
+[ -f "$HOME"/.asdf/asdf.sh ] && . "$HOME"/.asdf/asdf.sh
+[ -f "$HOME"/.asdf/completions/asdf.bash ] && . "$HOME"/.asdf/completions/asdf.bash
+
 
 # If not running interactively, don't do anything
 case $- in
