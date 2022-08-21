@@ -1,5 +1,6 @@
 #zmodload zsh/zprof
 [ -f ~/dotboot/configure ] && source ~/dotboot/configure
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 bindkey "^[[3~" delete-char
 bindkey '[C' beginning-of-line
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
@@ -97,6 +98,7 @@ if [ -d ~/dotfiles/repos/zsh-plugins ] ; then
     fi
   done
 fi
+plugins=(fzf-zsh-plugin)
 # ================================================== 
 # Plugin configs
 # ==================================================
