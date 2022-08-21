@@ -627,7 +627,7 @@ function! g:LoadCOCVim()
   " Resume latest coc list
   nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
   let g:go_def_mapping_enabled = 0
-  let g:coc_node_path = expand('~/dotfiles/bin/nodejs/current/bin/node')
+  let g:coc_node_path = expand('~/.asdf/shims/node')
   " use <c-space>for trigger completion
   inoremap <silent><expr> <c-space> coc#refresh()
   "" Use tab for trigger completion with characters ahead and navigate.
