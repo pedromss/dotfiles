@@ -208,6 +208,14 @@ local config = {
 			-- You can disable default plugins as follows:
 			-- ["goolord/alpha-nvim"] = { disable = true },
 
+			{
+				"projekt0n/github-nvim-theme",
+				config = function()
+					require("github-theme").setup({
+						theme_style = "light",
+					})
+				end,
+			},
 			{ "tpope/vim-fugitive" },
 			{ "tpope/vim-surround" },
 			{ "godlygeek/tabular" },
