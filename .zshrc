@@ -27,10 +27,10 @@ zstyle ':completion:*' cache-path ~/dotfiles/bin/zsh-cache
 autoload -Uz compinit
 compinit
 # The following 2 lines are needed for compatiblity with bash
-autoload bashcompinit
+autoload -U bashcompinit
 bashcompinit
 
-autoload -U +X bashcompinit && bashcompinit
+#autoload -U +X bashcompinit && bashcompinit
 # ==================================================
 # 16. Options - http://zsh.sourceforge.net/Doc/Release/Options.html
 # ==================================================
