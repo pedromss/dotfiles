@@ -165,6 +165,12 @@ local config = {
   mappings = {
     -- first key is the mode
     n = {
+      -- Telescope
+      ["<localleader>fw"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Find in current buffer" },
+      ["<localleader>fli"] = { "<cmd>Telescope lsp_implementation<cr>", desc = "LSP Go to implementation" },
+      ["<localleader>fld"] = { "<cmd>Telescope lsp_definition<cr>", desc = "LSP Go to definition" },
+      ["<localleader>fb"] = { "<cmd>Telescope builtin<cr>", desc = "Telescope builtin" },
+      ["<leader>fe"] = { "<cmd>Telescope oldfiles<cr>", desc = "Old files" },
       -- second key is the lefthand side of the map
       -- mappings seen under group name "Buffer"
       ["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
@@ -173,6 +179,7 @@ local config = {
       ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
       ["T"] = { ":tabclose<cr> ", desc = "Close tab" },
       ["<esc>"] = { ":noh<cr>:mat none<cr>", desc = "Clear searches and highlights and ESC" },
+      -- Hop
       ["<localleader>lw"] = { "<cmd>lua require'hop'.hint_words()<cr>", desc = "Hop Word in the current buffer" },
       ["<localleader>lW"] = {
         "<cmd>lua require'hop'.hint_words({multi_windows = true})<cr>",
@@ -187,8 +194,9 @@ local config = {
         "<cmd>lua require'hop'.hint_words({current_line_only = true})<cr>",
         desc = "Hop Word in the current buffer",
       },
+      -- Config management
       ["<localleader>ec"] = { ":tabnew ~/.config/nvim/lua/user/init.lua<cr>", desc = "Edit config file in new tab" },
-      ["<localleader>ao"] = { ":AerialOpen<cr>", desc = "Open Aerial" },
+      ["<localleader>si"] = { ":source ~/.config/nvim/lua/user/init.lua<cr>", desc = "Edit config file in new tab" },
     },
     t = {
       -- setting a mapping to false will disable it
@@ -300,6 +308,37 @@ local config = {
       end
       return config -- return final config table to use in require("null-ls").setup(config)
     end,
+    telescope = {
+      defaults = {
+        layout_strategy = "vertical",
+        layout_config = {
+          vertical = {
+            width = 0.9,
+            previewer = true,
+            preview_cutoff = 1,
+            results_height = 0.3,
+            preview_height = 0.7,
+            prompt_location = "top",
+          },
+          horizontal = {
+            width = 0.9,
+            preview_width = 0.7,
+            results_width = 0.3,
+            preview_cutoff = 1,
+            results_height = 0.3,
+            preview_height = 0.7,
+          },
+          flex = {
+            height = 0.95,
+            width = 0.95,
+            prompt_location = "top",
+            preview_cutoff = 1,
+            results_height = 0.3,
+            preview_height = 0.7,
+          },
+        },
+      },
+    },
     treesitter = { -- overrides `require("treesitter").setup(...)`
       ensure_installed = { "lua" },
     },
