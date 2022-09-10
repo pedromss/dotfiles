@@ -173,8 +173,22 @@ local config = {
       ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
       ["T"] = { ":tabclose<cr> ", desc = "Close tab" },
       ["<esc>"] = { ":noh<cr>:mat none<cr>", desc = "Clear searches and highlights and ESC" },
-      -- quick save
-      -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
+      ["<localleader>lw"] = { "<cmd>lua require'hop'.hint_words()<cr>", desc = "Hop Word in the current buffer" },
+      ["<localleader>lW"] = {
+        "<cmd>lua require'hop'.hint_words({multi_windows = true})<cr>",
+        desc = "Hop Word in the current buffer",
+      },
+      ["<localleader>lp"] = { "<cmd>lua require'hop'.hint_patterns()<cr>", desc = "Hop Word in the current buffer" },
+      ["<localleader>lP"] = {
+        "<cmd>lua require'hop'.hint_patterns({multi_windows = true})<cr>",
+        desc = "Hop Word in the current buffer",
+      },
+      ["<localleader>ll"] = {
+        "<cmd>lua require'hop'.hint_words({current_line_only = true})<cr>",
+        desc = "Hop Word in the current buffer",
+      },
+      ["<localleader>ec"] = { ":tabnew ~/.config/nvim/lua/user/init.lua<cr>", desc = "Edit config file in new tab" },
+      ["<localleader>ao"] = { ":AerialOpen<cr>", desc = "Open Aerial" },
     },
     t = {
       -- setting a mapping to false will disable it
@@ -233,6 +247,14 @@ local config = {
       { "tpope/vim-fugitive" },
       { "tpope/vim-surround" },
       { "godlygeek/tabular" },
+      {
+        "phaazon/hop.nvim",
+        branch = "v2", -- optional but strongly recommended
+        -- config = function()
+        --   -- you can configure Hop the way you like here; see :h hop-config
+        --   require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
+        -- end,
+      },
       -- { "majutsushi/tagbar" },
       -- You can also add new plugins here as well:
       -- Add plugins, the packer syntax without the "use"
