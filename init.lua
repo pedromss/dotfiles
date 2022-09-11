@@ -26,7 +26,8 @@ local config = {
   },
 
   -- Set colorscheme to use
-  colorscheme = "default_theme",
+  -- colorscheme = "default_theme",
+  colorscheme = "github_light",
 
   -- Override highlight groups in any theme
   highlights = {
@@ -63,12 +64,6 @@ local config = {
 
   -- Set dashboard header
   header = {
-    " █████  ███████ ████████ ██████   ██████",
-    "██   ██ ██         ██    ██   ██ ██    ██",
-    "███████ ███████    ██    ██████  ██    ██",
-    "██   ██      ██    ██    ██   ██ ██    ██",
-    "██   ██ ███████    ██    ██   ██  ██████",
-    " ",
     "    ███    ██ ██    ██ ██ ███    ███",
     "    ████   ██ ██    ██ ██ ████  ████",
     "    ██ ██  ██ ██    ██ ██ ██ ████ ██",
@@ -165,18 +160,19 @@ local config = {
   mappings = {
     -- first key is the mode
     n = {
+      -- Substitute
+      ["<leader>r"] = { ':exe "%s/" . expand("<cword>") . "/', desc = "Substitute operator" },
       -- Telescope
       ["<localleader>fw"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Find in current buffer" },
-      ["<localleader>fli"] = { "<cmd>Telescope lsp_implementation<cr>", desc = "LSP Go to implementation" },
-      ["<localleader>fld"] = { "<cmd>Telescope lsp_definition<cr>", desc = "LSP Go to definition" },
       ["<localleader>fb"] = { "<cmd>Telescope builtin<cr>", desc = "Telescope builtin" },
       ["<leader>fe"] = { "<cmd>Telescope oldfiles<cr>", desc = "Old files" },
-      -- second key is the lefthand side of the map
+      ["<leader>fg"] = { "<cmd>Telescope live_grep<cr>", desc = "Old files" },
       -- mappings seen under group name "Buffer"
       ["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
       ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
       ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
       ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
+      ["<leader>bp"] = { "<cmd>BufferLineTogglePin<cr>", desc = "Pin tab" },
       ["T"] = { ":tabclose<cr> ", desc = "Close tab" },
       ["<esc>"] = { ":noh<cr>:mat none<cr>", desc = "Clear searches and highlights and ESC" },
       -- Hop
@@ -185,7 +181,10 @@ local config = {
         "<cmd>lua require'hop'.hint_words({multi_windows = true})<cr>",
         desc = "Hop Word in the current buffer",
       },
-      ["<localleader>lp"] = { "<cmd>lua require'hop'.hint_patterns()<cr>", desc = "Hop Word in the current buffer" },
+      ["<localleader>lp"] = {
+        "<cmd>lua require'hop'.hint_patterns()<cr>",
+        desc = "Hop Word in the current buffer",
+      },
       ["<localleader>lP"] = {
         "<cmd>lua require'hop'.hint_patterns({multi_windows = true})<cr>",
         desc = "Hop Word in the current buffer",
@@ -195,8 +194,16 @@ local config = {
         desc = "Hop Word in the current buffer",
       },
       -- Config management
-      ["<localleader>ec"] = { ":tabnew ~/.config/nvim/lua/user/init.lua<cr>", desc = "Edit config file in new tab" },
-      ["<localleader>si"] = { ":source ~/.config/nvim/lua/user/init.lua<cr>", desc = "Edit config file in new tab" },
+      ["<localleader>ec"] = {
+        ":tabnew ~/.config/nvim/lua/user/init.lua<cr>",
+        desc = "Edit config file in new tab",
+      },
+      ["<localleader>si"] = {
+        ":source ~/.config/nvim/lua/user/init.lua<cr>",
+        desc = "Edit config file in new tab",
+      },
+      -- tabs
+      ["<localleader>tt"] = { ":tabn", desc = "Go to tab" },
     },
     t = {
       -- setting a mapping to false will disable it
@@ -243,7 +250,6 @@ local config = {
     init = {
       -- You can disable default plugins as follows:
       -- ["goolord/alpha-nvim"] = { disable = true },
-
       {
         "projekt0n/github-nvim-theme",
         config = function()
@@ -252,36 +258,20 @@ local config = {
           }
         end,
       },
-      { "tpope/vim-fugitive" },
+      { "nvim-treesitter/nvim-treesitter-context" },
       { "tpope/vim-surround" },
       { "godlygeek/tabular" },
       {
         "phaazon/hop.nvim",
-        branch = "v2", -- optional but strongly recommended
-        -- config = function()
-        --   -- you can configure Hop the way you like here; see :h hop-config
-        --   require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
-        -- end,
+        branch = "v2",
+        config = function()
+          -- you can configure Hop the way you like here; see :h hop-config
+          require("hop").setup {
+            keys = "asdhjklxcvbnmqweriop",
+          }
+        end,
       },
-      -- { "majutsushi/tagbar" },
-      -- You can also add new plugins here as well:
-      -- Add plugins, the packer syntax without the "use"
-      -- { "andweeb/presence.nvim" },
-      -- {
-      --   "ray-x/lsp_signature.nvim",
-      --   event = "BufRead",
-      --   config = function()
-      --     require("lsp_signature").setup()
-      --   end,
-      -- },
-
-      -- We also support a key value style plugin definition similar to NvChad:
-      -- ["ray-x/lsp_signature.nvim"] = {
-      --   event = "BufRead",
-      --   config = function()
-      --     require("lsp_signature").setup()
-      --   end,
-      -- },
+      { "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" },
     },
     -- All other entries override the require("<key>").setup({...}) call for default plugins
     ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
@@ -422,6 +412,7 @@ local config = {
       --     ["~/%.config/foo/.*"] = "fooscript",
       --   },
     }
+    require("hop").setup()
   end,
 }
 
