@@ -1,3 +1,4 @@
+function is_available(plugin) return packer_plugins ~= nil and packer_plugins[plugin] ~= nil end
 --              AstroNvim Configuration Table
 -- All configuration changes should go inside of the table below
 
@@ -27,7 +28,7 @@ local config = {
 
   -- Set colorscheme to use
   -- colorscheme = "default_theme",
-  colorscheme = "github_light",
+  colorscheme = "gruvbox",
 
   -- Override highlight groups in any theme
   highlights = {
@@ -250,6 +251,9 @@ local config = {
     init = {
       -- You can disable default plugins as follows:
       -- ["goolord/alpha-nvim"] = { disable = true },
+      { "morhetz/gruvbox" },
+      { "luisiacc/gruvbox-baby" },
+      { "NLKNguyen/papercolor-theme" },
       {
         "projekt0n/github-nvim-theme",
         config = function()
@@ -306,8 +310,8 @@ local config = {
             width = 0.9,
             previewer = true,
             preview_cutoff = 1,
-            results_height = 0.3,
-            preview_height = 0.7,
+            results_height = 0.4,
+            preview_height = 0.6,
             prompt_location = "top",
           },
           horizontal = {
@@ -315,8 +319,8 @@ local config = {
             preview_width = 0.7,
             results_width = 0.3,
             preview_cutoff = 1,
-            results_height = 0.3,
-            preview_height = 0.7,
+            results_height = 0.5,
+            preview_height = 0.5,
           },
           flex = {
             height = 0.95,
@@ -412,7 +416,7 @@ local config = {
       --     ["~/%.config/foo/.*"] = "fooscript",
       --   },
     }
-    require("hop").setup()
+    if is_available "hop" then require("hop").setup() end
   end,
 }
 
