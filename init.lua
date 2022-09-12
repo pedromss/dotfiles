@@ -51,6 +51,7 @@ local config = {
     g = {
       mapleader = ",", -- sets vim.g.mapleader
       localleader = "\\",
+      laststatus = 3,
     },
   },
   -- If you need more control, you can use the function()...end notation
