@@ -1,3 +1,4 @@
+-- vim foldmethod=indent
 function is_available(plugin) return packer_plugins ~= nil and packer_plugins[plugin] ~= nil end
 --              AstroNvim Configuration Table
 -- All configuration changes should go inside of the table below
@@ -27,7 +28,6 @@ local config = {
   },
 
   -- Set colorscheme to use
-  -- colorscheme = "default_theme",
   colorscheme = "gruvbox",
 
   -- Override highlight groups in any theme
@@ -37,7 +37,6 @@ local config = {
     -- },
     default_theme = function(highlights) -- or a function that returns a new table of colors to set
       local C = require "default_theme.colors"
-
       highlights.Normal = { fg = C.fg, bg = C.bg }
       return highlights
     end,
@@ -46,6 +45,7 @@ local config = {
   -- set vim options here (vim.<first_key>.<second_key> =  value)
   options = {
     opt = {
+      background = "dark",
       relativenumber = true, -- sets vim.opt.relativenumber
     },
     g = {
@@ -249,21 +249,18 @@ local config = {
   -- Configure plugins
   plugins = {
     init = {
-      -- You can disable default plugins as follows:
-      -- ["goolord/alpha-nvim"] = { disable = true },
-      { "morhetz/gruvbox" },
-      { "luisiacc/gruvbox-baby" },
-      { "NLKNguyen/papercolor-theme" },
+      ["feline-nvim/feline.nvim"] = { disable = true },
       {
-        "projekt0n/github-nvim-theme",
+        "ellisonleao/gruvbox.nvim",
+        tag = "1.0.0",
         config = function()
-          require("github-theme").setup {
-            theme_style = "light",
+          require("gruvbox").setup {
+            overrides = {},
           }
         end,
       },
       { "nvim-treesitter/nvim-treesitter-context" },
-      { "tpope/vim-surround" },
+      { "tpope/vim-surround", tag = "v2.2" },
       { "godlygeek/tabular" },
       {
         "phaazon/hop.nvim",
@@ -276,6 +273,17 @@ local config = {
         end,
       },
       { "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" },
+      {
+        "nvim-lualine/lualine.nvim",
+        requires = { "kyazdani42/nvim-web-devicons", opt = true },
+        config = function()
+          require("lualine").setup {
+            options = {
+              theme = "gruvbox",
+            },
+          }
+        end,
+      },
     },
     -- All other entries override the require("<key>").setup({...}) call for default plugins
     ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
