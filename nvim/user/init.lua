@@ -413,6 +413,8 @@ local config = {
       command = "source <afile> | PackerSync",
     })
 
+    vim.api.nvim_create_user_command("Scratch", require("user/scratch").makeScratch, {})
+
     -- Set up custom filetypes
     vim.filetype.add {
       extension = {
