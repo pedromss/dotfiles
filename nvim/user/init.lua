@@ -160,6 +160,10 @@ local config = {
 	mappings = {
 		-- first key is the mode
 		n = {
+			["<localleader>aa"] = {
+				":AerialToggle<cr>",
+				desc = "Toggle Aerial and jump to it",
+			},
 			["<localleader>nf"] = { ":set nofoldenable!<cr>", desc = "toggle folds" },
 			-- Substitute
 			["<leader>r"] = { ':exe "%s/" . expand("<cword>") . "/', desc = "Substitute operator" },
@@ -449,6 +453,13 @@ local config = {
 			pattern = "plugins.lua",
 			command = "source <afile> | PackerSync",
 		})
+		-- augroup("all", { clear = true })
+		-- cmd("BufEnter", {
+		-- 	desc = "Aerial collapse level",
+		-- 	group = "all",
+		-- 	pattern = { "*" },
+		-- 	callback = "AerialTreeSetCollapseLevel 1",
+		-- })
 
 		augroup("elixir_ext", { clear = true })
 		cmd("BufWritePre", {
@@ -459,13 +470,24 @@ local config = {
 				vim.cmd(":Format")
 			end,
 		})
-		cmd("BufEnter", {
+		cmd("BufAdd", {
 			desc = "Set foldmethod",
 			group = "elixir_ext",
 			pattern = { "*.ex", "*.exs" },
 			callback = function()
 				vim.cmd(":set fdm=indent")
 				vim.cmd(":set foldlevel=1")
+				vim.cmd(":set wrap")
+			end,
+		})
+
+		augroup("aerial_ext", { clear = true })
+		cmd("BufAdd", {
+			desc = "Set collapse level",
+			group = "aerial_ext",
+			pattern = { "*.aerial" },
+			callback = function()
+				vim.cmd(":AerialTreeSetCollapseLevel 1")
 			end,
 		})
 
