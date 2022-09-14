@@ -49,7 +49,6 @@ local config = {
 		g = {
 			mapleader = ",", -- sets vim.g.mapleader
 			localleader = "\\",
-			laststatus = 3,
 		},
 	},
 	-- If you need more control, you can use the function()...end notation
@@ -383,6 +382,24 @@ local config = {
 				},
 			},
 		},
+		["neo-tree"] = {
+			event_handlers = {
+				{
+					event = "neo_tree_buffer_enter",
+					handler = function()
+						vim.wo.number = true
+						vim.wo.relativenumber = true
+						vim.opt.winwidth = 35
+					end,
+				},
+				{
+					event = "neo_tree_buffer_leave",
+					handler = function()
+						-- TODO waiting on jkhttps://github.com/nvim-neo-tree/neo-tree.nvim/issues/519
+					end,
+				},
+			},
+		},
 		treesitter = { -- overrides `require("treesitter").setup(...)`
 			ensure_installed = { "lua" },
 		},
@@ -480,6 +497,17 @@ local config = {
 				vim.cmd(":set wrap")
 			end,
 		})
+		augroup("lua_ext", { clear = true })
+		cmd("BufAdd", {
+			desc = "Set foldmethod",
+			group = "lua_ext",
+			pattern = "*.lua",
+			callback = function()
+				vim.cmd(":set fdm=indent")
+				vim.cmd(":set foldlevel=2")
+				vim.cmd(":set wrap")
+			end,
+		})
 
 		augroup("aerial_ext", { clear = true })
 		cmd("BufAdd", {
@@ -518,6 +546,7 @@ local config = {
 			--   },
 		})
 		require("hop").setup()
+		vim.opt.laststatus = 3
 	end,
 }
 
