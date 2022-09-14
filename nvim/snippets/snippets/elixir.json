@@ -1,0 +1,22 @@
+{
+  "pipe-inspections": {
+    "prefix": ">ioi",
+    "body": ["|> IO.inspect(label: \"$1\")$2"],
+    "description": "pipe to inspection with label"
+  },
+  "pipe-io-put": {
+    "prefix": ">iop",
+    "body": ["|> IO.puts($1)$2"],
+    "description": "pipe to put"
+  },
+  "func-param": {
+    "prefix": "ffn",
+    "body": ["fn $1 -> $2 end"],
+    "description": "anon func param"
+  },
+  "func-param-multi-line": {
+    "prefix": "ffm",
+    "body": ["fn $1 ->", "  $2", "end"],
+    "description": "anon func param"
+  }
+}

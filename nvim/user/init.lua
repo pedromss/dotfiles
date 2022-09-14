@@ -1,4 +1,7 @@
 -- vim foldmethod=indent
+local cmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
+
 local function is_available(plugin)
 	return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
 end
@@ -157,6 +160,7 @@ local config = {
 	mappings = {
 		-- first key is the mode
 		n = {
+			["<localleader>nf"] = { ":set nofoldenable!<cr>", desc = "toggle folds" },
 			-- Substitute
 			["<leader>r"] = { ':exe "%s/" . expand("<cword>") . "/', desc = "Substitute operator" },
 			-- Telescope
@@ -394,7 +398,7 @@ local config = {
 	-- LuaSnip Options
 	luasnip = {
 		-- Add paths for including more VS Code style snippets in luasnip
-		vscode_snippet_paths = {},
+		vscode_snippet_paths = "~/dotfiles/nvim/snippets",
 		-- Extend filetypes
 		filetype_extend = {
 			javascript = { "javascriptreact" },
@@ -438,12 +442,31 @@ local config = {
 	polish = function()
 		-- Set key binding
 		-- Set autocommands
-		vim.api.nvim_create_augroup("packer_conf", { clear = true })
-		vim.api.nvim_create_autocmd("BufWritePost", {
+		augroup("packer_conf", { clear = true })
+		cmd("BufWritePost", {
 			desc = "Sync packer after modifying plugins.lua",
 			group = "packer_conf",
 			pattern = "plugins.lua",
 			command = "source <afile> | PackerSync",
+		})
+
+		augroup("elixir_ext", { clear = true })
+		cmd("BufWritePre", {
+			desc = "Format on save",
+			group = "elixir_ext",
+			pattern = { "*.ex", "*.exs" },
+			callback = function()
+				vim.cmd(":Format")
+			end,
+		})
+		cmd("BufEnter", {
+			desc = "Set foldmethod",
+			group = "elixir_ext",
+			pattern = { "*.ex", "*.exs" },
+			callback = function()
+				vim.cmd(":set fdm=indent")
+				vim.cmd(":set foldlevel=1")
+			end,
 		})
 
 		vim.api.nvim_create_user_command("Scratch", require("user/scratch").makeScratch, {})
