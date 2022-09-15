@@ -2,6 +2,8 @@ scriptencoding uft8
 syntax on
 filetype plugin indent on
 set runtimepath^=~/.vim
+set runtimepath^=~/.vim/plugin
+set runtimepath^=~/.local/nvim/autoload
 set runtimepath^=~/repos/coc.nvim
 " Basic settings  {{{
 let mapleader = ','
