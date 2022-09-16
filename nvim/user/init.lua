@@ -1,6 +1,4 @@
--- vim foldmethod=indent
-local cmd = vim.api.nvim_create_autocmd
-local augroup = vim.api.nvim_create_augroup
+require("user.api")
 
 local function is_available(plugin)
 	return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
@@ -42,10 +40,7 @@ local config = {
 
 	-- set vim options here (vim.<first_key>.<second_key> =  value)
 	options = {
-		opt = {
-			background = "dark",
-			relativenumber = true, -- sets vim.opt.relativenumber
-		},
+		opt = {},
 		g = {
 			mapleader = ",", -- sets vim.g.mapleader
 			localleader = "\\",
@@ -460,94 +455,7 @@ local config = {
 	-- This function is run last and is a good place to configuring
 	-- augroups/autocommands and custom filetypes also this just pure lua so
 	-- anything that doesn't fit in the normal config locations above can go here
-	polish = function()
-		-- Set key binding
-		-- Set autocommands
-		augroup("packer_conf", { clear = true })
-		cmd("BufWritePost", {
-			desc = "Sync packer after modifying plugins.lua",
-			group = "packer_conf",
-			pattern = "plugins.lua",
-			command = "source <afile> | PackerSync",
-		})
-		-- augroup("all", { clear = true })
-		-- cmd("BufEnter", {
-		-- 	desc = "Aerial collapse level",
-		-- 	group = "all",
-		-- 	pattern = { "*" },
-		-- 	callback = "AerialTreeSetCollapseLevel 1",
-		-- })
-
-		augroup("elixir_ext", { clear = true })
-		cmd("BufWritePre", {
-			desc = "Format on save",
-			group = "elixir_ext",
-			pattern = { "*.ex", "*.exs" },
-			callback = function()
-				vim.cmd(":Format")
-			end,
-		})
-		cmd("BufAdd", {
-			desc = "Set foldmethod",
-			group = "elixir_ext",
-			pattern = { "*.ex", "*.exs" },
-			callback = function()
-				vim.cmd(":set fdm=indent")
-				vim.cmd(":set foldlevel=1")
-				vim.cmd(":set wrap")
-			end,
-		})
-		augroup("lua_ext", { clear = true })
-		cmd("BufAdd", {
-			desc = "Set foldmethod",
-			group = "lua_ext",
-			pattern = "*.lua",
-			callback = function()
-				vim.cmd(":set fdm=indent")
-				vim.cmd(":set foldlevel=2")
-				vim.cmd(":set wrap")
-			end,
-		})
-
-		augroup("aerial_ext", { clear = true })
-		cmd("BufAdd", {
-			desc = "Set collapse level",
-			group = "aerial_ext",
-			pattern = { "*.aerial" },
-			callback = function()
-				vim.cmd(":AerialTreeSetCollapseLevel 1")
-			end,
-		})
-
-		vim.api.nvim_create_user_command("Scratch", require("user/scratch").makeScratch, {})
-		require("lualine").setup({
-			sections = {
-				lualine_c = {
-					{
-						"filename",
-						path = 1,
-						shorting_target = 80,
-					},
-				},
-			},
-			extensions = { "neo-tree", "aerial", "toggleterm" },
-		})
-
-		-- Set up custom filetypes
-		vim.filetype.add({
-			extension = {
-				cfg = "cfg",
-			},
-			--   filename = {
-			--     ["Foofile"] = "fooscript",
-			--   },
-			--   pattern = {
-			--     ["~/%.config/foo/.*"] = "fooscript",
-			--   },
-		})
-		require("hop").setup()
-		vim.opt.laststatus = 3
-	end,
+	polish = require("user.polish"),
 }
 
 return config

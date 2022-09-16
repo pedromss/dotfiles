@@ -8,6 +8,10 @@
       {
         "language": "elixir",
         "path": "./snippets/elixir.json"
+      },
+      {
+        "language": "lua",
+        "path": "./snippets/lua.json"
       }
     ]
   }
