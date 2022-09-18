@@ -1,9 +1,9 @@
 local M = {}
 
 function M.setup()
-	vim.opt.laststatus = 3
-	vim.opt.background = "light"
+	vim.opt.background = "dark"
 	vim.opt.relativenumber = true
+	vim.cmd(":set laststatus=3")
 end
 
 return M

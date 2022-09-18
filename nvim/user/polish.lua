@@ -28,11 +28,14 @@ return function()
 		{ fold_level = 0, pattern = "*.sh" },
 		{ fold_level = 2, pattern = "*.lua" },
 		{ fold_level = 1, pattern = { "*.ex", "*.exs" } },
+		{ fold_level = 2, pattern = { "rust" } },
 	})
 	require("user.format").setup({ pattern = {
 		"*.ex",
 		"*.exs",
 		"*.sh",
+		"*.rs",
 	} })
 	require("user.opts").setup()
+	require("user.colors").setup()
 end
