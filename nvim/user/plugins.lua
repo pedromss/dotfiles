@@ -146,7 +146,12 @@ return {
 			{
 				event = "neo_tree_buffer_leave",
 				handler = function()
-					-- TODO waiting on jkhttps://github.com/nvim-neo-tree/neo-tree.nvim/issues/519
+					local state = require("neo-tree.sources.manager").get_state("filesystem")
+					local winid = state.winid
+					if winid ~= nil then
+						vim.api.nvim_win_set_option(winid, "number", false)
+						vim.api.nvim_win_set_option(winid, "relativenumber", false)
+					end
 				end,
 			},
 		},
