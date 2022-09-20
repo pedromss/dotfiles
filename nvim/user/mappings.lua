@@ -40,13 +40,17 @@ return {
 			desc = "Hop Word in the current line",
 		},
 		-- Config management
-		["<localleader>ec"] = {
+		["<leader><leader>e"] = {
 			":tabnew ~/.config/nvim/lua/user/init.lua<cr>",
 			desc = "Edit config file in new tab",
 		},
-		["<localleader>si"] = {
+		["<leader><leader>i"] = {
 			":source ~/.config/nvim/lua/user/init.lua<cr>",
-			desc = "Edit config file in new tab",
+			desc = "Reload the configuration",
+		},
+		["<leader><leader>l"] = {
+			":source ~/.config/nvim/lua/user/plugins/luasnip.lua<cr>",
+			desc = "Reload snippets",
 		},
 		-- tabs
 		["<localleader>tt"] = { ":tabn", desc = "Go to tab" },

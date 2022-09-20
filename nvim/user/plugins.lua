@@ -1,6 +1,7 @@
 return {
 	init = {
 		["feline-nvim/feline.nvim"] = { disable = true },
+		["rafamadriz/friendly-snippets"] = { disable = true },
 		{
 			"ellisonleao/gruvbox.nvim",
 			tag = "1.0.0",

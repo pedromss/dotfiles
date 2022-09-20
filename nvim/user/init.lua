@@ -156,14 +156,7 @@ local config = {
 	plugins = require("user.plugins"),
 
 	-- LuaSnip Options
-	luasnip = {
-		-- Add paths for including more VS Code style snippets in luasnip
-		vscode_snippet_paths = "./lua/user/snippets",
-		-- Extend filetypes
-		filetype_extend = {
-			javascript = { "javascriptreact" },
-		},
-	},
+	-- luasnip = ...,
 
 	-- CMP Source Priorities
 	-- modify here the priorities of default cmp sources
