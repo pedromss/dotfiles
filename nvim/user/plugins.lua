@@ -13,6 +13,7 @@ return {
 		},
 		{ "nvim-treesitter/nvim-treesitter-context" },
 		{ "tpope/vim-surround", tag = "v2.2" },
+		{ "folke/trouble.nvim" },
 		{ "godlygeek/tabular" },
 		{
 			"phaazon/hop.nvim",
