@@ -8,6 +8,7 @@ function M.setup(config)
 		pattern = config.pattern,
 		callback = function()
 			vim.cmd(":Format")
+			vim.cmd(":w")
 		end,
 	})
 end
