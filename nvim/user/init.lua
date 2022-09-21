@@ -192,7 +192,10 @@ local config = {
 	-- This function is run last and is a good place to configuring
 	-- augroups/autocommands and custom filetypes also this just pure lua so
 	-- anything that doesn't fit in the normal config locations above can go here
-	polish = require("user.polish"),
+	polish = function()
+		require("user.polish")()
+		vim.cmd(":set laststatus=3") -- Because sometimes it doesn't "stick" when run from polish...
+	end,
 }
 
 return config

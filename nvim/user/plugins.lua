@@ -25,7 +25,10 @@ return {
 				})
 			end,
 		},
-		{ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" },
+		{
+			"sindrets/diffview.nvim",
+			requires = "nvim-lua/plenary.nvim",
+		},
 		{
 			"nvim-lualine/lualine.nvim",
 			requires = { "kyazdani42/nvim-web-devicons", opt = true },
@@ -109,7 +112,8 @@ return {
 			layout_strategy = "vertical",
 			layout_config = {
 				vertical = {
-					width = 0.9,
+					width = 0.99,
+					height = 0.99,
 					previewer = true,
 					preview_cutoff = 1,
 					results_height = 0.4,
@@ -117,7 +121,8 @@ return {
 					prompt_location = "top",
 				},
 				horizontal = {
-					width = 0.9,
+					width = 0.99,
+					height = 0.99,
 					preview_width = 0.7,
 					results_width = 0.3,
 					preview_cutoff = 1,
