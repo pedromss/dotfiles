@@ -1,11 +1,12 @@
 local M = {}
 
 function M.setup(configs)
-	augroup("fold_management", { clear = true })
+	local name = "fold_management"
+	augroup(name, { clear = true })
 	for _, c in ipairs(configs) do
 		cmd("BufEnter", {
 			desc = "Set foldmethod",
-			group = "fold_management",
+			group = name,
 			pattern = c.pattern,
 			callback = function()
 				vim.wo.foldmethod = "indent"
@@ -13,8 +14,8 @@ function M.setup(configs)
 			end,
 		})
 		cmd("BufAdd", {
-			desc = "Set foldmethod",
-			group = "fold_management",
+			desc = "Set foldlevel",
+			group = name,
 			pattern = c.pattern,
 			callback = function()
 				vim.wo.foldlevel = c.fold_level

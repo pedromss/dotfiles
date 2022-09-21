@@ -8,16 +8,12 @@ end
 ls.filetype_extend("javascript", { "javascriptreact" })
 ls.config.set_config({
 	history = true,
-	updateevents = "TextChanged,TextChangedI",
+	-- updateevents = "TextChanged,TextChangedI",
 	enable_autosnippets = true,
 })
 lua_loader.lazy_load({ paths = "./lua/user/snippets" })
 vscode_loader.lazy_load({ paths = "./lua/user/snippets" })
 
--- vim.api.nvim_set_keymap("i", "<C-n>", "<Plug>luasnip-next-choice", {})
--- vim.api.nvim_set_keymap("s", "<C-n>", "<Plug>luasnip-next-choice", {})
--- vim.api.nvim_set_keymap("i", "<C-p>", "<Plug>luasnip-prev-choice", {})
--- vim.api.nvim_set_keymap("s", "<C-p>", "<Plug>luasnip-prev-choice", {})
 vim.api.nvim_set_keymap(
 	"i",
 	"<c-u>",

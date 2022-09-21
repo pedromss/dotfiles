@@ -38,4 +38,19 @@ return function()
 	} })
 	require("user.opts").setup()
 	require("user.colors").setup()
+	require("user.autocmds").setup({
+		aerial = {
+			{ pattern = "*.md" },
+		},
+	})
+
+	-- TODO confirm this is useful
+	require("lspconfig").jsonls.setup({
+		settings = {
+			json = {
+				schemas = require("schemastore").json.schemas(),
+				validate = { enable = true },
+			},
+		},
+	})
 end
