@@ -19,6 +19,8 @@ return {
 		{ "hrsh7th/cmp-nvim-lua" },
 		{ "saadparwaiz1/cmp_luasnip" },
 		{ "ray-x/cmp-treesitter" },
+		{ "smjonas/inc-rename.nvim" },
+		{ "nvim-neotest/neotest" },
 		{
 			"phaazon/hop.nvim",
 			branch = "v2",
