@@ -4,7 +4,6 @@ if not (avail and kind_avail) then
 	return
 end
 
-print("configuring cmp")
 p.setup({
 	sources = p.config.sources({
 		{ name = "nvim_lua" },

@@ -1,5 +1,6 @@
 return {
 	n = {
+		["<leader><leader>r"] = { "lua require('smart-splits').start_resize_mode()", desc = "Enter resize mode" },
 		["<leader>bg"] = { ":ToggleBackground<cr>", desc = "Toggle background color" },
 		["<localleader>aa"] = {
 			":AerialToggle<cr>",

@@ -1,7 +1,8 @@
+local coding_file_types = { "elixir", "rust", "go", "lua" }
 return {
 	init = {
 		["feline-nvim/feline.nvim"] = { disable = true },
-		["rafamadriz/friendly-snippets"] = { disable = true },
+		["declancm/cinnamon.nvim"] = { disable = true },
 		{
 			"ellisonleao/gruvbox.nvim",
 			tag = "1.0.0",
@@ -14,13 +15,18 @@ return {
 
 		{ "nvim-treesitter/nvim-treesitter-context" },
 		{ "tpope/vim-surround", tag = "v2.2" },
-		{ "folke/trouble.nvim" },
+		{ "folke/trouble.nvim", ft = coding_file_types },
 		{ "godlygeek/tabular" },
 		{ "hrsh7th/cmp-nvim-lua" },
-		{ "saadparwaiz1/cmp_luasnip" },
 		{ "ray-x/cmp-treesitter" },
-		{ "smjonas/inc-rename.nvim" },
-		{ "nvim-neotest/neotest" },
+		-- TODO waiting on neovim 0.8
+		-- {
+		-- 	"smjonas/inc-rename.nvim",
+		-- 	config = function()
+		-- 		require("inc_rename").setup()
+		-- 	end,
+		-- },
+		{ "nvim-neotest/neotest", ft = coding_file_types },
 		{
 			"phaazon/hop.nvim",
 			branch = "v2",
@@ -34,6 +40,9 @@ return {
 		{
 			"sindrets/diffview.nvim",
 			requires = "nvim-lua/plenary.nvim",
+			fn = function()
+				print("hi from diffview")
+			end,
 		},
 		{
 			"nvim-lualine/lualine.nvim",
@@ -87,6 +96,9 @@ return {
 				})
 			end,
 		},
+	},
+	notify = {
+		stages = "fade_in_slide_out",
 	},
 	-- All other entries override the require("<key>").setup({...}) call for default plugins
 	["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`

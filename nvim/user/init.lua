@@ -194,7 +194,7 @@ local config = {
 	-- anything that doesn't fit in the normal config locations above can go here
 	polish = function()
 		require("user.polish")()
-		vim.cmd(":set laststatus=3") -- Because sometimes it doesn't "stick" when run from polish...
+		vim.cmd(":set laststatus=3") -- Because sometimes it doesn't "stick" when run from user.polish...
 	end,
 }
 
