@@ -1,4 +1,8 @@
-require("lualine").setup({
+local avail, p = pcall(require, "lualine")
+if not avail then
+	return
+end
+p.setup({
 	sections = {
 		lualine_c = {
 			{

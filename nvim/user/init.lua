@@ -164,14 +164,14 @@ local config = {
 	-- The value can also be set to a boolean for disabling default sources:
 	-- false == disabled
 	-- true == 1000
-	cmp = {
-		source_priority = {
-			nvim_lsp = 1000,
-			luasnip = 750,
-			buffer = 500,
-			path = 250,
-		},
-	},
+	-- cmp = {
+	-- 	source_priority = {
+	-- 		nvim_lsp = 1000,
+	-- 		luasnip = 750,
+	-- 		buffer = 500,
+	-- 		path = 250,
+	-- 	},
+	-- },
 
 	-- Modify which-key registration (Use this with mappings table in the above.)
 	["which-key"] = {

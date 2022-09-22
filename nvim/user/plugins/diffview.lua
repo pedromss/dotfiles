@@ -1,8 +1,8 @@
-local diffview_avail, dv = pcall(require, "diffview")
-if not diffview_avail then
+local avail, p = pcall(require, "diffview")
+if not avail then
 	return
 end
-require("diffview").setup({
+p.setup({
 	view = {
 		default = {
 			layout = "diff2_horizontal",

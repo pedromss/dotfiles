@@ -11,10 +11,14 @@ return {
 				})
 			end,
 		},
+
 		{ "nvim-treesitter/nvim-treesitter-context" },
 		{ "tpope/vim-surround", tag = "v2.2" },
 		{ "folke/trouble.nvim" },
 		{ "godlygeek/tabular" },
+		{ "hrsh7th/cmp-nvim-lua" },
+		{ "saadparwaiz1/cmp_luasnip" },
+		{ "ray-x/cmp-treesitter" },
 		{
 			"phaazon/hop.nvim",
 			branch = "v2",

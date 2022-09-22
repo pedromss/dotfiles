@@ -8,7 +8,7 @@ end
 ls.filetype_extend("javascript", { "javascriptreact" })
 ls.config.set_config({
 	history = true,
-	-- updateevents = "TextChanged,TextChangedI",
+	updateevents = "TextChanged,TextChangedI",
 	enable_autosnippets = true,
 })
 lua_loader.lazy_load({ paths = "./lua/user/snippets" })

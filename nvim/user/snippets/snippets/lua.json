@@ -1,4 +1,16 @@
 {
+  "plugin-module": {
+    "prefix": "lpmod",
+    "body": [
+      "local avail, p = pcall(require, \"$1\")",
+      "if not avail then",
+      "  return",
+      "end",
+      "",
+      "p.setup({$2})"
+    ],
+    "description": "Skeleton for a plugin config module"
+  },
   "local-module": {
     "prefix": "lmod",
     "body": [
