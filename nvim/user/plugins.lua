@@ -4,6 +4,7 @@ return {
 	init = {
 		["feline-nvim/feline.nvim"] = { disable = true },
 		["declancm/cinnamon.nvim"] = { disable = true },
+		["hrsh7th/nvim-cmp"] = { tag = "v0.0.1" },
 		{
 			"ellisonleao/gruvbox.nvim",
 			tag = "1.0.0",
