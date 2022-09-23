@@ -53,4 +53,7 @@ return function()
 			},
 		},
 	})
+
+	require("user.scratch").setup()
+	require("user.reload").setup()
 end

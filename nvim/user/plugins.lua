@@ -1,4 +1,5 @@
 local coding_file_types = { "elixir", "rust", "go", "lua" }
+
 return {
 	init = {
 		["feline-nvim/feline.nvim"] = { disable = true },
@@ -40,9 +41,6 @@ return {
 		{
 			"sindrets/diffview.nvim",
 			requires = "nvim-lua/plenary.nvim",
-			fn = function()
-				print("hi from diffview")
-			end,
 		},
 		{
 			"nvim-lualine/lualine.nvim",

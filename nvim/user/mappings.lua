@@ -1,6 +1,5 @@
 return {
 	n = {
-		["<leader><leader>r"] = { "lua require('smart-splits').start_resize_mode()", desc = "Enter resize mode" },
 		["<leader>bg"] = { ":ToggleBackground<cr>", desc = "Toggle background color" },
 		["<localleader>aa"] = {
 			":AerialToggle<cr>",
@@ -41,6 +40,8 @@ return {
 			desc = "Hop Word in the current line",
 		},
 		-- Config management
+		["<leader><leader>q"] = { "luafile %<cr>", desc = "Better evaluate the current file" },
+		["<leader><leader>r"] = { "lua require('smart-splits').start_resize_mode()", desc = "Enter resize mode" },
 		["<leader><leader>e"] = {
 			":tabnew ~/.config/nvim/lua/user/init.lua<cr>",
 			desc = "Edit config file in new tab",
