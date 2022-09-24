@@ -1,5 +1,6 @@
 local M = {}
 
+-- TODO unused for now, astro nvim takes care of it
 function M.setup()
 	local plugin_dir = vim.env.HOME .. "/.config/nvim/lua/user/plugins/"
 	local scan = require("plenary.scandir")

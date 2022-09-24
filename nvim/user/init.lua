@@ -1,10 +1,5 @@
-require("user.api")
-
-local function is_available(plugin)
-	return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
-end
-
-local config = {
+local palette = require("gruvbox.palette")
+return {
 	updater = {
 		remote = "origin", -- remote to use
 		channel = "nightly", -- "stable" or "nightly"
@@ -22,58 +17,19 @@ local config = {
 		--   ["remote3"] = "github_user", -- GitHub user assume AstroNvim fork
 		-- },
 	},
-
-	-- Set colorscheme to use
-	colorscheme = "gruvbox",
-
-	-- Override highlight groups in any theme
+	colorscheme = "nord",
 	highlights = {
-		-- duskfox = { -- a table of overrides/changes to the default
-		--   Normal = { bg = "#000000" },
+		-- gruvbox = {
+		-- 	SignColumn = { bg = "#282828" },
+		-- 	GitGutterChange = { fg = "#8ec07c", bg = "#282828" },
+		-- 	GitGutterDelete = { fg = "#8ec07c", bg = "#282828" },
+		-- 	GitGutterAdd = { fg = "#8ec07c", bg = "#282828" },
+		-- 	GitGutterChangeDelete = { fg = "#8ec07c", bg = "#282828" },
 		-- },
-		default_theme = function(highlights) -- or a function that returns a new table of colors to set
-			local C = require("default_theme.colors")
-			highlights.Normal = { fg = C.fg, bg = C.bg }
-			return highlights
-		end,
 	},
-
-	-- set vim options here (vim.<first_key>.<second_key> =  value)
-	options = {
-		opt = {},
-		g = {
-			mapleader = ",", -- sets vim.g.mapleader
-			localleader = "\\",
-		},
-	},
-	-- If you need more control, you can use the function()...end notation
-	-- options = function(local_vim)
-	--   local_vim.opt.relativenumber = true
-	--   local_vim.g.mapleader = " "
-	--   local_vim.opt.whichwrap = vim.opt.whichwrap - { 'b', 's' } -- removing option from list
-	--   local_vim.opt.shortmess = vim.opt.shortmess + { I = true } -- add to option list
-	--
-	--   return local_vim
-	-- end,
-
-	-- Set dashboard header
-	header = {
-		"    ███    ██ ██    ██ ██ ███    ███",
-		"    ████   ██ ██    ██ ██ ████  ████",
-		"    ██ ██  ██ ██    ██ ██ ██ ████ ██",
-		"    ██  ██ ██  ██  ██  ██ ██  ██  ██",
-		"    ██   ████   ████   ██ ██      ██",
-	},
-
-	-- Default theme configuration
 	default_theme = {
 		-- set the highlight style for diagnostic messages
 		diagnostics_style = { italic = true },
-		-- Modify the color palette for the default theme
-		colors = {
-			fg = "#abb2bf",
-			bg = "#1e222a",
-		},
 		-- enable or disable highlighting for extra plugins
 		plugins = {
 			aerial = true,
@@ -95,107 +51,4 @@ local config = {
 			["which-key"] = true,
 		},
 	},
-
-	-- Diagnostics configuration (for vim.diagnostics.config({...}))
-	diagnostics = {
-		virtual_text = true,
-		underline = true,
-	},
-
-	-- Extend LSP configuration
-	lsp = {
-		-- enable servers that you already have installed without mason
-		servers = {
-			-- "pyright"
-		},
-		-- easily add or disable built in mappings added during LSP attaching
-		mappings = {
-			n = {
-				-- ["<leader>lf"] = false -- disable formatting keymap
-			},
-		},
-		-- add to the global LSP on_attach function
-		-- on_attach = function(client, bufnr)
-		-- end,
-
-		-- override the mason server-registration function
-		-- server_registration = function(server, opts)
-		--   require("lspconfig")[server].setup(opts)
-		-- end,
-
-		-- Add overrides for LSP server settings, the keys are the name of the server
-		["server-settings"] = {
-			-- example for addings schemas to yamlls
-			-- yamlls = { -- override table for require("lspconfig").yamlls.setup({...})
-			--   settings = {
-			--     yaml = {
-			--       schemas = {
-			--         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*.{yml,yaml}",
-			--         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
-			--         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
-			--       },
-			--     },
-			--   },
-			-- },
-			-- Example disabling formatting for a specific language server
-			-- gopls = { -- override table for require("lspconfig").gopls.setup({...})
-			--   on_attach = function(client, bufnr)
-			--     client.resolved_capabilities.document_formatting = false
-			--   end
-			-- }
-		},
-	},
-
-	-- Mapping data with "desc" stored directly by vim.keymap.set().
-	--
-	-- Please use this mappings table to set keyboard mapping since this is the
-	-- lower level configuration and more robust one. (which-key will
-	-- automatically pick-up stored data by this setting.)
-	mappings = require("user.mappings"),
-	-- Configure plugins
-	plugins = require("user.plugins"),
-
-	-- LuaSnip Options
-	-- luasnip = ...,
-
-	-- CMP Source Priorities
-	-- modify here the priorities of default cmp sources
-	-- higher value == higher priority
-	-- The value can also be set to a boolean for disabling default sources:
-	-- false == disabled
-	-- true == 1000
-	-- cmp = {
-	-- 	source_priority = {
-	-- 		nvim_lsp = 1000,
-	-- 		luasnip = 750,
-	-- 		buffer = 500,
-	-- 		path = 250,
-	-- 	},
-	-- },
-
-	-- Modify which-key registration (Use this with mappings table in the above.)
-	["which-key"] = {
-		-- Add bindings which show up as group name
-		register_mappings = {
-			-- first key is the mode, n == normal mode
-			n = {
-				-- second key is the prefix, <leader> prefixes
-				["<leader>"] = {
-					-- third key is the key to bring up next level and its displayed
-					-- group name in which-key top level menu
-					["b"] = { name = "Buffer" },
-				},
-			},
-		},
-	},
-
-	-- This function is run last and is a good place to configuring
-	-- augroups/autocommands and custom filetypes also this just pure lua so
-	-- anything that doesn't fit in the normal config locations above can go here
-	polish = function()
-		require("user.polish")()
-		vim.cmd(":set laststatus=3") -- Because sometimes it doesn't "stick" when run from user.polish...
-	end,
 }
-
-return config

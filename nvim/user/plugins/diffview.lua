@@ -1,8 +1,4 @@
-local avail, p = pcall(require, "diffview")
-if not avail then
-	return
-end
-p.setup({
+return {
 	view = {
 		default = {
 			layout = "diff2_horizontal",
@@ -15,4 +11,4 @@ p.setup({
 			layout = "diff2_horizontal",
 		},
 	},
-})
+}

@@ -4,7 +4,6 @@ local function reload()
 	for name, _ in pairs(package.loaded) do
 		if name:match("^user") or name:match("^configs") or name:match("^core") then
 			package.loaded[name] = nil
-			-- print(name)
 		end
 	end
 

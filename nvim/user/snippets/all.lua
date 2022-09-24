@@ -29,7 +29,9 @@ local function fn(
 	return "[" .. args[1][1] .. user_args .. "]"
 end
 
+local lsp = ls.parser.parse_snippet({ trig = "lsp" }, "$1 is ${2|hard,easy,challenging|}")
 return {
+	lsp,
 	postfix(".br", {
 		f(function(_, parent)
 			return "[" .. parent.snippet.env.POSTFIX_MATCH .. "]"

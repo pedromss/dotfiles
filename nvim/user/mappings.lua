@@ -1,5 +1,7 @@
 return {
 	n = {
+		["<S-h>"] = { ":tabprevious<cr>", desc = "Tab next" },
+		["<S-l>"] = { ":tabnext<cr>", desc = "Tab previous" },
 		["<leader>bg"] = { ":ToggleBackground<cr>", desc = "Toggle background color" },
 		["<localleader>aa"] = {
 			":AerialToggle<cr>",
@@ -11,8 +13,6 @@ return {
 		-- Telescope
 		["<localleader>fw"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Find in current buffer" },
 		["<localleader>fb"] = { "<cmd>Telescope builtin<cr>", desc = "Telescope builtin" },
-		["<leader>fe"] = { "<cmd>Telescope oldfiles<cr>", desc = "Old files" },
-		["<leader>fg"] = { "<cmd>Telescope live_grep<cr>", desc = "Old files" },
 		-- mappings seen under group name "Buffer"
 		["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
 		["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
@@ -22,32 +22,32 @@ return {
 		["T"] = { ":tabclose<cr> ", desc = "Close tab" },
 		["<esc>"] = { ":noh<cr>:mat none<cr>", desc = "Clear searches and highlights and ESC" },
 		-- Hop
-		["<localleader>lw"] = { "<cmd>lua require'hop'.hint_words()<cr>", desc = "Hop Word in the current buffer" },
-		["<localleader>lW"] = {
+		["<leader>lw"] = { "<cmd>lua require'hop'.hint_words()<cr>", desc = "Hop Word in the current buffer" },
+		["<leader>lW"] = {
 			"<cmd>lua require'hop'.hint_words({multi_windows = true})<cr>",
 			desc = "Hop Word in the current buffer",
 		},
-		["<localleader>lp"] = {
+		["<leader>lp"] = {
 			"<cmd>lua require'hop'.hint_patterns()<cr>",
 			desc = "Hop pattern in current window",
 		},
-		["<localleader>lP"] = {
+		["<leader>lP"] = {
 			"<cmd>lua require'hop'.hint_patterns({multi_windows = true})<cr>",
 			desc = "Hop pattern in all windows",
 		},
-		["<localleader>ll"] = {
+		["<leaer>ll"] = {
 			"<cmd>lua require'hop'.hint_words({current_line_only = true})<cr>",
 			desc = "Hop Word in the current line",
 		},
 		-- Config management
-		["<leader><leader>q"] = { "luafile %<cr>", desc = "Better evaluate the current file" },
-		["<leader><leader>r"] = { "lua require('smart-splits').start_resize_mode()", desc = "Enter resize mode" },
+		["<leader><leader>q"] = { ":luafile %<cr>", desc = "Evaluate current file" },
+		["<leader><leader>r"] = { ":lua require('smart-splits').start_resize_mode()<cr>", desc = "Resize mode" },
 		["<leader><leader>e"] = {
 			":tabnew ~/.config/nvim/lua/user/init.lua<cr>",
 			desc = "Edit config file in new tab",
 		},
 		["<leader><leader>i"] = {
-			":source ~/.config/nvim/lua/user/init.lua<cr>",
+			":Reload<cr>",
 			desc = "Reload the configuration",
 		},
 		["<leader><leader>l"] = {
