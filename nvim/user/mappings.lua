@@ -8,6 +8,9 @@ return {
 			desc = "Toggle Aerial and jump to it",
 		},
 		["<localleader>nf"] = { ":set nofoldenable!<cr>", desc = "toggle folds" },
+		-- ToggleTerm
+		["<leader>tT"] = { "<cmd>ToggleTerm direction=tab<cr>", desc = "Toggleterm in tab" },
+		["<leader>tc"] = { "<cmd>ToggleTermSendCurrentLine<cr>", desc = "Toggleterm send current line" },
 		-- Substitute
 		["<leader>r"] = { ':exe "%s/" . expand("<cword>") . "/', desc = "Substitute operator" },
 		-- Telescope
@@ -60,6 +63,9 @@ return {
 		-- Wrist and stuff
 		["<localleader>nn"] = { ":file!<cr>", desc = "Show current file name" },
 		["<localleader>fn"] = { ":Format<cr>", desc = "Format the current file" },
+	},
+	v = {
+		["<leader>tc"] = { ":'<,'>ToggleTermSendVisualSelection<cr>", desc = "Toggleterm send visual selection" },
 	},
 	t = {
 		-- setting a mapping to false will disable it
