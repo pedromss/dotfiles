@@ -3,11 +3,10 @@ return {
 		["<S-h>"] = { ":tabprevious<cr>", desc = "Tab next" },
 		["<S-l>"] = { ":tabnext<cr>", desc = "Tab previous" },
 		["<leader>bg"] = { ":ToggleBackground<cr>", desc = "Toggle background color" },
-		["<localleader>aa"] = {
-			":AerialToggle<cr>",
-			desc = "Toggle Aerial and jump to it",
-		},
 		["<localleader>nf"] = { ":set nofoldenable!<cr>", desc = "toggle folds" },
+		-- Aerial
+		["<leader><leader>a"] = { ":AerialToggle<cr>", desc = "Aerial toggle" },
+		["<leader><leader>f"] = { ":AerialTreeSetCollapseLevel ", desc = "Aerial set collapse" },
 		-- ToggleTerm
 		["<leader>tT"] = { "<cmd>ToggleTerm direction=tab<cr>", desc = "Toggleterm in tab" },
 		["<leader>tc"] = { "<cmd>ToggleTermSendCurrentLine<cr>", desc = "Toggleterm send current line" },
