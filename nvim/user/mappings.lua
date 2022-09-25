@@ -35,7 +35,7 @@ return {
 			"<cmd>lua require'hop'.hint_patterns({multi_windows = true})<cr>",
 			desc = "Hop pattern in all windows",
 		},
-		["<leaer>ll"] = {
+		["<leader>ll"] = {
 			"<cmd>lua require'hop'.hint_words({current_line_only = true})<cr>",
 			desc = "Hop Word in the current line",
 		},
