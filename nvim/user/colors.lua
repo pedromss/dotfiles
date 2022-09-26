@@ -22,13 +22,16 @@ local colors = {
 
 function M.toggle_background()
 	local bg = "dark"
+	local scheme = "nord"
 	if vim.opt.background:get() == bg then
 		bg = "light"
+		scheme = "melange"
 	end
+	vim.cmd(":colorscheme " .. scheme)
 	vim.cmd(":set background=" .. bg)
-	for _, spec in ipairs(colors[bg]) do
-		vim.cmd(":hi " .. spec.group .. " guibg=" .. spec.bg .. " guifg=" .. spec.fg .. spec.extras)
-	end
+	-- for _, spec in ipairs(colors[bg]) do
+	-- 	vim.cmd(":hi " .. spec.group .. " guibg=" .. spec.bg .. " guifg=" .. spec.fg .. spec.extras)
+	-- end
 end
 
 function M.setup()
