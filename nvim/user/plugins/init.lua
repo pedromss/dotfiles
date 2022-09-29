@@ -13,6 +13,7 @@ return {
 	{ "nvim-neotest/neotest", ft = coding_file_types },
 	{ "phaazon/hop.nvim", branch = "v2", config = require("user.plugins.hop") },
 	{ "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" },
+	{ "mg979/vim-visual-multi", tag = "v0.5.8" },
 	{
 		"nvim-lualine/lualine.nvim",
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
