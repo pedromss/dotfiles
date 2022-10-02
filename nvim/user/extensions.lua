@@ -4,6 +4,7 @@ function M.setup()
 	vim.filetype.add({
 		extension = {
 			cfg = "cfg",
+			heex = "html",
 		},
 		--   filename = {
 		--     ["Foofile"] = "fooscript",
