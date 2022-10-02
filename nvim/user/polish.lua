@@ -13,11 +13,15 @@ return function()
 			{ fold_level = 1, pattern = { "*.ex", "*.exs" } },
 			{ fold_level = 2, pattern = { "rust" } },
 		},
-		format = { pattern = {
-			"*.ex",
-			"*.exs",
-			"*.sh",
-			"*.rs",
-		} },
+		format = {
+			pattern = {
+				-- "*.ex",
+				-- "*.exs",
+				"*.sh",
+				"*.rs",
+			},
+		},
 	})
+
+	vim.cmd(":iabbre adn and")
 end
