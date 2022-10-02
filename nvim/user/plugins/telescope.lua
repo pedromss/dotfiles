@@ -47,5 +47,11 @@ return {
 			cwd_only = true,
 			path_display = hide_irrelevant_path_parts,
 		},
+		diagnostics = {
+			layout_strategy = "vertical",
+			layout_config = {
+				preview_height = 0.4,
+			},
+		},
 	},
 }
