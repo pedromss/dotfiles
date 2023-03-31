@@ -36,5 +36,11 @@
 	ff = only
 [init]
 	defaultBranch = main
-[url "git@github.com:"]
-	insteadOf = https://github.com/
+;[url "git@github.com:"]
+	;insteadOf = https://github.com/
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/pedromss/dotfiles/repos/brew/Cellar/gh/2.24.3/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/home/pedromss/dotfiles/repos/brew/Cellar/gh/2.24.3/bin/gh auth git-credential
