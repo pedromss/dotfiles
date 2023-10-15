@@ -1,6 +1,5 @@
 #zmodload zsh/zprof
 [ -f ~/dotboot/configure ] && source ~/dotboot/configure
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 bindkey "^[[3~" delete-char
 bindkey '[C' beginning-of-line
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=50
@@ -88,7 +87,7 @@ if [ -d ~/dotfiles/repos/zsh-plugins ] ; then
   for plugin_folder in ~/dotfiles/repos/zsh-plugins/* ; do
     if [[ "$plugin_folder" =~ .*ohmyzsh$ ]] ; then
       . "$plugin_folder/plugins/globalias/globalias.plugin.zsh"
-      . "$plugin_folder/plugins/vi-mode/vi-mode.plugin.zsh"
+      # . "$plugin_folder/plugins/vi-mode/vi-mode.plugin.zsh"
     else 
       for plugin_file in "$plugin_folder"/*.plugin.zsh ; do
         if [ -f "$plugin_file" ] ; then
@@ -119,8 +118,9 @@ fi
 
 export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
 [ -f ~/dotboot/configure ] && _load_at_the_end
+[ -f "$HOME"/.cargo/env ] && source "$HOME"/.cargo/env
+[ -f "$HOME"/.ghcup/env ] && source "$HOME"/.ghcup/env
+zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
+test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
 #zprof
-
-[ -f "/home/pedromss/.ghcup/env" ] && source "/home/pedromss/.ghcup/env" # ghcup-env
