@@ -2,7 +2,12 @@
 	autocrlf = input
 	editor = nvim
 	excludesfile = ~/.gitignore_global
-	;pager = diff-so-fancy | less --tabs=4 -RFX
+  ;pager = diff-so-fancy | less --tabs=4 -RFX
+  ;pager = bat -l rs
+[pager]
+  ;diff = git diff --name-only --relative --diff-filter=d | xargs bat --diff
+  diff = diff-so-fancy | less --tabs=4 -RFX
+  ;diff = bat --diff
 [grep]
 	lineNumber = true
 [merge]
@@ -44,3 +49,6 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/home/pedromss/dotfiles/repos/brew/Cellar/gh/2.24.3/bin/gh auth git-credential
+[rebase]
+	autosquash = true
+	autostash = true
