@@ -122,3 +122,5 @@ export NVM_DIR="$HOME/.config/nvm"
 
 [ -f ~/dotboot/configure ] && _load_at_the_end
 #zprof
+
+[ -f "/home/pedromss/.ghcup/env" ] && source "/home/pedromss/.ghcup/env" # ghcup-env
