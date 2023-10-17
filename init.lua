@@ -40,6 +40,7 @@ require("lazy").setup({
             vim.cmd([[colorscheme tokyonight-moon]])
         end
     },
+    { 'tpope/vim-fugitive' },
     {
         'nvim-telescope/telescope.nvim',
         tag = '0.1.4',
@@ -59,6 +60,9 @@ require("lazy").setup({
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
             "MunifTanjim/nui.nvim",
-        }
+        },
+        config = function()
+            vim.keymap.set('n', '<localleader>t', 'Neotree', {})
+        end
     }
 }, {})
