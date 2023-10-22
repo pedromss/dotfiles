@@ -116,11 +116,8 @@ if command_exists kubectl ; then
   source <(kubectl completion zsh) 2>/dev/null
 fi
 
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -f ~/dotboot/configure ] && _load_at_the_end
-[ -f "$HOME"/.cargo/env ] && source "$HOME"/.cargo/env
-[ -f "$HOME"/.ghcup/env ] && source "$HOME"/.ghcup/env
 zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
-test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
+[ -f ~/.tmonly ] && . ~/.tmonly
+
 #zprof
