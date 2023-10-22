@@ -32,3 +32,16 @@ render = true
 
 [editor.soft-wrap]
 enable = true
+
+[keys.normal]
+C-A-q = ":theme everforest_light"
+C-A-w = ":theme everforest_dark"
+C-A-o = ":config-open"
+C-A-c = ":config-reload"
+C-A-h = ":buffer-previous"
+C-A-l = ":buffer-next"
+A-w = ":buffer-close"
+C-s = ":w"
+C-A-s = ":write-all"
+C-A-x = ":quit-all"
+C-q = ":quit"
