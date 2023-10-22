@@ -1,0 +1,34 @@
+theme = "everforest_dark"
+
+[editor]
+line-number = 'relative'
+cursorline = true
+bufferline = 'multiple'
+
+[editor.cursor-shape]
+insert = 'bar'
+normal = 'block'
+select = 'underline'
+
+[editor.file-picker]
+hidden = false
+# shell = ["zsh"]
+
+[editor.statusline]
+left = ["mode", "spinner", "total-line-numbers", "file-modification-indicator", "file-name"]
+center = ["version-control"]
+right = ["diagnostics", "position", "position-percentage", "selections", "file-encoding", "file-line-ending", "file-encoding", "file-type"]
+separator = "│"
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
+
+[editor.whitespace]
+render = 'none'
+
+[editor.indent-guides]
+render = true
+
+[editor.soft-wrap]
+enable = true
