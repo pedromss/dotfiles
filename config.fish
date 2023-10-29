@@ -17,7 +17,7 @@ abbr -a gcm git commit -S -m
 abbr -a gau git add -u
 abbr -a gaa git add --all
 abbr -a gdc git diff --compact-summary
-abbr -a gpl git pull --rebase
+abbr -a gl git pull --rebase
 abbr -a main git checkout main
 abbr -a master git checkout master
 abbr -a rmain git rebase main
@@ -29,4 +29,5 @@ abbr -a gsp git stash pop
 abbr -a gp git push
 abbr -a gd git diff
 
+set -gx EDITOR hx
 source_if_present $HOME/.tmonly.fish
