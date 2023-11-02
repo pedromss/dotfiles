@@ -166,7 +166,7 @@ keybinds {
     }
     shared_except "resize" "locked" {
         unbind "Ctrl n"
-        bind "Ctrl r" { SwitchToMode "Resize"; }
+        bind "Ctrl v" { SwitchToMode "Resize"; }
     }
     shared_except "scroll" "locked" {
         unbind "Ctrl s"
