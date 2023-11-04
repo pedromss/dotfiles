@@ -30,4 +30,6 @@ abbr -a gp git push
 abbr -a gd git diff
 
 set -gx EDITOR hx
+fish_add_path --path /usr/local/go/bin
+fish_add_path --path $HOME/go/bin
 source_if_present $HOME/.tmonly.fish
