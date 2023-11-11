@@ -1,4 +1,4 @@
-theme = "everforest_dark"
+theme = "nord"
 
 [editor]
 line-number = 'relative'
@@ -34,8 +34,8 @@ render = true
 enable = true
 
 [keys.normal]
-C-A-q = ":theme everforest_light"
-C-A-w = ":theme everforest_dark"
+C-A-q = ":theme cyan_light"
+C-A-w = ":theme nord"
 C-A-o = ":config-open"
 C-A-r = ":config-reload"
 C-A-h = ":buffer-previous"
