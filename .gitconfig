@@ -2,36 +2,18 @@
 	autocrlf = input
 	editor = nvim
 	excludesfile = ~/.gitignore_global
-  ;pager = diff-so-fancy | less --tabs=4 -RFX
-  ;pager = bat -l rs
 [pager]
-  ;diff = git diff --name-only --relative --diff-filter=d | xargs bat --diff
-  diff = diff-so-fancy | less --tabs=4 -RFX
-  ;diff = bat --diff
+  diff = delta
 [grep]
 	lineNumber = true
 [merge]
-  tool = nvimdiff
-  conflictStyle = diff3
+  tool = nvim 
 [mergetool]
 	prompt = false
-[mergetool "splice"]
-  cmd = "nvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
-  trustExitCode = true
+[mergetool "nvim"]
+  cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
 [color]
 	ui = true
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
-[color "diff"]
-	meta = yellow
-	frag = magenta bold
-	commit = yellow bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -41,14 +23,6 @@
 	ff = only
 [init]
 	defaultBranch = main
-;[url "git@github.com:"]
-	;insteadOf = https://github.com/
-[credential "https://github.com"]
-	helper = 
-	helper = !/home/pedromss/dotfiles/repos/brew/Cellar/gh/2.24.3/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !/home/pedromss/dotfiles/repos/brew/Cellar/gh/2.24.3/bin/gh auth git-credential
 [rebase]
 	autosquash = true
 	autostash = true
