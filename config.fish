@@ -30,6 +30,7 @@ abbr -a gp git push
 abbr -a gd git diff
 
 set -gx EDITOR hx
+set -gx ERL_AFLAGS "-kernel shell_history enabled"
 fish_add_path --path /usr/local/go/bin
 fish_add_path --path $HOME/go/bin
 source_if_present $HOME/.tmonly.fish
