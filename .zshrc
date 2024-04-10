@@ -121,3 +121,12 @@ zvm_after_init_commands+=('[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh')
 [ -f ~/.tmonly ] && . ~/.tmonly
 
 #zprof
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=("$HOME"/.juliaup/bin $path)
+export PATH
+
+# <<< juliaup initialize <<<
