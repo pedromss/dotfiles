@@ -101,7 +101,7 @@ plugins=(fzf-zsh-plugin)
 # ================================================== 
 # Plugin configs
 # ==================================================
-eval "$(starship init zsh)"
+command_exists starship && eval "$(starship init zsh)"
 bindkey '^[k' history-substring-search-up
 bindkey '^[j' history-substring-search-down
 # shellcheck disable=1090
@@ -130,3 +130,7 @@ path=("$HOME"/.juliaup/bin $path)
 export PATH
 
 # <<< juliaup initialize <<<
+=======
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/psilva/dotfiles/bin/sdkman"
+[[ -s "/Users/psilva/dotfiles/bin/sdkman/bin/sdkman-init.sh" ]] && source "/Users/psilva/dotfiles/bin/sdkman/bin/sdkman-init.sh"
