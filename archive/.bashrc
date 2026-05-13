@@ -1,11 +1,28 @@
 #!/usr/bin/env bash
 
 # shellcheck disable=1090
-[ -f "$HOME"dotboot/configure ] && source "$HOME"/dotboot/configure
-[ -f "$HOME".tmonly ] && . "$HOME".tmonly
-[ -f "$HOME"/.asdf/asdf.sh ] && . "$HOME"/.asdf/asdf.sh
-[ -f "$HOME"/.asdf/completions/asdf.bash ] && . "$HOME"/.asdf/completions/asdf.bash
+[ -f "$HOME"/dotboot/configure ] && source "$HOME"/dotboot/configure
+[ -f "$HOME"/.tmonly ] && . "$HOME"/.tmonly
 
+if command -v starship > /dev/null; then
+    eval "$(starship init bash)"
+fi
+
+if [ -f "$HOME"/.fzf.bash ] > /dev/null; then
+    source ~/.fzf.bash
+fi
+
+if [ -f "$HOME"/.cargo/env ] > /dev/null; then
+  . "$HOME"/.cargo/env
+fi
+
+if [ -f /home/linuxbrew/.linuxbrew/bin/brew ] ; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+if command -v mise > /dev/null; then
+  eval "$(mise activate bash)"
+fi
 
 # If not running interactively, don't do anything
 case $- in
@@ -65,19 +82,4 @@ fi
 
 set -o vi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-case ":$PATH:" in
-    *:"$HOME"/.juliaup/bin:*)
-        ;;
-
-    *)
-        export PATH=$HOME/.juliaup/bin${PATH:+:${PATH}}
-        ;;
-esac
-
-# <<< juliaup initialize <<<
+. "$HOME/.cargo/env"
